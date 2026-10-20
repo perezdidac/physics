@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CUCS — Tactical Caterpillar Warfare</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>CUCS — Guerra Tàctica de la Processionària a Catalunya</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -43,6 +43,7 @@ html, body {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: #06070a;
 }
@@ -52,6 +53,7 @@ html, body {
   height: 100%;
   display: block;
   cursor: crosshair;
+  touch-action: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -341,11 +343,11 @@ html, body {
   margin-top: 2px;
 }
 
-/* 3 Regional Scenic Theatre Cards */
+/* 4 Catalan Regional Scenic Theatre Cards */
 .theatre-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
   margin-bottom: 18px;
 }
 
@@ -982,6 +984,547 @@ html, body {
   text-align: left;
   font-size: 12px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE & TOUCH GAMEPAD + PORTRAIT / LANDSCAPE RESPONSIVE LAYOUTS
+   ═══════════════════════════════════════════════════════════════════ */
+#mobile-controls {
+  display: none;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+  padding: 0 4px;
+}
+
+body.touch-device #mobile-controls {
+  display: flex;
+}
+
+@media (pointer: coarse), (max-width: 900px), (max-height: 560px) {
+  #mobile-controls {
+    display: flex;
+  }
+}
+
+.mc-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.mc-btn {
+  position: relative;
+  height: 44px;
+  min-width: 46px;
+  padding: 0 11px;
+  background: linear-gradient(180deg, rgba(24, 30, 42, 0.94) 0%, rgba(12, 15, 22, 0.97) 100%);
+  border: 1.5px solid rgba(212, 161, 83, 0.52);
+  color: var(--ivory);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.72);
+  touch-action: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.08s ease, background 0.1s ease, border-color 0.1s ease;
+}
+
+.mc-btn:active,
+.mc-btn.pressed {
+  transform: scale(0.94);
+  background: linear-gradient(180deg, rgba(212, 161, 83, 0.38) 0%, rgba(30, 36, 50, 0.98) 100%);
+  border-color: var(--brass-bright);
+  color: var(--brass-bright);
+}
+
+.mc-btn.active-toggle {
+  background: linear-gradient(180deg, rgba(126, 200, 227, 0.34) 0%, rgba(20, 34, 48, 0.96) 100%);
+  border-color: #7ec8e3;
+  color: #dff6ff;
+  box-shadow: 0 0 14px rgba(126, 200, 227, 0.35);
+}
+
+.mc-btn-arrow {
+  font-size: 17px;
+  min-width: 48px;
+  padding: 0;
+}
+
+.mc-btn-util {
+  height: 36px;
+  min-width: 36px;
+  padding: 0 9px;
+  font-size: 11px;
+  border-radius: 7px;
+}
+
+.mc-btn-fire {
+  height: 50px;
+  min-width: 108px;
+  padding: 0 16px;
+  background: linear-gradient(180deg, #f5be58 0%, #d46528 55%, #9e261b 100%);
+  border: 2px solid #ffe49e;
+  color: #fff;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 8px 24px rgba(212, 101, 40, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  overflow: hidden;
+}
+
+.mc-btn-fire:active,
+.mc-btn-fire.pressed {
+  transform: scale(0.95);
+  filter: brightness(1.12);
+}
+
+.mc-fire-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+  transition: width 0.04s linear;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   PORTRAIT MOBILE MODE (Phones held vertically, e.g. 360x780..430x932)
+   ─────────────────────────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  #splash-screen {
+    padding: 20px 14px 32px;
+    gap: 18px;
+    overflow-y: auto;
+  }
+
+  .splash-kicker {
+    font-size: 10px;
+    letter-spacing: 2.2px;
+  }
+
+  .splash-subtitle {
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    padding: 4px 14px;
+  }
+
+  .updown-item {
+    padding: 12px 15px;
+    gap: 10px;
+  }
+
+  .updown-title {
+    font-size: 13.5px;
+  }
+
+  .updown-sub {
+    font-size: 10.5px;
+  }
+
+  #campaign-lobby {
+    padding: 8px;
+    align-items: flex-start;
+  }
+
+  .lobby-frame {
+    max-width: 100%;
+    max-height: 96dvh;
+    padding: 14px 12px 20px;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  .lobby-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .lobby-header-left h1 {
+    font-size: 16px;
+  }
+
+  .lobby-top-bar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .theatre-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .theatre-card {
+    height: 104px;
+  }
+
+  .theatre-name {
+    font-size: 12px;
+  }
+
+  .theatre-landmarks {
+    font-size: 9.5px;
+  }
+
+  .squad-custom-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .squad-box-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .hat-select {
+    width: 100%;
+  }
+
+  .lobby-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .lobby-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-gold-deploy {
+    width: 100%;
+    text-align: center;
+    padding: 13px 16px;
+  }
+
+  /* Compact 2-Row Top HUD for Portrait Mode */
+  #top-hud {
+    padding: max(6px, env(safe-area-inset-top)) 8px 4px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "chrono chrono"
+      "t1     t2"
+      "cmds   cmds";
+    gap: 5px;
+  }
+
+  #top-hud > .squad-panel:first-child {
+    grid-area: t1;
+    max-width: none;
+    padding: 5px 8px;
+  }
+
+  #top-hud > .center-chronometer {
+    grid-area: chrono;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    gap: 6px;
+  }
+
+  .chrono-housing {
+    padding: 4px 10px;
+    gap: 8px;
+    flex: 1;
+  }
+
+  #turn-timer {
+    font-size: 18px;
+    min-width: 24px;
+  }
+
+  #turn-status {
+    font-size: 11px;
+  }
+
+  #round-sub {
+    font-size: 8.5px;
+  }
+
+  .anemometer {
+    padding: 3px 8px;
+    gap: 5px;
+  }
+
+  .wind-track {
+    width: 54px;
+  }
+
+  #top-hud > div:last-child {
+    grid-area: t2;
+    justify-self: stretch !important;
+    display: contents;
+  }
+
+  .squad-panel.right {
+    grid-area: t2;
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+    padding: 5px 8px;
+  }
+
+  .squad-title {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .squad-hp-total {
+    font-size: 10px;
+  }
+
+  .worm-pip-name {
+    font-size: 8.5px;
+  }
+
+  .command-strip {
+    grid-area: cmds;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0;
+    gap: 4px;
+  }
+
+  .cmd-btn {
+    height: 25px;
+    padding: 0 7px;
+    font-size: 9.5px;
+  }
+
+  /* Bottom HUD & 6x2 Weapon Grid in Portrait Mode */
+  #bottom-hud {
+    bottom: max(6px, env(safe-area-inset-bottom));
+    width: calc(100vw - 12px);
+    gap: 5px;
+  }
+
+  .ordnance-rack {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 3px;
+    width: 100%;
+    padding: 5px;
+  }
+
+  .ord-slot {
+    width: 100%;
+    height: 44px;
+    padding: 2px;
+  }
+
+  .ord-hotkey {
+    display: none;
+  }
+
+  .ord-icon {
+    width: 24px;
+    height: 16px;
+    margin-top: 6px;
+  }
+
+  .ord-label {
+    font-size: 7.5px;
+  }
+
+  .tactical-legend {
+    display: none;
+  }
+
+  .victory-card {
+    padding: 18px 16px;
+  }
+
+  .victory-title {
+    font-size: 20px;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   LANDSCAPE MOBILE MODE (Phones held horizontally, e.g. 667x375..932x430)
+   ─────────────────────────────────────────────────────────────────── */
+@media (max-height: 540px) and (orientation: landscape) {
+  #splash-screen {
+    padding: 10px 16px;
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .splash-title {
+    font-size: 34px;
+  }
+
+  .splash-subtitle {
+    font-size: 11px;
+    margin-top: 4px;
+    padding: 2px 14px;
+  }
+
+  .updown-menu {
+    gap: 6px;
+    width: 420px;
+  }
+
+  .updown-item {
+    padding: 8px 14px;
+  }
+
+  .updown-title {
+    font-size: 13px;
+  }
+
+  .updown-sub {
+    font-size: 10px;
+  }
+
+  #campaign-lobby {
+    padding: 6px;
+  }
+
+  .lobby-frame {
+    max-height: 95dvh;
+    padding: 12px 16px;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  .theatre-card {
+    height: 88px;
+  }
+
+  #top-hud {
+    padding: 4px max(10px, env(safe-area-inset-right)) 0 max(10px, env(safe-area-inset-left));
+    grid-template-columns: minmax(170px, 230px) auto minmax(170px, 260px);
+    gap: 6px;
+  }
+
+  .squad-panel,
+  .squad-panel.right {
+    padding: 4px 8px;
+    min-width: 0;
+    max-width: 240px;
+    gap: 2px;
+  }
+
+  .squad-title {
+    font-size: 10px;
+  }
+
+  .squad-hp-total {
+    font-size: 10px;
+  }
+
+  .worm-pip-name {
+    font-size: 8.5px;
+  }
+
+  .chrono-housing {
+    padding: 3px 10px;
+    gap: 8px;
+  }
+
+  #turn-timer {
+    font-size: 17px;
+    min-width: 22px;
+  }
+
+  #turn-status {
+    font-size: 10.5px;
+  }
+
+  #round-sub {
+    font-size: 8px;
+  }
+
+  .anemometer {
+    padding: 2px 8px;
+  }
+
+  .command-strip {
+    margin-top: 3px;
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+
+  .cmd-btn {
+    height: 22px;
+    padding: 0 6px;
+    font-size: 8.5px;
+  }
+
+  .cmd-btn svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  #bottom-hud {
+    bottom: max(4px, env(safe-area-inset-bottom));
+    width: calc(100vw - 16px);
+    gap: 3px;
+  }
+
+  .mc-btn {
+    height: 36px;
+    min-width: 38px;
+    padding: 0 8px;
+    font-size: 10.5px;
+  }
+
+  .mc-btn-fire {
+    height: 40px;
+    min-width: 92px;
+    font-size: 12.5px;
+  }
+
+  .ordnance-rack {
+    display: flex;
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 3px 5px;
+    gap: 3px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ord-slot {
+    width: 46px;
+    min-width: 46px;
+    height: 38px;
+    padding: 2px;
+  }
+
+  .ord-hotkey {
+    display: none;
+  }
+
+  .ord-icon {
+    width: 22px;
+    height: 14px;
+    margin-top: 5px;
+  }
+
+  .ord-label {
+    font-size: 7px;
+  }
+
+  .tactical-legend {
+    display: none;
+  }
+}
 </style>
 </head>
 <body>
@@ -990,111 +1533,111 @@ html, body {
   <canvas id="canvas"></canvas>
 
   <!-- ═════════════════════════════════════════════════════════════════
-       MAIN PLAYER SELECTION MENU (UP / DOWN ARCADE MENU)
+       MAIN PLAYER SELECTION MENU (UP / DOWN ARCADE MENU — 100% CATALÀ)
        ═════════════════════════════════════════════════════════════════ -->
   <div id="splash-screen">
     <div class="splash-center">
-      <div class="splash-kicker">Thaumetopoea Pityocampa &middot; Tactical Caterpillar Warfare</div>
+      <div class="splash-kicker">Thaumetopoea Pityocampa &middot; Guerra T&agrave;ctica als Pinars de Catalunya</div>
       <h1 class="splash-title">CUCS</h1>
-      <div class="splash-subtitle">LA PROCESSÓ DE FERRO</div>
+      <div class="splash-subtitle">LA PROCESS&Ograve; DE FERRO</div>
     </div>
 
     <div class="updown-menu" id="updown-menu">
       <button class="updown-item active" data-idx="0" id="menu-opt-quick">
         <span class="updown-arrow">&#9654;</span>
         <div class="updown-text">
-          <span class="updown-title">Start Quick Game vs CPU</span>
-          <span class="updown-sub">Jump straight into battle against the AI</span>
+          <span class="updown-title">Partida R&agrave;pida contra la CPU</span>
+          <span class="updown-sub">Salta directament al camp de batalla contra la IA</span>
         </div>
       </button>
 
       <button class="updown-item" data-idx="1" id="menu-opt-2p">
         <span class="updown-arrow">&#9654;</span>
         <div class="updown-text">
-          <span class="updown-title">2 Players Local</span>
-          <span class="updown-sub">Pass &amp; Play on the same computer</span>
+          <span class="updown-title">2 Jugadors en Local</span>
+          <span class="updown-sub">Jugueu per torns al mateix m&ograve;bil o ordinador</span>
         </div>
       </button>
 
       <button class="updown-item" data-idx="2" id="menu-opt-custom">
         <span class="updown-arrow">&#9654;</span>
         <div class="updown-text">
-          <span class="updown-title">Customize Game</span>
-          <span class="updown-sub">Maps, AI difficulty, hats, names &amp; friend faces</span>
+          <span class="updown-title">Personalitza la Partida</span>
+          <span class="updown-sub">Indrets de Catalunya, dificultat, barrets, noms i cares d'amics</span>
         </div>
       </button>
 
       <div class="updown-hint">
-        <b>&uarr; / &darr;</b> Navigate &nbsp;&middot;&nbsp; <b>ENTER</b> or <b>Click</b> to Select
+        <b>Toca</b> o <b>&uarr;/&darr; + INTRO</b> per Seleccionar &nbsp;&middot;&nbsp; Compatible en Vertical i Horitzontal
       </div>
     </div>
   </div>
 
   <!-- ═════════════════════════════════════════════════════════════════
-       CUSTOMIZE GAME MODAL — MODE, THEATRE & SQUAD SELECTION
+       CUSTOMIZE GAME MODAL — MODE, INDRETS DE CATALUNYA & ESCAMOTS
        ═════════════════════════════════════════════════════════════════ -->
   <div id="campaign-lobby">
     <div class="lobby-frame">
       <div class="lobby-header">
         <div class="lobby-header-left">
-          <h1>CUCS &mdash; Customize Game &amp; Squadrons</h1>
-          <p>Select your engagement mode, regional battlefield panorama, caterpillar headgear, custom names &amp; optional friend face photos.</p>
+          <h1>CUCS &mdash; Personalitza la Partida i els Escamots</h1>
+          <p>Tria el mode de combat, l'indret hist&ograve;ric de Catalunya, el barret tradicional dels cucs, els noms i les fotos dels teus amics.</p>
         </div>
-        <button class="cmd-btn" id="btn-back-menu">&larr; Main Menu</button>
+        <button class="cmd-btn" id="btn-back-menu">&larr; Men&uacute; Principal</button>
       </div>
 
       <div class="lobby-top-bar">
         <div>
-          <div class="section-label">1. Engagement Mode</div>
+          <div class="section-label">1. Mode de Combat</div>
           <div class="mode-grid" id="mode-selector">
             <div class="tactical-card selected" data-mode="1P_CPU">
-              <div class="tc-title">1P vs CPU</div>
-              <div class="tc-sub">Solo Campaign vs AI</div>
+              <div class="tc-title">1J vs CPU</div>
+              <div class="tc-sub">Campanya en Solitari vs IA</div>
             </div>
             <div class="tactical-card" data-mode="2P_LOCAL">
-              <div class="tc-title">2P Pass &amp; Play</div>
-              <div class="tc-sub">Two Players, Same PC</div>
+              <div class="tc-title">2J en Local</div>
+              <div class="tc-sub">Dos Jugadors, Mateix PC</div>
             </div>
             <div class="tactical-card" data-mode="CPU_CPU">
               <div class="tc-title">CPU vs CPU</div>
-              <div class="tc-sub">AI Exhibition Match</div>
+              <div class="tc-sub">Batalla d'Exhibici&oacute; IA</div>
             </div>
           </div>
         </div>
 
         <div>
-          <div class="section-label">2. Tactical CPU Intelligence</div>
+          <div class="section-label">2. Intel&middot;lig&egrave;ncia T&agrave;ctica de la CPU</div>
           <div class="diff-grid" id="diff-selector">
             <div class="tactical-card" data-diff="ROOKIE">
-              <div class="tc-title">Rookie</div>
-              <div class="tc-sub">Forgiving Aim</div>
+              <div class="tc-title">Novell</div>
+              <div class="tc-sub">Punteria Ben&egrave;vola</div>
             </div>
             <div class="tactical-card selected" data-diff="VETERAN">
-              <div class="tc-title">Veteran</div>
-              <div class="tc-sub">Balanced Tactics</div>
+              <div class="tc-title">Veter&agrave;</div>
+              <div class="tc-sub">T&agrave;ctica Equilibrada</div>
             </div>
             <div class="tactical-card" data-diff="NIGHTMARE">
-              <div class="tc-title">Nightmare</div>
-              <div class="tc-sub">Deadly Wind Math</div>
+              <div class="tc-title">Malson</div>
+              <div class="tc-sub">C&agrave;lcul Mortal del Vent</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="section-label">3. Select Regional Battlefield Theatre</div>
+      <div class="section-label">3. Tria l'Indret de Catalunya</div>
       <div class="theatre-grid" id="map-selector"></div>
 
-      <div class="section-label">4. Customize Cucs Squadrons &amp; Friend Faces</div>
+      <div class="section-label">4. Personalitza els Escamots de Cucs i Cares d'Amics</div>
       <div class="squad-custom-grid">
         <div class="squad-box">
           <div class="squad-box-head">
-            <h3 style="color:#f5b945">I. Brigada Pinar (Gold)</h3>
+            <h3 style="color:#f5b945">I. Brigada del Pinar (Or)</h3>
             <select class="hat-select" id="hat-t0">
-              <option value="CATALAN">Hat: Catalan Barretina</option>
-              <option value="BRISTLES">Hat: Natural Bristle Tufts</option>
-              <option value="SEATTLE">Hat: Seattle Knit Beanie</option>
-              <option value="SF_CAP">Hat: SF Bay Captain Cap</option>
-              <option value="HELMET">Hat: Brodie Steel Helmet</option>
+              <option value="CATALAN">Barret: Barretina Catalana</option>
+              <option value="CASTELLER">Barret: Casc de Casteller (Senyera)</option>
+              <option value="BANDOLER">Barret: Capell de Bandoler (Serrallonga)</option>
+              <option value="PAGES">Barret: Barret de Palla de Pag&egrave;s</option>
+              <option value="BRISTLES">Barret: Plomall de P&egrave;ls Urticants</option>
             </select>
           </div>
           <div id="t1-inputs"></div>
@@ -1102,13 +1645,13 @@ html, body {
 
         <div class="squad-box">
           <div class="squad-box-head">
-            <h3 style="color:#ea5648">II. Columna Tramuntana (Crimson)</h3>
+            <h3 style="color:#ea5648">II. Columna Tramuntana (Grana)</h3>
             <select class="hat-select" id="hat-t1">
-              <option value="SEATTLE">Hat: Seattle Knit Beanie</option>
-              <option value="CATALAN">Hat: Catalan Barretina</option>
-              <option value="SF_CAP">Hat: SF Bay Captain Cap</option>
-              <option value="BRISTLES">Hat: Natural Bristle Tufts</option>
-              <option value="HELMET">Hat: Brodie Steel Helmet</option>
+              <option value="BANDOLER">Barret: Capell de Bandoler (Serrallonga)</option>
+              <option value="CATALAN">Barret: Barretina Catalana</option>
+              <option value="CASTELLER">Barret: Casc de Casteller (Senyera)</option>
+              <option value="PAGES">Barret: Barret de Palla de Pag&egrave;s</option>
+              <option value="BRISTLES">Barret: Plomall de P&egrave;ls Urticants</option>
             </select>
           </div>
           <div id="t2-inputs"></div>
@@ -1116,23 +1659,23 @@ html, body {
       </div>
 
       <div class="lobby-footer">
-        <button class="cmd-btn" id="btn-random-names">Randomize Cucs Names</button>
+        <button class="cmd-btn" id="btn-random-names">Noms Catalans Aleatoris</button>
         <div class="lobby-actions">
-          <button class="cmd-btn" id="btn-close-setup" style="display:none">Resume Current Match</button>
-          <button class="btn-gold-deploy" id="btn-restart-match">DEPLOY TO BATTLEFIELD</button>
+          <button class="cmd-btn" id="btn-close-setup" style="display:none">Torna a la Partida Actual</button>
+          <button class="btn-gold-deploy" id="btn-restart-match">DESPLEGA AL CAMP DE BATALLA</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- ═════════════════════════════════════════════════════════════════
-       IN-GAME ARCHITECTURAL HUD
+       IN-GAME ARCHITECTURAL HUD (100% CATALÀ)
        ═════════════════════════════════════════════════════════════════ -->
   <div id="top-hud">
     <div class="squad-panel">
       <div class="squad-header">
-        <span class="squad-title" style="color:#f5b945">I. Brigada Pinar</span>
-        <span class="squad-hp-total" id="t1-hp-text">400 HP</span>
+        <span class="squad-title" style="color:#f5b945">I. Brigada del Pinar</span>
+        <span class="squad-hp-total" id="t1-hp-text">400 PV</span>
       </div>
       <div class="squad-pips" id="t1-pips"></div>
     </div>
@@ -1142,13 +1685,13 @@ html, body {
         <div id="turn-timer">30</div>
         <div class="turn-divider"></div>
         <div class="turn-meta">
-          <div id="turn-status">Peluda's Turn</div>
-          <div id="round-sub">Round 1 &middot; Catalonia</div>
+          <div id="turn-status">Torn de Peluda</div>
+          <div id="round-sub">Ronda 1 &middot; Mass&iacute;s de Montserrat</div>
         </div>
       </div>
 
       <div class="anemometer">
-        <span class="anem-label">WIND</span>
+        <span class="anem-label">VENT</span>
         <div class="wind-track">
           <div class="wind-zero"></div>
           <div id="wind-bar" style="left:50%;width:0%"></div>
@@ -1161,40 +1704,40 @@ html, body {
       <div class="squad-panel right">
         <div class="squad-header">
           <span class="squad-title" style="color:#ea5648">II. Tramuntana</span>
-          <span class="squad-hp-total" id="t2-hp-text">400 HP</span>
+          <span class="squad-hp-total" id="t2-hp-text">400 PV</span>
         </div>
         <div class="squad-pips" id="t2-pips"></div>
       </div>
 
       <div class="command-strip">
-        <button class="cmd-btn" id="btn-silk-web" title="Spin an Elastic Silk Trampoline/Shield in your aim direction [Key: C]">
+        <button class="cmd-btn" id="btn-silk-web" title="Teixeix un llit el&agrave;stic o escut de seda en la direcci&oacute; on apuntes [Tecla: C]">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/><line x1="18.4" y1="5.6" x2="5.6" y2="18.4"/></svg>
-          <span id="lbl-silk-web">Spin Silk Web [C]</span>
+          <span id="lbl-silk-web">Teixir Seda [C]</span>
         </button>
-        <button class="cmd-btn" id="btn-procession" title="Toggle Nose-to-Tail Procession Convoy March with nearby allies [Key: F]">
+        <button class="cmd-btn" id="btn-procession" title="Activa o desactiva la marxa en process&oacute; amb els aliats propers [Tecla: F]">
           <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          <span id="lbl-procession">Procession: Auto [F]</span>
+          <span id="lbl-procession">Process&oacute;: Auto [F]</span>
         </button>
-        <button class="cmd-btn" id="btn-map" title="Switch Regional Theatre">
+        <button class="cmd-btn" id="btn-map" title="Canvia d'indret de Catalunya">
           <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
-          <span id="lbl-map">Catalonia</span>
+          <span id="lbl-map">Montserrat</span>
         </button>
-        <button class="cmd-btn" id="btn-mode" title="Cycle Game Mode">
+        <button class="cmd-btn" id="btn-mode" title="Canvia el mode de joc">
           <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-          <span id="lbl-mode">1P vs CPU</span>
+          <span id="lbl-mode">1J vs CPU</span>
         </button>
-        <button class="cmd-btn" id="btn-roster" title="Open Squad &amp; Theatre Lobby">
+        <button class="cmd-btn" id="btn-roster" title="Obre la configuraci&oacute; d'escamots i indrets de Catalunya">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          <span>Squad &amp; Maps</span>
+          <span>Escamots i Mapes</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Ordnance Rack with 10 Weapons (Including Urticating Hair Bomb!) -->
+  <!-- Bottom Ordnance Rack with 12 Catalan Weapons + Tactile Mobile Gamepad! -->
   <div id="bottom-hud">
     <div class="fuse-picker" id="fuse-picker">
-      <span>FUSE TIMER (Q/E):</span>
+      <span>TEMPS DE METXA (Q/E):</span>
       <button class="fuse-btn" data-fuse="1">1s</button>
       <button class="fuse-btn" data-fuse="2">2s</button>
       <button class="fuse-btn active" data-fuse="3">3s</button>
@@ -1202,28 +1745,48 @@ html, body {
       <button class="fuse-btn" data-fuse="5">5s</button>
     </div>
 
+    <!-- Tactile Mobile & Touch Controls (Works in Portrait & Landscape!) -->
+    <div id="mobile-controls">
+      <div class="mc-cluster mc-left">
+        <button class="mc-btn mc-btn-arrow" id="mc-left" aria-label="Moure a l'esquerra">&#9664;</button>
+        <button class="mc-btn mc-btn-arrow" id="mc-right" aria-label="Moure a la dreta">&#9654;</button>
+        <button class="mc-btn" id="mc-jump" aria-label="Salt endavant o planar">&#9650; Salt</button>
+        <button class="mc-btn" id="mc-backflip" aria-label="Salt mortal enrere">&#8630; Enrere</button>
+      </div>
+
+      <div class="mc-cluster mc-right">
+        <button class="mc-btn mc-btn-util" id="mc-zoom-out" title="Allunya la c&agrave;mera">&minus;</button>
+        <button class="mc-btn mc-btn-util" id="mc-zoom-in" title="Apropa la c&agrave;mera">+</button>
+        <button class="mc-btn mc-btn-util" id="mc-pan" title="Activa per moure la c&agrave;mera amb 1 dit per tot el mapa">Mirar</button>
+        <button class="mc-btn mc-btn-fire" id="mc-fire">
+          <div class="mc-fire-fill" id="mc-fire-fill"></div>
+          <span id="mc-fire-label">FOC!</span>
+        </button>
+      </div>
+    </div>
+
     <div class="ordnance-rack" id="weapon-bar"></div>
 
     <div class="tactical-legend">
-      <b>A / D</b> Crawl &nbsp;&middot;&nbsp;
-      <b>W / Space</b> Short Hop &nbsp;&middot;&nbsp;
-      <b>S / Down / Backspace</b> Backwards Jump &nbsp;&middot;&nbsp;
-      <b>C</b> Spin Silk Trampoline &nbsp;&middot;&nbsp;
-      <b>F</b> Procession Link &nbsp;&middot;&nbsp;
-      <b>Hold Click</b> Fire
+      <b>A / D</b> Arrossegar-se &nbsp;&middot;&nbsp;
+      <b>W / Espai</b> Salt Curt &nbsp;&middot;&nbsp;
+      <b>S / Avall / Retroc&eacute;s</b> Salt Enrere &nbsp;&middot;&nbsp;
+      <b>C</b> Teixir Seda &nbsp;&middot;&nbsp;
+      <b>F</b> Unir Process&oacute; &nbsp;&middot;&nbsp;
+      <b>Mant&eacute;n Clic / FOC!</b> Disparar
     </div>
   </div>
 
   <!-- Post-Match Victory & MVP Modal -->
   <div id="victory-modal">
     <div class="victory-card">
-      <div class="splash-kicker">THEATRE ENGAGEMENT COMPLETE</div>
-      <div class="victory-title" id="vic-title">BRIGADA PINAR VICTORIOUS</div>
-      <div style="font-size:13px;color:var(--ivory-muted)" id="vic-sub">The procession claims the pine forest!</div>
+      <div class="splash-kicker">BATALLA COMARCAL COMPLETADA</div>
+      <div class="victory-title" id="vic-title">VICT&Ograve;RIA DE LA BRIGADA DEL PINAR</div>
+      <div style="font-size:13px;color:var(--ivory-muted)" id="vic-sub">La process&oacute; conquista el pinar!</div>
       <div class="victory-stats" id="vic-stats"></div>
       <div style="display:flex;justify-content:center;gap:12px;">
-        <button class="cmd-btn" id="btn-vic-lobby">Change Theatre / Squad</button>
-        <button class="btn-gold-deploy" id="btn-vic-rematch">Rematch Now</button>
+        <button class="cmd-btn" id="btn-vic-lobby">Canvia Indret / Escamot</button>
+        <button class="btn-gold-deploy" id="btn-vic-rematch">Torna a Jugar</button>
       </div>
     </div>
   </div>
@@ -1233,7 +1796,7 @@ html, body {
 "use strict";
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  1. PROCEDURAL NOISE & 3 REGIONAL PARALLAX THEATRES (SEATTLE, CATALONIA, SF)
+//  1. PROCEDURAL NOISE & 4 SPECIFIC CATALAN PARALLAX THEATRES
 // ═══════════════════════════════════════════════════════════════════════════
 const PERM = new Uint8Array(512);
 (function initNoise() {
@@ -1296,59 +1859,75 @@ function ridgedFbm(x, y, octaves = 5) {
   return val / max;
 }
 
-// 3 Iconic Real-World Inspired Theatres with High-Res Scenic Panoramas
+// 4 Hyper-Specific, Geographically Authentic Catalan Theatres!
 const MAPS = [
   {
-    id: 'SEATTLE',
-    name: 'Pacific Northwest',
-    subtitle: 'Seattle, Mt. Rainier & Puget Sound',
-    badge: 'RAIN & PINE MIST',
-    bgPath: 'assets/bg_seattle.jpg',
-    weather: 'RAIN',
-    slideFriction: 0.976, // Wet mossy Pacific Northwest pine needles!
-    sky: ['#141c27', '#273649', '#4f6478', '#8399ab', '#b8c8d4'],
-    waterTop: 'rgba(42, 86, 108, 0.80)',
-    waterDeep: 'rgba(9, 22, 32, 0.98)',
-    turfCol: [58, 104, 62],
-    soilCol: [66, 50, 38],
-    rockCol: [62, 68, 76],
-    treeStyle: 'DOUGLAS_FIR'
-  },
-  {
-    id: 'CATALONIA',
-    name: 'Catalonia',
-    subtitle: 'Montserrat, Sagrada & Costa Brava',
-    badge: 'POLLEN & PINES',
-    bgPath: 'assets/bg_catalonia.jpg',
+    id: 'MONTSERRAT',
+    name: 'Massís de Montserrat',
+    subtitle: 'Monestir de Santa Maria, Agulles i Aeri (Bages)',
+    badge: 'BOIRA I PINARS',
+    bgPath: 'assets/bg_montserrat.jpg',
     weather: 'POLLEN',
     slideFriction: 0.964,
-    sky: ['#1e182b', '#4a314d', '#8f534d', '#d6874e', '#f7c47e'],
-    waterTop: 'rgba(28, 118, 138, 0.80)',
-    waterDeep: 'rgba(8, 34, 48, 0.98)',
-    turfCol: [96, 114, 52],
-    soilCol: [132, 78, 52],
-    rockCol: [118, 96, 84],
+    sky: ['#2a1e2e', '#593b4f', '#9c6352', '#de9659', '#fae6b1'],
+    waterTop: 'rgba(42, 114, 122, 0.82)',
+    waterDeep: 'rgba(12, 36, 44, 0.98)',
+    turfCol: [92, 118, 52],
+    soilCol: [134, 84, 58],
+    rockCol: [148, 128, 122], // Pale pinkish-grey Montserrat conglomerate rock!
     treeStyle: 'UMBRELLA_PINE'
   },
   {
-    id: 'SAN_FRANCISCO',
-    name: 'San Francisco',
-    subtitle: 'Golden Gate, Alcatraz & Painted Ladies',
-    badge: 'ROLLING BAY FOG',
-    bgPath: 'assets/bg_sanfrancisco.jpg',
-    weather: 'FOG_GULLS',
+    id: 'CADAQUES',
+    name: 'Cadaqués i Cap de Creus',
+    subtitle: 'Església de Santa Maria, Llaguts i Feixes (Alt Empordà)',
+    badge: 'TRAMUNTANA VIVA',
+    bgPath: 'assets/bg_cadaques.jpg',
+    weather: 'GULLS_BREEZE',
     slideFriction: 0.968,
-    sky: ['#1b2430', '#3d4f63', '#7a8a99', '#c7baa6', '#f2dcb8'],
-    waterTop: 'rgba(44, 96, 114, 0.80)',
-    waterDeep: 'rgba(12, 28, 38, 0.98)',
-    turfCol: [78, 102, 58],
-    soilCol: [94, 72, 54],
-    rockCol: [86, 82, 78],
+    sky: ['#10355c', '#1f5a8f', '#4287bd', '#7eb8de', '#cbe6f7'],
+    waterTop: 'rgba(18, 152, 178, 0.82)',
+    waterDeep: 'rgba(6, 42, 68, 0.98)',
+    turfCol: [88, 108, 56],
+    soilCol: [92, 76, 62],
+    rockCol: [74, 80, 92], // Dark Cap de Creus Empordà slate (pissarra)!
     treeStyle: 'CYPRESS'
+  },
+  {
+    id: 'TAULL',
+    name: 'Taüll i la Vall de Boí',
+    subtitle: 'Sant Climent de Taüll i Aigüestortes (Alta Ribagorça)',
+    badge: 'NEU DEL PIRINEU',
+    bgPath: 'assets/bg_taull.jpg',
+    weather: 'SNOW',
+    slideFriction: 0.976, // Slippery Pyrenean alpine frost & moss!
+    sky: ['#172b47', '#2c4c73', '#527ca6', '#8eb3d4', '#d9eaf7'],
+    waterTop: 'rgba(48, 126, 162, 0.82)',
+    waterDeep: 'rgba(10, 32, 52, 0.98)',
+    turfCol: [64, 126, 56],
+    soilCol: [78, 58, 42],
+    rockCol: [98, 106, 116], // Pyrenean granite & slate!
+    treeStyle: 'DOUGLAS_FIR'
+  },
+  {
+    id: 'CASTELLFOLLIT',
+    name: 'Castellfollit de la Roca',
+    subtitle: 'Cinglera Basàltica i Fageda d\'en Jordà (La Garrotxa)',
+    badge: 'FULLES DE FAIG',
+    bgPath: 'assets/bg_castellfollit.jpg',
+    weather: 'AUTUMN_LEAVES',
+    slideFriction: 0.966,
+    sky: ['#2b1d1c', '#633c2e', '#a8673e', '#dea05a', '#f7d89c'],
+    waterTop: 'rgba(44, 106, 112, 0.82)',
+    waterDeep: 'rgba(14, 34, 38, 0.98)',
+    turfCol: [118, 104, 46],
+    soilCol: [86, 52, 38],
+    rockCol: [64, 62, 68], // Dark volcanic Garrotxa basalt columns!
+    treeStyle: 'UMBRELLA_PINE'
   }
 ];
 
-let currentMapIdx = 1; // Default to Catalonia (Home of the Oruga Procesionaria!)
+let currentMapIdx = 0; // Default to Massís de Montserrat!
 
 const BG_IMAGES = {};
 MAPS.forEach(m => {
@@ -1654,13 +2233,22 @@ function generateDestructibleTerrain(mapIdx) {
       h += gorge;
     }
 
-    // Regional geological flavor
-    if (mCfg.id === 'CATALONIA') {
-      const finger = Math.sin(x * 0.015) * 24 * Math.exp(-Math.pow((x - 1600) / 900, 2));
+    // Specific Catalan comarcal geology!
+    if (mCfg.id === 'MONTSERRAT') {
+      // Rounded Montserrat conglomerate rock needles ("Agulles")
+      const finger = Math.sin(x * 0.015) * 26 * Math.exp(-Math.pow((x - 1600) / 950, 2));
       h += finger;
-    } else if (mCfg.id === 'SAN_FRANCISCO') {
-      const hillWave = Math.cos(x * 0.005) * 32;
+    } else if (mCfg.id === 'CADAQUES') {
+      // Empordà coastal slate terraces ("feixes de pissarra")
+      const hillWave = Math.cos(x * 0.005) * 28 + Math.round(Math.sin(x * 0.012) * 3) * 6;
       h += hillWave;
+    } else if (mCfg.id === 'TAULL') {
+      // High Pyrenean granite peaks & glacial valleys
+      const alpinePeak = -Math.abs(Math.sin(x * 0.0045)) * 38;
+      h += alpinePeak;
+    } else if (mCfg.id === 'CASTELLFOLLIT') {
+      // Dramatic stepped volcanic basalt cliff ledges ("cinglera basàltica")
+      h = Math.round(h / 26) * 26 + Math.sin(x * 0.008) * 18;
     }
 
     surfaceY[x] = lerp(WATER_Y + 95, clamp(h, 195, WATER_Y + 65), smoothEnv);
@@ -1720,10 +2308,24 @@ function generateDestructibleTerrain(mapIdx) {
       let r, g, b;
       const grassThick = Math.max(3, Math.floor(10 - Math.abs(slope) * 3.0));
       if (depth <= grassThick) {
-        const turfLight = clamp(0.78 - slope * 0.2 + (n1 - 0.5) * 0.22, 0.4, 1.2);
+        const turfLight = clamp(0.80 - slope * 0.22 + (n1 - 0.5) * 0.24, 0.42, 1.28);
         r = clamp(mCfg.turfCol[0] * turfLight, 20, 255);
         g = clamp(mCfg.turfCol[1] * turfLight, 20, 255);
         b = clamp(mCfg.turfCol[2] * turfLight, 20, 255);
+        // Crisp sunlit top-edge rim highlight & wild Mediterranean flowers on the surface!
+        if (depth <= 1) {
+          const sunRim = clamp(1.26 - slope * 0.18, 0.95, 1.45);
+          r = clamp(r * sunRim + 18, 0, 255);
+          g = clamp(g * sunRim + 22, 0, 255);
+          b = clamp(b * sunRim + 8, 0, 255);
+          if (depth === 0 && (x % 19 === 0) && Math.abs(slope) < 0.8) {
+            // Tiny golden broom / rosemary / poppy wildflower pixels
+            const flw = (x * 31) % 3;
+            if (flw === 0) { r = 248; g = 212; b = 88; }
+            else if (flw === 1) { r = 235; g = 95; b = 78; }
+            else { r = 198; g = 165; b = 245; }
+          }
+        }
       } else if (depth <= grassThick + 14) {
         const soil = 0.72 + rockVal * 0.48;
         r = mCfg.soilCol[0] * soil;
@@ -1731,9 +2333,10 @@ function generateDestructibleTerrain(mapIdx) {
         b = mCfg.soilCol[2] * soil;
       } else {
         const sunShade = clamp(0.88 - slope * 0.15, 0.55, 1.15);
-        r = (mCfg.rockCol[0] + rockVal * 58) * sunShade;
-        g = (mCfg.rockCol[1] + rockVal * 54) * sunShade;
-        b = (mCfg.rockCol[2] + rockVal * 58) * sunShade;
+        const quartz = (n2 > 0.78 && (x + y) % 7 === 0) ? 28 : 0;
+        r = (mCfg.rockCol[0] + rockVal * 58 + quartz) * sunShade;
+        g = (mCfg.rockCol[1] + rockVal * 54 + quartz) * sunShade;
+        b = (mCfg.rockCol[2] + rockVal * 58 + quartz * 1.1) * sunShade;
       }
 
       fd[idx4]     = clamp(r, 0, 255);
@@ -1760,10 +2363,10 @@ function generateDestructibleTerrain(mapIdx) {
     if (lm === 'BRIDGE_SPAN') {
       const spanHalf = 190 + Math.random() * 70;
       const deckY = Math.min(zy - 45, 340 + Math.random() * 60);
-      if (mCfg.id === 'CATALONIA' || Math.random() < 0.45) {
+      if (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT' || Math.random() < 0.72) {
         stampRomanesqueViaduct(zx - spanHalf, zx + spanHalf, deckY, fd, bd);
       } else {
-        stampSteelTrussSpan(zx - spanHalf, zx + spanHalf, deckY, fd, bd, mCfg.id === 'SAN_FRANCISCO');
+        stampSteelTrussSpan(zx - spanHalf, zx + spanHalf, deckY, fd, bd, mCfg.id === 'MONTSERRAT');
       }
     } else if (zy < WATER_Y - 45) {
       if (lm === 'WATCHTOWER' || lm === 'SECOND_TOWER') {
@@ -2033,6 +2636,22 @@ const SND = {
     this._osc('square', 780, 0.045, 0.12, 320);
     this._osc('triangle', 1120, 0.04, 0.10, 490, 0.02);
   },
+  rovelloBoing() {
+    // Bouncy Catalan Rovelló mushroom spring launch!
+    this._osc('sine', 190, 0.24, 0.18, 620);
+    this._osc('triangle', 280, 0.20, 0.12, 840, 0.03);
+  },
+  windGust() {
+    // Soft Tramuntana wind gust shimmer
+    this._osc('sine', 220, 0.35, 0.045, 340);
+    this._osc('triangle', 165, 0.38, 0.035, 110, 0.04);
+  },
+  caganerBlessing() {
+    // Festive Catalan Gralla fanfare arpeggio!
+    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+      this._osc('triangle', f, 0.22, 0.12, f * 1.01, i * 0.055);
+    });
+  },
   victory() {
     [440, 554.37, 659.25, 880].forEach((f, i) => {
       this._osc('sine', f, 0.45, 0.11, f * 1.002, i * 0.075);
@@ -2203,24 +2822,26 @@ const ctx = canvas.getContext('2d');
 
 let viewW = window.innerWidth;
 let viewH = window.innerHeight;
+let canvasDpr = 1;
 function resizeCanvas() {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvasDpr = Math.min(window.devicePixelRatio || 1, 2);
   viewW = window.innerWidth;
   viewH = window.innerHeight;
-  canvas.width = Math.floor(viewW * dpr);
-  canvas.height = Math.floor(viewH * dpr);
+  canvas.width = Math.floor(viewW * canvasDpr);
+  canvas.height = Math.floor(viewH * canvasDpr);
 }
 window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 120));
 resizeCanvas();
 
 buildBackgroundAssets();
 
-// Authentic Catalan & Spanish Procesionaria Caterpillar Squad Names
+// Authentic Catalan Procesionaria Caterpillar Squad Names
 const teamNames = [
-  ['Peluda', 'Serrallonga', 'Pinaza', 'Rovelló'],
-  ['Urticaria', 'Tramuntana', 'Boira', 'Calçot']
+  ['Peluda', 'Serrallonga', 'Pinassa', 'Rovelló'],
+  ['Urticària', 'Tramuntana', 'Boira', 'Calçot']
 ];
-const teamHats = ['CATALAN', 'SEATTLE'];
+const teamHats = ['CATALAN', 'BANDOLER'];
 const customFaces = [
   [null, null, null, null],
   [null, null, null, null]
@@ -2228,8 +2849,8 @@ const customFaces = [
 
 const GAME_MODES = ['1P_CPU', '2P_LOCAL', 'CPU_CPU'];
 const MODE_SHORT = {
-  '1P_CPU': '1P vs CPU',
-  '2P_LOCAL': '2P Local',
+  '1P_CPU': '1J vs CPU',
+  '2P_LOCAL': '2J Local',
   'CPU_CPU': 'CPU vs CPU'
 };
 let gameMode = '1P_CPU';
@@ -2241,11 +2862,11 @@ let menuCursorIdx = 0; // 0 = Quick Game vs CPU, 1 = 2P Local, 2 = Customize Gam
 let hasStartedMatchOnce = false;
 
 const ORUGA_TAUNTS = {
-  TURN: ['¡A pel pi!', '¡En processó!', '¡Prepara el trabuc!', '¡Tasta el fuet de Vic!', '¡Carquinyoli trencadents!', '¡Bon cop de falç!'],
-  HIT: ['¡Ai els meus pèls!', '¡Quina picor!', '¡Mal llamp!', '¡El meu capoll!'],
-  URTICARIA: ['¡Pols urticant!', '¡Grata, grata!', '¡Al·lèrgia total!'],
-  PROCESSION: ['¡Columna unida!', '¡Fúria processionària!', '¡Seda i ferro!'],
-  METAMORPH: ['¡METAMORFOSI!', '¡Ales de Thaumetopoea!', '¡Ja puc planar!']
+  TURN: ['A pel pi!', 'En processó!', 'Prepara el trabuc!', 'Tasta el fuet de Vic!', 'Carquinyoli trencadents!', 'Bon cop de falç!'],
+  HIT: ['Ai els meus pèls!', 'Quina picor!', 'Mal llamp!', 'El meu capoll!'],
+  URTICARIA: ['Pols urticant!', 'Grata, grata!', 'Al·lèrgia total!'],
+  PROCESSION: ['Columna unida!', 'Fúria processionària!', 'Seda i ferro!'],
+  METAMORPH: ['METAMORFOSI!', 'Ales de Thaumetopoea!', 'Ja puc planar!']
 };
 
 let fighters = [];
@@ -2269,6 +2890,8 @@ let silkNests = [];     // Hanging Pine Silk Nests ("Bolsones") that burst into 
 let pineNuts = [];      // Golden Piñones that heal +20 HP & evolve Max HP
 let larvaeSwarms = [];  // Angry micro-caterpillar swarms that chase and nibble nearby enemies
 let updrafts = [];      // Thermal pine-resin wind currents that lift gliding caterpillars & curve shells
+let rovellons = [];     // Giant Bouncy Catalan Rovelló Mushrooms (spring trampolines & healing spores!)
+let caganers = [];      // Hidden Lucky Catalan Caganer Figurines (grant Golden Blessing + Porró & Tió!)
 
 let processionConvoyEnabled = true; // Nose-to-tail linked column march & +25% Procession Fury bonus [Key F]
 let silkWebUsedThisTurn = false;
@@ -2290,6 +2913,10 @@ let phaseTimer = 0;
 let actionWaitTimer = 0;
 let shotgunShotsLeft = 1;
 let wind = 0;
+let windFloat = 0;
+let windTarget = 0;
+let windGustTimer = 4.5;
+let windGustFlash = 0;
 
 let hitStopTimer = 0;
 let slowMoTimer = 0;
@@ -2310,12 +2937,23 @@ const cam = {
   y: 400,
   targetX: 1600,
   targetY: 400,
+  panOffsetX: 0,
+  panOffsetY: 0,
   zoom: 1.0,
   targetZoom: 1.0,
   mouseOffX: 0,
   mouseOffY: 0,
   smoothMouseX: 0,
   smoothMouseY: 0
+};
+let mobilePanMode = false;
+
+// Impact camera lock: keeps the camera at the projectile crash site until nearby worms stop moving + 2s!
+const impactCam = {
+  active: false,
+  x: 1600,
+  y: 400,
+  trackedWorm: null
 };
 
 let shake = 0;
@@ -2331,6 +2969,56 @@ const weatherParticles = Array.from({ length: 110 }, () => ({
   vx: (Math.random() - 0.5) * 18,
   vy: 25 + Math.random() * 65,
   phase: Math.random() * Math.PI * 2
+}));
+
+// Multi-layered Volumetric Cloud Clusters (3 parallax tiers: far cirrus, mid cumulus, foreground mist)
+const cloudFlock = Array.from({ length: 24 }, (_, idx) => {
+  const tier = idx < 8 ? 0 : (idx < 17 ? 1 : 2);
+  const z = tier === 0 ? 0.09 : (tier === 1 ? 0.20 : 0.36);
+  const scale = tier === 0 ? (0.65 + Math.random() * 0.35) : (tier === 1 ? (0.95 + Math.random() * 0.55) : (1.15 + Math.random() * 0.55));
+  const lobeCount = 5 + Math.floor(Math.random() * 3);
+  const lobes = [];
+  for (let l = 0; l < lobeCount; l++) {
+    const frac = (l / (lobeCount - 1)) - 0.5;
+    lobes.push({
+      ox: frac * 115 * scale + (Math.random() - 0.5) * 16,
+      oy: Math.abs(frac) * 18 * scale - (l === Math.floor(lobeCount * 0.5) ? 14 * scale : 0) + (Math.random() - 0.5) * 8,
+      rx: (34 + (1 - Math.abs(frac)) * 32 + Math.random() * 14) * scale,
+      ry: (22 + (1 - Math.abs(frac)) * 20 + Math.random() * 10) * scale
+    });
+  }
+  return {
+    x: (idx / 24) * 3800 - 300 + (Math.random() - 0.5) * 120,
+    y: tier === 0 ? (45 + Math.random() * 90) : (tier === 1 ? (85 + Math.random() * 135) : (165 + Math.random() * 130)),
+    z,
+    tier,
+    scale,
+    baseDrift: (Math.random() - 0.5) * 8,
+    bobPhase: Math.random() * Math.PI * 2,
+    lobes
+  };
+});
+
+// Live Wind-Stream Air Ribbons sweeping across the sky and battlefield
+const windRibbons = Array.from({ length: 16 }, () => ({
+  x: Math.random() * 3200,
+  y: 70 + Math.random() * 540,
+  z: 0.45 + Math.random() * 0.65,
+  len: 65 + Math.random() * 85,
+  amp: 4 + Math.random() * 7,
+  phase: Math.random() * Math.PI * 2,
+  alpha: 0.16 + Math.random() * 0.22
+}));
+
+// Animated Flocks of Regional Sky Birds (Gulls, Falcons, Swifts)
+const skyBirds = Array.from({ length: 12 }, (_, i) => ({
+  x: Math.random() * 3400,
+  y: 65 + (i % 4) * 28 + Math.random() * 85,
+  z: 0.16 + (i % 3) * 0.08,
+  speed: 22 + Math.random() * 18,
+  dir: i % 2 === 0 ? 1 : -1,
+  wingPhase: Math.random() * Math.PI * 2,
+  size: 5.5 + (i % 3) * 1.8
 }));
 
 function spawnSpeechBubble(f, text, duration = 2.0) {
@@ -2376,6 +3064,8 @@ function initMatch(regenerateMap = true) {
   pineNuts = [];
   larvaeSwarms = [];
   updrafts = [];
+  rovellons = [];
+  caganers = [];
   roundNumber = 1;
   hitStopTimer = 0;
   slowMoTimer = 0;
@@ -2469,6 +3159,39 @@ function initMatch(regenerateMap = true) {
     });
   }
 
+  // SURPRISE 1: Spawn 3 to 5 Giant Bouncy Catalan Rovelló Mushrooms on hillsides!
+  const rovCount = 3 + Math.floor(Math.random() * 3);
+  for (let r = 0; r < rovCount; r++) {
+    const rawX = 480 + ((r + 0.2 + Math.random() * 0.6) / rovCount) * (TERRAIN_W - 960);
+    const rx = findValidLandX(rawX, 160);
+    const sy = findSurfaceY(rx, 35);
+    if (sy < WATER_Y - 25 && !fighters.some(f => Math.abs(f.x - rx) < 44) && !barrels.some(b => Math.abs(b.x - rx) < 36)) {
+      rovellons.push({
+        x: rx,
+        y: sy,
+        r: 17 + Math.random() * 4,
+        squash: 1.0,
+        hp: 25
+      });
+    }
+  }
+
+  // SURPRISE 2: Spawn 1 or 2 Hidden Lucky "Caganer de la Sort" Figurines on scenic ledges!
+  const cagCount = 1 + Math.floor(Math.random() * 2);
+  for (let c = 0; c < cagCount; c++) {
+    const rawX = 620 + c * 1450 + (Math.random() - 0.5) * 420;
+    const cx = findValidLandX(rawX, 200);
+    const sy = findSurfaceY(cx, 35);
+    if (sy < WATER_Y - 30 && !fighters.some(f => Math.abs(f.x - cx) < 55)) {
+      caganers.push({
+        x: cx,
+        y: sy - 8,
+        r: 11,
+        bobPhase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
   document.getElementById('lbl-map').textContent = MAPS[currentMapIdx].name;
   document.getElementById('victory-modal').classList.remove('open');
   teamTurnIdx = [0, 0];
@@ -2513,6 +3236,7 @@ function createFighter(team, memberIdx, name, x, facing) {
     flipSpin: 0,
     metamorphosed: false, // Awakens Thaumetopoea Moth Wings at low HP or 80+ DMG!
     linkedAllies: [],     // Nose-to-tail Procession Link allies
+    castellTower: false,  // Active when stacked on top of an allied Cuc ("Castell de Cucs!")
     squashX: 1,
     squashY: 1,
     dizzyTimer: 0,
@@ -2545,20 +3269,95 @@ function spawnSupplyDrop() {
   });
 }
 
-function randomizeWind() {
-  wind = Math.round((Math.random() * 2 - 1) * 100);
+function updateWindHUD() {
   const bar = document.getElementById('wind-bar');
-  const pct = Math.abs(wind) * 0.5;
+  const lbl = document.getElementById('wind-label');
+  if (!bar || !lbl) return;
+  const pct = clamp(Math.abs(wind) * 0.5, 0, 50);
   if (wind >= 0) {
     bar.style.left = '50%';
     bar.style.width = pct + '%';
-    bar.style.background = '#f5b945';
+    bar.style.background = windGustFlash > 0.1 ? '#ffe899' : '#f5b945';
   } else {
     bar.style.left = (50 - pct) + '%';
     bar.style.width = pct + '%';
-    bar.style.background = '#7ec8e3';
+    bar.style.background = windGustFlash > 0.1 ? '#b8f0ff' : '#7ec8e3';
   }
-  document.getElementById('wind-label').textContent = (wind > 0 ? '+' : '') + wind;
+  const delta = windTarget - windFloat;
+  const trendArrow = Math.abs(delta) > 14 ? (delta > 0 ? ' »' : ' «') : '';
+  lbl.textContent = (wind > 0 ? '+' : '') + wind + trendArrow;
+}
+
+function randomizeWind() {
+  windFloat = (Math.random() * 2 - 1) * 85;
+  windTarget = clamp(windFloat + (Math.random() - 0.5) * 65, -100, 100);
+  windGustTimer = 3.6 + Math.random() * 2.8;
+  wind = Math.round(windFloat);
+  updateWindHUD();
+}
+
+function updateDynamicWind(dt) {
+  if (windGustFlash > 0) windGustFlash = Math.max(0, windGustFlash - dt * 1.8);
+
+  // Continuously evolve wind during active gameplay so the player feels live gusts & shifts!
+  if (appStage === 'PLAYING' && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT' || turnPhase === 'ACTION_WAIT')) {
+    windGustTimer -= dt;
+    if (windGustTimer <= 0) {
+      const isStrongGust = Math.random() < 0.28;
+      if (isStrongGust) {
+        // Sudden Catalan Tramuntana or Garbí gust!
+        const dir = Math.random() < 0.5 ? 1 : -1;
+        windTarget = clamp(dir * (62 + Math.random() * 38), -100, 100);
+        windGustTimer = 4.8 + Math.random() * 3.0;
+        windGustFlash = 1.0;
+        if (turnPhase === 'TURN_PLAY' && activeFighter) {
+          SND.windGust();
+          floatingTexts.push({
+            x: activeFighter.x,
+            y: activeFighter.y - 54,
+            text: dir > 0 ? '¡RÀFEGA DE TRAMUNTANA! »' : '« ¡VENT DE GARBÍ!',
+            color: dir > 0 ? '#f6cf77' : '#8fd8f2',
+            life: 1.55
+          });
+        }
+      } else {
+        // Smooth natural shift in wind speed or direction as the player aims/moves
+        windTarget = clamp(windTarget + (Math.random() - 0.5) * 78, -96, 96);
+        windGustTimer = 3.2 + Math.random() * 2.8;
+      }
+    }
+
+    // Smoothly approach windTarget + natural breathing gust oscillation
+    const gustOsc = Math.sin(tNow * 1.75) * 5.5 + Math.cos(tNow * 0.92) * 3.5;
+    windFloat = lerp(windFloat, windTarget, Math.min(1, dt * 0.62));
+    wind = Math.round(clamp(windFloat + gustOsc, -100, 100));
+    updateWindHUD();
+  }
+
+  // Drift all multi-layered volumetric clouds according to live wind!
+  for (const c of cloudFlock) {
+    const speed = (wind * 0.58 + c.baseDrift + 12) * (0.45 + c.z * 1.6);
+    c.x += speed * dt;
+    if (c.x > TERRAIN_W + 450) c.x -= (TERRAIN_W + 900);
+    if (c.x < -450) c.x += (TERRAIN_W + 900);
+  }
+
+  // Advance visible wind-stream air ribbons across the battlefield
+  for (const r of windRibbons) {
+    const streamVx = (Math.abs(wind) < 6 ? 14 : wind * 2.6) * r.z;
+    r.x += streamVx * dt;
+    r.y += Math.sin(tNow * 2.2 + r.phase) * 8 * dt;
+    if (r.x > TERRAIN_W + 250) r.x -= (TERRAIN_W + 500);
+    if (r.x < -250) r.x += (TERRAIN_W + 500);
+  }
+
+  // Advance regional sky birds gliding in the wind
+  for (const b of skyBirds) {
+    const vx = (b.dir * b.speed + wind * 0.25) * (0.6 + b.z);
+    b.x += vx * dt;
+    if (b.x > TERRAIN_W + 350) b.x = -340;
+    if (b.x < -350) b.x = TERRAIN_W + 340;
+  }
 }
 
 function showVictoryModal(winningTeam) {
@@ -2568,17 +3367,17 @@ function showVictoryModal(winningTeam) {
   const stats = document.getElementById('vic-stats');
 
   if (winningTeam === 0) {
-    title.textContent = 'BRIGADA PINAR VICTORIOUS!';
+    title.textContent = '¡VICTÒRIA DE LA BRIGADA DEL PINAR!';
     title.style.color = '#f5b945';
-    sub.textContent = `The Golden Procession conquers ${MAPS[currentMapIdx].name}!`;
+    sub.textContent = `La Processó Daurada conquereix ${MAPS[currentMapIdx].name}!`;
   } else if (winningTeam === 1) {
-    title.textContent = 'COLUMNA TRAMUNTANA VICTORIOUS!';
+    title.textContent = '¡VICTÒRIA DE LA COLUMNA TRAMUNTANA!';
     title.style.color = '#ea5648';
-    sub.textContent = `The Crimson Procession conquers ${MAPS[currentMapIdx].name}!`;
+    sub.textContent = `La Processó Grana conquereix ${MAPS[currentMapIdx].name}!`;
   } else {
-    title.textContent = 'MUTUAL DESTRUCTION — DRAW!';
+    title.textContent = '¡DESTRUCCIÓ MÚTUA — EMPAT!';
     title.style.color = '#f2ecdf';
-    sub.textContent = 'Every Oruga fell in battle!';
+    sub.textContent = 'Tots els cucs han caigut en combat!';
   }
 
   let mvp = fighters[0];
@@ -2587,12 +3386,12 @@ function showVictoryModal(winningTeam) {
   }
 
   stats.innerHTML = `
-    <div><span style="color:var(--ivory-muted)">Theatre:</span> <b>${MAPS[currentMapIdx].name}</b></div>
-    <div><span style="color:var(--ivory-muted)">Total Rounds:</span> <b>${roundNumber}</b></div>
-    <div><span style="color:var(--ivory-muted)">Brigada Pinar Damage:</span> <b style="color:#f5b945">${teamDamageDealt[0]} HP</b></div>
-    <div><span style="color:var(--ivory-muted)">Tramuntana Damage:</span> <b style="color:#ea5648">${teamDamageDealt[1]} HP</b></div>
+    <div><span style="color:var(--ivory-muted)">Indret:</span> <b>${MAPS[currentMapIdx].name}</b></div>
+    <div><span style="color:var(--ivory-muted)">Rondes Totals:</span> <b>${roundNumber}</b></div>
+    <div><span style="color:var(--ivory-muted)">Dany Brigada del Pinar:</span> <b style="color:#f5b945">${teamDamageDealt[0]} PV</b></div>
+    <div><span style="color:var(--ivory-muted)">Dany Tramuntana:</span> <b style="color:#ea5648">${teamDamageDealt[1]} PV</b></div>
     <div style="grid-column:span 2;border-top:1px solid rgba(255,255,255,0.1);padding-top:8px;margin-top:4px;">
-      <span style="color:var(--brass-bright)">MVP Oruga Procesionaria:</span> <b>${mvp ? mvp.name : '—'}</b> (${mvp ? mvp.dmgDealt : 0} DMG dealt)
+      <span style="color:var(--brass-bright)">Cuc Processionari MVP:</span> <b>${mvp ? mvp.name : '—'}</b> (${mvp ? mvp.dmgDealt : 0} punts de dany)
     </div>
   `;
 
@@ -2611,14 +3410,14 @@ function startNextTurn() {
     let winner = -1;
     if (t0Alive.length > 0) {
       winner = 0;
-      status.textContent = 'Brigada Pinar Victorious!';
+      status.textContent = '¡Victòria de la Brigada del Pinar!';
       status.style.color = '#f5b945';
     } else if (t1Alive.length > 0) {
       winner = 1;
-      status.textContent = 'Tramuntana Victorious!';
+      status.textContent = '¡Victòria de la Tramuntana!';
       status.style.color = '#ea5648';
     } else {
-      status.textContent = 'Mutual Destruction — Draw!';
+      status.textContent = '¡Destrucció Mútua — Empat!';
       status.style.color = '#f2ecdf';
     }
     SND.victory();
@@ -2638,7 +3437,7 @@ function startNextTurn() {
     floatingTexts.push({
       x: activeFighter ? activeFighter.x : TERRAIN_W * 0.5,
       y: WATER_Y - 30,
-      text: 'SUDDEN DEATH — TIDE RISING!',
+      text: '¡MORT SOBTADA — PUJA LA MAREA!',
       color: '#ff6b5b',
       life: 2.2
     });
@@ -2651,13 +3450,13 @@ function startNextTurn() {
   activeFighter.jetFuel = 0;
   silkWebUsedThisTurn = false;
   const silkLbl = document.getElementById('lbl-silk-web');
-  if (silkLbl) silkLbl.textContent = 'Spin Silk Web [C]';
+  if (silkLbl) silkLbl.textContent = 'Teixir Seda [C]';
 
   // Apply Urticating Hair Itch damage at turn start if afflicted!
   if (activeFighter.urticatingTicks > 0) {
     activeFighter.urticatingTicks--;
     SND.wormVoice('ITCH');
-    damageFighter(activeFighter, 8, '¡PICOR URTICANTE!');
+    damageFighter(activeFighter, 8, '¡PICOR URTICANT!');
     spawnUrticatingHairs(activeFighter.x, activeFighter.y - 6, 14);
     if (!activeFighter.alive) {
       activeTeam = 1 - activeTeam; // Preserve this team's turn for its next surviving Cuc!
@@ -2678,6 +3477,17 @@ function startNextTurn() {
   isCharging = false;
   chargePower = 0;
   aiPlan = null;
+  cam.panOffsetX = 0;
+  cam.panOffsetY = 0;
+  impactCam.active = false;
+  impactCam.trackedWorm = null;
+
+  // Set default forward aim angle & target point so mobile/touch players are ready to aim or fire immediately!
+  aimAngle = activeFighter.facing >= 0 ? -0.42 : -(Math.PI - 0.42);
+  mouseWorld = {
+    x: clamp(activeFighter.x + activeFighter.facing * 260, 200, TERRAIN_W - 200),
+    y: Math.max(180, activeFighter.y - 95)
+  };
 
   // Restore this team's own last selected weapon so the enemy's weapon choice never overrides yours!
   selectedWeaponIdx = teamSelectedWeaponIdx[activeTeam] ?? 0;
@@ -2691,10 +3501,10 @@ function startNextTurn() {
   buildWeaponBar();
 
   const st = document.getElementById('turn-status');
-  st.textContent = `${activeFighter.name}'s Turn`;
+  st.textContent = `Torn de ${activeFighter.name}`;
   st.style.color = activeTeam === 0 ? '#f5b945' : '#ea5648';
   document.getElementById('round-sub').textContent =
-    `Round ${roundNumber} · ${MAPS[currentMapIdx].name}`;
+    `Ronda ${roundNumber} · ${MAPS[currentMapIdx].name}`;
 }
 
 function isCurrentTurnAI() {
@@ -2736,12 +3546,12 @@ function burstSilkNest(nest) {
   floatingTexts.push({
     x: nest.x,
     y: nest.y - 20,
-    text: '¡BOLSÓN ROTO! +PIÑONES & LARVAS!',
+    text: '¡BOSSA DE SEDA REBENTADA! +PINYONS I LARVES!',
     color: '#ffe082',
     life: 2.1
   });
 
-  // Drop 3 Golden Pine Nuts (Piñones Dorados) that heal +20 HP and evolve Max HP!
+  // Drop 3 Golden Pine Nuts (Pinyons Daurats) that heal +20 PV and evolve Max PV!
   for (let k = 0; k < 3; k++) {
     pineNuts.push({
       x: nest.x + (k - 1) * 10,
@@ -2771,7 +3581,7 @@ function spinElasticSilkWeb() {
 
   silkWebUsedThisTurn = true;
   const silkLbl = document.getElementById('lbl-silk-web');
-  if (silkLbl) silkLbl.textContent = 'Silk Spun ✓';
+  if (silkLbl) silkLbl.textContent = 'Seda Teixida ✓';
 
   const dirX = Math.cos(aimAngle);
   const dirY = Math.sin(aimAngle);
@@ -2798,7 +3608,7 @@ function spinElasticSilkWeb() {
   floatingTexts.push({
     x: cx,
     y: cy - 16,
-    text: '¡SEDA ELÁSTICA TEJIDA!',
+    text: '¡SEDA ELÀSTICA TEIXIDA!',
     color: '#fff6df',
     life: 1.65
   });
@@ -2823,7 +3633,7 @@ function checkMetamorphosis(f) {
     floatingTexts.push({
       x: f.x,
       y: f.y - 42,
-      text: `¡${f.name}: METAMORFOSIS ALADA! (HOLD W TO GLIDE)`,
+      text: `¡${f.name}: METAMORFOSI ALADA! (MANTÉN W PER PLANAR)`,
       color: '#ffe082',
       life: 2.4
     });
@@ -2839,6 +3649,14 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
     SND.boom(radius / 45);
     spawnSmoke(ex, ey, Math.floor(radius * 0.36), 'rgba(32, 28, 26, 0.75)');
     spawnSparks(ex, ey, Math.floor(radius * 0.75));
+  }
+
+  // Lock camera onto the explosion site so it doesn't snap back to the shooter!
+  impactCam.active = true;
+  impactCam.x = ex;
+  impactCam.y = ey;
+  if (turnPhase === 'RETREAT') {
+    turnPhase = 'ACTION_WAIT';
   }
 
   shake = Math.max(shake, radius * 0.38);
@@ -2872,6 +3690,34 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
     }
   }
 
+  // Check if any Giant Catalan Rovelló Mushrooms are roasted by the blast!
+  for (let i = rovellons.length - 1; i >= 0; i--) {
+    const rv = rovellons[i];
+    if (Math.hypot(rv.x - ex, (rv.y - 8) - ey) <= hitRadius + rv.r) {
+      rovellons.splice(i, 1);
+      SND.rovelloBoing();
+      spawnSmoke(rv.x, rv.y - 10, 8, 'rgba(235, 128, 52, 0.72)');
+      floatingTexts.push({
+        x: rv.x,
+        y: rv.y - 26,
+        text: '¡ROVELLÓ A LA BRASA!',
+        color: '#ff9e44',
+        life: 1.6
+      });
+      for (let k = 0; k < 2; k++) {
+        pineNuts.push({
+          x: rv.x + (k === 0 ? -8 : 8),
+          y: rv.y - 14,
+          vx: (k === 0 ? -1 : 1) * (55 + Math.random() * 55),
+          vy: -135 - Math.random() * 55,
+          r: 6,
+          grounded: false,
+          life: 18.0
+        });
+      }
+    }
+  }
+
   for (const f of fighters) {
     if (!f.alive || f.drowning) continue;
     const dx = f.x - ex;
@@ -2896,7 +3742,7 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
         spawnSpeechBubble(f, taunt, 1.8);
       }
 
-      damageFighter(f, dmg, isUrticating ? 'URTICARIA!' : (shieldMult < 1 ? 'SILK SHIELD' : null));
+      damageFighter(f, dmg, isUrticating ? '¡URTICÀRIA!' : (shieldMult < 1 ? 'ESCUT DE SEDA' : null));
       spawnUrticatingHairs(f.x, f.y - 4, 8);
 
       const nx = dist > 1 ? dx / dist : (Math.random() - 0.5);
@@ -2909,9 +3755,13 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
       f.isVoluntaryJump = false;
       f.wasBlasted = true;
       f.jumpStartY = f.y;
+      f.peakAirY = f.y;
       f.hurtTimer = 1.0;
       f.squashX = 0.68;
       f.squashY = 1.42;
+      if (!impactCam.trackedWorm || f !== activeFighter) {
+        impactCam.trackedWorm = f;
+      }
     }
   }
 
@@ -2973,7 +3823,7 @@ function damageFighter(f, dmg, customLabel = null) {
     x: f.x,
     y: f.y - 28,
     text: customLabel ? `${customLabel} -${dmg}` : `-${dmg}`,
-    color: customLabel === 'URTICARIA!' ? '#d88aff' : '#ff6b5b',
+    color: customLabel === '¡URTICÀRIA!' ? '#d88aff' : '#ff6b5b',
     life: 1.45
   });
   if (f.hp <= 0 && !f.drowning) {
@@ -2981,7 +3831,7 @@ function damageFighter(f, dmg, customLabel = null) {
     floatingTexts.push({
       x: f.x,
       y: f.y - 46,
-      text: `${f.name} KIA!`,
+      text: `¡${f.name} CAIGUT!`,
       color: '#f6cf77',
       life: 1.95
     });
@@ -3012,18 +3862,27 @@ function fireWeapon(wpn, angle, power, targetPt) {
   const dirY = Math.sin(angle);
   activeFighter.facing = dirX >= 0 ? 1 : -1;
 
-  // Calculate Procession Fury (+25% per linked nose-to-tail ally, up to +50%) + Metamorphosis (+15%)!
+  // Calculate Procession Fury (+25% per linked nose-to-tail ally, up to +50%) + Castell de Cucs (+30%) + Metamorphosis (+15%)!
   const linkedCount = (activeFighter.linkedAllies ? Math.min(2, activeFighter.linkedAllies.length) : 0);
-  const dmgBoost = 1.0 + linkedCount * 0.25 + (activeFighter.metamorphosed ? 0.15 : 0);
-  const radiusBoost = 1.0 + linkedCount * 0.12;
+  const castellBoost = activeFighter.castellTower ? 0.30 : 0;
+  const dmgBoost = 1.0 + linkedCount * 0.25 + castellBoost + (activeFighter.metamorphosed ? 0.15 : 0);
+  const radiusBoost = 1.0 + linkedCount * 0.12 + (activeFighter.castellTower ? 0.15 : 0);
   const effDmg = Math.round((wpn.maxDmg || 0) * dmgBoost);
   const effBlastR = Math.round((wpn.blastR || 0) * radiusBoost);
 
-  if (linkedCount > 0) {
+  if (activeFighter.castellTower) {
+    floatingTexts.push({
+      x: activeFighter.x,
+      y: activeFighter.y - 52,
+      text: '¡CASTELL DE CUCS! +30% FORÇA ENXANETA!',
+      color: '#ffd966',
+      life: 1.75
+    });
+  } else if (linkedCount > 0) {
     floatingTexts.push({
       x: activeFighter.x,
       y: activeFighter.y - 44,
-      text: `¡FURIA EN PROCESIÓN! +${Math.round((dmgBoost - 1) * 100)}% DMG`,
+      text: `¡FÚRIA EN PROCESSÓ! +${Math.round((dmgBoost - 1) * 100)}% DANY`,
       color: '#ffe082',
       life: 1.6
     });
@@ -3108,8 +3967,7 @@ function fireWeapon(wpn, angle, power, targetPt) {
       age: 0,
       ang: 0
     });
-    turnPhase = 'RETREAT';
-    phaseTimer = 3.0;
+    turnPhase = 'ACTION_WAIT';
   } else if (wpn.id === 'SHOTGUN') {
     SND.shotgun();
     spawnSmoke(muzzleX, muzzleY, 5, 'rgba(235, 220, 195, 0.55)');
@@ -3153,8 +4011,7 @@ function fireWeapon(wpn, angle, power, targetPt) {
     triggerExplosion(hitX, hitY, effBlastR, effDmg, wpn.knockback, 0, false);
 
     shotgunShotsLeft = 0;
-    turnPhase = 'RETREAT';
-    phaseTimer = 2.0;
+    turnPhase = 'ACTION_WAIT';
   } else if (wpn.id === 'FUET' || wpn.id === 'BAT') {
     const isFuet = wpn.id === 'FUET';
     activeFighter.batSwingTimer = 0.48;
@@ -3182,9 +4039,14 @@ function fireWeapon(wpn, angle, power, targetPt) {
           f.isVoluntaryJump = false;
           f.wasBlasted = true;
           f.jumpStartY = f.y;
+          f.peakAirY = f.y;
           f.dizzyTimer = 2.8;
           f.squashX = 0.52;
           f.squashY = 1.65;
+          impactCam.active = true;
+          impactCam.x = f.x;
+          impactCam.y = f.y;
+          impactCam.trackedWorm = f;
           spawnUrticatingHairs(f.x, f.y - 4, 22);
           if (isFuet) {
             spawnSmoke(f.x, f.y - 4, 10, 'rgba(252, 249, 242, 0.85)');
@@ -3200,6 +4062,7 @@ function fireWeapon(wpn, angle, power, targetPt) {
         slowMoTimer = 0.52;
       }
       shake = 15;
+      turnPhase = 'ACTION_WAIT';
     } else if (isFuet) {
       // If swung without an enemy in immediate melee range, a cured Fuet slice snaps off at high speed!
       floatingTexts.push({
@@ -3225,11 +4088,12 @@ function fireWeapon(wpn, angle, power, targetPt) {
         age: 0,
         ang: 0
       });
+      turnPhase = 'ACTION_WAIT';
     } else {
       SND.jump();
+      turnPhase = 'RETREAT';
+      phaseTimer = 2.2;
     }
-    turnPhase = 'RETREAT';
-    phaseTimer = 2.2;
   } else if (wpn.id === 'DYNAMITE') {
     SND.tick();
     floatingTexts.push({
@@ -3402,7 +4266,7 @@ function stepPhysics(dt) {
           f.urticatingTicks = 0;
           floatingTexts.push({
             x: f.x, y: f.y - 28,
-            text: '+35 HP PINE SAP!',
+            text: '+35 PV ¡RESINA DE PI!',
             color: '#76e082',
             life: 1.65
           });
@@ -3450,7 +4314,7 @@ function stepPhysics(dt) {
           SND.mineBeep();
           floatingTexts.push({
             x: m.x, y: m.y - 18,
-            text: 'CLICK! MINE ARMED!',
+            text: '¡CLIC! MINA ARMADA!',
             color: '#ff6b5b',
             life: 1.2
           });
@@ -3491,7 +4355,7 @@ function stepPhysics(dt) {
         SND.hallelujah();
         floatingTexts.push({
           x: p.x, y: p.y - 24,
-          text: '♪ VIROLAI! HALLELUJAH! ♪',
+          text: '♪ VIROLAI! AL·LELUIA! ♪',
           color: '#f6cf77',
           life: 1.3
         });
@@ -3533,6 +4397,9 @@ function stepPhysics(dt) {
       if (p.y >= WATER_Y) {
         SND.plunge();
         spawnWaterPlunge(p.x, WATER_Y, 0.75);
+        impactCam.active = true;
+        impactCam.x = p.x;
+        impactCam.y = WATER_Y - 24;
         projectiles.splice(i, 1);
         exploded = true;
         break;
@@ -3575,7 +4442,7 @@ function stepPhysics(dt) {
               SND.bounce();
               floatingTexts.push({
                 x: closeX, y: closeY - 12,
-                text: '¡REBOTE EN SEDA!',
+                text: '¡REBOT EN SEDA!',
                 color: '#fff6df',
                 life: 1.1
               });
@@ -3602,8 +4469,13 @@ function stepPhysics(dt) {
               f.vy = Math.min(f.vy, -110);
               f.grounded = false;
               f.wasBlasted = true;
+              f.peakAirY = f.y;
               f.squashX = 0.72;
               f.squashY = 1.35;
+              impactCam.active = true;
+              impactCam.x = f.x;
+              impactCam.y = f.y;
+              impactCam.trackedWorm = f;
               spawnSparks(p.x, p.y, 10);
               p.vx = -p.vx * 0.65;
               p.vy = -Math.abs(p.vy) * 0.65 - 60;
@@ -3673,7 +4545,61 @@ function stepPhysics(dt) {
     if (w.vibration > 0) w.vibration = Math.max(0, w.vibration - dt * 2.2);
   }
 
-  // Update Golden Pine Nuts ("Piñones Dorados") dropped from burst Silk Nests!
+  // Update Giant Bouncy Catalan Rovelló Mushrooms (spring recovery & terrain support)
+  for (let i = rovellons.length - 1; i >= 0; i--) {
+    const rv = rovellons[i];
+    rv.squash = lerp(rv.squash, 1.0, Math.min(1, dt * 9));
+    if (!isSolid(rv.x, rv.y + 3)) {
+      rv.y += 140 * dt;
+      if (rv.y >= WATER_Y) {
+        rovellons.splice(i, 1);
+      }
+    }
+  }
+
+  // Update Hidden Lucky Caganer Figurines ("Caganer de la Sort")
+  for (let i = caganers.length - 1; i >= 0; i--) {
+    const cg = caganers[i];
+    if (!isSolid(cg.x, cg.y + 10)) {
+      cg.y += 140 * dt;
+      if (cg.y >= WATER_Y) {
+        caganers.splice(i, 1);
+        continue;
+      }
+    }
+    for (const f of fighters) {
+      if (f.alive && !f.drowning && Math.hypot(f.x - cg.x, f.y - cg.y) <= f.r + cg.r + 10) {
+        SND.caganerBlessing();
+        f.hp = Math.min(160, f.hp + 30);
+        f.urticatingTicks = 0;
+        teamAmmo[f.team]['HOLY'] = (teamAmmo[f.team]['HOLY'] || 0) + 1;
+        teamAmmo[f.team]['DYNAMITE'] = (teamAmmo[f.team]['DYNAMITE'] || 0) + 1;
+        shockwaves.push({
+          x: cg.x,
+          y: cg.y,
+          r: 5,
+          maxR: 65,
+          alpha: 1.0,
+          color: '255, 215, 90'
+        });
+        spawnSparks(cg.x, cg.y, 18);
+        spawnSpeechBubble(f, '¡El Caganer de la Sort!', 2.4);
+        floatingTexts.push({
+          x: cg.x,
+          y: cg.y - 34,
+          text: '¡BENEDICCIÓ DEL CAGANER! +30 PV I +1 PORRÓ!',
+          color: '#ffd966',
+          life: 2.2
+        });
+        updateHUD();
+        buildWeaponBar();
+        caganers.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  // Update Golden Pine Nuts ("Pinyons Daurats") dropped from burst Silk Nests!
   for (let i = pineNuts.length - 1; i >= 0; i--) {
     const pn = pineNuts[i];
     pn.life -= dt;
@@ -3703,7 +4629,7 @@ function stepPhysics(dt) {
         f.urticatingTicks = 0;
         floatingTexts.push({
           x: f.x, y: f.y - 30,
-          text: '+20 HP ¡PIÑÓN DORADO!',
+          text: '+20 PV ¡PINYÓ DAURAT!',
           color: '#ffe082',
           life: 1.75
         });
@@ -3746,7 +4672,7 @@ function stepPhysics(dt) {
     sw.tickTimer -= dt;
     if (sw.tickTimer <= 0 && nearest && bestD < 22) {
       sw.tickTimer = 0.65;
-      damageFighter(nearest, 4, '¡LARVAS!');
+      damageFighter(nearest, 4, '¡LARVES!');
       nearest.squashX = 1.18;
       nearest.squashY = 0.85;
       nearest.hurtTimer = 0.35;
@@ -3793,10 +4719,11 @@ function stepPhysics(dt) {
                      (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT') &&
                      activeFighter && activeFighter.alive && !activeFighter.drowning && !isCurrentTurnAI();
 
-  // Update Nose-to-Tail Procession Links ("Modo Procesión") between nearby allied Orugas!
+  // Update Nose-to-Tail Procession Links ("Modo Procesión") & Vertical "Castell de Cucs" Towers!
   for (const f of fighters) {
     if (!f.alive || f.drowning) {
       f.linkedAllies = [];
+      f.castellTower = false;
       continue;
     }
     const prevCount = f.linkedAllies ? f.linkedAllies.length : 0;
@@ -3810,6 +4737,30 @@ function stepPhysics(dt) {
     if (f === activeFighter && f.linkedAllies.length > prevCount && appStage === 'PLAYING') {
       const msg = ORUGA_TAUNTS.PROCESSION[Math.floor(Math.random() * ORUGA_TAUNTS.PROCESSION.length)];
       spawnSpeechBubble(f, msg, 2.0);
+    }
+
+    // SURPRISE 3: Check if this Cuc is stacked atop an allied Cuc ("Castell de Cucs" / Enxaneta!)
+    const wasCastell = !!f.castellTower;
+    const baseAlly = fighters.find(other =>
+      other !== f &&
+      other.team === f.team &&
+      other.alive &&
+      !other.drowning &&
+      Math.abs(other.x - f.x) <= 20 &&
+      f.y < other.y - 4 &&
+      (other.y - f.y) <= 34
+    );
+    f.castellTower = !!baseAlly;
+    if (f.castellTower && !wasCastell && appStage === 'PLAYING') {
+      SND.caganerBlessing();
+      spawnSpeechBubble(f, '¡Castell de Cucs! ¡Aleta!', 2.4);
+      floatingTexts.push({
+        x: f.x,
+        y: f.y - 38,
+        text: '¡CASTELL DE CUCS! +30% FORÇA ENXANETA!',
+        color: '#ffd966',
+        life: 1.9
+      });
     }
   }
 
@@ -3854,6 +4805,7 @@ function stepPhysics(dt) {
       f.sliding = false;
       f.slideAngle = 0;
       f.jumpStartY = f.y;
+      f.peakAirY = f.y;
       f.isVoluntaryJump = false;
     }
 
@@ -3862,6 +4814,7 @@ function stepPhysics(dt) {
       f.vy = 0;
       f.slideTimer = 0;
       f.airTimer = 0;
+      f.peakAirY = f.y;
     }
 
     if (f === activeFighter && f.jetFuel > 0 && canControl) {
@@ -3884,6 +4837,7 @@ function stepPhysics(dt) {
         f.grounded = false;
         f.isVoluntaryJump = true;
         f.jumpStartY = f.y;
+        f.peakAirY = f.y;
         f.jetFuel = Math.max(0, f.jetFuel - 28 * dt);
         SND.jetThrust();
         if (Math.random() < 0.75) {
@@ -3925,10 +4879,12 @@ function stepPhysics(dt) {
           f.x = stepX;
           f.y = foundY;
           f.jumpStartY = f.y;
+          f.peakAirY = f.y;
         } else if (!isSolid(stepX, f.y)) {
           f.x = stepX;
           f.grounded = false;
           f.jumpStartY = f.y;
+          f.peakAirY = f.y;
           f.isVoluntaryJump = false;
         }
 
@@ -4019,12 +4975,14 @@ function stepPhysics(dt) {
 
     if (!f.grounded) {
       f.airTimer = (f.airTimer || 0) + dt;
+      f.peakAirY = Math.min(f.peakAirY ?? f.y, f.y);
 
       // Metamorphosed Thaumetopoea Moth Wing Glide when holding W / Space in mid-air!
       if (f.metamorphosed && f === activeFighter && canControl && keys.up && f.vy > 25) {
         f.vy = lerp(f.vy, 48, dt * 9);
         f.vx = lerp(f.vx, f.facing * 125 + wind * 0.55, dt * 3.5);
         f.jumpStartY = f.y; // Gliding cushions landing so it won't slam or slide!
+        f.peakAirY = f.y;
         f.isVoluntaryJump = true;
       }
 
@@ -4046,6 +5004,7 @@ function stepPhysics(dt) {
       for (let s = 0; s < steps; s++) {
         f.x = clamp(f.x + (f.vx * dt) / steps, 18, TERRAIN_W - 18);
         f.y += (f.vy * dt) / steps;
+        f.peakAirY = Math.min(f.peakAirY ?? f.y, f.y);
 
         // Check Elastic Silk Web Trampoline Bounce!
         if (f.vy > 0) {
@@ -4061,6 +5020,7 @@ function stepPhysics(dt) {
                 f.vy = -Math.max(215, Math.min(310, Math.abs(f.vy) * 0.95));
                 f.vx = clamp(f.vx * 1.08, -190, 190);
                 f.jumpStartY = f.y;
+                f.peakAirY = f.y;
                 f.isVoluntaryJump = true;
                 f.wasBlasted = false;
                 f.squashX = 1.32;
@@ -4081,6 +5041,39 @@ function stepPhysics(dt) {
             }
           }
           if (bouncedOnWeb) break;
+
+          // Check Giant Bouncy Catalan Rovelló Mushroom Trampoline!
+          let bouncedOnRovello = false;
+          for (const rv of rovellons) {
+            if (Math.abs(f.x - rv.x) <= rv.r + 5 && Math.abs((f.y + f.r * 0.7) - (rv.y - 10)) <= 13) {
+              f.vy = -Math.max(255, Math.min(340, Math.abs(f.vy) * 1.15 + 120));
+              f.vx = clamp(f.vx * 1.12 + f.facing * 35, -210, 210);
+              f.jumpStartY = f.y;
+              f.peakAirY = f.y;
+              f.isVoluntaryJump = true;
+              f.wasBlasted = false;
+              f.squashX = 1.38;
+              f.squashY = 0.68;
+              rv.squash = 0.42;
+              SND.rovelloBoing();
+              if (f.hp < f.maxHp) {
+                f.hp = Math.min(f.maxHp, f.hp + 8);
+                updateHUD();
+              }
+              f.urticatingTicks = 0;
+              spawnSparks(rv.x, rv.y - 12, 10);
+              floatingTexts.push({
+                x: f.x,
+                y: f.y - 26,
+                text: '¡BOING DE ROVELLÓ! +8 PV',
+                color: '#ff9e44',
+                life: 1.35
+              });
+              bouncedOnRovello = true;
+              break;
+            }
+          }
+          if (bouncedOnRovello) break;
         }
 
         if (isSolid(f.x, f.y + f.r)) {
@@ -4090,18 +5083,20 @@ function stepPhysics(dt) {
           const horizSpeed = Math.abs(f.vx);
           const totalSpeed = Math.hypot(f.vx, f.vy);
           const fallDrop = f.y - (f.jumpStartY ?? f.y); // Positive when landing LOWER than jump origin
+          const dropFromPeak = f.y - (f.peakAirY ?? f.y); // Total vertical drop from highest apex in the air!
           const n = getSurfaceNormal(f.x, f.y + f.r);
           const tx = -n.y, ty = n.x;
           const tangentSpeed = f.vx * tx + f.vy * ty;
           const slopeSteepness = Math.abs(n.x);
 
-          // Hard Slam only triggers when falling from significantly higher elevation or high blast velocity
-          const isSignificantFall = !f.isVoluntaryJump || f.wasBlasted || fallDrop >= 38;
-          if (isSignificantFall && (vertSpeed > 250 || totalSpeed > 305)) {
+          // Hard Fall ("PATACADA!") triggers when jumping too high & falling (dropFromPeak >= 58), falling off a ledge (fallDrop >= 32), or blasted at high speed!
+          const jumpedTooHighAndFell = dropFromPeak >= 58 || fallDrop >= 32;
+          const isSignificantFall = jumpedTooHighAndFell || (f.wasBlasted && (vertSpeed > 235 || totalSpeed > 285));
+          if (isSignificantFall && (vertSpeed > 225 || totalSpeed > 280)) {
             SND.hardSlam(totalSpeed);
-            shake = Math.max(shake, clamp((totalSpeed - 230) * 0.035, 3, 14));
+            shake = Math.max(shake, clamp((totalSpeed - 210) * 0.038, 3, 14));
 
-            const squashMag = clamp((totalSpeed - 210) / 360, 0.25, 0.62);
+            const squashMag = clamp((totalSpeed - 200) / 340, 0.25, 0.62);
             f.squashX = 1.0 + squashMag * 0.95;
             f.squashY = 1.0 - squashMag * 0.65;
 
@@ -4115,20 +5110,33 @@ function stepPhysics(dt) {
             spawnSmoke(f.x, f.y + f.r, 7, 'rgba(165, 142, 118, 0.55)');
             spawnUrticatingHairs(f.x, f.y, 10);
 
-            if (totalSpeed > 370) {
-              const fallDmg = Math.min(35, Math.round((totalSpeed - 350) * 0.085));
-              if (fallDmg >= 2) {
-                damageFighter(f, fallDmg, 'SLAM!');
-              }
-              f.dizzyTimer = 2.8;
+            const excessDrop = Math.max(dropFromPeak - 50, fallDrop - 24, 0);
+            const fallDmg = clamp(Math.round(5 + excessDrop * 0.20 + Math.max(0, totalSpeed - 235) * 0.065), 5, 45);
+            damageFighter(f, fallDmg, 'PATACADA!');
+            f.dizzyTimer = 2.8;
+
+            if (totalSpeed > 340 || dropFromPeak > 95) {
               carveCrater(f.x, f.y + f.r - 2, 14);
               while (!isSolid(f.x, f.y + f.r) && f.y < WATER_Y) f.y++;
+            }
+
+            // If the active worm jumped too high and got hurt from the fall during its turn, end its turn and pass to the next worm's turn!
+            if (f === activeFighter && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT')) {
+              isCharging = false;
+              chargePower = 0;
+              f.jetFuel = 0;
+              impactCam.active = true;
+              impactCam.x = f.x;
+              impactCam.y = f.y;
+              impactCam.trackedWorm = f;
+              turnPhase = 'ACTION_WAIT';
             }
           }
 
           f.flipAngle = 0;
           f.flipSpin = 0;
           f.airTimer = 0;
+          f.peakAirY = f.y;
 
           // SMART LANDING & SLIDING PHYSICS:
           // 1. A regular jump or backwards jump does NOT slide unless it fell significantly lower than where it jumped from (fallDrop >= 36)!
@@ -4223,7 +5231,7 @@ function stepPhysics(dt) {
       floatingTexts.push({
         x: f.x,
         y: WATER_Y - 26,
-        text: `${f.name}: ¡Glu glu... CHOF!`,
+        text: `${f.name}: Glu glu... XOF!`,
         color: '#7ec8e3',
         life: 2.2
       });
@@ -4476,13 +5484,27 @@ function simulateArc(sx, sy, angle, power, windFactor) {
 //  9. 2.5D REGIONAL PARALLAX PANORAMA & WEATHER RENDERER
 // ═══════════════════════════════════════════════════════════════════════════
 function getCameraTransform() {
-  // Higher default zoom scale so Cucs, hats, and floating names are crisp and easy to read!
-  const baseScale = clamp(Math.min(viewW / 1620, viewH / 760), 0.85, 1.45);
-  const scale = baseScale * cam.zoom * userZoomMult;
+  // Responsive base scale for Portrait Mobile, Landscape Mobile, and Desktop + Retina DPR scaling!
+  const isPortrait = viewW < viewH && viewW <= 820;
+  const isLandscapeMobile = viewH <= 540 && viewW > viewH;
+  let cssBaseScale;
+  if (isPortrait) {
+    // Portrait phone (e.g. 390x844): frame ~460-540 world units horizontally so Cucs, names & terrain are crisp
+    cssBaseScale = clamp(viewW / 600, 0.56, 0.86);
+  } else if (isLandscapeMobile) {
+    // Landscape phone (e.g. 844x390): fit vertical playfield comfortably between compact top & bottom HUDs
+    cssBaseScale = clamp(Math.min(viewW / 1220, viewH / 580), 0.54, 0.88);
+  } else {
+    // Desktop / Tablet
+    cssBaseScale = clamp(Math.min(viewW / 1620, viewH / 760), 0.85, 1.45);
+  }
+  const scale = cssBaseScale * canvasDpr * cam.zoom * userZoomMult;
+  // In Portrait mode, shift camera center slightly down (+42 world px) so the active Cuc sits above the bottom touch controls!
+  const portraitOffsetY = (isPortrait && appStage === 'PLAYING') ? 42 : 0;
   return {
     scale,
     cx: cam.x + cam.smoothMouseX,
-    cy: cam.y + cam.smoothMouseY
+    cy: cam.y + cam.smoothMouseY + portraitOffsetY
   };
 }
 
@@ -4547,20 +5569,8 @@ function render() {
     ctx.fillRect(0, 0, W, H);
   }
 
-  // 3. Drifting Cumulus / Karl the Fog Layers (Parallax 0.14x, seamlessly tiled across ultrawide screens)
-  if (ASSETS.cloudLayer) {
-    ctx.save();
-    ctx.globalAlpha = mCfg.id === 'SAN_FRANCISCO' ? 0.72 : 0.42;
-    const cw = Math.max(400, ASSETS.cloudLayer.width * tr.scale);
-    const ch = ASSETS.cloudLayer.height * tr.scale;
-    const drift = (tNow * (10 + wind * 0.25)) % ASSETS.cloudLayer.width;
-    const baseOx = -(((dxCam * 0.14 - drift) * tr.scale) % cw);
-    const oy = (mCfg.id === 'SAN_FRANCISCO' ? H * 0.18 : H * 0.03) - dyCam * 0.10 * tr.scale;
-    for (let tileX = baseOx - cw * 2; tileX < W + cw; tileX += cw) {
-      ctx.drawImage(ASSETS.cloudLayer, tileX, oy, cw, ch);
-    }
-    ctx.restore();
-  }
+  // 3. Volumetric God-Rays, Sun Halo, Sky Birds & Multi-Layered Volumetric Clouds!
+  drawSkyAtmosphereAndClouds(ctx, W, H, tr, dxCam, dyCam, mCfg);
 
   // ─────────────────────────────────────────────────────────────────
   // 4. 2.5D GAMEPLAY WORLD PLANE (1.0x Camera Transform)
@@ -4720,6 +5730,8 @@ function render() {
     ctx.restore();
   }
 
+  for (const rv of rovellons) drawRovello(ctx, rv);
+  for (const cg of caganers) drawCaganer(ctx, cg);
   for (const tb of tombstones) drawTombstone(ctx, tb);
   for (const m of mines) drawMine(ctx, m);
   for (const c of crates) drawCrate(ctx, c);
@@ -4981,37 +5993,333 @@ function drawSplashProcessionSilhouette(ctx, W, H) {
   ctx.restore();
 }
 
+function drawSkyAtmosphereAndClouds(ctx, W, H, tr, dxCam, dyCam, mCfg) {
+  ctx.save();
+
+  // 1. Celestial Sun / Golden-Hour Glow & Angled Volumetric God-Rays across the 4 Catalan Comarques
+  const sunX = W * (mCfg.id === 'MONTSERRAT' ? 0.68 : (mCfg.id === 'CADAQUES' ? 0.30 : (mCfg.id === 'TAULL' ? 0.44 : 0.62))) - dxCam * 0.04 * tr.scale;
+  const sunY = H * 0.19 - dyCam * 0.04 * tr.scale;
+  const sunCol = mCfg.id === 'MONTSERRAT' ? '255, 205, 115'
+    : (mCfg.id === 'CADAQUES' ? '255, 232, 165'
+    : (mCfg.id === 'TAULL' ? '210, 235, 255' : '255, 198, 125'));
+
+  const sunGlow = ctx.createRadialGradient(sunX, sunY, 8 * tr.scale, sunX, sunY, 340 * tr.scale);
+  sunGlow.addColorStop(0, `rgba(${sunCol}, 0.42)`);
+  sunGlow.addColorStop(0.35, `rgba(${sunCol}, 0.16)`);
+  sunGlow.addColorStop(1, `rgba(${sunCol}, 0)`);
+  ctx.fillStyle = sunGlow;
+  ctx.beginPath();
+  ctx.arc(sunX, sunY, 340 * tr.scale, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Soft angled volumetric God-Rays slanting across the sky
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+  for (let r = 0; r < 5; r++) {
+    const rayPhase = tNow * 0.28 + r * 1.35;
+    const rayAlpha = (0.045 + Math.sin(rayPhase) * 0.02) * (mCfg.id === 'TAULL' ? 0.78 : 1.0);
+    const rx = sunX + (r - 2) * 140 * tr.scale;
+    const spread = (65 + (r % 2) * 35) * tr.scale;
+    const slant = (wind * 0.9 + (r - 1.5) * 55) * tr.scale;
+    const rg = ctx.createLinearGradient(rx, sunY, rx + slant, H * 0.88);
+    rg.addColorStop(0, `rgba(${sunCol}, ${rayAlpha * 1.4})`);
+    rg.addColorStop(0.65, `rgba(${sunCol}, ${rayAlpha * 0.55})`);
+    rg.addColorStop(1, `rgba(${sunCol}, 0)`);
+    ctx.fillStyle = rg;
+    ctx.beginPath();
+    ctx.moveTo(rx - spread * 0.35, sunY);
+    ctx.lineTo(rx + spread * 0.35, sunY);
+    ctx.lineTo(rx + slant + spread * 1.5, H * 0.92);
+    ctx.lineTo(rx + slant - spread * 1.5, H * 0.92);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // 2. Subtle Tiled Cumulus / Pyrenees & Valley Mist Veil (Base atmospheric cloud sheet)
+  if (ASSETS.cloudLayer) {
+    ctx.save();
+    ctx.globalAlpha = mCfg.id === 'TAULL' ? 0.48 : 0.34;
+    const cw = Math.max(400, ASSETS.cloudLayer.width * tr.scale);
+    const ch = ASSETS.cloudLayer.height * tr.scale;
+    const drift = (tNow * (10 + wind * 0.25)) % ASSETS.cloudLayer.width;
+    const baseOx = -(((dxCam * 0.14 - drift) * tr.scale) % cw);
+    const oy = (mCfg.id === 'MONTSERRAT' ? H * 0.14 : H * 0.04) - dyCam * 0.10 * tr.scale;
+    for (let tileX = baseOx - cw * 2; tileX < W + cw; tileX += cw) {
+      ctx.drawImage(ASSETS.cloudLayer, tileX, oy, cw, ch);
+    }
+    ctx.restore();
+  }
+
+  // 3. Flocking Catalan Sky Birds (Gavines de Cap de Creus, Àligues de Montserrat & Trencalossos Pirinencs)
+  ctx.save();
+  ctx.strokeStyle = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? 'rgba(42, 26, 22, 0.58)' : 'rgba(28, 38, 48, 0.55)';
+  ctx.lineWidth = 1.6 * tr.scale;
+  ctx.lineCap = 'round';
+  for (const b of skyBirds) {
+    const sx = W * 0.5 + (b.x - TERRAIN_W * 0.5 - dxCam * b.z) * tr.scale;
+    const sy = H * 0.5 + (b.y - 400 - dyCam * b.z + Math.sin(tNow * 2.5 + b.wingPhase) * 6) * tr.scale;
+    if (sx < -60 || sx > W + 60) continue;
+    const flap = Math.sin(tNow * 8.5 + b.wingPhase) * b.size * 0.65 * tr.scale;
+    const span = b.size * tr.scale;
+    ctx.beginPath();
+    ctx.moveTo(sx - span, sy - flap);
+    ctx.quadraticCurveTo(sx - span * 0.4, sy - span * 0.35, sx, sy);
+    ctx.quadraticCurveTo(sx + span * 0.4, sy - span * 0.35, sx + span, sy - flap);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // 4. Multi-Layered Sculpted Volumetric Clouds (3 Parallax Depth Tiers reacting to live Wind!)
+  const rimCol = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? '#fff0d4' : (mCfg.id === 'CADAQUES' ? '#fff9eb' : '#ebf5ff');
+  const midCol = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? '#f0cbb0' : (mCfg.id === 'CADAQUES' ? '#dce6f0' : '#c4d6e8');
+  const shdCol = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? 'rgba(98, 74, 88, 0.42)' : 'rgba(68, 84, 104, 0.42)';
+
+  for (const c of cloudFlock) {
+    const cx = W * 0.5 + (c.x - TERRAIN_W * 0.5 - dxCam * c.z) * tr.scale;
+    const bob = Math.sin(tNow * 0.9 + c.bobPhase) * 4;
+    const cy = H * 0.5 + (c.y + bob - 400 - dyCam * c.z) * tr.scale;
+    if (cx < -320 * tr.scale || cx > W + 320 * tr.scale) continue;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(tr.scale, tr.scale);
+    ctx.globalAlpha = c.tier === 0 ? 0.52 : (c.tier === 1 ? 0.76 : 0.46);
+
+    // Subtle wind-shear lean on cloud puffs when wind is strong
+    const windShear = clamp(wind * 0.0018, -0.18, 0.18);
+    ctx.transform(1, 0, windShear, 1, 0, 0);
+
+    // Pass 1: Cool ambient underside shadow base
+    ctx.fillStyle = shdCol;
+    ctx.beginPath();
+    for (const lb of c.lobes) {
+      ctx.moveTo(lb.ox + lb.rx, lb.oy + 7);
+      ctx.ellipse(lb.ox, lb.oy + 7, lb.rx * 0.98, lb.ry * 0.88, 0, 0, Math.PI * 2);
+    }
+    ctx.fill();
+
+    // Pass 2: Soft mid-tone cloud body
+    ctx.fillStyle = midCol;
+    ctx.beginPath();
+    for (const lb of c.lobes) {
+      ctx.moveTo(lb.ox + lb.rx, lb.oy + 2);
+      ctx.ellipse(lb.ox, lb.oy + 2, lb.rx, lb.ry * 0.92, 0, 0, Math.PI * 2);
+    }
+    ctx.fill();
+
+    // Pass 3: Sunlit ivory/golden top crown highlight
+    ctx.fillStyle = rimCol;
+    ctx.beginPath();
+    for (const lb of c.lobes) {
+      ctx.moveTo(lb.ox + lb.rx * 0.92, lb.oy - 4);
+      ctx.ellipse(lb.ox - 2, lb.oy - 4, lb.rx * 0.92, lb.ry * 0.82, 0, 0, Math.PI * 2);
+    }
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  ctx.restore();
+}
+
+function drawRovello(ctx, rv) {
+  ctx.save();
+  ctx.translate(rv.x, rv.y);
+  ctx.scale(2 - rv.squash, rv.squash);
+
+  // Soft warm spore glow around the Catalan Rovelló mushroom
+  const rg = ctx.createRadialGradient(0, -10, 2, 0, -10, rv.r * 1.5);
+  rg.addColorStop(0, 'rgba(255, 165, 75, 0.38)');
+  rg.addColorStop(1, 'rgba(255, 140, 45, 0)');
+  ctx.fillStyle = rg;
+  ctx.beginPath();
+  ctx.arc(0, -10, rv.r * 1.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Creamy terracotta stalk (peu del rovelló)
+  ctx.fillStyle = '#f2d8bd';
+  ctx.strokeStyle = '#5c3118';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(-5.5, -13, 11, 15, 3);
+  ctx.fill();
+  ctx.stroke();
+
+  // Iconic wavy funnel-shaped Saffron Milk Cap (Lactarius deliciosus)
+  const capG = ctx.createLinearGradient(0, -22, 0, -9);
+  capG.addColorStop(0, '#ff8833');
+  capG.addColorStop(0.6, '#d9531e');
+  capG.addColorStop(1, '#8c2d10');
+  ctx.fillStyle = capG;
+  ctx.beginPath();
+  ctx.moveTo(-rv.r, -11);
+  ctx.bezierCurveTo(-rv.r * 0.85, -23, -4, -18, 0, -16);
+  ctx.bezierCurveTo(4, -18, rv.r * 0.85, -23, rv.r, -11);
+  ctx.quadraticCurveTo(0, -7, -rv.r, -11);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // Concentric terracotta rings & characteristic green Rovelló oxidation spots!
+  ctx.strokeStyle = 'rgba(255, 215, 165, 0.55)';
+  ctx.lineWidth = 1.1;
+  ctx.beginPath();
+  ctx.arc(0, -13, rv.r * 0.58, Math.PI * 1.1, Math.PI * 1.9);
+  ctx.stroke();
+
+  ctx.fillStyle = '#4e8c45';
+  ctx.beginPath();
+  ctx.arc(-rv.r * 0.45, -14, 1.8, 0, Math.PI * 2);
+  ctx.arc(rv.r * 0.38, -13, 1.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function drawCaganer(ctx, cg) {
+  ctx.save();
+  const bob = Math.sin(tNow * 3.5 + cg.bobPhase) * 1.5;
+  ctx.translate(cg.x, cg.y + bob);
+
+  // Lucky golden aura
+  const hg = ctx.createRadialGradient(0, -4, 2, 0, -4, 20);
+  hg.addColorStop(0, 'rgba(255, 224, 102, 0.72)');
+  hg.addColorStop(1, 'rgba(255, 195, 50, 0)');
+  ctx.fillStyle = hg;
+  ctx.beginPath();
+  ctx.arc(0, -4, 20, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Tiny "sort" coil on the ground behind the crouching figurine
+  ctx.fillStyle = '#6e421c';
+  ctx.strokeStyle = '#ffd966';
+  ctx.lineWidth = 0.9;
+  ctx.beginPath();
+  ctx.ellipse(-6, 5, 3.8, 2.2, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  // Crouching black peasant trousers & red faixa (sash)
+  ctx.fillStyle = '#1d2028';
+  ctx.beginPath();
+  ctx.ellipse(-1, 3, 5.5, 3.8, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#d93226';
+  ctx.fillRect(-4.5, -1, 8, 2.5);
+
+  // White peasant shirt torso
+  ctx.fillStyle = '#f7f3e8';
+  ctx.strokeStyle = '#241a14';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.roundRect(-4.5, -7, 8.5, 6.5, 2.5);
+  ctx.fill();
+  ctx.stroke();
+
+  // Smiling rosy head
+  ctx.fillStyle = '#f2c199';
+  ctx.beginPath();
+  ctx.arc(0.5, -10.5, 4.2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  // Iconic Red Catalan Barretina Cap with black band!
+  ctx.fillStyle = '#181a20';
+  ctx.fillRect(-3.5, -14, 8, 2);
+  ctx.fillStyle = '#e02f24';
+  ctx.beginPath();
+  ctx.moveTo(-3.5, -14);
+  ctx.lineTo(1, -20);
+  ctx.lineTo(6.5, -16);
+  ctx.lineTo(4.5, -14);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.restore();
+}
+
 function drawWeatherLayer(ctx, W, H, tr, dxCam, dyCam, weatherType) {
   ctx.save();
+
+  // 1. Live Wind-Stream Air Ribbons (Visually show wind speed, direction & gusts in real time!)
+  const windMag = Math.abs(wind);
+  if (windMag > 4) {
+    const dir = wind >= 0 ? 1 : -1;
+    const ribbonCol = wind >= 0 ? '255, 226, 155' : '165, 228, 255';
+    ctx.lineCap = 'round';
+    for (const r of windRibbons) {
+      const sx = W * 0.5 + (r.x - TERRAIN_W * 0.5 - dxCam * r.z) * tr.scale;
+      const sy = H * 0.5 + (r.y - 400 - dyCam * r.z) * tr.scale;
+      if (sx < -220 || sx > W + 220 || sy < -60 || sy > H + 60) continue;
+
+      const len = (r.len * (0.45 + windMag * 0.011)) * tr.scale * dir;
+      const wave = Math.sin(tNow * 4.5 + r.phase) * r.amp * tr.scale;
+      const alpha = r.alpha * clamp(windMag / 55, 0.22, 0.95);
+
+      const grad = ctx.createLinearGradient(sx - len * 0.5, sy, sx + len * 0.5, sy);
+      grad.addColorStop(0, `rgba(${ribbonCol}, 0)`);
+      grad.addColorStop(0.5, `rgba(${ribbonCol}, ${alpha})`);
+      grad.addColorStop(1, `rgba(${ribbonCol}, 0)`);
+
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = (1.3 + (windMag / 100) * 1.2) * tr.scale;
+      ctx.beginPath();
+      ctx.moveTo(sx - len * 0.5, sy - wave * 0.4);
+      ctx.bezierCurveTo(
+        sx - len * 0.15, sy + wave,
+        sx + len * 0.15, sy - wave,
+        sx + len * 0.5, sy + wave * 0.3
+      );
+      ctx.stroke();
+    }
+  }
+
+  // 2. Comarcal Atmospheric Weather Particles (Taüll Snow, Cadaqués Sea Spray, Castellfollit Autumn Beech Leaves, Montserrat Golden Pine Pollen)
   for (const m of weatherParticles) {
     let mx, my;
-    if (weatherType === 'RAIN') {
-      mx = ((m.x + tNow * (wind * 2.2 - 40)) % TERRAIN_W + TERRAIN_W) % TERRAIN_W;
-      my = ((m.y + tNow * 580) % 800);
+    if (weatherType === 'SNOW') {
+      // Taüll Pyrenean Snowflakes drifting in the mountain wind
+      mx = ((m.x + tNow * (m.vx * 1.1 + wind * 0.85)) % TERRAIN_W + TERRAIN_W) % TERRAIN_W;
+      my = ((m.y + tNow * 95 + Math.sin(tNow * 2.2 + m.phase) * 8) % 800);
       const sx = W * 0.5 + (mx - TERRAIN_W * 0.5 - dxCam * m.z) * tr.scale;
       const sy = H * 0.5 + (my - 400 - dyCam * m.z) * tr.scale;
-      ctx.strokeStyle = 'rgba(195, 220, 240, 0.38)';
-      ctx.lineWidth = 1.4;
+      ctx.fillStyle = 'rgba(242, 248, 255, 0.72)';
       ctx.beginPath();
-      ctx.moveTo(sx, sy);
-      ctx.lineTo(sx - wind * 0.08, sy - 16 * tr.scale);
-      ctx.stroke();
-    } else if (weatherType === 'FOG_GULLS') {
-      mx = ((m.x + tNow * (m.vx * 1.4 + wind * 0.5)) % TERRAIN_W + TERRAIN_W) % TERRAIN_W;
+      ctx.arc(sx, sy, (m.r * 1.15) * m.z * tr.scale, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (weatherType === 'GULLS_BREEZE') {
+      // Cadaqués / Cap de Creus Tramuntana Sea Mist & Salt Spray
+      mx = ((m.x + tNow * (m.vx * 1.5 + wind * 0.6)) % TERRAIN_W + TERRAIN_W) % TERRAIN_W;
       my = m.y + Math.sin(tNow * 1.8 + m.phase) * 10;
       const sx = W * 0.5 + (mx - TERRAIN_W * 0.5 - dxCam * m.z) * tr.scale;
       const sy = H * 0.5 + (my - 400 - dyCam * m.z) * tr.scale;
-      ctx.fillStyle = 'rgba(235, 242, 248, 0.32)';
+      ctx.fillStyle = 'rgba(235, 248, 255, 0.36)';
       ctx.beginPath();
-      ctx.arc(sx, sy, m.r * 1.6 * tr.scale, 0, Math.PI * 2);
+      ctx.arc(sx, sy, m.r * 1.5 * tr.scale, 0, Math.PI * 2);
       ctx.fill();
+    } else if (weatherType === 'AUTUMN_LEAVES') {
+      // Castellfollit / La Garrotxa Autumn Beech Leaves (Fageda d'en Jordà) swirling in the wind!
+      mx = ((m.x + tNow * (m.vx * 1.2 + wind * 0.75)) % TERRAIN_W + TERRAIN_W) % TERRAIN_W;
+      my = ((m.y + tNow * 48 + Math.sin(tNow * 2.4 + m.phase) * 14) % 800);
+      const sx = W * 0.5 + (mx - TERRAIN_W * 0.5 - dxCam * m.z) * tr.scale;
+      const sy = H * 0.5 + (my - 400 - dyCam * m.z) * tr.scale;
+      ctx.save();
+      ctx.translate(sx, sy);
+      ctx.rotate(tNow * 2.2 + m.phase);
+      ctx.fillStyle = m.phase > 3.14 ? 'rgba(230, 118, 45, 0.68)' : 'rgba(245, 182, 66, 0.68)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, m.r * 1.7 * tr.scale, m.r * 0.95 * tr.scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     } else {
-      // Mediterranean Golden Pine Pollen & Needles (Catalonia)
-      mx = ((m.x + tNow * (m.vx + wind * 0.35)) % TERRAIN_W + TERRAIN_W) % TERRAIN_W;
+      // Montserrat Golden Pine Pollen & Floating Pine Needles
+      mx = ((m.x + tNow * (m.vx + wind * 0.45)) % TERRAIN_W + TERRAIN_W) % TERRAIN_W;
       my = m.y + Math.sin(tNow * 1.5 + m.phase) * 12;
       const sx = W * 0.5 + (mx - TERRAIN_W * 0.5 - dxCam * m.z) * tr.scale;
       const sy = H * 0.5 + (my - 400 - dyCam * m.z) * tr.scale;
-      ctx.fillStyle = 'rgba(255, 224, 150, 0.44)';
+      ctx.fillStyle = 'rgba(255, 224, 150, 0.48)';
       ctx.beginPath();
       ctx.arc(sx, sy, m.r * m.z * tr.scale, 0, Math.PI * 2);
       ctx.fill();
@@ -5211,8 +6519,20 @@ function drawFighter(ctx, f) {
     ctx.font = '800 13px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'center';
 
+    // Golden Enxaneta Aura when stacked in a "Castell de Cucs" tower!
+    if (f.castellTower) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 217, 102, 0.78)';
+      ctx.lineWidth = 2.2;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.arc(0, -6, 20 + Math.sin(tNow * 7) * 2, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
     const linkedCount = f.linkedAllies ? f.linkedAllies.length : 0;
-    const badgePrefix = f.metamorphosed ? '🦋 ' : (linkedCount > 0 ? '⛓ ' : '');
+    const badgePrefix = f.castellTower ? '🏰 ' : (f.metamorphosed ? '🦋 ' : (linkedCount > 0 ? '⛓ ' : ''));
     const dispName = badgePrefix + f.name;
 
     const tw = ctx.measureText(dispName).width + 16;
@@ -5352,7 +6672,7 @@ function drawFighterHead(ctx, f, bob, teamCol) {
     ctx.fill();
   }
 
-  // Regional Headgear (Catalan Barretina, Seattle Knit Beanie, SF Captain Cap, Brodie Helmet, or Natural Bristles)
+  // Catalan Headgear (Barretina Catalana, Casc de Casteller, Capell de Bandoler, Barret de Palla de Pagès, or Plomall de Pèls Urticants)
   drawOrugaHat(ctx, teamHats[f.team], teamCol);
 
   ctx.restore();
@@ -5374,54 +6694,69 @@ function drawOrugaHat(ctx, hatType, teamCol) {
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
-  } else if (hatType === 'SEATTLE') {
-    // Pacific Northwest Ribbed Knit Beanie with pom-pom
-    ctx.fillStyle = teamCol;
+  } else if (hatType === 'CASTELLER') {
+    // Casc d'Enxaneta Casteller amb les Quatre Barres de la Senyera!
+    ctx.fillStyle = '#f5c23b';
     ctx.strokeStyle = '#14161d';
-    ctx.lineWidth = 1.2;
-    ctx.beginPath();
-    ctx.arc(-0.5, -8.5, 7.5, Math.PI, 0, false);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = '#262b36';
-    ctx.fillRect(-8.5, -9.5, 16, 3);
-    ctx.fillStyle = '#fff5df';
-    ctx.beginPath();
-    ctx.arc(-0.5, -17, 2.6, 0, Math.PI * 2);
-    ctx.fill();
-  } else if (hatType === 'SF_CAP') {
-    // San Francisco Bay Captain Cap with gold visor badge
-    ctx.fillStyle = '#f2ecdf';
-    ctx.strokeStyle = '#181c26';
-    ctx.lineWidth = 1.2;
-    ctx.beginPath();
-    ctx.ellipse(-0.5, -11.5, 8.5, 3.8, -0.08, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = '#181c26';
-    ctx.fillRect(-7, -9.5, 14, 2.5);
-    ctx.beginPath();
-    ctx.moveTo(3, -8);
-    ctx.lineTo(11, -6.5);
-    ctx.lineTo(5, -6.5);
-    ctx.closePath();
-    ctx.fill();
-  } else if (hatType === 'HELMET') {
-    // Brodie Steel Artillery Helmet
-    ctx.fillStyle = '#4e5948';
-    ctx.strokeStyle = '#181c16';
     ctx.lineWidth = 1.3;
     ctx.beginPath();
-    ctx.arc(-0.5, -8, 8.2, Math.PI, 0, false);
+    ctx.arc(-0.5, -8.2, 8.2, Math.PI, 0, false);
+    ctx.closePath();
     ctx.fill();
     ctx.stroke();
+    // Four red Catalan stripes (Quatre Barres)
+    ctx.strokeStyle = '#d92b22';
+    ctx.lineWidth = 1.5;
+    for (let s = -4.5; s <= 4.5; s += 3) {
+      ctx.beginPath();
+      ctx.moveTo(s, -8.5);
+      ctx.lineTo(s * 0.75, -15.8);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#181b22';
+    ctx.fillRect(-8.5, -9.2, 16, 2.4);
+  } else if (hatType === 'BANDOLER') {
+    // Capell de Bandoler Català (Serrallonga wide-brimmed felt hat with red band & feather!)
+    ctx.fillStyle = '#241e1a';
+    ctx.strokeStyle = '#0e0b09';
+    ctx.lineWidth = 1.2;
     ctx.beginPath();
-    ctx.ellipse(-0.5, -8, 11.5, 2.2, -0.05, 0, Math.PI * 2);
+    ctx.moveTo(-6, -8.5);
+    ctx.lineTo(-4, -17);
+    ctx.lineTo(3, -17);
+    ctx.lineTo(5, -8.5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    // Red bandoler sash ribbon + golden buckle
+    ctx.fillStyle = '#d93228';
+    ctx.fillRect(-5.5, -11, 10, 2.2);
+    ctx.fillStyle = '#f5b945';
+    ctx.fillRect(-1, -11.3, 2.6, 2.6);
+    // Wide sweeping brim
+    ctx.fillStyle = '#2b231e';
+    ctx.beginPath();
+    ctx.ellipse(-0.5, -8.5, 11.5, 2.3, -0.05, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  } else if (hatType === 'PAGES') {
+    // Barret de Palla de Pagès Català (Golden braided straw hat with red ribbon)
+    ctx.fillStyle = '#e8c168';
+    ctx.strokeStyle = '#5c3d14';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.arc(-0.5, -8.5, 7.6, Math.PI, 0, false);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#d93228';
+    ctx.fillRect(-7.8, -10.5, 14.6, 2.0);
+    ctx.fillStyle = '#f0cf7b';
+    ctx.beginPath();
+    ctx.ellipse(-0.5, -8.2, 12.2, 2.4, -0.04, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
   } else {
-    // Natural Golden Stinging Bristle Crown Tufts
+    // Natural Golden Stinging Bristle Crown Tufts (Plomall de Pèls Urticants)
     ctx.strokeStyle = '#ffae42';
     ctx.lineWidth = 1.4;
     for (let i = -3; i <= 3; i++) {
@@ -5716,7 +7051,7 @@ function drawAimingHUD(ctx, f) {
   if (wpn.id === 'AIRSTRIKE') {
     ctx.save();
     ctx.strokeStyle = '#ff6b5b';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.2;
     ctx.beginPath();
     ctx.arc(mouseWorld.x, mouseWorld.y, 16 + Math.sin(tNow * 8) * 3, 0, Math.PI * 2);
     ctx.moveTo(mouseWorld.x - 24, mouseWorld.y);
@@ -5724,6 +7059,11 @@ function drawAimingHUD(ctx, f) {
     ctx.moveTo(mouseWorld.x, mouseWorld.y - 24);
     ctx.lineTo(mouseWorld.x, mouseWorld.y + 24);
     ctx.stroke();
+
+    ctx.font = '800 11px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#ffe082';
+    ctx.fillText('OBJECTIU CORREFOC', mouseWorld.x, mouseWorld.y - 28);
     ctx.restore();
     return;
   }
@@ -5750,6 +7090,31 @@ function drawAimingHUD(ctx, f) {
   ctx.beginPath();
   ctx.arc(cx, cy, 8, 0, Math.PI * 2);
   ctx.stroke();
+
+  // Live Wind-Drift Ballistic Preview Beads (Bends in real time as wind changes while you aim!)
+  if (wpn.type === 'CHARGE') {
+    const previewPower = isCharging ? Math.max(0.28, chargePower) : 0.58;
+    const speed = 180 + previewPower * 760;
+    const wf = wpn.windFactor || 0;
+    let px = f.x + dirX * 18;
+    let py = (f.y - 4) + dirY * 18;
+    let pvx = dirX * speed;
+    let pvy = dirY * speed;
+    const stepDt = 0.032;
+    for (let b = 1; b <= 7; b++) {
+      pvx += (wind * 2.4 * wf) * stepDt;
+      pvy += GRAVITY * stepDt;
+      px += pvx * stepDt;
+      py += pvy * stepDt;
+      const alpha = (1 - b / 8.5) * 0.78;
+      ctx.fillStyle = wf > 0 && Math.abs(wind) > 20
+        ? (wind > 0 ? `rgba(245, 185, 69, ${alpha})` : `rgba(126, 200, 227, ${alpha})`)
+        : `rgba(245, 220, 165, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(px, py, 2.8 - b * 0.22, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
 
   if (isCharging && wpn.type === 'CHARGE') {
     const maxLen = 78;
@@ -6115,19 +7480,38 @@ function drawWaterFront(ctx) {
   const leftEdge = -4800;
   const rightEdge = TERRAIN_W + 4800;
   const bottomEdge = TERRAIN_H + 3600;
+  const waveSpeed = tNow * (2.8 + wind * 0.025);
   ctx.beginPath();
   ctx.moveTo(leftEdge, bottomEdge);
   for (let x = leftEdge; x <= rightEdge; x += 28) {
-    const wy = WATER_Y + Math.sin(x * 0.022 - tNow * 2.8) * 4.5 + Math.cos(x * 0.05 + tNow * 1.6) * 2;
+    const wy = WATER_Y + Math.sin(x * 0.022 - waveSpeed) * 4.5 + Math.cos(x * 0.05 + tNow * 1.6) * 2;
     ctx.lineTo(x, wy);
   }
   ctx.lineTo(rightEdge, bottomEdge);
   ctx.closePath();
   ctx.fill();
 
-  ctx.strokeStyle = 'rgba(245, 225, 190, 0.45)';
-  ctx.lineWidth = 2.2;
+  // Sunlit Specular Foam Crest
+  ctx.strokeStyle = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? 'rgba(255, 224, 170, 0.58)' : 'rgba(235, 248, 255, 0.56)';
+  ctx.lineWidth = 2.4;
   ctx.stroke();
+
+  // Shimmering Sub-Surface Specular Ripples & Caustic Glints
+  ctx.strokeStyle = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? 'rgba(255, 215, 145, 0.24)' : 'rgba(195, 238, 255, 0.24)';
+  ctx.lineWidth = 1.6;
+  for (let row = 0; row < 3; row++) {
+    const ry = WATER_Y + 14 + row * 18;
+    ctx.beginPath();
+    for (let sx = -400; sx < TERRAIN_W + 400; sx += 110) {
+      const shimmerX = sx + Math.sin(tNow * 2.1 + row * 1.7 + sx * 0.01) * 22 + wind * 0.25;
+      const shimmerLen = 28 + Math.sin(tNow * 3.4 + sx * 0.03 + row) * 14;
+      if (shimmerLen > 18) {
+        ctx.moveTo(shimmerX, ry);
+        ctx.lineTo(shimmerX + shimmerLen, ry + Math.sin(sx + tNow) * 1.5);
+      }
+    }
+    ctx.stroke();
+  }
   ctx.restore();
 }
 
@@ -6194,6 +7578,9 @@ function loop(now) {
   if (shake > 0) shake *= Math.pow(0.04, dt);
   if (flashLight > 0) flashLight = Math.max(0, flashLight - dt * 2.6);
 
+  // Live Dynamic Wind, Multi-Layer Volumetric Clouds & Wind-Stream Ribbons!
+  updateDynamicWind(dt);
+
   if (appStage === 'PLAYING' && isCharging && !isCurrentTurnAI() && turnPhase === 'TURN_PLAY') {
     chargePower += chargeDir * dt * 0.92;
     if (tNow - lastChargeTick > 0.06) {
@@ -6205,6 +7592,12 @@ function loop(now) {
       isCharging = false;
       fireWeapon(WEAPONS[selectedWeaponIdx], aimAngle, chargePower, mouseWorld);
     }
+  }
+
+  // Update mobile fire button charge progress bar
+  const mcFill = document.getElementById('mc-fire-fill');
+  if (mcFill) {
+    mcFill.style.width = (isCharging && !isCurrentTurnAI()) ? `${Math.round(chargePower * 100)}%` : '0%';
   }
 
   if (appStage === 'PLAYING') {
@@ -6234,9 +7627,35 @@ function loop(now) {
     } else if (turnPhase === 'ACTION_WAIT') {
       actionWaitTimer += dt;
       document.getElementById('turn-timer').textContent = '—';
+
+      // While waiting for action to settle, keep impactCam tracking any worm near the impact that is still flying/sliding/drowning!
+      if (impactCam.active) {
+        if (impactCam.trackedWorm && impactCam.trackedWorm.alive &&
+            (!impactCam.trackedWorm.grounded || impactCam.trackedWorm.sliding || impactCam.trackedWorm.drowning)) {
+          impactCam.x = impactCam.trackedWorm.x;
+          impactCam.y = impactCam.trackedWorm.drowning ? WATER_Y - 30 : impactCam.trackedWorm.y - 24;
+        } else {
+          let movingNear = null, bestDist = 520;
+          for (const f of fighters) {
+            if (f.alive && (!f.grounded || f.sliding || f.drowning)) {
+              const d = Math.hypot(f.x - impactCam.x, f.y - impactCam.y);
+              if (d < bestDist) {
+                bestDist = d;
+                movingNear = f;
+              }
+            }
+          }
+          if (movingNear) {
+            impactCam.trackedWorm = movingNear;
+            impactCam.x = movingNear.x;
+            impactCam.y = movingNear.drowning ? WATER_Y - 30 : movingNear.y - 24;
+          }
+        }
+      }
+
       const anyMovingFighter = fighters.some(f => f.alive && (f.drowning || !f.grounded || f.sliding));
       const anyArmedMine = mines.some(m => m.triggered);
-      const waitTimeout = (projectiles.length === 0 && airstrikePlanes.length === 0 && actionWaitTimer > 3.2) || actionWaitTimer > 5.8;
+      const waitTimeout = (projectiles.length === 0 && airstrikePlanes.length === 0 && actionWaitTimer > 3.6) || actionWaitTimer > 6.2;
 
       if ((projectiles.length === 0 && airstrikePlanes.length === 0 && !anyMovingFighter && !anyArmedMine) || waitTimeout) {
         if (waitTimeout) {
@@ -6254,7 +7673,8 @@ function loop(now) {
         }
         actionWaitTimer = 0;
         turnPhase = 'TURN_DELAY';
-        phaseTimer = 0.75;
+        // Hold camera still at the impact / resting worm position for 2.0 seconds after all movement stops!
+        phaseTimer = 2.0;
       }
     } else if (turnPhase === 'TURN_DELAY') {
       phaseTimer -= dt;
@@ -6266,21 +7686,47 @@ function loop(now) {
     const drowningWorm = fighters.find(f => f.alive && f.drowning);
     if (projectiles.length > 0) {
       const p = projectiles[projectiles.length - 1];
-      cam.targetX = clamp(p.x, 320, TERRAIN_W - 320);
-      cam.targetY = clamp(p.y, 180, 560);
+      cam.panOffsetX = 0;
+      cam.panOffsetY = 0;
+      impactCam.active = true;
+      impactCam.x = p.x;
+      impactCam.y = p.y;
+      cam.targetX = clamp(p.x, 220, TERRAIN_W - 220);
+      cam.targetY = clamp(p.y, 160, 560);
       cam.targetZoom = slowMoTimer > 0 ? 1.16 : 1.00;
     } else if (airstrikePlanes.length > 0) {
       const pl = airstrikePlanes[0];
-      cam.targetX = clamp(pl.targetX, 320, TERRAIN_W - 320);
+      cam.panOffsetX = 0;
+      cam.panOffsetY = 0;
+      impactCam.active = true;
+      impactCam.x = pl.targetX;
+      impactCam.y = 360;
+      cam.targetX = clamp(pl.targetX, 220, TERRAIN_W - 220);
       cam.targetY = 360;
       cam.targetZoom = 0.96;
     } else if (drowningWorm) {
-      cam.targetX = clamp(drowningWorm.x, 320, TERRAIN_W - 320);
+      cam.panOffsetX = 0;
+      cam.panOffsetY = 0;
+      impactCam.active = true;
+      impactCam.x = drowningWorm.x;
+      impactCam.y = WATER_Y - 40;
+      cam.targetX = clamp(drowningWorm.x, 220, TERRAIN_W - 220);
       cam.targetY = clamp(WATER_Y - 40, 240, 580);
       cam.targetZoom = 1.14;
+    } else if (impactCam.active && (turnPhase === 'ACTION_WAIT' || turnPhase === 'TURN_DELAY')) {
+      // Keep the camera still at the impact site / affected worm until all worms stop moving + 2 seconds!
+      cam.panOffsetX = 0;
+      cam.panOffsetY = 0;
+      cam.targetX = clamp(impactCam.x, 220, TERRAIN_W - 220);
+      cam.targetY = clamp(impactCam.y, 160, 560);
+      cam.targetZoom = slowMoTimer > 0 ? 1.18 : 1.08;
     } else if (activeFighter && activeFighter.alive) {
-      cam.targetX = clamp(activeFighter.x, 320, TERRAIN_W - 320);
-      cam.targetY = clamp(activeFighter.y - 35, 220, 540);
+      if (keys.left || keys.right || keys.up) {
+        cam.panOffsetX = lerp(cam.panOffsetX, 0, 0.14);
+        cam.panOffsetY = lerp(cam.panOffsetY, 0, 0.14);
+      }
+      cam.targetX = clamp(activeFighter.x + cam.panOffsetX, 200, TERRAIN_W - 200);
+      cam.targetY = clamp(activeFighter.y - 35 + cam.panOffsetY, 150, 580);
       cam.targetZoom = slowMoTimer > 0 ? 1.20 : 1.08;
     }
   } else if (appStage === 'SPLASH' || appStage === 'LOBBY') {
@@ -6359,16 +7805,16 @@ function loop(now) {
 // ═══════════════════════════════════════════════════════════════════════════
 window.addEventListener('wheel', e => {
   if (appStage !== 'PLAYING') return;
-  userZoomMult = clamp(userZoomMult - Math.sign(e.deltaY) * 0.08, 0.70, 1.85);
+  userZoomMult = clamp(userZoomMult - Math.sign(e.deltaY) * 0.08, 0.50, 2.25);
 }, { passive: true });
 
-window.addEventListener('mousemove', e => {
-  const nx = (e.clientX / Math.max(1, viewW)) - 0.5;
-  const ny = (e.clientY / Math.max(1, viewH)) - 0.5;
+function updateAimFromScreenPoint(clientX, clientY) {
+  const nx = (clientX / Math.max(1, viewW)) - 0.5;
+  const ny = (clientY / Math.max(1, viewH)) - 0.5;
   cam.mouseOffX = nx * 46;
   cam.mouseOffY = ny * 24;
 
-  mouseWorld = screenToWorld(e.clientX, e.clientY);
+  mouseWorld = screenToWorld(clientX, clientY);
 
   if (appStage === 'PLAYING' && activeFighter && activeFighter.alive && !activeFighter.drowning && !isCurrentTurnAI() && turnPhase === 'TURN_PLAY') {
     const dx = mouseWorld.x - activeFighter.x;
@@ -6378,10 +7824,123 @@ window.addEventListener('mousemove', e => {
       activeFighter.facing = dx >= 0 ? 1 : -1;
     }
   }
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+//  MOUSE & TOUCH GESTURES ON CANVAS:
+//  - Swipe / Fast Drag (press and immediately move < 180ms): locks into 'PAN'
+//    mode, moves the map, and NEVER shoots on release.
+//  - Long-Press (hold >= 180ms without immediate move) or Stationary Tap:
+//    locks into 'SHOOT' mode, aims/charges while held, and shoots when released!
+// ───────────────────────────────────────────────────────────────────────────
+const LONG_PRESS_MS = 180;
+const SWIPE_THRESHOLD_PX = 8;
+
+let isTouchDraggingCanvas = false;
+let mouseGestureMode = 'NONE'; // 'NONE' | 'PENDING' | 'PAN' | 'SHOOT'
+let mouseDownX = 0;
+let mouseDownY = 0;
+let mouseLastX = 0;
+let mouseLastY = 0;
+let mouseLongPressTimer = null;
+
+let touchGestureMode = 'NONE'; // 'NONE' | 'PENDING' | 'PAN' | 'SHOOT'
+let touchStartX = 0;
+let touchStartY = 0;
+let touchLastX = 0;
+let touchLastY = 0;
+let touchLongPressTimer = null;
+let pinchLastDist = 0;
+let pinchLastMidX = 0;
+let pinchLastMidY = 0;
+
+function panMapByScreenDelta(dxScreen, dyScreen) {
+  const tr = getCameraTransform();
+  const worldPerCssPx = canvasDpr / Math.max(0.2, tr.scale);
+  cam.panOffsetX = clamp(cam.panOffsetX - dxScreen * worldPerCssPx, -TERRAIN_W * 0.85, TERRAIN_W * 0.85);
+  cam.panOffsetY = clamp(cam.panOffsetY - dyScreen * worldPerCssPx, -360, 320);
+}
+
+function beginLongPressShoot(screenX, screenY) {
+  if (isCurrentTurnAI() || turnPhase !== 'TURN_PLAY' || !activeFighter || !activeFighter.alive || activeFighter.drowning) return;
+  cam.panOffsetX = 0;
+  cam.panOffsetY = 0;
+  updateAimFromScreenPoint(screenX, screenY);
+  const wpn = WEAPONS[selectedWeaponIdx];
+  if (teamAmmo[activeTeam][wpn.id] > 0 && wpn.type === 'CHARGE') {
+    isCharging = true;
+    chargePower = 0.08;
+    chargeDir = 1;
+  }
+}
+
+function releaseShootAt(screenX, screenY) {
+  if (isCurrentTurnAI() || turnPhase !== 'TURN_PLAY' || !activeFighter || !activeFighter.alive || activeFighter.drowning) {
+    isCharging = false;
+    chargePower = 0;
+    return;
+  }
+  updateAimFromScreenPoint(screenX, screenY);
+  const wpn = WEAPONS[selectedWeaponIdx];
+  if (teamAmmo[activeTeam][wpn.id] <= 0) {
+    isCharging = false;
+    chargePower = 0;
+    return;
+  }
+  if (isCharging) {
+    const pwr = Math.max(0.12, chargePower);
+    isCharging = false;
+    chargePower = 0;
+    fireWeapon(wpn, aimAngle, pwr, mouseWorld);
+  } else if (wpn.type === 'CHARGE') {
+    // Quick stationary tap without holding long enough to charge fully
+    fireWeapon(wpn, aimAngle, 0.45, mouseWorld);
+  } else {
+    fireWeapon(wpn, aimAngle, 1.0, mouseWorld);
+  }
+}
+
+window.addEventListener('mousemove', e => {
+  if (isTouchDraggingCanvas) return;
+
+  if (mouseGestureMode !== 'NONE' && appStage === 'PLAYING') {
+    const dx = e.clientX - mouseLastX;
+    const dy = e.clientY - mouseLastY;
+    mouseLastX = e.clientX;
+    mouseLastY = e.clientY;
+
+    if (mouseGestureMode === 'PENDING') {
+      const distFromStart = Math.hypot(e.clientX - mouseDownX, e.clientY - mouseDownY);
+      if (distFromStart > SWIPE_THRESHOLD_PX) {
+        // Pressed and immediately moved -> swipe/drag the map!
+        if (mouseLongPressTimer) {
+          clearTimeout(mouseLongPressTimer);
+          mouseLongPressTimer = null;
+        }
+        mouseGestureMode = 'PAN';
+        isCharging = false;
+        chargePower = 0;
+      }
+    }
+
+    if (mouseGestureMode === 'PAN') {
+      panMapByScreenDelta(dx, dy);
+      return;
+    }
+
+    if (mouseGestureMode === 'SHOOT') {
+      updateAimFromScreenPoint(e.clientX, e.clientY);
+      return;
+    }
+  }
+
+  mouseLastX = e.clientX;
+  mouseLastY = e.clientY;
+  updateAimFromScreenPoint(e.clientX, e.clientY);
 });
 
 canvas.addEventListener('mousedown', e => {
-  if (e.button !== 0 || appStage !== 'PLAYING') return;
+  if (e.button !== 0 || appStage !== 'PLAYING' || isTouchDraggingCanvas) return;
   SND.init();
 
   if (turnPhase === 'GAME_OVER') {
@@ -6389,11 +7948,280 @@ canvas.addEventListener('mousedown', e => {
     return;
   }
 
-  if (isCurrentTurnAI() || turnPhase !== 'TURN_PLAY' || !activeFighter || !activeFighter.alive || activeFighter.drowning) return;
+  mouseGestureMode = 'PENDING';
+  mouseDownX = e.clientX;
+  mouseDownY = e.clientY;
+  mouseLastX = e.clientX;
+  mouseLastY = e.clientY;
 
+  if (mouseLongPressTimer) clearTimeout(mouseLongPressTimer);
+  mouseLongPressTimer = setTimeout(() => {
+    mouseLongPressTimer = null;
+    if (mouseGestureMode === 'PENDING' && appStage === 'PLAYING') {
+      mouseGestureMode = 'SHOOT';
+      beginLongPressShoot(mouseLastX, mouseLastY);
+    }
+  }, LONG_PRESS_MS);
+});
+
+window.addEventListener('mouseup', e => {
+  if (e.button !== 0 || appStage !== 'PLAYING' || isTouchDraggingCanvas) return;
+  if (mouseLongPressTimer) {
+    clearTimeout(mouseLongPressTimer);
+    mouseLongPressTimer = null;
+  }
+  const mode = mouseGestureMode;
+  mouseGestureMode = 'NONE';
+
+  // If the user pressed and immediately moved (swipe/drag), NEVER shoot!
+  if (mode === 'PAN' || mode === 'NONE') {
+    isCharging = false;
+    chargePower = 0;
+    return;
+  }
+
+  // Long-press ('SHOOT') or stationary tap ('PENDING') shoots when released!
+  releaseShootAt(e.clientX, e.clientY);
+});
+
+canvas.addEventListener('touchstart', e => {
+  document.body.classList.add('touch-device');
+  if (appStage !== 'PLAYING') return;
+  e.preventDefault();
+  SND.init();
+  isTouchDraggingCanvas = true;
+
+  if (turnPhase === 'GAME_OVER') {
+    initMatch(true);
+    return;
+  }
+
+  if (touchLongPressTimer) {
+    clearTimeout(touchLongPressTimer);
+    touchLongPressTimer = null;
+  }
+
+  if (e.touches.length === 1) {
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+    touchLastX = t.clientX;
+    touchLastY = t.clientY;
+    touchGestureMode = 'PENDING';
+
+    touchLongPressTimer = setTimeout(() => {
+      touchLongPressTimer = null;
+      if (touchGestureMode === 'PENDING' && appStage === 'PLAYING') {
+        touchGestureMode = 'SHOOT';
+        beginLongPressShoot(touchLastX, touchLastY);
+      }
+    }, LONG_PRESS_MS);
+  } else if (e.touches.length >= 2) {
+    touchGestureMode = 'PAN';
+    isCharging = false;
+    chargePower = 0;
+    const t0 = e.touches[0], t1 = e.touches[1];
+    pinchLastDist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+    pinchLastMidX = (t0.clientX + t1.clientX) * 0.5;
+    pinchLastMidY = (t0.clientY + t1.clientY) * 0.5;
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', e => {
+  if (appStage !== 'PLAYING') return;
+  e.preventDefault();
+
+  if (e.touches.length === 1) {
+    const t = e.touches[0];
+    const dxScreen = t.clientX - touchLastX;
+    const dyScreen = t.clientY - touchLastY;
+    touchLastX = t.clientX;
+    touchLastY = t.clientY;
+
+    if (touchGestureMode === 'PENDING') {
+      const distFromStart = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
+      if (distFromStart > SWIPE_THRESHOLD_PX) {
+        // Pressed and immediately moved -> swipe/drag the map!
+        if (touchLongPressTimer) {
+          clearTimeout(touchLongPressTimer);
+          touchLongPressTimer = null;
+        }
+        touchGestureMode = 'PAN';
+        isCharging = false;
+        chargePower = 0;
+      }
+    }
+
+    if (touchGestureMode === 'PAN') {
+      panMapByScreenDelta(dxScreen, dyScreen);
+    } else if (touchGestureMode === 'SHOOT') {
+      // If long-press already started, moving the finger adjusts aim before releasing to shoot!
+      updateAimFromScreenPoint(t.clientX, t.clientY);
+    }
+  } else if (e.touches.length >= 2) {
+    if (touchLongPressTimer) {
+      clearTimeout(touchLongPressTimer);
+      touchLongPressTimer = null;
+    }
+    touchGestureMode = 'PAN';
+    isCharging = false;
+    chargePower = 0;
+
+    const t0 = e.touches[0], t1 = e.touches[1];
+    const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+    const midX = (t0.clientX + t1.clientX) * 0.5;
+    const midY = (t0.clientY + t1.clientY) * 0.5;
+
+    if (pinchLastDist > 12) {
+      const zoomFactor = dist / pinchLastDist;
+      userZoomMult = clamp(userZoomMult * zoomFactor, 0.50, 2.25);
+    }
+    panMapByScreenDelta(midX - pinchLastMidX, midY - pinchLastMidY);
+
+    pinchLastDist = dist;
+    pinchLastMidX = midX;
+    pinchLastMidY = midY;
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchend', e => {
+  if (touchLongPressTimer) {
+    clearTimeout(touchLongPressTimer);
+    touchLongPressTimer = null;
+  }
+  if (e.touches.length === 0) {
+    const mode = touchGestureMode;
+    touchGestureMode = 'NONE';
+    if (mode === 'SHOOT' || mode === 'PENDING') {
+      releaseShootAt(touchLastX, touchLastY);
+    } else {
+      isCharging = false;
+      chargePower = 0;
+    }
+    setTimeout(() => { isTouchDraggingCanvas = false; }, 280);
+  } else if (e.touches.length === 1) {
+    touchLastX = e.touches[0].clientX;
+    touchLastY = e.touches[0].clientY;
+    pinchLastDist = 0;
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchcancel', () => {
+  if (touchLongPressTimer) {
+    clearTimeout(touchLongPressTimer);
+    touchLongPressTimer = null;
+  }
+  touchGestureMode = 'NONE';
+  isCharging = false;
+  chargePower = 0;
+  setTimeout(() => { isTouchDraggingCanvas = false; }, 280);
+}, { passive: false });
+
+// ───────────────────────────────────────────────────────────────────────────
+//  TACTILE MOBILE GAMEPAD BUTTONS (Works in Portrait & Landscape!)
+// ───────────────────────────────────────────────────────────────────────────
+function bindHoldButton(btnId, onDown, onUp) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    document.body.classList.add('touch-device');
+    SND.init();
+    btn.classList.add('pressed');
+    try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+    onDown();
+  });
+  const release = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!btn.classList.contains('pressed')) return;
+    btn.classList.remove('pressed');
+    onUp();
+  };
+  btn.addEventListener('pointerup', release);
+  btn.addEventListener('pointercancel', release);
+}
+
+bindHoldButton('mc-left', () => {
+  keys.left = true;
+  keys.right = false;
+  if (activeFighter && activeFighter.alive && !isCurrentTurnAI() && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT')) {
+    activeFighter.facing = -1;
+    aimAngle = Math.atan2(Math.sin(aimAngle), -Math.abs(Math.cos(aimAngle)));
+  }
+}, () => {
+  keys.left = false;
+});
+
+bindHoldButton('mc-right', () => {
+  keys.right = true;
+  keys.left = false;
+  if (activeFighter && activeFighter.alive && !isCurrentTurnAI() && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT')) {
+    activeFighter.facing = 1;
+    aimAngle = Math.atan2(Math.sin(aimAngle), Math.abs(Math.cos(aimAngle)));
+  }
+}, () => {
+  keys.right = false;
+});
+
+bindHoldButton('mc-jump', () => {
+  keys.up = true;
+  if ((turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT') &&
+      activeFighter && activeFighter.alive && !activeFighter.drowning &&
+      activeFighter.jetFuel <= 0 && !isCurrentTurnAI()) {
+    const now = performance.now();
+    if (activeFighter.grounded && !activeFighter.sliding) {
+      activeFighter.grounded = false;
+      activeFighter.jumpStartX = activeFighter.x;
+      activeFighter.jumpStartY = activeFighter.y;
+      activeFighter.peakAirY = activeFighter.y;
+      activeFighter.isVoluntaryJump = true;
+      activeFighter.wasBlasted = false;
+      activeFighter.flipAngle = 0;
+      activeFighter.flipSpin = 0;
+      activeFighter.vx = activeFighter.facing * 92;
+      activeFighter.vy = -178;
+      activeFighter.squashX = 0.82;
+      activeFighter.squashY = 1.22;
+      lastJumpPressTime = now;
+      SND.jump();
+    } else if (!activeFighter.grounded && now - lastJumpPressTime < 340) {
+      if (activeFighter.jumpStartX !== undefined) {
+        activeFighter.x = lerp(activeFighter.x, activeFighter.jumpStartX, 0.7);
+      }
+      triggerBackwardsJump(activeFighter);
+      lastJumpPressTime = 0;
+    }
+  }
+}, () => {
+  keys.up = false;
+});
+
+bindHoldButton('mc-backflip', () => {
+  keys.down = true;
+  if ((turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT') &&
+      activeFighter && activeFighter.alive && !activeFighter.drowning &&
+      activeFighter.jetFuel <= 0 && !isCurrentTurnAI() &&
+      activeFighter.grounded && !activeFighter.sliding) {
+    triggerBackwardsJump(activeFighter);
+  }
+}, () => {
+  keys.down = false;
+});
+
+bindHoldButton('mc-fire', () => {
+  if (appStage !== 'PLAYING') return;
+  if (turnPhase === 'GAME_OVER') {
+    initMatch(true);
+    return;
+  }
+  if (isCurrentTurnAI() || turnPhase !== 'TURN_PLAY' || !activeFighter || !activeFighter.alive || activeFighter.drowning) return;
   const wpn = WEAPONS[selectedWeaponIdx];
   if (teamAmmo[activeTeam][wpn.id] <= 0) return;
 
+  cam.panOffsetX = 0;
+  cam.panOffsetY = 0;
   if (wpn.type === 'CHARGE') {
     isCharging = true;
     chargePower = 0.08;
@@ -6401,10 +8229,7 @@ canvas.addEventListener('mousedown', e => {
   } else {
     fireWeapon(wpn, aimAngle, 1.0, mouseWorld);
   }
-});
-
-window.addEventListener('mouseup', e => {
-  if (e.button !== 0 || appStage !== 'PLAYING') return;
+}, () => {
   if (isCharging && !isCurrentTurnAI() && turnPhase === 'TURN_PLAY') {
     isCharging = false;
     fireWeapon(WEAPONS[selectedWeaponIdx], aimAngle, Math.max(0.12, chargePower), mouseWorld);
@@ -6412,10 +8237,30 @@ window.addEventListener('mouseup', e => {
   }
 });
 
+document.getElementById('mc-zoom-in').onclick = e => {
+  e.stopPropagation();
+  SND.init();
+  userZoomMult = clamp(userZoomMult + 0.16, 0.50, 2.25);
+};
+
+document.getElementById('mc-zoom-out').onclick = e => {
+  e.stopPropagation();
+  SND.init();
+  userZoomMult = clamp(userZoomMult - 0.16, 0.50, 2.25);
+};
+
+document.getElementById('mc-pan').onclick = e => {
+  e.stopPropagation();
+  SND.init();
+  cam.panOffsetX = 0;
+  cam.panOffsetY = 0;
+};
+
 function triggerBackwardsJump(f) {
   f.grounded = false;
   f.sliding = false;
   f.jumpStartY = f.y;
+  f.peakAirY = f.y;
   f.isVoluntaryJump = true;
   f.wasBlasted = false;
   // Classic Worms backwards jump: very little X-axis movement, crisp vertical hop + 360° backflip somersault!
@@ -6478,6 +8323,7 @@ window.addEventListener('keydown', e => {
         activeFighter.grounded = false;
         activeFighter.jumpStartX = activeFighter.x;
         activeFighter.jumpStartY = activeFighter.y;
+        activeFighter.peakAirY = activeFighter.y;
         activeFighter.isVoluntaryJump = true;
         activeFighter.wasBlasted = false;
         activeFighter.flipAngle = 0;
@@ -6520,7 +8366,7 @@ window.addEventListener('keydown', e => {
   if (e.key === 'f' || e.key === 'F') {
     processionConvoyEnabled = !processionConvoyEnabled;
     const pLbl = document.getElementById('lbl-procession');
-    if (pLbl) pLbl.textContent = processionConvoyEnabled ? 'Procession: Auto [F]' : 'Procession: Solo [F]';
+    if (pLbl) pLbl.textContent = processionConvoyEnabled ? 'Processó: Auto [F]' : 'Processó: Sol [F]';
   }
 
   if (e.key === 'q' || e.key === 'Q') {
@@ -6589,8 +8435,8 @@ function updateHUD() {
     else pips1.appendChild(pip);
   }
 
-  document.getElementById('t1-hp-text').textContent = `${hp0} HP`;
-  document.getElementById('t2-hp-text').textContent = `${hp1} HP`;
+  document.getElementById('t1-hp-text').textContent = `${hp0} PV`;
+  document.getElementById('t2-hp-text').textContent = `${hp1} PV`;
 }
 
 function buildWeaponBar() {
@@ -6598,6 +8444,16 @@ function buildWeaponBar() {
   bar.innerHTML = '';
   const curWpn = WEAPONS[selectedWeaponIdx];
   document.getElementById('fuse-picker').classList.toggle('visible', !!curWpn.hasCustomFuse);
+
+  const fireLbl = document.getElementById('mc-fire-label');
+  if (fireLbl && curWpn) {
+    if (curWpn.type === 'CHARGE') fireLbl.textContent = 'MANTÉN: FOC!';
+    else if (curWpn.id === 'AIRSTRIKE') fireLbl.textContent = 'CORREFOC!';
+    else if (curWpn.type === 'MELEE') fireLbl.textContent = 'ATACA!';
+    else if (curWpn.type === 'DROP') fireLbl.textContent = 'DEIXA TIÓ!';
+    else if (curWpn.type === 'UTILITY_JET') fireLbl.textContent = 'ALES!';
+    else fireLbl.textContent = 'FOC!';
+  }
 
   WEAPONS.forEach((w, i) => {
     const ammo = teamAmmo[activeTeam] ? teamAmmo[activeTeam][w.id] : w.defaultAmmo;
@@ -6615,6 +8471,12 @@ function buildWeaponBar() {
       if (!isCurrentTurnAI() && ammo > 0) {
         selectedWeaponIdx = i;
         teamSelectedWeaponIdx[activeTeam] = i;
+        if (w.id === 'AIRSTRIKE' && activeFighter) {
+          mouseWorld = {
+            x: clamp(activeFighter.x + activeFighter.facing * 220, 200, TERRAIN_W - 200),
+            y: Math.max(160, activeFighter.y - 110)
+          };
+        }
         buildWeaponBar();
       }
     };
@@ -6622,7 +8484,7 @@ function buildWeaponBar() {
   });
 }
 
-// Campaign Lobby Modal (Modes, Difficulty, 3 Regional Theatres, Hats, Names & Faces)
+// Campaign Lobby Modal (Modes, Difficulty, 4 Catalan Theatres, Hats, Names & Faces)
 const lobbyModal = document.getElementById('campaign-lobby');
 
 function openLobbyModal() {
@@ -6637,8 +8499,8 @@ function openLobbyModal() {
       <div class="oruga-row">
         <span class="oruga-idx">0${i + 1}</span>
         <input type="text" id="inp-t0-${i}" value="${teamNames[0][i]}" maxlength="16">
-        <label class="face-upload-label" title="Upload a friend's face photo for this Oruga">
-          ${customFaces[0][i] ? '✓ Face Set' : '+ Face'}
+        <label class="face-upload-label" title="Puja la foto de la cara d'un amic per a aquest cuc">
+          ${customFaces[0][i] ? '✓ Cara Llista' : '+ Cara'}
           <input type="file" accept="image/*" style="display:none" onchange="handleFaceUpload(0, ${i}, this)">
         </label>
       </div>
@@ -6647,8 +8509,8 @@ function openLobbyModal() {
       <div class="oruga-row">
         <span class="oruga-idx">0${i + 1}</span>
         <input type="text" id="inp-t1-${i}" value="${teamNames[1][i]}" maxlength="16">
-        <label class="face-upload-label" title="Upload a friend's face photo for this Oruga">
-          ${customFaces[1][i] ? '✓ Face Set' : '+ Face'}
+        <label class="face-upload-label" title="Puja la foto de la cara d'un amic per a aquest cuc">
+          ${customFaces[1][i] ? '✓ Cara Llista' : '+ Cara'}
           <input type="file" accept="image/*" style="display:none" onchange="handleFaceUpload(1, ${i}, this)">
         </label>
       </div>
@@ -6701,7 +8563,7 @@ window.handleFaceUpload = function(team, idx, inputEl) {
       for (const f of fighters) {
         if (f.team === team && f.memberIdx === idx) f.customFaceImg = img;
       }
-      inputEl.parentElement.childNodes[0].textContent = '✓ Face Set';
+      inputEl.parentElement.childNodes[0].textContent = '✓ Cara Llista';
     };
     img.src = e.target.result;
   };
@@ -6737,14 +8599,14 @@ function readLobbyCustomization() {
     f.name = teamNames[f.team][f.memberIdx];
   }
   if (activeFighter) {
-    document.getElementById('turn-status').textContent = `${activeFighter.name}'s Turn`;
+    document.getElementById('turn-status').textContent = `Torn de ${activeFighter.name}`;
   }
   updateHUD();
 }
 
 document.getElementById('btn-random-names').onclick = () => {
-  const pool0 = ['Peluda', 'Serrallonga', 'Pinaza', 'Rovelló', 'Butifarra', 'Calçot', 'Gaudí', 'Garbí'];
-  const pool1 = ['Urticaria', 'Tramuntana', 'Boira', 'Espina', 'Caganer', 'Tió', 'Alcatraz', 'Niebla'];
+  const pool0 = ['Peluda', 'Serrallonga', 'Pinassa', 'Rovelló', 'Botifarra', 'Calçot', 'Gaudí', 'Garbí', 'Fuet', 'Escudella'];
+  const pool1 = ['Urticària', 'Tramuntana', 'Boira', 'Espina', 'Caganer', 'Tió', 'Fageda', 'Ratafia', 'Empordà', 'Canigó'];
   pool0.sort(() => Math.random() - 0.5);
   pool1.sort(() => Math.random() - 0.5);
   for (let i = 0; i < 4; i++) {
@@ -6789,7 +8651,7 @@ document.getElementById('btn-silk-web').onclick = () => {
 document.getElementById('btn-procession').onclick = () => {
   processionConvoyEnabled = !processionConvoyEnabled;
   document.getElementById('lbl-procession').textContent =
-    processionConvoyEnabled ? 'Procession: Auto [F]' : 'Procession: Solo [F]';
+    processionConvoyEnabled ? 'Processó: Auto [F]' : 'Processó: Sol [F]';
 };
 
 document.getElementById('btn-close-setup').onclick = () => {
