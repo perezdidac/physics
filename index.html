@@ -553,14 +553,14 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   IN-GAME TOP & BOTTOM ARCHITECTURAL HUD + MINIMAP RADAR
+   IN-GAME MINIMALIST GLASSMORPHIC HUD & COLLAPSIBLE WEAPON DRAWER
    ═══════════════════════════════════════════════════════════════════ */
 #top-hud {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  padding: 12px 20px;
+  padding: 10px 16px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: start;
@@ -572,59 +572,59 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  max-width: 315px;
-  background: linear-gradient(180deg, rgba(20, 24, 32, 0.92) 0%, rgba(12, 14, 20, 0.95) 100%);
-  border: 1px solid var(--brass-dim);
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  padding: 9px 13px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+  max-width: 245px;
+  background: rgba(14, 18, 26, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 195, 110, 0.28);
+  border-radius: 14px;
+  padding: 7px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42);
 }
 
 .squad-panel.right {
   justify-self: end;
-  min-width: 285px;
+  min-width: 225px;
 }
 
 .squad-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  border-bottom: 1px solid rgba(242, 236, 223, 0.1);
-  padding-bottom: 4px;
+  align-items: center;
+  gap: 8px;
 }
 
 .squad-title {
   font-family: 'Cinzel', Georgia, serif;
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 800;
-  letter-spacing: 1.2px;
+  letter-spacing: 0.9px;
   text-transform: uppercase;
 }
 
 .squad-hp-total {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11.5px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
   color: var(--ivory);
 }
 
 .squad-pips {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-top: 2px;
+  gap: 5px;
 }
 
 .worm-pip {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 .worm-pip-name {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  color: var(--ivory-muted);
+  color: rgba(242, 236, 223, 0.65);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -635,17 +635,19 @@ html, body {
 }
 
 .worm-pip.dead {
-  opacity: 0.25;
+  opacity: 0.22;
 }
 
 .worm-pip-bar {
   height: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
 }
 
 .worm-pip-fill {
   height: 100%;
+  border-radius: 99px;
   transition: width 0.25s ease;
 }
 
@@ -653,35 +655,37 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   pointer-events: auto;
 }
 
 .chrono-housing {
   display: flex;
   align-items: center;
-  gap: 15px;
-  background: linear-gradient(180deg, #191d26 0%, #0f1218 100%);
-  border: 1px solid var(--brass-trim);
-  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
-  padding: 6px 20px;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
+  gap: 12px;
+  background: rgba(14, 18, 26, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 195, 110, 0.42);
+  border-radius: 999px;
+  padding: 5px 18px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.52);
 }
 
 #turn-timer {
   font-family: 'Cinzel', Georgia, serif;
-  font-size: 25px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 900;
   color: var(--brass-bright);
-  min-width: 34px;
+  min-width: 28px;
   text-align: center;
   line-height: 1;
 }
 
 .turn-divider {
   width: 1px;
-  height: 24px;
-  background: var(--brass-dim);
+  height: 20px;
+  background: rgba(240, 195, 110, 0.28);
 }
 
 .turn-meta {
@@ -691,44 +695,48 @@ html, body {
 }
 
 #turn-status {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 800;
   color: var(--ivory);
-  letter-spacing: 0.4px;
+  letter-spacing: 0.3px;
 }
 
 #round-sub {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   color: var(--ivory-muted);
 }
 
 .anemometer {
   display: flex;
   align-items: center;
-  gap: 9px;
-  background: rgba(14, 17, 23, 0.9);
-  border: 1px solid rgba(212, 161, 83, 0.28);
-  padding: 4px 12px;
-  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 6px 100%, 0 50%);
+  gap: 7px;
+  background: rgba(14, 18, 26, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(240, 195, 110, 0.24);
+  border-radius: 999px;
+  padding: 3px 11px;
 }
 
 .anem-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   color: var(--ivory-muted);
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
 }
 
 .wind-track {
   position: relative;
-  width: 96px;
-  height: 6px;
+  width: 82px;
+  height: 5px;
+  border-radius: 99px;
   background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  overflow: hidden;
 }
 
 .wind-zero {
@@ -744,6 +752,7 @@ html, body {
   position: absolute;
   top: 0;
   bottom: 0;
+  border-radius: 99px;
   background: #7ec8e3;
   transition: left 0.25s ease, width 0.25s ease;
 }
@@ -751,39 +760,41 @@ html, body {
 .command-strip {
   display: flex;
   justify-content: flex-end;
-  gap: 6px;
-  margin-top: 6px;
+  gap: 5px;
+  margin-top: 5px;
   pointer-events: auto;
 }
 
 .cmd-btn {
-  height: 29px;
-  padding: 0 10px;
-  background: rgba(18, 22, 30, 0.92);
-  border: 1px solid rgba(212, 161, 83, 0.34);
+  height: 27px;
+  padding: 0 11px;
+  background: rgba(16, 20, 28, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(240, 195, 110, 0.32);
+  border-radius: 999px;
   color: var(--ivory);
   font-family: inherit;
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
-  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
   transition: all 0.14s ease;
 }
 
 .cmd-btn:hover {
-  background: #252b38;
-  border-color: var(--brass-trim);
+  background: rgba(34, 42, 58, 0.92);
+  border-color: var(--brass-bright);
   color: var(--brass-bright);
 }
 
 .cmd-btn svg {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   stroke: currentColor;
   fill: none;
   stroke-width: 2;
@@ -791,26 +802,31 @@ html, body {
 
 #bottom-hud {
   position: absolute;
-  bottom: 12px;
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   z-index: 20;
+  pointer-events: none;
 }
 
 .fuse-picker {
   display: none;
   align-items: center;
   gap: 5px;
-  background: rgba(14, 17, 23, 0.92);
-  border: 1px solid var(--brass-dim);
-  padding: 3px 10px;
-  font-size: 10.5px;
+  background: rgba(14, 18, 26, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(240, 195, 110, 0.35);
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--ivory-muted);
+  pointer-events: auto;
 }
 
 .fuse-picker.visible {
@@ -818,11 +834,12 @@ html, body {
 }
 
 .fuse-btn {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
   color: var(--ivory);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   padding: 2px 7px;
   cursor: pointer;
@@ -834,23 +851,112 @@ html, body {
   color: #0d0f13;
 }
 
-.ordnance-rack {
+/* Sleek Active Weapon Pill & Collapsible Arsenal Drawer */
+.weapon-pill-bar {
   display: flex;
-  gap: 4px;
-  background: linear-gradient(180deg, rgba(20, 24, 32, 0.95) 0%, rgba(11, 13, 18, 0.98) 100%);
-  border: 1px solid var(--brass-dim);
-  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%, 0 10px);
-  padding: 6px 8px;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+#weapon-toggle-btn {
+  height: 44px;
+  padding: 0 16px;
+  background: linear-gradient(180deg, rgba(24, 30, 42, 0.90) 0%, rgba(12, 15, 22, 0.95) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(240, 195, 110, 0.58);
+  border-radius: 999px;
+  color: var(--ivory);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
+  transition: transform 0.12s ease, border-color 0.14s ease, background 0.14s ease;
+}
+
+#weapon-toggle-btn:hover {
+  border-color: var(--brass-bright);
+  transform: translateY(-1px);
+}
+
+#weapon-toggle-btn.open {
+  background: linear-gradient(180deg, rgba(212, 161, 83, 0.28) 0%, rgba(18, 22, 32, 0.96) 100%);
+  border-color: var(--brass-bright);
+}
+
+.wt-icon {
+  width: 30px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wt-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.wt-name {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.wt-ammo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--brass-bright);
+  background: rgba(240, 184, 73, 0.14);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.wt-chevron {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--ivory-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-left: 2px;
+}
+
+.ordnance-rack {
+  display: none;
+  gap: 5px;
+  background: rgba(14, 18, 26, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(240, 195, 110, 0.42);
+  border-radius: 16px;
+  padding: 7px 9px;
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.82);
+  pointer-events: auto;
+  animation: drawerPop 0.16s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.ordnance-rack.open {
+  display: flex;
+}
+
+@keyframes drawerPop {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .ord-slot {
   position: relative;
-  width: 64px;
-  height: 56px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(242, 236, 223, 0.1);
-  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+  width: 62px;
+  height: 54px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(242, 236, 223, 0.12);
+  border-radius: 10px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -861,12 +967,12 @@ html, body {
 }
 
 .ord-slot:hover {
-  background: rgba(212, 161, 83, 0.1);
-  border-color: rgba(212, 161, 83, 0.45);
+  background: rgba(212, 161, 83, 0.14);
+  border-color: rgba(212, 161, 83, 0.5);
 }
 
 .ord-slot.active {
-  background: linear-gradient(180deg, rgba(212, 161, 83, 0.25) 0%, rgba(212, 161, 83, 0.08) 100%);
+  background: linear-gradient(180deg, rgba(212, 161, 83, 0.28) 0%, rgba(212, 161, 83, 0.08) 100%);
   border-color: var(--brass-bright);
   box-shadow: inset 0 0 12px rgba(240, 184, 73, 0.22);
 }
@@ -879,7 +985,7 @@ html, body {
 .ord-hotkey {
   position: absolute;
   top: 2px;
-  left: 4px;
+  left: 5px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 8.5px;
   font-weight: 700;
@@ -889,7 +995,7 @@ html, body {
 .ord-ammo {
   position: absolute;
   top: 2px;
-  right: 4px;
+  right: 5px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   font-weight: 700;
@@ -916,19 +1022,12 @@ html, body {
   font-weight: 700;
   letter-spacing: 0.2px;
   text-transform: uppercase;
-  color: rgba(242, 236, 223, 0.86);
+  color: rgba(242, 236, 223, 0.88);
   white-space: nowrap;
 }
 
 .tactical-legend {
-  font-size: 10.5px;
-  font-weight: 600;
-  color: rgba(242, 236, 223, 0.68);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
-}
-
-.tactical-legend b {
-  color: var(--brass-bright);
+  display: none;
 }
 
 /* Post-Match Victory & MVP Podium Overlay */
@@ -1307,7 +1406,7 @@ body.touch-device #mobile-controls {
     font-size: 9.5px;
   }
 
-  /* Bottom HUD & 6x2 Weapon Grid in Portrait Mode */
+  /* Bottom HUD & Collapsible 6x2 Weapon Drawer in Portrait Mode */
   #bottom-hud {
     bottom: max(6px, env(safe-area-inset-bottom));
     width: calc(100vw - 12px);
@@ -1315,11 +1414,15 @@ body.touch-device #mobile-controls {
   }
 
   .ordnance-rack {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(6, 1fr);
-    gap: 3px;
+    gap: 4px;
     width: 100%;
-    padding: 5px;
+    padding: 6px;
+  }
+
+  .ordnance-rack.open {
+    display: grid;
   }
 
   .ord-slot {
@@ -1409,7 +1512,7 @@ body.touch-device #mobile-controls {
 
   #top-hud {
     padding: 4px max(10px, env(safe-area-inset-right)) 0 max(10px, env(safe-area-inset-left));
-    grid-template-columns: minmax(170px, 230px) auto minmax(170px, 260px);
+    grid-template-columns: minmax(160px, 215px) auto minmax(160px, 235px);
     gap: 6px;
   }
 
@@ -1417,7 +1520,7 @@ body.touch-device #mobile-controls {
   .squad-panel.right {
     padding: 4px 8px;
     min-width: 0;
-    max-width: 240px;
+    max-width: 225px;
     gap: 2px;
   }
 
@@ -1457,13 +1560,13 @@ body.touch-device #mobile-controls {
 
   .command-strip {
     margin-top: 3px;
-    gap: 3px;
+    gap: 4px;
     flex-wrap: wrap;
   }
 
   .cmd-btn {
     height: 22px;
-    padding: 0 6px;
+    padding: 0 8px;
     font-size: 8.5px;
   }
 
@@ -1475,7 +1578,7 @@ body.touch-device #mobile-controls {
   #bottom-hud {
     bottom: max(4px, env(safe-area-inset-bottom));
     width: calc(100vw - 16px);
-    gap: 3px;
+    gap: 4px;
   }
 
   .mc-btn {
@@ -1491,19 +1594,28 @@ body.touch-device #mobile-controls {
     font-size: 12.5px;
   }
 
+  #weapon-toggle-btn {
+    height: 36px;
+    padding: 0 12px;
+  }
+
   .ordnance-rack {
-    display: flex;
+    display: none;
     overflow-x: auto;
     max-width: 100%;
-    padding: 3px 5px;
-    gap: 3px;
+    padding: 4px 6px;
+    gap: 4px;
     -webkit-overflow-scrolling: touch;
   }
 
+  .ordnance-rack.open {
+    display: flex;
+  }
+
   .ord-slot {
-    width: 46px;
-    min-width: 46px;
-    height: 38px;
+    width: 48px;
+    min-width: 48px;
+    height: 40px;
     padding: 2px;
   }
 
@@ -1710,34 +1822,25 @@ body.touch-device #mobile-controls {
       </div>
 
       <div class="command-strip">
-        <button class="cmd-btn" id="btn-silk-web" title="Teixeix un llit el&agrave;stic o escut de seda en la direcci&oacute; on apuntes [Tecla: C]">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/><line x1="18.4" y1="5.6" x2="5.6" y2="18.4"/></svg>
-          <span id="lbl-silk-web">Teixir Seda [C]</span>
-        </button>
-        <button class="cmd-btn" id="btn-procession" title="Activa o desactiva la marxa en process&oacute; amb els aliats propers [Tecla: F]">
-          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          <span id="lbl-procession">Process&oacute;: Auto [F]</span>
-        </button>
+        <button class="cmd-btn" id="btn-silk-web" style="display:none"><span id="lbl-silk-web">Teixir Seda [C]</span></button>
+        <button class="cmd-btn" id="btn-procession" style="display:none"><span id="lbl-procession">Process&oacute;: Auto [F]</span></button>
+        <button class="cmd-btn" id="btn-mode" style="display:none"><span id="lbl-mode">1J vs CPU</span></button>
         <button class="cmd-btn" id="btn-map" title="Canvia d'indret de Catalunya">
           <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
           <span id="lbl-map">Montserrat</span>
         </button>
-        <button class="cmd-btn" id="btn-mode" title="Canvia el mode de joc">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-          <span id="lbl-mode">1J vs CPU</span>
-        </button>
-        <button class="cmd-btn" id="btn-roster" title="Obre la configuraci&oacute; d'escamots i indrets de Catalunya">
+        <button class="cmd-btn" id="btn-roster" title="Obre la configuraci&oacute; d'escamots, mode i indrets de Catalunya">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          <span>Escamots i Mapes</span>
+          <span>Opcions</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Ordnance Rack with 12 Catalan Weapons + Tactile Mobile Gamepad! -->
+  <!-- Bottom Collapsible Ordnance Drawer + Sleek Active Weapon Pill + Mobile Gamepad! -->
   <div id="bottom-hud">
     <div class="fuse-picker" id="fuse-picker">
-      <span>TEMPS DE METXA (Q/E):</span>
+      <span>METXA:</span>
       <button class="fuse-btn" data-fuse="1">1s</button>
       <button class="fuse-btn" data-fuse="2">2s</button>
       <button class="fuse-btn active" data-fuse="3">3s</button>
@@ -1745,7 +1848,9 @@ body.touch-device #mobile-controls {
       <button class="fuse-btn" data-fuse="5">5s</button>
     </div>
 
-    <!-- Tactile Mobile & Touch Controls (Works in Portrait & Landscape!) -->
+    <div class="ordnance-rack" id="weapon-bar"></div>
+
+    <!-- Tactile Mobile & Touch Controls + Sleek Active Weapon Pill -->
     <div id="mobile-controls">
       <div class="mc-cluster mc-left">
         <button class="mc-btn mc-btn-arrow" id="mc-left" aria-label="Moure a l'esquerra">&#9664;</button>
@@ -1757,7 +1862,7 @@ body.touch-device #mobile-controls {
       <div class="mc-cluster mc-right">
         <button class="mc-btn mc-btn-util" id="mc-zoom-out" title="Allunya la c&agrave;mera">&minus;</button>
         <button class="mc-btn mc-btn-util" id="mc-zoom-in" title="Apropa la c&agrave;mera">+</button>
-        <button class="mc-btn mc-btn-util" id="mc-pan" title="Activa per moure la c&agrave;mera amb 1 dit per tot el mapa">Mirar</button>
+        <button class="mc-btn mc-btn-util" id="mc-pan" title="Centra la c&agrave;mera">Centra</button>
         <button class="mc-btn mc-btn-fire" id="mc-fire">
           <div class="mc-fire-fill" id="mc-fire-fill"></div>
           <span id="mc-fire-label">FOC!</span>
@@ -1765,15 +1870,13 @@ body.touch-device #mobile-controls {
       </div>
     </div>
 
-    <div class="ordnance-rack" id="weapon-bar"></div>
-
-    <div class="tactical-legend">
-      <b>A / D</b> Arrossegar-se &nbsp;&middot;&nbsp;
-      <b>W / Espai</b> Salt Curt &nbsp;&middot;&nbsp;
-      <b>S / Avall / Retroc&eacute;s</b> Salt Enrere &nbsp;&middot;&nbsp;
-      <b>C</b> Teixir Seda &nbsp;&middot;&nbsp;
-      <b>F</b> Unir Process&oacute; &nbsp;&middot;&nbsp;
-      <b>Mant&eacute;n Clic / FOC!</b> Disparar
+    <div class="weapon-pill-bar">
+      <button id="weapon-toggle-btn" title="Toca per triar d'entre les 12 armes catalanes">
+        <span class="wt-icon" id="wt-icon"></span>
+        <span class="wt-name" id="wt-name">Trabuc</span>
+        <span class="wt-ammo" id="wt-ammo">&infin;</span>
+        <span class="wt-chevron" id="wt-chevron">&#9650; Arsenal</span>
+      </button>
     </div>
   </div>
 
@@ -2290,15 +2393,16 @@ function generateDestructibleTerrain(mapIdx) {
         }
       }
 
-      const n1 = fbm(x * 0.025 + mapSeed, y * 0.025, 4);
-      const n2 = ridgedFbm(x * 0.055, y * 0.055, 3);
-      const strata = Math.sin(y * 0.11 + n1 * 5.0) * 0.5 + 0.5;
-      const rockVal = n1 * 0.5 + n2 * 0.3 + strata * 0.2;
+      // Painterly low-frequency gouache strata instead of harsh pixel noise
+      const n1 = fbm(x * 0.014 + mapSeed, y * 0.014, 3);
+      const n2 = ridgedFbm(x * 0.028, y * 0.028, 2);
+      const strata = Math.sin(y * 0.075 + n1 * 4.2 + Math.cos(x * 0.008) * 1.5) * 0.5 + 0.5;
+      const rockVal = n1 * 0.55 + n2 * 0.22 + strata * 0.23;
 
       const idx4 = (y * TERRAIN_W + x) * 4;
-      bd[idx4]     = mCfg.rockCol[0] * 0.45 + rockVal * 26;
-      bd[idx4 + 1] = mCfg.rockCol[1] * 0.45 + rockVal * 24;
-      bd[idx4 + 2] = mCfg.rockCol[2] * 0.45 + rockVal * 28;
+      bd[idx4]     = mCfg.rockCol[0] * 0.48 + rockVal * 22;
+      bd[idx4 + 1] = mCfg.rockCol[1] * 0.48 + rockVal * 20;
+      bd[idx4 + 2] = mCfg.rockCol[2] * 0.48 + rockVal * 24;
       bd[idx4 + 3] = 255;
 
       if (inCavern) continue;
@@ -2306,37 +2410,40 @@ function generateDestructibleTerrain(mapIdx) {
       terrainMask[y * TERRAIN_W + x] = 1;
 
       let r, g, b;
-      const grassThick = Math.max(3, Math.floor(10 - Math.abs(slope) * 3.0));
+      const tuftWave = Math.sin(x * 0.22 + n1 * 6.0) * 2.2 + Math.cos(x * 0.09) * 1.6;
+      const grassThick = Math.max(5, Math.floor(14 - Math.abs(slope) * 2.8 + tuftWave));
       if (depth <= grassThick) {
-        const turfLight = clamp(0.80 - slope * 0.22 + (n1 - 0.5) * 0.24, 0.42, 1.28);
-        r = clamp(mCfg.turfCol[0] * turfLight, 20, 255);
-        g = clamp(mCfg.turfCol[1] * turfLight, 20, 255);
-        b = clamp(mCfg.turfCol[2] * turfLight, 20, 255);
-        // Crisp sunlit top-edge rim highlight & wild Mediterranean flowers on the surface!
-        if (depth <= 1) {
-          const sunRim = clamp(1.26 - slope * 0.18, 0.95, 1.45);
-          r = clamp(r * sunRim + 18, 0, 255);
-          g = clamp(g * sunRim + 22, 0, 255);
-          b = clamp(b * sunRim + 8, 0, 255);
-          if (depth === 0 && (x % 19 === 0) && Math.abs(slope) < 0.8) {
-            // Tiny golden broom / rosemary / poppy wildflower pixels
-            const flw = (x * 31) % 3;
-            if (flw === 0) { r = 248; g = 212; b = 88; }
-            else if (flw === 1) { r = 235; g = 95; b = 78; }
-            else { r = 198; g = 165; b = 245; }
-          }
+        const turfLight = clamp(0.88 - slope * 0.18 + (n1 - 0.5) * 0.18, 0.54, 1.24);
+        r = clamp(mCfg.turfCol[0] * turfLight, 24, 255);
+        g = clamp(mCfg.turfCol[1] * turfLight, 24, 255);
+        b = clamp(mCfg.turfCol[2] * turfLight, 24, 255);
+        // Painterly sunlit top-edge rim highlight (2.5px warm golden/ivory crown)
+        if (depth <= 2) {
+          const sunRim = clamp(1.32 - slope * 0.16 - depth * 0.09, 1.02, 1.48);
+          r = clamp(r * sunRim + 22, 0, 255);
+          g = clamp(g * sunRim + 24, 0, 255);
+          b = clamp(b * sunRim + 12, 0, 255);
+        } else if (depth >= grassThick - 1) {
+          // Soft dark-moss underside lip along scalloped grass tufts
+          r *= 0.76;
+          g *= 0.78;
+          b *= 0.76;
         }
-      } else if (depth <= grassThick + 14) {
-        const soil = 0.72 + rockVal * 0.48;
+      } else if (depth <= grassThick + 16) {
+        // Soft ambient-occlusion shadow right under the turf rim, blending into warm topsoil
+        const ao = depth <= grassThick + 4 ? 0.74 : 0.88;
+        const soil = (0.78 + rockVal * 0.36) * ao;
         r = mCfg.soilCol[0] * soil;
         g = mCfg.soilCol[1] * soil;
         b = mCfg.soilCol[2] * soil;
       } else {
-        const sunShade = clamp(0.88 - slope * 0.15, 0.55, 1.15);
-        const quartz = (n2 > 0.78 && (x + y) % 7 === 0) ? 28 : 0;
-        r = (mCfg.rockCol[0] + rockVal * 58 + quartz) * sunShade;
-        g = (mCfg.rockCol[1] + rockVal * 54 + quartz) * sunShade;
-        b = (mCfg.rockCol[2] + rockVal * 58 + quartz * 1.1) * sunShade;
+        // Smooth, hand-painted storybook rock bands with subtle depth shading
+        const depthFade = clamp(1.0 - (depth - 20) * 0.0009, 0.72, 1.0);
+        const sunShade = clamp(0.92 - slope * 0.14, 0.62, 1.14) * depthFade;
+        const bandHighlight = strata > 0.72 ? 12 : (strata < 0.25 ? -8 : 0);
+        r = (mCfg.rockCol[0] + rockVal * 48 + bandHighlight) * sunShade;
+        g = (mCfg.rockCol[1] + rockVal * 45 + bandHighlight) * sunShade;
+        b = (mCfg.rockCol[2] + rockVal * 49 + bandHighlight * 1.1) * sunShade;
       }
 
       fd[idx4]     = clamp(r, 0, 255);
@@ -2445,7 +2552,7 @@ function carveCrater(cx, cy, radius) {
     for (let x = x0; x <= x1; x++) {
       const dx = x - cx, dy = y - cy;
       const dist = Math.hypot(dx, dy);
-      const jitter = (noise2D(x * 0.14, y * 0.14) - 0.5) * 7.5;
+      const jitter = (noise2D(x * 0.09, y * 0.09) - 0.5) * 4.5;
       if (dist + jitter <= radius) {
         terrainMask[y * TERRAIN_W + x] = 0;
       }
@@ -2455,9 +2562,10 @@ function carveCrater(cx, cy, radius) {
   tfCtx.save();
   tfCtx.globalCompositeOperation = 'destination-out';
   tfCtx.beginPath();
-  for (let i = 0; i < 24; i++) {
-    const a = (i / 24) * Math.PI * 2;
-    const jr = radius + (noise2D(cx * 0.1 + Math.cos(a) * 2, cy * 0.1 + Math.sin(a) * 2) - 0.5) * 7;
+  const steps = 36;
+  for (let i = 0; i < steps; i++) {
+    const a = (i / steps) * Math.PI * 2;
+    const jr = radius + (noise2D(cx * 0.07 + Math.cos(a) * 1.5, cy * 0.07 + Math.sin(a) * 1.5) - 0.5) * 4.5;
     const px = cx + Math.cos(a) * jr;
     const py = cy + Math.sin(a) * jr;
     if (i === 0) tfCtx.moveTo(px, py); else tfCtx.lineTo(px, py);
@@ -2465,14 +2573,16 @@ function carveCrater(cx, cy, radius) {
   tfCtx.closePath();
   tfCtx.fill();
 
+  // Painterly warm burnt-sienna & soft charcoal crater rim
   tfCtx.globalCompositeOperation = 'source-atop';
-  const scorch = tfCtx.createRadialGradient(cx, cy, radius * 0.75, cx, cy, radius + 16);
-  scorch.addColorStop(0, 'rgba(18, 14, 12, 0.88)');
-  scorch.addColorStop(0.6, 'rgba(32, 24, 18, 0.55)');
+  const scorch = tfCtx.createRadialGradient(cx, cy, Math.max(2, radius - 3), cx, cy, radius + 18);
+  scorch.addColorStop(0, 'rgba(24, 18, 15, 0.85)');
+  scorch.addColorStop(0.35, 'rgba(92, 48, 26, 0.52)');
+  scorch.addColorStop(0.7, 'rgba(42, 30, 22, 0.25)');
   scorch.addColorStop(1, 'rgba(32, 24, 18, 0)');
   tfCtx.fillStyle = scorch;
   tfCtx.beginPath();
-  tfCtx.arc(cx, cy, radius + 16, 0, Math.PI * 2);
+  tfCtx.arc(cx, cy, radius + 18, 0, Math.PI * 2);
   tfCtx.fill();
   tfCtx.restore();
 
@@ -6513,61 +6623,86 @@ function drawFighter(ctx, f) {
     drawHeldWeapon(ctx, f);
   }
 
-  // 6. Floating Nameplate & Health Bar (+ Procession Link & Metamorphosis badges!)
+  // 6. Decluttered Contextual Nameplate & Minimalist Health Pill (+ Automatic Golden Procession Glow!)
   if (!f.drowning) {
-    const labelY = -36;
-    ctx.font = '800 13px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'center';
+    const linkedCount = f.linkedAllies ? f.linkedAllies.length : 0;
 
-    // Golden Enxaneta Aura when stacked in a "Castell de Cucs" tower!
-    if (f.castellTower) {
+    // Warm golden silk aura when marching in automatic Processó or stacked in a Castell de Cucs!
+    if (f.castellTower || linkedCount > 0) {
       ctx.save();
-      ctx.strokeStyle = 'rgba(255, 217, 102, 0.78)';
-      ctx.lineWidth = 2.2;
-      ctx.setLineDash([4, 3]);
+      const auraCol = f.castellTower ? 'rgba(255, 217, 102, 0.72)' : 'rgba(245, 200, 105, 0.38)';
+      ctx.strokeStyle = auraCol;
+      ctx.lineWidth = f.castellTower ? 2.2 : 1.5;
+      if (f.castellTower) ctx.setLineDash([4, 3]);
       ctx.beginPath();
-      ctx.arc(0, -6, 20 + Math.sin(tNow * 7) * 2, 0, Math.PI * 2);
+      ctx.arc(0, -5, 19 + Math.sin(tNow * 6) * 1.5, 0, Math.PI * 2);
       ctx.stroke();
       ctx.restore();
     }
 
-    const linkedCount = f.linkedAllies ? f.linkedAllies.length : 0;
-    const badgePrefix = f.castellTower ? '🏰 ' : (f.metamorphosed ? '🦋 ' : (linkedCount > 0 ? '⛓ ' : ''));
-    const dispName = badgePrefix + f.name;
+    const isNearAim = mouseWorld && Math.hypot(mouseWorld.x - f.x, mouseWorld.y - f.y) < 62;
+    const showFullCard = isCurrent || f.hurtTimer > 0 || f.dizzyTimer > 0 || isNearAim;
 
-    const tw = ctx.measureText(dispName).width + 16;
-    ctx.fillStyle = 'rgba(9, 11, 16, 0.90)';
-    ctx.strokeStyle = linkedCount > 0 ? '#ffe082' : (f.urticatingTicks > 0 ? '#d88aff' : 'rgba(212, 161, 83, 0.45)');
-    ctx.lineWidth = linkedCount > 0 ? 1.8 : 1.2;
-    ctx.beginPath();
-    ctx.roundRect(-tw / 2, labelY - 14, tw, 19, 4);
-    ctx.fill();
-    ctx.stroke();
+    if (showFullCard) {
+      const labelY = -36;
+      ctx.font = '800 12px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
 
-    ctx.fillStyle = teamCol;
-    ctx.fillText(dispName, 0, labelY);
+      const dispName = f.name;
+      const tw = ctx.measureText(dispName).width + 18;
+      ctx.fillStyle = 'rgba(11, 14, 22, 0.84)';
+      ctx.strokeStyle = isCurrent ? teamCol : 'rgba(240, 195, 110, 0.38)';
+      ctx.lineWidth = isCurrent ? 1.6 : 1.1;
+      ctx.beginPath();
+      ctx.roundRect(-tw / 2, labelY - 13, tw, 18, 9);
+      ctx.fill();
+      ctx.stroke();
 
-    const bw = 42, bh = 5;
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.82)';
-    ctx.fillRect(-bw / 2 - 1, labelY + 6, bw + 2, bh + 2);
-    ctx.fillStyle = teamCol;
-    ctx.fillRect(-bw / 2, labelY + 7, bw * clamp(f.hp / f.maxHp, 0, 1), bh);
+      ctx.fillStyle = '#fff8eb';
+      ctx.fillText(dispName, 0, labelY);
 
-    if (f.jetFuel > 0) {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.82)';
-      ctx.fillRect(-bw / 2, labelY + 13, bw, 3.5);
-      ctx.fillStyle = '#5ad2f4';
-      ctx.fillRect(-bw / 2, labelY + 13, bw * (f.jetFuel / 100), 3.5);
-    }
-
-    if (isCurrent && turnPhase === 'TURN_PLAY') {
-      const arrowY = labelY - 23 + Math.sin(tNow * 6) * 3.5;
+      const bw = 38, bh = 4.5;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.72)';
+      ctx.beginPath();
+      ctx.roundRect(-bw / 2 - 1, labelY + 7, bw + 2, bh + 2, 99);
+      ctx.fill();
       ctx.fillStyle = teamCol;
       ctx.beginPath();
-      ctx.moveTo(0, arrowY + 7);
-      ctx.lineTo(-6, arrowY - 2);
-      ctx.lineTo(6, arrowY - 2);
-      ctx.closePath();
+      ctx.roundRect(-bw / 2, labelY + 8, Math.max(2, bw * clamp(f.hp / f.maxHp, 0, 1)), bh, 99);
+      ctx.fill();
+
+      if (f.jetFuel > 0) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        ctx.beginPath();
+        ctx.roundRect(-bw / 2, labelY + 14, bw, 3, 99);
+        ctx.fill();
+        ctx.fillStyle = '#5ad2f4';
+        ctx.beginPath();
+        ctx.roundRect(-bw / 2, labelY + 14, bw * (f.jetFuel / 100), 3, 99);
+        ctx.fill();
+      }
+
+      if (isCurrent && turnPhase === 'TURN_PLAY') {
+        const arrowY = labelY - 21 + Math.sin(tNow * 6) * 3;
+        ctx.fillStyle = teamCol;
+        ctx.beginPath();
+        ctx.moveTo(0, arrowY + 6);
+        ctx.lineTo(-5.5, arrowY - 2);
+        ctx.lineTo(5.5, arrowY - 2);
+        ctx.closePath();
+        ctx.fill();
+      }
+    } else {
+      // Idle Cucs: sleek minimalist floating health pill so the Catalan scenery & hats stay uncluttered!
+      const pillY = -28;
+      const bw = 28, bh = 4;
+      ctx.fillStyle = 'rgba(9, 12, 18, 0.72)';
+      ctx.beginPath();
+      ctx.roundRect(-bw / 2 - 1, pillY - 1, bw + 2, bh + 2, 99);
+      ctx.fill();
+      ctx.fillStyle = teamCol;
+      ctx.beginPath();
+      ctx.roundRect(-bw / 2, pillY, Math.max(2, bw * clamp(f.hp / f.maxHp, 0, 1)), bh, 99);
       ctx.fill();
     }
   }
@@ -7072,70 +7207,105 @@ function drawAimingHUD(ctx, f) {
 
   const dirX = Math.cos(aimAngle);
   const dirY = Math.sin(aimAngle);
-  const cx = f.x + dirX * 52;
-  const cy = (f.y - 4) + dirY * 52;
+  const originX = f.x;
+  const originY = f.y - 4;
 
   ctx.save();
-  ctx.strokeStyle = 'rgba(245, 208, 138, 0.5)';
-  ctx.lineWidth = 1.8;
-  ctx.setLineDash([4, 4]);
-  ctx.beginPath();
-  ctx.moveTo(f.x + dirX * 20, (f.y - 4) + dirY * 20);
-  ctx.lineTo(cx, cy);
-  ctx.stroke();
-  ctx.setLineDash([]);
 
-  ctx.strokeStyle = '#f5d08a';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.arc(cx, cy, 8, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // Live Wind-Drift Ballistic Preview Beads (Bends in real time as wind changes while you aim!)
   if (wpn.type === 'CHARGE') {
-    const previewPower = isCharging ? Math.max(0.28, chargePower) : 0.58;
+    // 1. Silky-smooth Unified Curved Trajectory Arc that bends naturally with live Wind!
+    const previewPower = isCharging ? Math.max(0.22, chargePower) : 0.56;
     const speed = 180 + previewPower * 760;
     const wf = wpn.windFactor || 0;
-    let px = f.x + dirX * 18;
-    let py = (f.y - 4) + dirY * 18;
+    let px = originX + dirX * 18;
+    let py = originY + dirY * 18;
     let pvx = dirX * speed;
     let pvy = dirY * speed;
-    const stepDt = 0.032;
-    for (let b = 1; b <= 7; b++) {
+    const stepDt = 0.028;
+    const pts = [{ x: px, y: py }];
+    for (let b = 1; b <= 11; b++) {
       pvx += (wind * 2.4 * wf) * stepDt;
       pvy += GRAVITY * stepDt;
       px += pvx * stepDt;
       py += pvy * stepDt;
-      const alpha = (1 - b / 8.5) * 0.78;
-      ctx.fillStyle = wf > 0 && Math.abs(wind) > 20
-        ? (wind > 0 ? `rgba(245, 185, 69, ${alpha})` : `rgba(126, 200, 227, ${alpha})`)
-        : `rgba(245, 220, 165, ${alpha})`;
+      pts.push({ x: px, y: py });
+    }
+
+    // Soft glowing trajectory curve
+    const lastPt = pts[pts.length - 1];
+    const arcGrad = ctx.createLinearGradient(pts[0].x, pts[0].y, lastPt.x, lastPt.y);
+    const windTint = wf > 0 && Math.abs(wind) > 18
+      ? (wind > 0 ? '255, 200, 95' : '135, 215, 245')
+      : '248, 224, 168';
+    arcGrad.addColorStop(0, `rgba(${windTint}, 0.82)`);
+    arcGrad.addColorStop(0.65, `rgba(${windTint}, 0.42)`);
+    arcGrad.addColorStop(1, `rgba(${windTint}, 0)`);
+
+    ctx.strokeStyle = arcGrad;
+    ctx.lineWidth = 2.4;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([5, 6]);
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) {
+      ctx.lineTo(pts[i].x, pts[i].y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Luminous pearl dots along the curved trajectory
+    for (let i = 2; i < pts.length; i += 2) {
+      const alpha = (1 - i / (pts.length + 1)) * 0.85;
+      ctx.fillStyle = `rgba(${windTint}, ${alpha})`;
       ctx.beginPath();
-      ctx.arc(px, py, 2.8 - b * 0.22, 0, Math.PI * 2);
+      ctx.arc(pts[i].x, pts[i].y, 3.0 - i * 0.16, 0, Math.PI * 2);
       ctx.fill();
     }
-  }
 
-  if (isCharging && wpn.type === 'CHARGE') {
-    const maxLen = 78;
-    const curLen = chargePower * maxLen;
-    const grad = ctx.createLinearGradient(f.x, f.y - 4, f.x + dirX * (22 + maxLen), (f.y - 4) + dirY * (22 + maxLen));
-    grad.addColorStop(0, '#f3c66f');
-    grad.addColorStop(0.55, '#ff7b3b');
-    grad.addColorStop(1, '#ff2a2a');
-
-    ctx.fillStyle = grad;
+    // 2. Integrated Circular Radial Power Ring around the active Cuc while charging!
+    const ringR = 24;
+    ctx.strokeStyle = isCharging ? 'rgba(255, 255, 255, 0.22)' : 'rgba(245, 208, 138, 0.22)';
+    ctx.lineWidth = isCharging ? 4.5 : 1.5;
     ctx.beginPath();
-    const perpX = -dirY, perpY = dirX;
-    const sx = f.x + dirX * 20, sy = (f.y - 4) + dirY * 20;
-    const ex = sx + dirX * curLen, ey = sy + dirY * curLen;
-    const halfW = 2 + chargePower * 9;
-    ctx.moveTo(sx + perpX * 2, sy + perpY * 2);
-    ctx.lineTo(ex + perpX * halfW, ey + perpY * halfW);
-    ctx.lineTo(ex - perpX * halfW, ey - perpY * halfW);
-    ctx.lineTo(sx - perpX * 2, sy - perpY * 2);
-    ctx.closePath();
-    ctx.fill();
+    ctx.arc(originX, originY, ringR, 0, Math.PI * 2);
+    ctx.stroke();
+
+    if (isCharging) {
+      const startA = -Math.PI * 0.5;
+      const endA = startA + clamp(chargePower, 0.04, 1.0) * Math.PI * 2;
+      const ringCol = chargePower < 0.5
+        ? '#ffd966'
+        : (chargePower < 0.82 ? '#ff8b3d' : '#ff3b30');
+
+      ctx.save();
+      ctx.strokeStyle = ringCol;
+      ctx.lineWidth = 4.8;
+      ctx.lineCap = 'round';
+      ctx.shadowColor = ringCol;
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.arc(originX, originY, ringR, startA, endA, false);
+      ctx.stroke();
+      ctx.restore();
+    }
+  } else {
+    // Clean minimalist directional reticle for Melee & Instant weapons (El Fuet, La Falç, Pedrenyal)
+    const cx = originX + dirX * 44;
+    const cy = originY + dirY * 44;
+    ctx.strokeStyle = 'rgba(245, 215, 150, 0.45)';
+    ctx.lineWidth = 1.6;
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath();
+    ctx.moveTo(originX + dirX * 18, originY + dirY * 18);
+    ctx.lineTo(cx, cy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = '#ffe082';
+    ctx.lineWidth = 2.0;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 6.5, 0, Math.PI * 2);
+    ctx.stroke();
   }
 
   ctx.restore();
@@ -8439,11 +8609,47 @@ function updateHUD() {
   document.getElementById('t2-hp-text').textContent = `${hp1} PV`;
 }
 
+function setWeaponDrawerOpen(isOpen) {
+  const bar = document.getElementById('weapon-bar');
+  const toggleBtn = document.getElementById('weapon-toggle-btn');
+  const chev = document.getElementById('wt-chevron');
+  if (!bar || !toggleBtn) return;
+  bar.classList.toggle('open', isOpen);
+  toggleBtn.classList.toggle('open', isOpen);
+  if (chev) chev.innerHTML = isOpen ? '&#9660; Tanca' : '&#9650; Arsenal';
+}
+
+const weaponToggleBtnEl = document.getElementById('weapon-toggle-btn');
+if (weaponToggleBtnEl) {
+  weaponToggleBtnEl.onclick = e => {
+    e.stopPropagation();
+    SND.init();
+    SND.tick();
+    const bar = document.getElementById('weapon-bar');
+    setWeaponDrawerOpen(!bar.classList.contains('open'));
+  };
+}
+
+canvas.addEventListener('pointerdown', () => {
+  setWeaponDrawerOpen(false);
+});
+
 function buildWeaponBar() {
   const bar = document.getElementById('weapon-bar');
   bar.innerHTML = '';
   const curWpn = WEAPONS[selectedWeaponIdx];
   document.getElementById('fuse-picker').classList.toggle('visible', !!curWpn.hasCustomFuse);
+
+  // Update the sleek active weapon pill button
+  if (curWpn) {
+    const curAmmo = teamAmmo[activeTeam] ? teamAmmo[activeTeam][curWpn.id] : curWpn.defaultAmmo;
+    const wtIcon = document.getElementById('wt-icon');
+    const wtName = document.getElementById('wt-name');
+    const wtAmmo = document.getElementById('wt-ammo');
+    if (wtIcon) wtIcon.innerHTML = curWpn.svg;
+    if (wtName) wtName.textContent = curWpn.name;
+    if (wtAmmo) wtAmmo.textContent = curAmmo === Infinity ? '∞' : curAmmo;
+  }
 
   const fireLbl = document.getElementById('mc-fire-label');
   if (fireLbl && curWpn) {
@@ -8469,6 +8675,8 @@ function buildWeaponBar() {
     `;
     slot.onclick = () => {
       if (!isCurrentTurnAI() && ammo > 0) {
+        SND.init();
+        SND.tick();
         selectedWeaponIdx = i;
         teamSelectedWeaponIdx[activeTeam] = i;
         if (w.id === 'AIRSTRIKE' && activeFighter) {
@@ -8478,6 +8686,7 @@ function buildWeaponBar() {
           };
         }
         buildWeaponBar();
+        setWeaponDrawerOpen(false);
       }
     };
     bar.appendChild(slot);
