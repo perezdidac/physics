@@ -929,6 +929,7 @@ html, body {
 
 .ordnance-rack {
   display: none;
+  grid-template-columns: repeat(5, 64px);
   gap: 5px;
   background: rgba(14, 18, 26, 0.92);
   backdrop-filter: blur(16px);
@@ -942,7 +943,7 @@ html, body {
 }
 
 .ordnance-rack.open {
-  display: flex;
+  display: grid;
 }
 
 @keyframes drawerPop {
@@ -1415,7 +1416,7 @@ body.touch-device #mobile-controls {
 
   .ordnance-rack {
     display: none;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 4px;
     width: 100%;
     padding: 6px;
@@ -1825,6 +1826,10 @@ body.touch-device #mobile-controls {
         <button class="cmd-btn" id="btn-silk-web" style="display:none"><span id="lbl-silk-web">Teixir Seda [C]</span></button>
         <button class="cmd-btn" id="btn-procession" style="display:none"><span id="lbl-procession">Process&oacute;: Auto [F]</span></button>
         <button class="cmd-btn" id="btn-mode" style="display:none"><span id="lbl-mode">1J vs CPU</span></button>
+        <button class="cmd-btn" id="btn-reroll-map" title="Genera un nou relleu de muntanyes, feixes i coves">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          <span id="lbl-archetype">Relleu</span>
+        </button>
         <button class="cmd-btn" id="btn-map" title="Canvia d'indret de Catalunya">
           <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
           <span id="lbl-map">Montserrat</span>
@@ -1916,7 +1921,7 @@ const PERM = new Uint8Array(512);
 
 function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
 function lerp(a, b, t) { return a + t * (b - a); }
-function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function clamp(v, lo, hi) { return Number.isFinite(v) ? Math.max(lo, Math.min(hi, v)) : lo; }
 
 function grad2(hash, x, y) {
   const h = hash & 7;
@@ -2283,17 +2288,90 @@ function stampSteelTrussSpan(x1, x2, deckY, fd, bd, isOrange = true) {
   }
 }
 
+// Landmark 7: Walkable Elevated Catalan Stone & Turf Sky-Terrace ("Feixa / Cingle Sospès")
+function stampSkyTerracePlatform(cx, deckY, halfW, fd, bd, mCfg) {
+  const thickness = 24;
+  for (let dx = -halfW; dx <= halfW; dx++) {
+    const x = Math.floor(cx + dx);
+    if (x < 140 || x >= TERRAIN_W - 140) continue;
+    const edgeFrac = Math.abs(dx) / halfW;
+    const archCurve = Math.round(Math.pow(edgeFrac, 2.2) * 10);
+    const topWave = Math.round(Math.sin(x * 0.06) * 2.5);
+    const yTop = Math.floor(deckY + topWave);
+    const yBot = Math.floor(deckY + thickness - archCurve + Math.cos(x * 0.09) * 3);
+
+    // Clear 38px of headroom above the terrace so caterpillars can walk comfortably on the lower or upper level
+    for (let cy = yTop - 38; cy < yTop; cy++) {
+      clearTerrainPixel(x, cy, fd);
+    }
+
+    for (let y = yTop; y <= yBot; y++) {
+      const depth = y - yTop;
+      const n = noise2D(x * 0.12, y * 0.12) * 24;
+      if (depth <= 6) {
+        const sun = depth <= 2 ? 1.28 : 0.96;
+        setTerrainPixel(
+          x, y,
+          mCfg.turfCol[0] * sun + (depth <= 1 ? 18 : 0),
+          mCfg.turfCol[1] * sun + (depth <= 1 ? 20 : 0),
+          mCfg.turfCol[2] * sun + (depth <= 1 ? 10 : 0),
+          fd, bd, 34, 42, 28
+        );
+      } else {
+        // Traditional Catalan "Pedra Seca" dry-stone masonry blocks
+        const mortar = ((Math.floor(x / 13) + Math.floor(y / 6)) % 2 === 0) ? 1.06 : 0.90;
+        setTerrainPixel(
+          x, y,
+          (mCfg.rockCol[0] + 24 + n) * mortar,
+          (mCfg.rockCol[1] + 20 + n) * mortar,
+          (mCfg.rockCol[2] + 16 + n) * mortar,
+          fd, bd, 52, 46, 42
+        );
+      }
+    }
+  }
+}
+
+let currentTerrainArchetypeName = 'Feixes i Cingles';
+
 function generateDestructibleTerrain(mapIdx) {
   const mCfg = MAPS[mapIdx];
   WATER_Y = 700;
-  mapSeed += 1.73 + Math.random() * 2.4;
+  mapSeed += 1.73 + Math.random() * 3.8;
   terrainMask.fill(0);
   generatedTreeSpots = [];
   generatedValleySpots = [];
 
-  // Pick a random Terrain Layout Archetype each match so no two games feel the same!
-  const archetypes = ['ARCHIPELAGO', 'TWIN_MASSIFS', 'CITADEL_CALDERA', 'STEPPED_CANYONS'];
-  const archetype = archetypes[Math.floor(Math.random() * archetypes.length)];
+  // 8 Diverse Multi-Level & Hilly Catalan Terrain Archetypes!
+  const archetypes = [
+    { id: 'FEIXES_TERRACED',    label: 'Feixes de Pedra Seca' },
+    { id: 'AGULLES_SPIRES',     label: 'Agulles i Cingles' },
+    { id: 'MULTI_DECK_GROTTO',  label: 'Cova de Dos Nivells' },
+    { id: 'FLOATING_BALCONIES', label: 'Balcons Sospesos' },
+    { id: 'TWIN_MASSIFS',       label: 'Doble Massís' },
+    { id: 'STEPPED_CANYONS',    label: 'Congost Escalonat' },
+    { id: 'CITADEL_CALDERA',    label: 'Ciutadella Alta' },
+    { id: 'ARCHIPELAGO',        label: 'Illes Escalonades' }
+  ];
+  const pickedArch = archetypes[Math.floor(Math.random() * archetypes.length)];
+  const archetype = pickedArch.id;
+  currentTerrainArchetypeName = pickedArch.label;
+  const archEl = document.getElementById('lbl-archetype');
+  if (archEl) archEl.textContent = pickedArch.label;
+
+  // Randomize hilliness, asymmetry, and frequency each game so the silhouette is always fresh!
+  const freqScale = 0.82 + Math.random() * 0.55;
+  const hillAmp = 260 + Math.random() * 95;
+  const asymTilt = (Math.random() - 0.5) * 90; // One side of the map can be higher than the other!
+  const numPeaks = 3 + Math.floor(Math.random() * 4);
+  const randomHills = [];
+  for (let p = 0; p < numPeaks; p++) {
+    randomHills.push({
+      cx: 340 + ((p + 0.15 + Math.random() * 0.7) / numPeaks) * (TERRAIN_W - 680),
+      w: 130 + Math.random() * 190,
+      amp: (Math.random() < 0.62 ? -1 : 1) * (55 + Math.random() * 115)
+    });
+  }
 
   const surfaceY = new Float32Array(TERRAIN_W);
   for (let x = 0; x < TERRAIN_W; x++) {
@@ -2305,56 +2383,71 @@ function generateDestructibleTerrain(mapIdx) {
     const islandEnv = clamp(edgeDist / 190, 0, 1);
     const smoothEnv = islandEnv * islandEnv * (3 - 2 * islandEnv);
 
-    const nLarge = fbm(x * 0.0016 + mapSeed, mapSeed, 4);
-    const nMed   = fbm(x * 0.0038 + mapSeed * 1.7, mapSeed + 1.9, 4);
-    const nDetail = ridgedFbm(x * 0.0055 + mapSeed * 2.1, mapSeed + 3.1, 3);
+    const nLarge  = fbm(x * 0.0016 * freqScale + mapSeed, mapSeed, 4);
+    const nMed    = fbm(x * 0.0042 * freqScale + mapSeed * 1.7, mapSeed + 1.9, 4);
+    const nDetail = ridgedFbm(x * 0.0065 * freqScale + mapSeed * 2.1, mapSeed + 3.1, 3);
 
-    let h = 290 + (1 - (nLarge * 0.55 + nMed * 0.25 + nDetail * 0.20)) * 285;
+    let h = 265 + (1 - (nLarge * 0.52 + nMed * 0.28 + nDetail * 0.20)) * hillAmp;
+    h += ((x / TERRAIN_W) - 0.5) * asymTilt;
+
+    // Layer randomized hills and valleys so no two matches share a silhouette
+    for (const rh of randomHills) {
+      h += Math.exp(-Math.pow((x - rh.cx) / rh.w, 2)) * rh.amp;
+    }
 
     // Apply randomized layout archetype across the 3200px world
     if (archetype === 'ARCHIPELAGO') {
-      // 3 distinct islands separated by 2 water channels
-      const ch1 = Math.exp(-Math.pow((x - 1120) / 115, 2)) * 240;
-      const ch2 = Math.exp(-Math.pow((x - 2080) / 115, 2)) * 240;
-      h += ch1 + ch2;
+      const ch1 = Math.exp(-Math.pow((x - 1080) / 110, 2)) * 245;
+      const ch2 = Math.exp(-Math.pow((x - 2120) / 110, 2)) * 245;
+      h = Math.round(h / 28) * 28 + ch1 + ch2;
     } else if (archetype === 'TWIN_MASSIFS') {
-      // Two grand mountain ranges with a deep central fjord & outer plateaus
-      const fjord = Math.exp(-Math.pow((x - 1600) / 210, 2)) * 255;
-      const peakL = -Math.exp(-Math.pow((x - 920) / 240, 2)) * 95;
-      const peakR = -Math.exp(-Math.pow((x - 2280) / 240, 2)) * 95;
+      const fjord = Math.exp(-Math.pow((x - 1600) / 195, 2)) * 265;
+      const peakL = -Math.exp(-Math.pow((x - 880) / 230, 2)) * 115;
+      const peakR = -Math.exp(-Math.pow((x - 2320) / 230, 2)) * 115;
       h += fjord + peakL + peakR;
     } else if (archetype === 'CITADEL_CALDERA') {
-      // High central fortress plateau flanked by two sunken lagoons
-      const lagoonL = Math.exp(-Math.pow((x - 980) / 150, 2)) * 195;
-      const lagoonR = Math.exp(-Math.pow((x - 2220) / 150, 2)) * 195;
-      const citadel = -Math.exp(-Math.pow((x - 1600) / 260, 2)) * 85;
+      const lagoonL = Math.exp(-Math.pow((x - 980) / 145, 2)) * 205;
+      const lagoonR = Math.exp(-Math.pow((x - 2220) / 145, 2)) * 205;
+      const citadel = -Math.exp(-Math.pow((x - 1600) / 270, 2)) * 110;
       h += lagoonL + lagoonR + citadel;
+    } else if (archetype === 'FEIXES_TERRACED') {
+      // Multi-tiered agricultural dry-stone steps ("Feixes") at distinct heights!
+      const stepSize = 46;
+      const rawStep = Math.round(h / stepSize) * stepSize;
+      h = lerp(h, rawStep, 0.82) + Math.sin(x * 0.025) * 6;
+    } else if (archetype === 'AGULLES_SPIRES') {
+      // Steep rocky spires & deep mountain ravines!
+      const spireWave = Math.sin(x * 0.011 + mapSeed) * Math.cos(x * 0.0045 - mapSeed * 0.5);
+      h += spireWave * 115 - Math.abs(Math.sin(x * 0.008)) * 45;
+    } else if (archetype === 'MULTI_DECK_GROTTO') {
+      // High overarching mountain dome with a huge multi-level cavern carved underneath
+      const dome = -Math.exp(-Math.pow((x - 1600) / 760, 2)) * 95;
+      h += dome;
+    } else if (archetype === 'FLOATING_BALCONIES') {
+      // Rolling hills with dramatic stepped valleys
+      h = lerp(h, Math.round(h / 38) * 38, 0.65) + Math.sin(x * 0.0065 + mapSeed) * 55;
     } else {
       // STEPPED_CANYONS: terraced plateaus and rolling gorges
-      h = Math.round(h / 32) * 32 + (nDetail - 0.5) * 28;
-      const gorge = Math.exp(-Math.pow((x - 1600) / 140, 2)) * 165;
+      h = Math.round(h / 36) * 36 + (nDetail - 0.5) * 26;
+      const gorge = Math.exp(-Math.pow((x - 1600) / 145, 2)) * 175;
       h += gorge;
     }
 
     // Specific Catalan comarcal geology!
     if (mCfg.id === 'MONTSERRAT') {
-      // Rounded Montserrat conglomerate rock needles ("Agulles")
-      const finger = Math.sin(x * 0.015) * 26 * Math.exp(-Math.pow((x - 1600) / 950, 2));
+      const finger = Math.sin(x * 0.015) * 28 * Math.exp(-Math.pow((x - 1600) / 980, 2));
       h += finger;
     } else if (mCfg.id === 'CADAQUES') {
-      // Empordà coastal slate terraces ("feixes de pissarra")
-      const hillWave = Math.cos(x * 0.005) * 28 + Math.round(Math.sin(x * 0.012) * 3) * 6;
+      const hillWave = Math.cos(x * 0.005) * 28 + Math.round(Math.sin(x * 0.012) * 3) * 7;
       h += hillWave;
     } else if (mCfg.id === 'TAULL') {
-      // High Pyrenean granite peaks & glacial valleys
-      const alpinePeak = -Math.abs(Math.sin(x * 0.0045)) * 38;
+      const alpinePeak = -Math.abs(Math.sin(x * 0.0045)) * 42;
       h += alpinePeak;
     } else if (mCfg.id === 'CASTELLFOLLIT') {
-      // Dramatic stepped volcanic basalt cliff ledges ("cinglera basàltica")
-      h = Math.round(h / 26) * 26 + Math.sin(x * 0.008) * 18;
+      h = Math.round(h / 28) * 28 + Math.sin(x * 0.008) * 18;
     }
 
-    surfaceY[x] = lerp(WATER_Y + 95, clamp(h, 195, WATER_Y + 65), smoothEnv);
+    surfaceY[x] = lerp(WATER_Y + 95, clamp(h, 165, WATER_Y + 65), smoothEnv);
   }
 
   const frontImg = tfCtx.createImageData(TERRAIN_W, TERRAIN_H);
@@ -2362,15 +2455,18 @@ function generateDestructibleTerrain(mapIdx) {
   const fd = frontImg.data;
   const bd = backImg.data;
 
-  // Pick 1 to 3 randomized underground cavern locations
-  const cavernCount = 1 + Math.floor(Math.random() * 3);
+  // Pick 2 to 4 randomized underground cavern & tunnel gallery locations
+  const cavernCount = archetype === 'MULTI_DECK_GROTTO' ? 4 : (2 + Math.floor(Math.random() * 3));
   const caverns = [];
   for (let c = 0; c < cavernCount; c++) {
+    const frac = (c + 0.5) / cavernCount;
+    const cx = 520 + frac * (TERRAIN_W - 1040) + (Math.random() - 0.5) * 220;
+    const topSurf = surfaceY[clamp(Math.floor(cx), 200, TERRAIN_W - 200)];
     caverns.push({
-      cx: 650 + Math.random() * (TERRAIN_W - 1300),
-      cy: 510 + Math.random() * 90,
-      rx: 120 + Math.random() * 85,
-      ry: 38 + Math.random() * 22
+      cx,
+      cy: clamp(topSurf + 95 + Math.random() * 85, 340, WATER_Y - 55),
+      rx: (archetype === 'MULTI_DECK_GROTTO' ? 210 : 135) + Math.random() * 95,
+      ry: 36 + Math.random() * 20
     });
   }
 
@@ -2382,11 +2478,11 @@ function generateDestructibleTerrain(mapIdx) {
       const depth = y - sy;
 
       let inCavern = false;
-      if (depth > 38) {
-        const cavN = fbm(x * 0.018 + mapSeed, y * 0.018, 3) * 0.35;
+      if (depth > 32 && y < WATER_Y - 24) {
+        const cavN = fbm(x * 0.018 + mapSeed, y * 0.018, 3) * 0.32;
         for (const cav of caverns) {
           const dx = (x - cav.cx) / cav.rx, dy = (y - cav.cy) / cav.ry;
-          if (dx * dx + dy * dy < 0.85 + cavN) {
+          if (dx * dx + dy * dy < 0.88 + cavN) {
             inCavern = true;
             break;
           }
@@ -2417,27 +2513,23 @@ function generateDestructibleTerrain(mapIdx) {
         r = clamp(mCfg.turfCol[0] * turfLight, 24, 255);
         g = clamp(mCfg.turfCol[1] * turfLight, 24, 255);
         b = clamp(mCfg.turfCol[2] * turfLight, 24, 255);
-        // Painterly sunlit top-edge rim highlight (2.5px warm golden/ivory crown)
         if (depth <= 2) {
           const sunRim = clamp(1.32 - slope * 0.16 - depth * 0.09, 1.02, 1.48);
           r = clamp(r * sunRim + 22, 0, 255);
           g = clamp(g * sunRim + 24, 0, 255);
           b = clamp(b * sunRim + 12, 0, 255);
         } else if (depth >= grassThick - 1) {
-          // Soft dark-moss underside lip along scalloped grass tufts
           r *= 0.76;
           g *= 0.78;
           b *= 0.76;
         }
       } else if (depth <= grassThick + 16) {
-        // Soft ambient-occlusion shadow right under the turf rim, blending into warm topsoil
         const ao = depth <= grassThick + 4 ? 0.74 : 0.88;
         const soil = (0.78 + rockVal * 0.36) * ao;
         r = mCfg.soilCol[0] * soil;
         g = mCfg.soilCol[1] * soil;
         b = mCfg.soilCol[2] * soil;
       } else {
-        // Smooth, hand-painted storybook rock bands with subtle depth shading
         const depthFade = clamp(1.0 - (depth - 20) * 0.0009, 0.72, 1.0);
         const sunShade = clamp(0.92 - slope * 0.14, 0.62, 1.14) * depthFade;
         const bandHighlight = strata > 0.72 ? 12 : (strata < 0.25 ? -8 : 0);
@@ -2454,11 +2546,25 @@ function generateDestructibleTerrain(mapIdx) {
   }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // RANDOMIZED PROCEDURAL LANDMARKS (Only 2–4 chosen per match so every game is unique!)
+  // MULTI-LEVEL SKY TERRACES & OVERHANGING BALCONIES ("FEIXES I BALCONS")
+  // Stamps 2 to 5 walkable elevated platforms at varied heights!
+  // ─────────────────────────────────────────────────────────────────────────
+  const numTerraces = archetype === 'FLOATING_BALCONIES' ? 5 : (2 + Math.floor(Math.random() * 3));
+  for (let t = 0; t < numTerraces; t++) {
+    const tx = Math.floor(460 + ((t + 0.2 + Math.random() * 0.6) / numTerraces) * (TERRAIN_W - 920));
+    const groundY = surfaceY[clamp(tx, 200, TERRAIN_W - 200)];
+    const halfW = Math.floor(72 + Math.random() * 68);
+    // Place the terrace either high above a valley/slope or protruding as a mid-cliff balcony!
+    const deckY = clamp(groundY - (78 + Math.random() * 95), 185, WATER_Y - 120);
+    stampSkyTerracePlatform(tx, deckY, halfW, fd, bd, mCfg);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // RANDOMIZED PROCEDURAL LANDMARKS (2–4 chosen per match so every game is unique!)
   // ─────────────────────────────────────────────────────────────────────────
   const landmarkPool = ['WATCHTOWER', 'HOLLOW_LOG', 'ROCK_ARCH', 'MONOLITHS', 'BRIDGE_SPAN', 'SECOND_TOWER'];
   landmarkPool.sort(() => Math.random() - 0.5);
-  const chosenLandmarks = landmarkPool.slice(0, 2 + Math.floor(Math.random() * 2)); // 2 or 3 landmarks per game
+  const chosenLandmarks = landmarkPool.slice(0, 2 + Math.floor(Math.random() * 2));
 
   const zones = [680, 1180, 1600, 2040, 2520];
   zones.sort(() => Math.random() - 0.5);
@@ -2541,6 +2647,81 @@ function findSurfaceY(x, startY = 40) {
   return TERRAIN_H + 100;
 }
 
+// Finds ALL walkable vertical tiers (upper peaks, sky balconies, mid-cliff ledges, cavern floors) at column x!
+function findAllWalkableSurfacesAtX(x) {
+  const ix = clamp(Math.floor(x), 0, TERRAIN_W - 1);
+  const surfaces = [];
+  let airRun = 0;
+  for (let y = 36; y < WATER_Y - 22; y++) {
+    if (terrainMask[y * TERRAIN_W + ix] === 0) {
+      airRun++;
+    } else {
+      if (airRun >= 26) {
+        surfaces.push(y);
+      }
+      airRun = 0;
+    }
+  }
+  return surfaces;
+}
+
+// Constructs a real destructible Catalan "Marge de Pedra Seca" dry-stone bridge, ramp, or bunker wall!
+function buildDryStoneGirder(cx, cy, angle, length = 78, thickness = 16) {
+  const cosA = Math.cos(angle), sinA = Math.sin(angle);
+  const halfL = length * 0.5, halfT = thickness * 0.5;
+  const boundR = Math.ceil(halfL + halfT + 6);
+  const x0 = clamp(Math.floor(cx - boundR), 0, TERRAIN_W - 1);
+  const x1 = clamp(Math.ceil(cx + boundR), 0, TERRAIN_W - 1);
+  const y0 = clamp(Math.floor(cy - boundR), 0, TERRAIN_H - 1);
+  const y1 = clamp(Math.ceil(cy + boundR), 0, TERRAIN_H - 1);
+  const w = x1 - x0 + 1, h = y1 - y0 + 1;
+  if (w <= 0 || h <= 0) return;
+
+  const frontImg = tfCtx.getImageData(x0, y0, w, h);
+  const backImg  = tbCtx.getImageData(x0, y0, w, h);
+  const fd = frontImg.data;
+  const bd = backImg.data;
+
+  for (let y = y0; y <= y1; y++) {
+    for (let x = x0; x <= x1; x++) {
+      const dx = x - cx, dy = y - cy;
+      const along = dx * cosA + dy * sinA;
+      const perp  = -dx * sinA + dy * cosA;
+      const roundCap = Math.max(0, Math.abs(along) - (halfL - 5));
+      if (Math.abs(along) <= halfL && (perp * perp + roundCap * roundCap) <= halfT * halfT) {
+        terrainMask[y * TERRAIN_W + x] = 1;
+        const localIdx = ((y - y0) * w + (x - x0)) * 4;
+        // Authentic Catalan dry-stone coursework ("pedra seca") with mossy top rim
+        const row = Math.floor((perp + halfT) / 5.5);
+        const col = Math.floor((along + halfL + (row % 2) * 7) / 14);
+        const isMortar = (Math.abs((perp + halfT) % 5.5) < 0.9 || Math.abs((along + halfL + (row % 2) * 7) % 14) < 1.0);
+        const stoneVar = ((row * 7 + col * 13) & 3) * 7 - 10;
+        const n = (noise2D(x * 0.16, y * 0.16) - 0.5) * 22;
+        let r = 154 + stoneVar + n;
+        let g = 142 + stoneVar + n;
+        let b = 124 + stoneVar + n;
+        if (perp < -halfT + 3.2) {
+          // Sunlit golden-moss top edge
+          r = 142 + n; g = 168 + n; b = 96 + n;
+        } else if (isMortar) {
+          r *= 0.68; g *= 0.68; b *= 0.68;
+        }
+        fd[localIdx]     = clamp(r, 0, 255);
+        fd[localIdx + 1] = clamp(g, 0, 255);
+        fd[localIdx + 2] = clamp(b, 0, 255);
+        fd[localIdx + 3] = 255;
+
+        bd[localIdx]     = 64;
+        bd[localIdx + 1] = 58;
+        bd[localIdx + 2] = 50;
+        bd[localIdx + 3] = 255;
+      }
+    }
+  }
+  tfCtx.putImageData(frontImg, x0, y0);
+  tbCtx.putImageData(backImg, x0, y0);
+}
+
 function carveCrater(cx, cy, radius) {
   const r = Math.ceil(radius);
   const x0 = Math.max(0, Math.floor(cx - r - 6));
@@ -2599,14 +2780,89 @@ function carveCrater(cx, cy, radius) {
 // ═══════════════════════════════════════════════════════════════════════════
 const SND = {
   ac: null,
+  _noiseBuf: null,
+  _windNode: null,
+  _windFilter: null,
+  _windGain: null,
   _lastSkid: 0,
   _lastJet: 0,
+  _lastStep: 0,
   init() {
     if (!this.ac) {
       const A = window.AudioContext || window.webkitAudioContext;
-      if (A) this.ac = new A();
+      if (A) {
+        this.ac = new A();
+        // Pre-build 1.5s pink/white noise buffer for physical explosion transients, water splashes & Tramuntana wind
+        const sr = this.ac.sampleRate;
+        const len = Math.floor(sr * 1.5);
+        this._noiseBuf = this.ac.createBuffer(1, len, sr);
+        const data = this._noiseBuf.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0;
+        for (let i = 0; i < len; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.997 * b0 + white * 0.029;
+          b1 = 0.985 * b1 + white * 0.032;
+          b2 = 0.950 * b2 + white * 0.048;
+          data[i] = clamp((b0 + b1 + b2 + white * 0.18) * 0.55, -1, 1);
+        }
+      }
     }
     if (this.ac && this.ac.state === 'suspended') this.ac.resume();
+    this._ensureAmbientWind();
+  },
+  _ensureAmbientWind() {
+    if (!this.ac || !this._noiseBuf || this._windNode) return;
+    try {
+      const src = this.ac.createBufferSource();
+      src.buffer = this._noiseBuf;
+      src.loop = true;
+      const flt = this.ac.createBiquadFilter();
+      flt.type = 'bandpass';
+      flt.frequency.value = 260;
+      flt.Q.value = 3.2;
+      const g = this.ac.createGain();
+      g.gain.value = 0.0001;
+      src.connect(flt);
+      flt.connect(g);
+      g.connect(this.ac.destination);
+      src.start();
+      this._windNode = src;
+      this._windFilter = flt;
+      this._windGain = g;
+    } catch (e) {}
+  },
+  updateAmbient(windVal, isPlaying) {
+    if (!this.ac || !this._windFilter || !this._windGain) return;
+    try {
+      const t = this.ac.currentTime;
+      const mag = Math.abs(windVal);
+      const targetFreq = 180 + mag * 4.8 + Math.sin(tNow * 1.7) * 35;
+      const targetGain = isPlaying ? clamp(0.004 + (mag / 100) * 0.026, 0.003, 0.032) : 0.002;
+      this._windFilter.frequency.setTargetAtTime(targetFreq, t, 0.12);
+      this._windGain.gain.setTargetAtTime(targetGain, t, 0.15);
+    } catch (e) {}
+  },
+  _noiseBurst(dur, vol, freq = 600, q = 1.2, filterType = 'lowpass', delay = 0) {
+    if (!this.ac || !this._noiseBuf) return;
+    try {
+      const t = this.ac.currentTime + delay;
+      const src = this.ac.createBufferSource();
+      src.buffer = this._noiseBuf;
+      const flt = this.ac.createBiquadFilter();
+      flt.type = filterType;
+      flt.frequency.setValueAtTime(freq, t);
+      flt.frequency.exponentialRampToValueAtTime(Math.max(60, freq * 0.28), t + dur);
+      flt.Q.value = q;
+      const g = this.ac.createGain();
+      g.gain.setValueAtTime(0.001, t);
+      g.gain.linearRampToValueAtTime(vol, t + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(flt);
+      flt.connect(g);
+      g.connect(this.ac.destination);
+      src.start(t, Math.random() * 0.4, dur);
+      src.stop(t + dur);
+    } catch (e) {}
   },
   _osc(type, f1, dur, vol, f2, delay = 0) {
     if (!this.ac) return;
@@ -2623,6 +2879,15 @@ const SND = {
       o.connect(g); g.connect(this.ac.destination);
       o.start(t); o.stop(t + dur);
     } catch (e) {}
+  },
+  crawlStep() {
+    if (!this.ac || tNow - this._lastStep < 0.13) return;
+    this._lastStep = tNow;
+    this._noiseBurst(0.045, 0.025, 950 + Math.random() * 320, 2.2, 'bandpass');
+    this._osc('sine', 135 + Math.random() * 30, 0.035, 0.018, 95);
+  },
+  shellWhistle() {
+    this._osc('sine', 980, 0.34, 0.038, 310);
   },
   titleFanfare() {
     this.init();
@@ -2648,6 +2913,7 @@ const SND = {
     }
   },
   urticatingBurst() {
+    this._noiseBurst(0.26, 0.11, 1400, 1.8, 'bandpass');
     this._osc('sawtooth', 620, 0.28, 0.12, 180);
     this._osc('triangle', 940, 0.22, 0.09, 320, 0.04);
     this.wormVoice('ITCH');
@@ -2664,11 +2930,13 @@ const SND = {
     this._osc('sine', 160 + pct * 320, 0.05, 0.03, 180 + pct * 330);
   },
   fireBazooka() {
+    this._noiseBurst(0.24, 0.18, 720, 0.9, 'lowpass');
     this._osc('sawtooth', 140, 0.24, 0.16, 48);
     this._osc('triangle', 90, 0.30, 0.18, 32);
     this.wormVoice('ATTACK');
   },
   shotgun() {
+    this._noiseBurst(0.18, 0.22, 1250, 0.8, 'lowpass');
     this._osc('sawtooth', 220, 0.16, 0.22, 38);
     this._osc('square', 110, 0.12, 0.15, 28);
   },
@@ -2696,20 +2964,26 @@ const SND = {
   jetThrust() {
     if (!this.ac || tNow - this._lastJet < 0.05) return;
     this._lastJet = tNow;
+    this._noiseBurst(0.06, 0.055, 580, 1.2, 'bandpass');
     this._osc('sawtooth', 95 + Math.random() * 35, 0.06, 0.07, 55);
   },
   bounce() {
+    this._noiseBurst(0.04, 0.05, 480, 1.5, 'lowpass');
     this._osc('triangle', 145, 0.07, 0.08, 65);
   },
   tick() {
     this._osc('sine', 780, 0.04, 0.05, 760);
   },
   boom(scale = 1) {
-    this._osc('sawtooth', 95, 0.45 * scale, Math.min(0.28, 0.2 * scale), 20);
-    this._osc('triangle', 58, 0.55 * scale, Math.min(0.30, 0.24 * scale), 16);
+    const dur = clamp(0.52 * scale, 0.32, 0.95);
+    this._noiseBurst(dur, Math.min(0.32, 0.24 * scale), 520, 0.75, 'lowpass');
+    this._osc('sine', 68, dur, Math.min(0.34, 0.26 * scale), 18);
+    this._osc('sawtooth', 95, 0.45 * scale, Math.min(0.26, 0.18 * scale), 20);
+    this._osc('triangle', 58, 0.55 * scale, Math.min(0.28, 0.22 * scale), 16);
   },
   hardSlam(speed) {
     const intensity = clamp(speed / 500, 0.4, 1.2);
+    this._noiseBurst(0.14, 0.14 * intensity, 420, 1.1, 'lowpass');
     this._osc('triangle', 115, 0.18, 0.22 * intensity, 28);
     this._osc('sawtooth', 80, 0.14, 0.15 * intensity, 22);
     this.wormVoice('OW');
@@ -2722,10 +2996,12 @@ const SND = {
   skid(speed) {
     if (!this.ac || tNow - this._lastSkid < 0.055) return;
     this._lastSkid = tNow;
+    this._noiseBurst(0.05, Math.min(0.06, speed * 0.0002), 820, 2.0, 'bandpass');
     const f = 90 + Math.min(180, speed * 0.4) + Math.random() * 45;
     this._osc('triangle', f, 0.05, Math.min(0.08, speed * 0.00025), f * 0.7);
   },
   plunge() {
+    this._noiseBurst(0.36, 0.20, 920, 1.4, 'bandpass');
     this._osc('sawtooth', 260, 0.28, 0.16, 45);
     this._osc('sine', 420, 0.22, 0.14, 85);
     [240, 320, 290, 410, 480].forEach((f, i) => {
@@ -2737,12 +3013,14 @@ const SND = {
   },
   fuetWhip() {
     // Supersonic Fuet de Vic whip-crack + meaty slap!
+    this._noiseBurst(0.07, 0.18, 2200, 1.8, 'bandpass', 0.04);
     this._osc('sawtooth', 190, 0.09, 0.16, 980);
     this._osc('square', 920, 0.06, 0.18, 140, 0.05);
     this._osc('triangle', 160, 0.14, 0.20, 48, 0.06);
   },
   carquinyoliCrunch() {
     // Rock-hard Catalan almond biscotti tooth-shattering ricochet!
+    this._noiseBurst(0.04, 0.11, 1650, 2.2, 'bandpass');
     this._osc('square', 780, 0.045, 0.12, 320);
     this._osc('triangle', 1120, 0.04, 0.10, 490, 0.02);
   },
@@ -2753,6 +3031,7 @@ const SND = {
   },
   windGust() {
     // Soft Tramuntana wind gust shimmer
+    this._noiseBurst(0.42, 0.06, 460, 2.8, 'bandpass');
     this._osc('sine', 220, 0.35, 0.045, 340);
     this._osc('triangle', 165, 0.38, 0.035, 110, 0.04);
   },
@@ -2761,6 +3040,28 @@ const SND = {
     [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
       this._osc('triangle', f, 0.22, 0.12, f * 1.01, i * 0.055);
     });
+  },
+  spoonScoop() {
+    // Earthy wooden boxwood spoon scooping through soil & rock!
+    this._noiseBurst(0.09, 0.11, 520, 1.8, 'bandpass');
+    this._osc('triangle', 145, 0.09, 0.12, 230);
+  },
+  drillBore() {
+    // Pneumatic Catalan quarry jackhammer percussive rock-drill pulse!
+    this._noiseBurst(0.055, 0.14, 980, 2.4, 'bandpass');
+    this._osc('sawtooth', 92, 0.06, 0.15, 58);
+    this._osc('square', 240, 0.04, 0.09, 110);
+  },
+  stoneBuild() {
+    // Heavy dry-stone masonry ("Pedra Seca") thud & chime!
+    this._noiseBurst(0.11, 0.16, 420, 1.6, 'lowpass');
+    this._osc('triangle', 130, 0.16, 0.18, 68);
+    this._osc('sine', 392, 0.14, 0.09, 523.25, 0.05);
+  },
+  grappleWhip() {
+    // Pyrenean shepherd's crook rope zip & latch!
+    this._noiseBurst(0.12, 0.12, 1850, 2.2, 'bandpass');
+    this._osc('sine', 260, 0.18, 0.13, 680);
   },
   victory() {
     [440, 554.37, 659.25, 880].forEach((f, i) => {
@@ -2921,6 +3222,48 @@ const WEAPONS = [
     defaultAmmo: 2,
     type: 'UTILITY_JET',
     svg: `<svg viewBox="0 0 36 22"><path d="M18 11 C10 2 3 5 6 13 C8 18 14 17 18 13 C22 17 28 18 30 13 C33 5 26 2 18 11 Z" fill="#d9a15b" stroke="#fff3d1" stroke-width="1.2"/></svg>`
+  },
+  {
+    id: 'CULLERA',
+    key: 'u',
+    name: 'Cullera Boix',
+    defaultAmmo: 3,
+    type: 'TOOL_AIM',
+    maxDmg: 28,
+    knockback: 420,
+    // Giant Catalan Boxwood Wooden Cooking Spoon (Cullera de Fusta de Boix) that scoops forward through hills!
+    svg: `<svg viewBox="0 0 36 22"><g transform="rotate(-16 18 11)"><rect x="3" y="9.5" width="17" height="3.2" rx="1.5" fill="#cfa05a" stroke="#5c3a14" stroke-width="1"/><ellipse cx="25.5" cy="11" rx="7.5" ry="5.2" fill="#e6b973" stroke="#fff3d1" stroke-width="1.1"/><ellipse cx="26" cy="11" rx="5.0" ry="3.2" fill="#b8843e"/></g></svg>`
+  },
+  {
+    id: 'BARRINA',
+    key: 'i',
+    name: 'Barrina',
+    defaultAmmo: 3,
+    type: 'TOOL_AIM',
+    maxDmg: 36,
+    knockback: 320,
+    // Catalan Quarry Pneumatic Rock Drill (Barrina de Pedrera) that bores tunnels downward/diagonally!
+    svg: `<svg viewBox="0 0 36 22"><rect x="4" y="7" width="12" height="8" rx="2" fill="#d97b29" stroke="#fff3d1" stroke-width="1.1"/><line x1="4" y1="4" x2="4" y2="18" stroke="#8d96a3" stroke-width="2.4" stroke-linecap="round"/><polygon points="16,8 34,11 16,14" fill="#b8c2cf" stroke="#282d34" stroke-width="1"/><path d="M19 8.5 L22 13.5 M24 9.2 L27 12.8 M29 10 L31 12" stroke="#282d34" stroke-width="1.3"/></svg>`
+  },
+  {
+    id: 'PONT_PEDRA',
+    key: 'o',
+    name: 'Pedra Seca',
+    defaultAmmo: 3,
+    type: 'TOOL_AIM',
+    // Traditional Catalan Dry-Stone Wall & Bridge Builder (Marge de Pedra Seca)
+    svg: `<svg viewBox="0 0 36 22"><rect x="4" y="6" width="13" height="5" rx="1.5" fill="#a8a298" stroke="#f6cf77" stroke-width="1"/><rect x="19" y="6" width="13" height="5" rx="1.5" fill="#8f8980" stroke="#f6cf77" stroke-width="1"/><rect x="3" y="12.5" width="9" height="5" rx="1.5" fill="#8a847b" stroke="#efe8da" stroke-width="0.9"/><rect x="13.5" y="12.5" width="10" height="5" rx="1.5" fill="#b5afa4" stroke="#efe8da" stroke-width="0.9"/><rect x="25" y="12.5" width="8" height="5" rx="1.5" fill="#969086" stroke="#efe8da" stroke-width="0.9"/></svg>`
+  },
+  {
+    id: 'GANXO',
+    key: 'p',
+    name: 'Ganxo Pastor',
+    defaultAmmo: 3,
+    type: 'TOOL_AIM',
+    maxDmg: 22,
+    knockback: 380,
+    // Pyrenean Shepherd's Crook Grapple Hook (Ganxo de Pastor) to zip onto high cliffs or yank enemies!
+    svg: `<svg viewBox="0 0 36 22"><path d="M4 17 L22 8" stroke="#b87b3c" stroke-width="2.8" stroke-linecap="round"/><path d="M22 8 C28 5 33 7 32 13 C31 17 26 18 24 14" fill="none" stroke="#e2e8f0" stroke-width="2.6" stroke-linecap="round"/><path d="M4 17 Q11 20 16 14" fill="none" stroke="#f6cf77" stroke-width="1.3" stroke-dasharray="2 2"/></svg>`
   }
 ];
 
@@ -2989,10 +3332,13 @@ let floatingTexts = [];
 let speechBubbles = [];
 let particles = [];
 let smokePuffs = [];
+let fireballs = [];
 let shockwaves = [];
 let waterPlumes = [];
+let waterRipples = [];
 let bubbles = [];
 let tombstones = [];
+let surfaceFlora = [];
 
 // Original Non-Clone Gameplay Entities!
 let silkWebs = [];      // Elastic physics Silk Trampolines & Deflector Bridges spun by Orugas [Key C]
@@ -3002,6 +3348,7 @@ let larvaeSwarms = [];  // Angry micro-caterpillar swarms that chase and nibble 
 let updrafts = [];      // Thermal pine-resin wind currents that lift gliding caterpillars & curve shells
 let rovellons = [];     // Giant Bouncy Catalan Rovelló Mushrooms (spring trampolines & healing spores!)
 let caganers = [];      // Hidden Lucky Catalan Caganer Figurines (grant Golden Blessing + Porró & Tió!)
+let escudelles = [];    // Simmering Catalan "Olla d'Escudella i Carn d'Olla" Cauldrons (heal +Pilota buff or erupt in Galets pasta geyser!)
 
 let processionConvoyEnabled = true; // Nose-to-tail linked column march & +25% Procession Fury bonus [Key F]
 let silkWebUsedThisTurn = false;
@@ -3152,6 +3499,26 @@ function findValidLandX(preferredX, maxRadius = 260) {
   return clamp(Math.round(preferredX), 260, TERRAIN_W - 260);
 }
 
+// Finds a valid (x, y) spawn point across ALL vertical levels (upper peaks, mid balconies, or lower grotto decks)!
+function findMultiLevelSpawnSpot(preferredX, maxRadius = 260, preferLower = false) {
+  for (let r = 0; r <= maxRadius; r += 18) {
+    const dirs = r === 0 ? [0] : [-1, 1];
+    for (const d of dirs) {
+      const testX = clamp(Math.round(preferredX + d * r), 240, TERRAIN_W - 240);
+      const tiers = findAllWalkableSurfacesAtX(testX);
+      if (tiers.length > 0) {
+        let chosenY = tiers[0];
+        if (tiers.length > 1 && (preferLower || Math.random() < 0.52)) {
+          chosenY = tiers[tiers.length - 1];
+        }
+        return { x: testX, y: chosenY };
+      }
+    }
+  }
+  const fallbackX = findValidLandX(preferredX, maxRadius);
+  return { x: fallbackX, y: findSurfaceY(fallbackX, 40) };
+}
+
 function initMatch(regenerateMap = true) {
   if (regenerateMap) generateDestructibleTerrain(currentMapIdx);
 
@@ -3165,10 +3532,13 @@ function initMatch(regenerateMap = true) {
   speechBubbles = [];
   particles = [];
   smokePuffs = [];
+  fireballs = [];
   shockwaves = [];
   waterPlumes = [];
+  waterRipples = [];
   bubbles = [];
   tombstones = [];
+  surfaceFlora = [];
   silkWebs = [];
   silkNests = [];
   pineNuts = [];
@@ -3176,6 +3546,7 @@ function initMatch(regenerateMap = true) {
   updrafts = [];
   rovellons = [];
   caganers = [];
+  escudelles = [];
   roundNumber = 1;
   hitStopTimer = 0;
   slowMoTimer = 0;
@@ -3188,24 +3559,24 @@ function initMatch(regenerateMap = true) {
     for (const w of WEAPONS) teamAmmo[t][w.id] = w.defaultAmmo;
   }
 
-  // Spread fighters across the 3200px battlefield with randomized land search
+  // Spread fighters across the 3200px battlefield AND across multiple vertical levels (upper balconies & lower terraces)!
   const baseT1 = [420, 1020, 1840, 2480];
   const baseT2 = [700, 1420, 2160, 2820];
 
   for (let i = 0; i < 4; i++) {
-    const x1 = findValidLandX(baseT1[i] + (Math.random() - 0.5) * 140);
-    const x2 = findValidLandX(baseT2[i] + (Math.random() - 0.5) * 140);
-    fighters.push(createFighter(0, i, teamNames[0][i], x1, 1));
-    fighters.push(createFighter(1, i, teamNames[1][i], x2, -1));
+    const s1 = findMultiLevelSpawnSpot(baseT1[i] + (Math.random() - 0.5) * 160, 260, i % 2 === 1);
+    const s2 = findMultiLevelSpawnSpot(baseT2[i] + (Math.random() - 0.5) * 160, 260, i % 2 === 0);
+    fighters.push(createFighter(0, i, teamNames[0][i], s1.x, 1, s1.y));
+    fighters.push(createFighter(1, i, teamNames[1][i], s2.x, -1, s2.y));
   }
 
-  // Varied number and placement of explosive barrels each match (3 to 7)
+  // Varied number and placement of explosive barrels each match across upper & lower tiers (3 to 7)
   const barrelCount = 3 + Math.floor(Math.random() * 5);
   for (let b = 0; b < barrelCount; b++) {
     const rawX = 360 + ((b + 0.3 + Math.random() * 0.4) / barrelCount) * (TERRAIN_W - 720);
-    const bx = findValidLandX(rawX, 180);
-    const sy = findSurfaceY(bx, 35);
-    if (sy < WATER_Y - 22 && !fighters.some(f => Math.abs(f.x - bx) < 42)) {
+    const spot = findMultiLevelSpawnSpot(rawX, 180, b % 2 === 1);
+    const bx = spot.x, sy = spot.y;
+    if (sy < WATER_Y - 22 && !fighters.some(f => Math.hypot(f.x - bx, f.y - sy) < 42)) {
       barrels.push({
         x: bx,
         y: sy - 14,
@@ -3218,13 +3589,13 @@ function initMatch(regenerateMap = true) {
     }
   }
 
-  // Varied number and placement of proximity mines each match (2 to 5)
+  // Varied number and placement of proximity mines each match across upper & lower tiers (2 to 5)
   const mineCount = 2 + Math.floor(Math.random() * 4);
   for (let m = 0; m < mineCount; m++) {
     const rawX = 440 + ((m + 0.25 + Math.random() * 0.5) / mineCount) * (TERRAIN_W - 880);
-    const mx = findValidLandX(rawX, 180);
-    const sy = findSurfaceY(mx, 35);
-    if (sy < WATER_Y - 22 && !fighters.some(f => Math.abs(f.x - mx) < 58)) {
+    const spot = findMultiLevelSpawnSpot(rawX, 180, m % 2 === 0);
+    const mx = spot.x, sy = spot.y;
+    if (sy < WATER_Y - 22 && !fighters.some(f => Math.hypot(f.x - mx, f.y - sy) < 58)) {
       mines.push({
         x: mx,
         y: sy - 5,
@@ -3251,8 +3622,31 @@ function initMatch(regenerateMap = true) {
       y: anchorY + 28,
       r: 13,
       hp: 15,
-      swayPhase: Math.random() * Math.PI * 2
+      swayPhase: Math.random() * Math.PI * 2,
+      swingAngle: 0,
+      swingVel: 0
     });
+  }
+
+  // Spawn Regional Catalan Surface Flora on ALL vertical tiers!
+  const mapId = MAPS[currentMapIdx].id;
+  for (let fx = 240; fx < TERRAIN_W - 240; fx += 44 + Math.floor(Math.random() * 38)) {
+    const tiers = findAllWalkableSurfacesAtX(fx);
+    for (const sy of tiers) {
+      if (sy < WATER_Y - 22 && !isSolid(fx, sy - 10)) {
+        const n = getSurfaceNormal(fx, sy);
+        if (Math.abs(n.x) < 0.62) {
+          surfaceFlora.push({
+            x: fx,
+            y: sy,
+            type: mapId,
+            variant: Math.floor(Math.random() * 3),
+            scale: 0.78 + Math.random() * 0.45,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+      }
+    }
   }
 
   // Spawn 1 to 3 Thermal Pine-Resin Updrafts in randomized valleys!
@@ -3269,13 +3663,13 @@ function initMatch(regenerateMap = true) {
     });
   }
 
-  // SURPRISE 1: Spawn 3 to 5 Giant Bouncy Catalan Rovelló Mushrooms on hillsides!
+  // SURPRISE 1: Spawn 3 to 5 Giant Bouncy Catalan Rovelló Mushrooms on hillsides & lower ledges!
   const rovCount = 3 + Math.floor(Math.random() * 3);
   for (let r = 0; r < rovCount; r++) {
     const rawX = 480 + ((r + 0.2 + Math.random() * 0.6) / rovCount) * (TERRAIN_W - 960);
-    const rx = findValidLandX(rawX, 160);
-    const sy = findSurfaceY(rx, 35);
-    if (sy < WATER_Y - 25 && !fighters.some(f => Math.abs(f.x - rx) < 44) && !barrels.some(b => Math.abs(b.x - rx) < 36)) {
+    const spot = findMultiLevelSpawnSpot(rawX, 160, r % 2 === 1);
+    const rx = spot.x, sy = spot.y;
+    if (sy < WATER_Y - 25 && !fighters.some(f => Math.hypot(f.x - rx, f.y - sy) < 44) && !barrels.some(b => Math.hypot(b.x - rx, b.y - sy) < 36)) {
       rovellons.push({
         x: rx,
         y: sy,
@@ -3286,18 +3680,33 @@ function initMatch(regenerateMap = true) {
     }
   }
 
-  // SURPRISE 2: Spawn 1 or 2 Hidden Lucky "Caganer de la Sort" Figurines on scenic ledges!
+  // SURPRISE 2: Spawn 1 or 2 Hidden Lucky "Caganer de la Sort" Figurines on scenic ledges or inside grottos!
   const cagCount = 1 + Math.floor(Math.random() * 2);
   for (let c = 0; c < cagCount; c++) {
     const rawX = 620 + c * 1450 + (Math.random() - 0.5) * 420;
-    const cx = findValidLandX(rawX, 200);
-    const sy = findSurfaceY(cx, 35);
-    if (sy < WATER_Y - 30 && !fighters.some(f => Math.abs(f.x - cx) < 55)) {
+    const spot = findMultiLevelSpawnSpot(rawX, 200, true); // Prefer lower/hidden grotto or terrace ledges!
+    const cx = spot.x, sy = spot.y;
+    if (sy < WATER_Y - 30 && !fighters.some(f => Math.hypot(f.x - cx, f.y - sy) < 55)) {
       caganers.push({
         x: cx,
         y: sy - 8,
         r: 11,
         bobPhase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  // SURPRISE 4: Spawn 2 Simmering Cast-Iron "Olles d'Escudella i Carn d'Olla" Soup Cauldrons!
+  for (let e = 0; e < 2; e++) {
+    const rawX = 920 + e * 1280 + (Math.random() - 0.5) * 320;
+    const spot = findMultiLevelSpawnSpot(rawX, 180, e === 1);
+    if (spot.y < WATER_Y - 28 && !fighters.some(f => Math.hypot(f.x - spot.x, f.y - spot.y) < 52)) {
+      escudelles.push({
+        x: spot.x,
+        y: spot.y - 12,
+        r: 15,
+        hp: 25,
+        steamPhase: Math.random() * Math.PI * 2
       });
     }
   }
@@ -3311,8 +3720,8 @@ function initMatch(regenerateMap = true) {
   buildWeaponBar();
 }
 
-function createFighter(team, memberIdx, name, x, facing) {
-  const sy = findSurfaceY(x, 30);
+function createFighter(team, memberIdx, name, x, facing, explicitSurfY = null) {
+  const sy = explicitSurfY !== null ? explicitSurfY : findSurfaceY(x, 30);
   const fy = Math.min(WATER_Y - 30, sy - 14);
   // Multi-segmented Oruga Procesionaria body (6 articulated trailing segments!)
   const segs = [];
@@ -3347,6 +3756,11 @@ function createFighter(team, memberIdx, name, x, facing) {
     metamorphosed: false, // Awakens Thaumetopoea Moth Wings at low HP or 80+ DMG!
     linkedAllies: [],     // Nose-to-tail Procession Link allies
     castellTower: false,  // Active when stacked on top of an allied Cuc ("Castell de Cucs!")
+    pilotaBuff: false,    // Active after eating from the Olla d'Escudella (+25% jump & knockback!)
+    wineTipsy: 0,         // Turns of Priorat wine tipsy bubbles when splashed by a wine barrel!
+    spoonTimer: 0,        // Active while bulldozing terrain with the Cullera de Fusta de Boix!
+    drillTimer: 0,        // Active while boring downward/diagonally with the Barrina de Pedrera!
+    grapple: null,        // Active while swinging/zipping on the Ganxo de Pastor!
     squashX: 1,
     squashY: 1,
     dizzyTimer: 0,
@@ -3365,7 +3779,7 @@ function createFighter(team, memberIdx, name, x, facing) {
 function spawnSupplyDrop() {
   const cx = 300 + Math.random() * (TERRAIN_W - 600);
   const isMedkit = Math.random() < 0.42;
-  const rewardPool = ['HOLY', 'AIRSTRIKE', 'DYNAMITE', 'JETPACK', 'CLUSTER', 'URTICARIA'];
+  const rewardPool = ['HOLY', 'AIRSTRIKE', 'DYNAMITE', 'JETPACK', 'CLUSTER', 'URTICARIA', 'CULLERA', 'BARRINA', 'PONT_PEDRA', 'GANXO'];
   const rewardWpn = rewardPool[Math.floor(Math.random() * rewardPool.length)];
   crates.push({
     x: cx,
@@ -3757,9 +4171,21 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
     spawnSmoke(ex, ey, 14, 'rgba(168, 85, 235, 0.58)');
   } else {
     SND.boom(radius / 45);
-    spawnSmoke(ex, ey, Math.floor(radius * 0.36), 'rgba(32, 28, 26, 0.75)');
+    spawnSmoke(ex, ey, Math.floor(radius * 0.42), 'rgba(32, 28, 26, 0.78)');
     spawnSparks(ex, ey, Math.floor(radius * 0.75));
+    spawnEmbers(ex, ey, Math.floor(radius * 0.35));
   }
+
+  // Multi-Stage Volumetric Fireball Core
+  fireballs.push({
+    x: ex,
+    y: ey,
+    r: Math.max(8, radius * 0.35),
+    maxR: Math.max(20, radius * 1.45),
+    life: 1.0,
+    decay: 2.35,
+    isUrticating: !!isUrticating
+  });
 
   // Lock camera onto the explosion site so it doesn't snap back to the shooter!
   impactCam.active = true;
@@ -3778,6 +4204,7 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
     slowMoTimer = 0.45;
   }
 
+  // Double concentric shockwave + heat-refraction ring
   shockwaves.push({
     x: ex,
     y: ey,
@@ -3786,17 +4213,81 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
     alpha: 1.0,
     color: isUrticating ? '210, 125, 255' : '255, 225, 175'
   });
+  shockwaves.push({
+    x: ex,
+    y: ey,
+    r: 4,
+    maxR: radius * 1.95,
+    alpha: 0.75,
+    color: isUrticating ? '245, 195, 255' : '255, 145, 70'
+  });
+
   carveCrater(ex, ey, radius);
-  spawnRockDebris(ex, ey, Math.floor(radius * 0.42));
+  spawnRockDebris(ex, ey, Math.floor(radius * 0.46));
+
+  // Uproot any surface flora caught in the crater or blast wave!
+  for (let i = surfaceFlora.length - 1; i >= 0; i--) {
+    const fl = surfaceFlora[i];
+    const dFl = Math.hypot(fl.x - ex, fl.y - ey);
+    if (dFl <= radius * 1.45 || !isSolid(fl.x, fl.y + 3)) {
+      surfaceFlora.splice(i, 1);
+      for (let p = 0; p < 3; p++) {
+        particles.push({
+          x: fl.x,
+          y: fl.y - 4,
+          vx: (fl.x - ex) * 2.2 + (Math.random() - 0.5) * 90,
+          vy: -90 - Math.random() * 110,
+          w: 4.5,
+          h: 2.5,
+          rot: Math.random() * 6,
+          vrot: (Math.random() - 0.5) * 14,
+          life: 1.1,
+          decay: 0.8,
+          color: fl.type === 'TAULL' ? '#e8f4ff' : (fl.type === 'CASTELLFOLLIT' ? '#e67e22' : '#7cb342'),
+          isSpark: false
+        });
+      }
+    }
+  }
+
+  // If explosion is near the water surface, kick up a water ripple & spray!
+  if (Math.abs(ey - WATER_Y) < radius * 1.5) {
+    spawnWaterPlunge(ex, WATER_Y, clamp(radius / 55, 0.5, 1.35));
+  }
 
   const hitRadius = radius * (isUrticating ? 2.1 : 1.68);
 
-  // Check if any Hanging Silk Nests ("Bolsones") are hit by the blast!
+  // Check if any Hanging Silk Nests ("Bolsones") are hit or swung by the blast wave!
   for (let i = silkNests.length - 1; i >= 0; i--) {
     const nest = silkNests[i];
-    if (Math.hypot(nest.x - ex, nest.y - ey) <= hitRadius + nest.r) {
+    const dNest = Math.hypot(nest.x - ex, nest.y - ey);
+    if (dNest <= hitRadius + nest.r) {
       silkNests.splice(i, 1);
       burstSilkNest(nest);
+    } else if (dNest <= radius * 4.2) {
+      const pushDir = Math.sign(nest.x - ex) || 1;
+      nest.swingVel = (nest.swingVel || 0) + pushDir * (1 - dNest / (radius * 4.2)) * 12;
+    }
+  }
+
+  // Blast wave pushes parachuting or grounded Crates & Mines!
+  for (const c of crates) {
+    const dC = Math.hypot(c.x - ex, c.y - ey);
+    if (dC < hitRadius * 1.35 && dC > 1) {
+      const fC = 1 - dC / (hitRadius * 1.35);
+      c.vx += ((c.x - ex) / dC) * 220 * fC;
+      c.vy -= 160 * fC;
+      c.grounded = false;
+    }
+  }
+  for (const m of mines) {
+    const dM = Math.hypot(m.x - ex, m.y - ey);
+    if (dM < hitRadius * 1.25 && dM > 1) {
+      const fM = 1 - dM / (hitRadius * 1.25);
+      m.vx += ((m.x - ex) / dM) * 240 * fM;
+      m.vy -= 175 * fM;
+      m.grounded = false;
+      m.triggered = true;
     }
   }
 
@@ -3882,6 +4373,32 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
       b.hp -= maxDmg * (1 - dist / hitRadius);
       if (b.hp <= 0) {
         barrels.splice(i, 1);
+        // Splash ruby-purple Priorat red wine droplets & make nearby caterpillars Wine-Tipsy!
+        for (let w = 0; w < 22; w++) {
+          const wa = Math.random() * Math.PI * 2;
+          const wsp = 60 + Math.random() * 190;
+          particles.push({
+            x: b.x, y: b.y,
+            vx: Math.cos(wa) * wsp,
+            vy: Math.sin(wa) * wsp - 50,
+            w: 4, h: 4, rot: 0, vrot: 0,
+            life: 1.25, decay: 0.85,
+            color: Math.random() < 0.6 ? '#9e1b34' : '#d83b56',
+            isSpark: false,
+            collidesTerrain: true
+          });
+        }
+        for (const f of fighters) {
+          if (f.alive && !f.drowning && Math.hypot(f.x - b.x, f.y - b.y) < 115) {
+            f.wineTipsy = 2;
+            floatingTexts.push({
+              x: f.x, y: f.y - 36,
+              text: '¡XOP DE VI DEL PRIORAT!',
+              color: '#e85d75',
+              life: 1.7
+            });
+          }
+        }
         setTimeout(() => {
           triggerExplosion(b.x, b.y, 58, 55, 500, 0, false);
         }, 70);
@@ -3890,6 +4407,45 @@ function triggerExplosion(ex, ey, radius, maxDmg, knockback, spawnClusters = 0, 
         b.vx += nx * 240;
         b.vy -= 210;
         b.grounded = false;
+      }
+    }
+  }
+
+  // Check if any Simmering "Olla d'Escudella" Soup Cauldrons are hit -> Erupt in a Galets Pasta & Broth Geyser!
+  for (let i = escudelles.length - 1; i >= 0; i--) {
+    const ol = escudelles[i];
+    if (Math.hypot(ol.x - ex, ol.y - ey) <= hitRadius + ol.r) {
+      escudelles.splice(i, 1);
+      SND.boom(0.9);
+      spawnSmoke(ol.x, ol.y - 8, 12, 'rgba(255, 242, 210, 0.82)');
+      floatingTexts.push({
+        x: ol.x, y: ol.y - 28,
+        text: '¡ESCUDELLA EXPLOSIVA! ¡PLUJA DE GALETS!',
+        color: '#ffe082',
+        life: 1.95
+      });
+      for (let g = 0; g < 3; g++) {
+        const ga = -Math.PI * 0.5 + (g - 1) * 0.36 + (Math.random() - 0.5) * 0.12;
+        const gsp = 210 + Math.random() * 80;
+        projectiles.push({
+          type: 'CARQUINYOLI',
+          isGalet: true,
+          x: ol.x,
+          y: ol.y - 10,
+          vx: Math.cos(ga) * gsp,
+          vy: Math.sin(ga) * gsp,
+          r: 6,
+          windFactor: 0.15,
+          bounces: true,
+          bouncesLeft: 2,
+          fuse: 2.0 + g * 0.15,
+          lastSec: 0,
+          blastR: 28,
+          maxDmg: 22,
+          knockback: 320,
+          age: 0,
+          ang: g
+        });
       }
     }
   }
@@ -3972,13 +4528,15 @@ function fireWeapon(wpn, angle, power, targetPt) {
   const dirY = Math.sin(angle);
   activeFighter.facing = dirX >= 0 ? 1 : -1;
 
-  // Calculate Procession Fury (+25% per linked nose-to-tail ally, up to +50%) + Castell de Cucs (+30%) + Metamorphosis (+15%)!
+  // Calculate Procession Fury (+25% per linked nose-to-tail ally, up to +50%) + Castell de Cucs (+30%) + Pilota d'Escudella (+25%) + Metamorphosis (+15%)!
   const linkedCount = (activeFighter.linkedAllies ? Math.min(2, activeFighter.linkedAllies.length) : 0);
   const castellBoost = activeFighter.castellTower ? 0.30 : 0;
-  const dmgBoost = 1.0 + linkedCount * 0.25 + castellBoost + (activeFighter.metamorphosed ? 0.15 : 0);
-  const radiusBoost = 1.0 + linkedCount * 0.12 + (activeFighter.castellTower ? 0.15 : 0);
+  const pilotaBoost = activeFighter.pilotaBuff ? 0.25 : 0;
+  const dmgBoost = 1.0 + linkedCount * 0.25 + castellBoost + pilotaBoost + (activeFighter.metamorphosed ? 0.15 : 0);
+  const radiusBoost = 1.0 + linkedCount * 0.12 + (activeFighter.castellTower ? 0.15 : 0) + (activeFighter.pilotaBuff ? 0.10 : 0);
   const effDmg = Math.round((wpn.maxDmg || 0) * dmgBoost);
   const effBlastR = Math.round((wpn.blastR || 0) * radiusBoost);
+  const effKnockback = Math.round((wpn.knockback || 0) * (1 + pilotaBoost));
 
   if (activeFighter.castellTower) {
     floatingTexts.push({
@@ -4136,14 +4694,32 @@ function fireWeapon(wpn, angle, power, targetPt) {
 
     const reach = isFuet ? 68 : 48;
     let hitAnyone = false;
+
+    // Live Grenade / Tió / Carquinyoli Deflection ("¡REBOT DE MESTRE!"): bat away any nearby ticking explosive!
+    for (const p of projectiles) {
+      if (Math.hypot(p.x - activeFighter.x, p.y - activeFighter.y) <= reach + 18) {
+        p.vx = dirX * 640;
+        p.vy = dirY * 640 - 115;
+        if (p.fuse !== undefined) p.fuse = Math.max(p.fuse, 1.8);
+        hitAnyone = true;
+        SND.homeRun();
+        floatingTexts.push({
+          x: p.x, y: p.y - 26,
+          text: '¡REBOT DE MESTRE!',
+          color: '#ffd966',
+          life: 1.5
+        });
+      }
+    }
+
     for (const f of fighters) {
       if (f !== activeFighter && f.alive && !f.drowning) {
         const dist = Math.hypot(f.x - activeFighter.x, f.y - activeFighter.y);
         if (dist <= reach) {
           hitAnyone = true;
           damageFighter(f, effDmg, isFuet ? '¡COP DE FUET DE VIC!' : '¡BON COP DE FALÇ!');
-          f.vx = dirX * wpn.knockback;
-          f.vy = Math.min(isFuet ? -185 : -210, dirY * wpn.knockback - (isFuet ? 95 : 120));
+          f.vx = dirX * effKnockback;
+          f.vy = Math.min(isFuet ? -185 : -210, dirY * effKnockback - (isFuet ? 95 : 120));
           f.grounded = false;
           f.sliding = false;
           f.isVoluntaryJump = false;
@@ -4263,6 +4839,176 @@ function fireWeapon(wpn, angle, power, targetPt) {
     selectedWeaponIdx = 0;
     if (!isCurrentTurnAI()) teamSelectedWeaponIdx[activeTeam] = 0;
     buildWeaponBar();
+  } else if (wpn.id === 'CULLERA') {
+    // TOOL 1: Cullera de Fusta de Boix (Giant Boxwood Wooden Spoon Bulldozer / Terrain Scooper!)
+    SND.spoonScoop();
+    SND.wormVoice('ATTACK');
+    activeFighter.spoonTimer = 2.15;
+    activeFighter.spoonAngle = clamp(angle, -Math.PI * 0.85, Math.PI * 0.85);
+    activeFighter.spoonTick = 0;
+    floatingTexts.push({
+      x: activeFighter.x,
+      y: activeFighter.y - 32,
+      text: '¡CULLERADA DE BOIX! ¡OBRINT PAS!',
+      color: '#f6cf77',
+      life: 1.75
+    });
+    turnPhase = 'ACTION_WAIT';
+  } else if (wpn.id === 'BARRINA') {
+    // TOOL 2: Barrina de Pedrera (Pneumatic Catalan Quarry Jackhammer / Rock Drill!)
+    SND.drillBore();
+    // Ensure drill angle points downward or diagonally downward into the earth
+    let dAng = angle;
+    if (Math.sin(dAng) < 0.22) {
+      dAng = activeFighter.facing >= 0 ? 1.05 : (Math.PI - 1.05);
+    }
+    activeFighter.drillTimer = 1.95;
+    activeFighter.drillAngle = dAng;
+    activeFighter.drillTick = 0;
+    floatingTexts.push({
+      x: activeFighter.x,
+      y: activeFighter.y - 32,
+      text: '¡BARRINA DE MINAIRE! ¡Brrrrr!',
+      color: '#ffae42',
+      life: 1.75
+    });
+    turnPhase = 'ACTION_WAIT';
+  } else if (wpn.id === 'PONT_PEDRA') {
+    // TOOL 3: Marge de Pedra Seca (Dry-Stone Wall, Ramp & Bridge Builder!)
+    SND.stoneBuild();
+    const girderDist = 52;
+    const gx = activeFighter.x + dirX * girderDist;
+    const gy = (activeFighter.y - 4) + dirY * girderDist;
+    buildDryStoneGirder(gx, gy, angle, 82, 16);
+    spawnSmoke(gx, gy, 10, 'rgba(185, 175, 158, 0.65)');
+    spawnRockDebris(gx, gy, 8);
+    floatingTexts.push({
+      x: gx,
+      y: gy - 22,
+      text: '¡MARGE DE PEDRA SECA CONSTRUÏT!',
+      color: '#e8e2d5',
+      life: 1.85
+    });
+    turnPhase = 'RETREAT';
+    phaseTimer = 2.8;
+  } else if (wpn.id === 'GANXO') {
+    // TOOL 4: Ganxo de Pastor (Pyrenean Shepherd's Crook Grapple Hook & Enemy Yanker!)
+    SND.grappleWhip();
+    let hitX = muzzleX, hitY = muzzleY;
+    let latchedTerrain = false;
+    let hookedEnemy = null;
+    let hookedBarrel = null;
+
+    for (let d = 12; d <= 480; d += 4) {
+      const rx = muzzleX + dirX * d;
+      const ry = muzzleY + dirY * d;
+      if (ry >= WATER_Y - 6 || rx < 20 || rx > TERRAIN_W - 20) break;
+
+      for (const f of fighters) {
+        if (f !== activeFighter && f.alive && !f.drowning && Math.hypot(f.x - rx, (f.y - 4) - ry) <= f.r + 8) {
+          hookedEnemy = f;
+          hitX = f.x;
+          hitY = f.y - 4;
+          break;
+        }
+      }
+      if (hookedEnemy) break;
+
+      for (const b of barrels) {
+        if (Math.hypot(b.x - rx, b.y - ry) <= b.r + 6) {
+          hookedBarrel = b;
+          hitX = b.x;
+          hitY = b.y;
+          break;
+        }
+      }
+      if (hookedBarrel) break;
+
+      if (isSolid(rx, ry)) {
+        latchedTerrain = true;
+        hitX = rx;
+        hitY = ry;
+        break;
+      }
+    }
+
+    if (hookedEnemy) {
+      // Yank the enemy toward the shepherd's crook and deal impact damage!
+      damageFighter(hookedEnemy, effDmg, '¡GANXADA DE PASTOR!');
+      hookedEnemy.vx = -dirX * 360;
+      hookedEnemy.vy = Math.min(-160, -dirY * 280 - 95);
+      hookedEnemy.grounded = false;
+      hookedEnemy.sliding = false;
+      hookedEnemy.wasBlasted = true;
+      hookedEnemy.dizzyTimer = 2.0;
+      impactCam.active = true;
+      impactCam.x = hookedEnemy.x;
+      impactCam.y = hookedEnemy.y;
+      impactCam.trackedWorm = hookedEnemy;
+      particles.push({
+        isBeam: true,
+        x1: muzzleX, y1: muzzleY,
+        x2: hitX, y2: hitY,
+        life: 0.32,
+        decay: 1.0
+      });
+      turnPhase = 'ACTION_WAIT';
+    } else if (hookedBarrel) {
+      hookedBarrel.vx = -dirX * 310;
+      hookedBarrel.vy = -170;
+      hookedBarrel.grounded = false;
+      particles.push({
+        isBeam: true,
+        x1: muzzleX, y1: muzzleY,
+        x2: hitX, y2: hitY,
+        life: 0.32,
+        decay: 1.0
+      });
+      turnPhase = 'RETREAT';
+      phaseTimer = 2.4;
+    } else if (latchedTerrain) {
+      // Carve a small foothold pocket at the latch point so the caterpillar can stand on steep cliffs!
+      carveCrater(hitX - dirX * 10, hitY - dirY * 10, 15);
+      activeFighter.grapple = {
+        startX: activeFighter.x,
+        startY: activeFighter.y,
+        targetX: clamp(hitX - dirX * 14, 28, TERRAIN_W - 28),
+        targetY: clamp(hitY - dirY * 14, 42, WATER_Y - 28),
+        hookX: hitX,
+        hookY: hitY,
+        progress: 0
+      };
+      activeFighter.grounded = false;
+      activeFighter.sliding = false;
+      activeFighter.isVoluntaryJump = true;
+      activeFighter.wasBlasted = false;
+      floatingTexts.push({
+        x: activeFighter.x,
+        y: activeFighter.y - 30,
+        text: '¡GANXO DE PASTOR! ¡AMUNT!',
+        color: '#ffe082',
+        life: 1.55
+      });
+      turnPhase = 'ACTION_WAIT';
+    } else {
+      // Missed grapple shot
+      particles.push({
+        isBeam: true,
+        x1: muzzleX, y1: muzzleY,
+        x2: muzzleX + dirX * 260, y2: muzzleY + dirY * 260,
+        life: 0.22,
+        decay: 1.0
+      });
+      floatingTexts.push({
+        x: activeFighter.x,
+        y: activeFighter.y - 26,
+        text: '¡GANXO CURT!',
+        color: '#cbd5e1',
+        life: 1.2
+      });
+      turnPhase = 'RETREAT';
+      phaseTimer = 2.0;
+    }
   }
 }
 
@@ -4631,23 +5377,61 @@ function stepPhysics(dt) {
       }
     }
 
-    if (!exploded && (p.type === 'BAZOOKA' || p.type === 'URTICARIA') && Math.random() < 0.65) {
-      smokePuffs.push({
-        x: p.x, y: p.y,
-        vx: (Math.random() - 0.5) * 14,
-        vy: (Math.random() - 0.5) * 14,
-        r: 4.5, vr: 14,
-        life: 0.55, decay: 1.0,
-        color: p.type === 'URTICARIA' ? 'rgba(200, 120, 255, 0.55)' : 'rgba(225, 215, 200, 0.45)'
-      });
+    if (!exploded) {
+      if (!p.trail) p.trail = [];
+      p.trail.push({ x: p.x, y: p.y });
+      if (p.trail.length > 14) p.trail.shift();
+
+      // Falling artillery whistle when a high-altitude shell plunges downward!
+      if (!p._whistled && p.age > 0.45 && p.vy > 210 && p.y < WATER_Y - 120 && (p.type === 'BAZOOKA' || p.type === 'HOLY' || p.type === 'CLUSTER')) {
+        p._whistled = true;
+        SND.shellWhistle();
+      }
+
+      if ((p.type === 'BAZOOKA' || p.type === 'URTICARIA' || p.type === 'BOMBLER') && Math.random() < 0.72) {
+        smokePuffs.push({
+          x: p.x, y: p.y,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.5) * 14,
+          r: p.type === 'BOMBLER' ? 3.5 : 4.8, vr: 14,
+          life: 0.55, decay: 1.0,
+          color: p.type === 'URTICARIA' ? 'rgba(200, 120, 255, 0.55)' : (p.type === 'BOMBLER' ? 'rgba(255, 145, 55, 0.55)' : 'rgba(225, 215, 200, 0.45)')
+        });
+      } else if (p.type === 'HOLY' && Math.random() < 0.75) {
+        // Sacred Porró sheds golden halo sparkles & ruby wine droplets in flight!
+        particles.push({
+          x: p.x + (Math.random() - 0.5) * 8,
+          y: p.y + (Math.random() - 0.5) * 8,
+          vx: -p.vx * 0.1 + (Math.random() - 0.5) * 30,
+          vy: -20 + (Math.random() - 0.5) * 30,
+          w: 2.8, h: 2.8, rot: 0, vrot: 0,
+          life: 0.55, decay: 1.2,
+          color: Math.random() < 0.65 ? '#ffe57f' : '#d92626',
+          isSpark: true
+        });
+      } else if (p.type === 'CARQUINYOLI' && Math.random() < 0.45) {
+        // Spinning Carquinyoli sheds toasted almond & biscuit crumbs!
+        particles.push({
+          x: p.x, y: p.y,
+          vx: (Math.random() - 0.5) * 40,
+          vy: -15 + Math.random() * 25,
+          w: 2.4, h: 2.4, rot: Math.random() * 6, vrot: 8,
+          life: 0.5, decay: 1.3,
+          color: Math.random() < 0.5 ? '#fff5df' : '#c87d32',
+          isSpark: false
+        });
+      }
     }
   }
 
-  // Update Hanging Silk Nests ("Bolsones Vivos") swaying in the wind
+  // Update Hanging Silk Nests ("Bolsones Vivos") with spring-damped pendulum physics + wind force
   for (const nest of silkNests) {
-    const sway = Math.sin(tNow * 2.4 + nest.swayPhase) * (4 + Math.abs(wind) * 0.08) + wind * 0.09;
-    nest.x = nest.anchorX + sway;
-    nest.y = nest.anchorY + 26;
+    const windTorque = (wind * 0.0045 + Math.sin(tNow * 2.4 + nest.swayPhase) * (0.14 + Math.abs(wind) * 0.002));
+    nest.swingVel = ((nest.swingVel || 0) + (windTorque - (nest.swingAngle || 0) * 6.5) * dt) * Math.pow(0.28, dt);
+    nest.swingAngle = clamp((nest.swingAngle || 0) + nest.swingVel * dt, -0.95, 0.95);
+    const ropeLen = 28;
+    nest.x = nest.anchorX + Math.sin(nest.swingAngle) * ropeLen;
+    nest.y = nest.anchorY + Math.cos(nest.swingAngle) * ropeLen;
   }
 
   // Decay Silk Web vibrations
@@ -4704,6 +5488,50 @@ function stepPhysics(dt) {
         updateHUD();
         buildWeaponBar();
         caganers.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  // Update Simmering Cast-Iron "Olles d'Escudella i Carn d'Olla" Soup Cauldrons!
+  for (let i = escudelles.length - 1; i >= 0; i--) {
+    const ol = escudelles[i];
+    if (!isSolid(ol.x, ol.y + 13)) {
+      ol.y += 140 * dt;
+      if (ol.y >= WATER_Y) {
+        escudelles.splice(i, 1);
+        continue;
+      }
+    }
+    // Emit aromatic broth steam wisps
+    if (Math.random() < 0.18) {
+      smokePuffs.push({
+        x: ol.x + (Math.random() - 0.5) * 10,
+        y: ol.y - 10,
+        vx: wind * 0.15 + (Math.random() - 0.5) * 8,
+        vy: -28 - Math.random() * 18,
+        r: 4, vr: 8,
+        life: 0.75, decay: 0.9,
+        color: 'rgba(255, 248, 232, 0.35)'
+      });
+    }
+    for (const f of fighters) {
+      if (f.alive && !f.drowning && Math.hypot(f.x - ol.x, f.y - ol.y) <= f.r + ol.r + 8) {
+        SND.cratePickup();
+        f.hp = Math.min(165, f.hp + 25);
+        f.pilotaBuff = true;
+        f.urticatingTicks = 0;
+        spawnSparks(ol.x, ol.y - 6, 14);
+        spawnSpeechBubble(f, '¡Quina Escudella més bona!', 2.3);
+        floatingTexts.push({
+          x: ol.x,
+          y: ol.y - 32,
+          text: '+25 PV ¡FORÇA DE LA PILOTA! (+25% DANY)',
+          color: '#ffd966',
+          life: 2.1
+        });
+        updateHUD();
+        escudelles.splice(i, 1);
         break;
       }
     }
@@ -4910,6 +5738,143 @@ function stepPhysics(dt) {
       continue;
     }
 
+    // ACTIVE TOOL 1: Cullera de Fusta de Boix (Wooden Spoon Bulldozer / Terrain Scooper!)
+    if (f.spoonTimer > 0) {
+      f.spoonTimer = Math.max(0, f.spoonTimer - dt);
+      f.spoonTick = (f.spoonTick || 0) - dt;
+      // Allow live gentle steering of the spoon angle while scooping!
+      if (f === activeFighter && !isCurrentTurnAI()) {
+        if (keys.up) f.spoonAngle -= 0.9 * dt * f.facing;
+        if (keys.down) f.spoonAngle += 0.9 * dt * f.facing;
+      }
+      const sDirX = Math.cos(f.spoonAngle || 0);
+      const sDirY = Math.sin(f.spoonAngle || 0);
+      f.facing = sDirX >= 0 ? 1 : -1;
+      f.walkCycle += dt * 22;
+
+      const nextX = clamp(f.x + sDirX * 64 * dt, 28, TERRAIN_W - 28);
+      const nextY = clamp(f.y + sDirY * 42 * dt, 38, WATER_Y - 18);
+      f.x = nextX;
+      f.y = nextY;
+      f.jumpStartY = f.y;
+      f.peakAirY = f.y;
+      f.grounded = isSolid(f.x, f.y + f.r + 2);
+      impactCam.active = true;
+      impactCam.x = f.x;
+      impactCam.y = f.y;
+      impactCam.trackedWorm = f;
+
+      if (f.spoonTick <= 0) {
+        f.spoonTick = 0.085;
+        SND.spoonScoop();
+        const scoopX = f.x + sDirX * 15;
+        const scoopY = f.y - 2 + sDirY * 10;
+        carveCrater(scoopX, scoopY, 19);
+        spawnRockDebris(scoopX, scoopY, 4);
+        // Fling any enemy or barrel caught in front of the giant wooden spoon!
+        for (const other of fighters) {
+          if (other !== f && other.alive && !other.drowning && Math.hypot(other.x - scoopX, other.y - scoopY) <= 28) {
+            damageFighter(other, 14, '¡CULLERADA!');
+            other.vx = sDirX * 320;
+            other.vy = -210;
+            other.grounded = false;
+            other.wasBlasted = true;
+            other.jumpStartY = other.y;
+            other.peakAirY = other.y;
+          }
+        }
+        for (const b of barrels) {
+          if (Math.hypot(b.x - scoopX, b.y - scoopY) <= 28) {
+            b.vx = sDirX * 280;
+            b.vy = -190;
+            b.grounded = false;
+          }
+        }
+      }
+      updateOrugaSegments(f, dt);
+      if (f.spoonTimer <= 0 && turnPhase === 'ACTION_WAIT') {
+        turnPhase = 'RETREAT';
+        phaseTimer = 1.8;
+      }
+      continue;
+    }
+
+    // ACTIVE TOOL 2: Barrina de Pedrera (Pneumatic Catalan Quarry Jackhammer / Rock Drill!)
+    if (f.drillTimer > 0) {
+      f.drillTimer = Math.max(0, f.drillTimer - dt);
+      f.drillTick = (f.drillTick || 0) - dt;
+      const dDirX = Math.cos(f.drillAngle || (Math.PI * 0.5));
+      const dDirY = Math.max(0.25, Math.sin(f.drillAngle || (Math.PI * 0.5)));
+      f.facing = dDirX >= 0 ? 1 : -1;
+      f.squashX = 1.0 + Math.sin(tNow * 55) * 0.12;
+      f.squashY = 1.0 - Math.sin(tNow * 55) * 0.12;
+      shake = Math.max(shake, 3.5);
+
+      f.x = clamp(f.x + dDirX * 52 * dt, 28, TERRAIN_W - 28);
+      f.y = clamp(f.y + dDirY * 56 * dt, 38, WATER_Y - 22);
+      f.jumpStartY = f.y;
+      f.peakAirY = f.y;
+      f.grounded = isSolid(f.x, f.y + f.r + 2);
+      impactCam.active = true;
+      impactCam.x = f.x;
+      impactCam.y = f.y;
+      impactCam.trackedWorm = f;
+
+      if (f.drillTick <= 0) {
+        f.drillTick = 0.08;
+        SND.drillBore();
+        const bitX = f.x + dDirX * 14;
+        const bitY = f.y + dDirY * 14;
+        carveCrater(bitX, bitY, 16);
+        spawnSparks(bitX, bitY, 4);
+        spawnRockDebris(bitX, bitY, 3);
+        for (const other of fighters) {
+          if (other !== f && other.alive && !other.drowning && Math.hypot(other.x - bitX, other.y - bitY) <= 26) {
+            damageFighter(other, 7, '¡BARRINA!');
+            other.vx = (dDirX || 0.4) * 160;
+            other.vy = -120;
+            other.grounded = false;
+          }
+        }
+      }
+      updateOrugaSegments(f, dt);
+      if (f.drillTimer <= 0 && turnPhase === 'ACTION_WAIT') {
+        turnPhase = 'RETREAT';
+        phaseTimer = 1.8;
+      }
+      continue;
+    }
+
+    // ACTIVE TOOL 4: Ganxo de Pastor (Pyrenean Shepherd's Crook Grapple Zip!)
+    if (f.grapple) {
+      f.grapple.progress = Math.min(1, f.grapple.progress + dt * 2.6);
+      const ease = 1 - Math.pow(1 - f.grapple.progress, 2.2);
+      f.x = lerp(f.grapple.startX, f.grapple.targetX, ease);
+      f.y = lerp(f.grapple.startY, f.grapple.targetY, ease) - Math.sin(f.grapple.progress * Math.PI) * 18;
+      f.vx = 0;
+      f.vy = 0;
+      f.jumpStartY = f.y;
+      f.peakAirY = f.y;
+      f.isVoluntaryJump = true;
+      f.wasBlasted = false;
+      impactCam.active = true;
+      impactCam.x = f.x;
+      impactCam.y = f.y;
+      impactCam.trackedWorm = f;
+      updateOrugaSegments(f, dt);
+
+      if (f.grapple.progress >= 1) {
+        f.grapple = null;
+        f.grounded = isSolid(f.x, f.y + f.r + 2);
+        SND.jump();
+        if (turnPhase === 'ACTION_WAIT') {
+          turnPhase = 'RETREAT';
+          phaseTimer = 2.4;
+        }
+      }
+      continue;
+    }
+
     if (f.grounded && !isSolid(f.x, f.y + f.r + 2) && !isSolid(f.x - 4, f.y + f.r + 2) && !isSolid(f.x + 4, f.y + f.r + 2)) {
       f.grounded = false;
       f.sliding = false;
@@ -4977,6 +5942,7 @@ function stepPhysics(dt) {
       if (moveDir !== 0 && !isCharging) {
         f.facing = moveDir;
         f.walkCycle += dt * 12;
+        SND.crawlStep();
         const stepX = clamp(f.x + moveDir * 78 * dt, 30, TERRAIN_W - 30);
         let foundY = null;
         for (let dy = -9; dy <= 10; dy++) {
@@ -5329,6 +6295,60 @@ function stepPhysics(dt) {
       f.vy = 0;
     }
 
+    // Billiard Knock-On Collisions ("¡CARAMBOLA DE CUCS!"): fast-moving or sliding Cucs knock into other Cucs & Barrels!
+    const fSpeed = Math.hypot(f.vx, f.vy);
+    if ((f.sliding || f.wasBlasted || (!f.grounded && fSpeed > 155)) && fSpeed > 95) {
+      for (const other of fighters) {
+        if (other === f || !other.alive || other.drowning) continue;
+        const dx = other.x - f.x;
+        const dy = other.y - f.y;
+        const d = Math.hypot(dx, dy);
+        if (d > 0 && d < f.r + other.r - 2 && (f._lastKnockTime || 0) < tNow - 0.28) {
+          f._lastKnockTime = tNow;
+          other._lastKnockTime = tNow;
+          const nx = dx / d;
+          other.vx = nx * Math.max(125, Math.abs(f.vx) * 0.78) + f.vx * 0.25;
+          other.vy = Math.min(-95, f.vy * 0.45 - 80);
+          other.grounded = false;
+          other.sliding = false;
+          other.wasBlasted = true;
+          other.jumpStartY = other.y;
+          other.peakAirY = other.y;
+          other.squashX = 0.74;
+          other.squashY = 1.32;
+          f.vx *= 0.48;
+          f.squashX = 1.24;
+          f.squashY = 0.80;
+          SND.bounce();
+          spawnUrticatingHairs((f.x + other.x) * 0.5, (f.y + other.y) * 0.5, 6);
+          if (fSpeed > 195 && other.team !== f.team) {
+            damageFighter(other, 6, '¡CARAMBOLA!');
+          } else {
+            floatingTexts.push({
+              x: other.x,
+              y: other.y - 26,
+              text: '¡CARAMBOLA!',
+              color: '#ffe082',
+              life: 1.1
+            });
+          }
+        }
+      }
+      for (const b of barrels) {
+        const dx = b.x - f.x;
+        const dy = b.y - f.y;
+        const d = Math.hypot(dx, dy);
+        if (d > 0 && d < f.r + b.r && (b._lastKnockTime || 0) < tNow - 0.25) {
+          b._lastKnockTime = tNow;
+          b.vx += (dx / d) * Math.max(95, fSpeed * 0.55);
+          b.vy = -85;
+          b.grounded = false;
+          f.vx *= 0.55;
+          SND.bounce();
+        }
+      }
+    }
+
     updateOrugaSegments(f, dt);
 
     if (f.y >= WATER_Y && !f.drowning) {
@@ -5362,6 +6382,15 @@ function spawnWaterPlunge(wx, wy, scale = 1.0) {
     life: 1.0
   });
 
+  // Dynamic surface wave displacement ripple!
+  waterRipples.push({
+    x: wx,
+    amp: 14 * scale,
+    radius: 10,
+    speed: 195,
+    life: 1.0
+  });
+
   for (let i = 0; i < Math.floor(28 * scale); i++) {
     const a = -Math.PI * 0.18 - Math.random() * Math.PI * 0.64;
     const sp = (80 + Math.random() * 230) * scale;
@@ -5380,6 +6409,25 @@ function spawnWaterPlunge(wx, wy, scale = 1.0) {
   }
 }
 
+function spawnEmbers(x, y, count) {
+  for (let i = 0; i < count; i++) {
+    const a = -Math.PI * 0.1 - Math.random() * Math.PI * 0.8;
+    const sp = 75 + Math.random() * 240;
+    particles.push({
+      x, y,
+      vx: Math.cos(a) * sp + (Math.random() - 0.5) * 60,
+      vy: Math.sin(a) * sp - 40,
+      w: 3.2, h: 3.2,
+      rot: 0, vrot: 0,
+      life: 1.35 + Math.random() * 0.6,
+      decay: 0.72 + Math.random() * 0.35,
+      color: Math.random() > 0.45 ? '#ff9e3b' : '#ff4d29',
+      isEmber: true,
+      collidesTerrain: true
+    });
+  }
+}
+
 function spawnRockDebris(x, y, count) {
   for (let i = 0; i < count; i++) {
     const a = Math.random() * Math.PI * 2;
@@ -5392,10 +6440,11 @@ function spawnRockDebris(x, y, count) {
       h: 3 + Math.random() * 5,
       rot: Math.random() * 6,
       vrot: (Math.random() - 0.5) * 12,
-      life: 1,
-      decay: 0.85 + Math.random() * 0.8,
+      life: 1.15,
+      decay: 0.75 + Math.random() * 0.6,
       color: Math.random() > 0.5 ? '#5c5552' : '#786248',
-      isSpark: false
+      isSpark: false,
+      collidesTerrain: true
     });
   }
 }
@@ -5700,6 +6749,12 @@ function render() {
   // Front Destructible Terrain (including destructible regional Pine Trees & Nests!)
   ctx.drawImage(terrainFront, 0, 0);
 
+  // Hand-Painted Wind-Swaying Catalan Surface Flora (Rosemary & Ginesta in Montserrat, Agave in Cadaqués, Edelweiss in Taüll, Autumn Ferns in Castellfollit!)
+  drawSurfaceFlora(ctx);
+
+  // Dynamic Sun-Cast Ground Contact Shadows under Cucs, Barrels, Crates, Mines, Rovellons & Caganers!
+  drawGroundContactShadows(ctx, mCfg);
+
   // Thermal Pine-Resin Updraft Currents
   for (const u of updrafts) {
     ctx.save();
@@ -5756,6 +6811,19 @@ function render() {
     ctx.ellipse(0, 0, nest.r * 1.1, nest.r * 0.85, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
+
+    // Translucent wriggling caterpillar silhouettes inside the Bolsón cocoon!
+    ctx.strokeStyle = 'rgba(65, 52, 42, 0.42)';
+    ctx.lineWidth = 2.1;
+    ctx.lineCap = 'round';
+    for (let w = -1; w <= 1; w += 2) {
+      const wx = w * 3.5 + Math.sin(tNow * 7 + w + nest.swayPhase) * 2.2;
+      const wy = w * 1.8 + Math.cos(tNow * 6 + w) * 1.5;
+      ctx.beginPath();
+      ctx.moveTo(wx - 3.5, wy);
+      ctx.quadraticCurveTo(wx, wy - 2.5, wx + 3.5, wy + 0.5);
+      ctx.stroke();
+    }
 
     // Webbing lines across the Bolsón
     ctx.strokeStyle = 'rgba(180, 165, 145, 0.55)';
@@ -5842,10 +6910,32 @@ function render() {
 
   for (const rv of rovellons) drawRovello(ctx, rv);
   for (const cg of caganers) drawCaganer(ctx, cg);
+  for (const ol of escudelles) drawEscudella(ctx, ol);
   for (const tb of tombstones) drawTombstone(ctx, tb);
   for (const m of mines) drawMine(ctx, m);
   for (const c of crates) drawCrate(ctx, c);
   for (const b of barrels) drawBarrel(ctx, b);
+
+  // Active Ganxo de Pastor (Pyrenean Shepherd's Crook Grapple Rope)
+  for (const f of fighters) {
+    if (f.alive && f.grapple) {
+      ctx.save();
+      ctx.strokeStyle = '#d9b372';
+      ctx.lineWidth = 2.6;
+      ctx.beginPath();
+      ctx.moveTo(f.x, f.y - 4);
+      ctx.lineTo(f.grapple.hookX, f.grapple.hookY);
+      ctx.stroke();
+
+      // Shepherd's iron crook at latch point
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 3.0;
+      ctx.beginPath();
+      ctx.arc(f.grapple.hookX, f.grapple.hookY, 6, 0, Math.PI * 1.35);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
 
   // Nose-to-Tail Golden Procession Silk Tethers between linked allied Orugas!
   for (const f of fighters) {
@@ -5877,6 +6967,30 @@ function render() {
 
   for (const pl of airstrikePlanes) drawAirstrikePlane(ctx, pl);
   for (const p of projectiles) drawProjectile(ctx, p);
+
+  // Multi-Stage Volumetric Fireball Cores
+  for (const fb of fireballs) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    const alpha = clamp(fb.life, 0, 1);
+    const fg = ctx.createRadialGradient(fb.x, fb.y, fb.r * 0.08, fb.x, fb.y, fb.r);
+    if (fb.isUrticating) {
+      fg.addColorStop(0, `rgba(255, 235, 255, ${alpha})`);
+      fg.addColorStop(0.4, `rgba(210, 105, 255, ${alpha * 0.82})`);
+      fg.addColorStop(0.75, `rgba(125, 40, 190, ${alpha * 0.45})`);
+      fg.addColorStop(1, 'rgba(90, 20, 140, 0)');
+    } else {
+      fg.addColorStop(0, `rgba(255, 252, 225, ${alpha})`);
+      fg.addColorStop(0.32, `rgba(255, 198, 75, ${alpha * 0.92})`);
+      fg.addColorStop(0.68, `rgba(242, 82, 28, ${alpha * 0.65})`);
+      fg.addColorStop(1, 'rgba(120, 24, 10, 0)');
+    }
+    ctx.fillStyle = fg;
+    ctx.beginPath();
+    ctx.arc(fb.x, fb.y, fb.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
 
   // Volumetric Smoke
   for (const s of smokePuffs) {
@@ -5926,10 +7040,10 @@ function render() {
     ctx.restore();
   }
 
-  // Sparks, Debris, Urticating Bristle Hairs & Shotgun Beams
+  // Sparks, Bouncing Embers, Debris, Urticating Bristle Hairs & Shotgun Beams
   for (const p of particles) {
     ctx.save();
-    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.globalAlpha = Math.max(0, Math.min(1, p.life));
     if (p.isBeam) {
       ctx.strokeStyle = 'rgba(255, 238, 185, 0.85)';
       ctx.lineWidth = 3;
@@ -5937,6 +7051,15 @@ function render() {
       ctx.moveTo(p.x1, p.y1);
       ctx.lineTo(p.x2, p.y2);
       ctx.stroke();
+    } else if (p.isEmber) {
+      const eg = ctx.createRadialGradient(p.x, p.y, 0.5, p.x, p.y, 5.5);
+      eg.addColorStop(0, '#fff9d6');
+      eg.addColorStop(0.45, p.color);
+      eg.addColorStop(1, 'rgba(255, 80, 20, 0)');
+      ctx.fillStyle = eg;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 5.5, 0, Math.PI * 2);
+      ctx.fill();
     } else if (p.isHair) {
       ctx.translate(p.x, p.y);
       ctx.rotate(p.rot);
@@ -6233,6 +7356,145 @@ function drawSkyAtmosphereAndClouds(ctx, W, H, tr, dxCam, dyCam, mCfg) {
   ctx.restore();
 }
 
+function drawSurfaceFlora(ctx) {
+  ctx.save();
+  for (const fl of surfaceFlora) {
+    const sway = Math.sin(tNow * 2.8 + fl.phase) * (0.08 + Math.abs(wind) * 0.0028) + wind * 0.0035;
+    ctx.save();
+    ctx.translate(fl.x, fl.y);
+    ctx.scale(fl.scale, fl.scale);
+    ctx.rotate(sway);
+
+    if (fl.type === 'MONTSERRAT') {
+      // Mediterranean Rosemary ("Romaní") & Golden Broom ("Ginesta")
+      ctx.strokeStyle = '#3b5c34';
+      ctx.lineWidth = 1.6;
+      ctx.lineCap = 'round';
+      for (let b = -2; b <= 2; b++) {
+        const bx = b * 3.2;
+        const bh = 9 + (2 - Math.abs(b)) * 3;
+        ctx.beginPath();
+        ctx.moveTo(0, 1);
+        ctx.quadraticCurveTo(bx * 0.5, -bh * 0.5, bx, -bh);
+        ctx.stroke();
+
+        // Blossom dots (golden ginesta or violet romaní)
+        ctx.fillStyle = fl.variant === 0 ? '#ffd54f' : '#b39ddb';
+        ctx.beginPath();
+        ctx.arc(bx, -bh, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else if (fl.type === 'CADAQUES') {
+      if (fl.variant === 0) {
+        // Cap de Creus Coastal Agave ("Atzavara") rosette
+        ctx.fillStyle = '#4e7a6b';
+        ctx.strokeStyle = '#254238';
+        ctx.lineWidth = 1.1;
+        for (let b = -2; b <= 2; b++) {
+          ctx.save();
+          ctx.rotate(b * 0.36);
+          ctx.beginPath();
+          ctx.moveTo(-2, 1);
+          ctx.quadraticCurveTo(0, -13, 0, -15);
+          ctx.quadraticCurveTo(0, -13, 2, 1);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        }
+      } else {
+        // Prickly Pear ("Figuera de Moro") & white coastal sea-daisies
+        ctx.fillStyle = '#5c8c46';
+        ctx.strokeStyle = '#2b471f';
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.ellipse(0, -5, 4.5, 5.5, 0, 0, Math.PI * 2);
+        ctx.ellipse(-4.5, -11, 3.2, 4.2, -0.35, 0, Math.PI * 2);
+        ctx.ellipse(4.2, -10, 3.0, 3.8, 0.35, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#ff7043';
+        ctx.beginPath();
+        ctx.arc(-6, -15, 1.7, 0, Math.PI * 2);
+        ctx.arc(5.5, -13.5, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else if (fl.type === 'TAULL') {
+      // Pyrenean Alpine Edelweiss ("Flor de Neu") & snow-dusted shoots
+      ctx.strokeStyle = '#4a6b53';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, 1);
+      ctx.lineTo(0, -10);
+      ctx.stroke();
+      ctx.fillStyle = '#f4f9ff';
+      for (let p = 0; p < 5; p++) {
+        const a = (p / 5) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.ellipse(Math.cos(a) * 3.2, -10 + Math.sin(a) * 3.2, 2.2, 1.1, a, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#ffe082';
+      ctx.beginPath();
+      ctx.arc(0, -10, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      // Castellfollit / La Garrotxa Autumn Ferns & Red/Amber Beech Saplings
+      const col = fl.variant === 0 ? '#d9531e' : (fl.variant === 1 ? '#e89b2d' : '#6e8c3a');
+      ctx.strokeStyle = '#4a2e18';
+      ctx.lineWidth = 1.4;
+      for (let b = -1; b <= 1; b++) {
+        ctx.beginPath();
+        ctx.moveTo(0, 1);
+        ctx.quadraticCurveTo(b * 4, -6, b * 6, -11);
+        ctx.stroke();
+        ctx.fillStyle = col;
+        ctx.beginPath();
+        ctx.ellipse(b * 5, -9, 3.4, 2.0, b * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+function drawGroundContactShadows(ctx, mCfg) {
+  ctx.save();
+  // Sun-cast directional offset based on regional sun position
+  const sunShiftX = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? -3.5 : (mCfg.id === 'CADAQUES' ? 3.5 : 1.0);
+
+  const drawShadow = (x, y, rx, ry, alpha) => {
+    const sy = findSurfaceY(x, y - 4);
+    const dist = sy - y;
+    if (dist < -6 || dist > 54 || sy >= WATER_Y) return;
+    const falloff = clamp(1 - Math.max(0, dist) / 54, 0.15, 1.0);
+    ctx.fillStyle = `rgba(6, 8, 14, ${alpha * falloff})`;
+    ctx.beginPath();
+    ctx.ellipse(x + sunShiftX * (0.4 + (1 - falloff) * 0.8), sy + 1, rx * (0.7 + falloff * 0.35), ry, 0, 0, Math.PI * 2);
+    ctx.fill();
+  };
+
+  for (const f of fighters) {
+    if (!f.alive || f.drowning) continue;
+    drawShadow(f.x, f.y + f.r, 12.5, 3.8, 0.44);
+    if (f.segs) {
+      for (let i = 0; i < f.segs.length; i += 2) {
+        drawShadow(f.segs[i].x, f.segs[i].y + 5, 7.5 - i * 0.5, 2.5, 0.32);
+      }
+    }
+  }
+  for (const b of barrels) drawShadow(b.x, b.y + b.r, 14, 4.2, 0.48);
+  for (const c of crates) drawShadow(c.x, c.y + 10, 12, 3.6, 0.45);
+  for (const m of mines) drawShadow(m.x, m.y + 4, 9, 2.8, 0.42);
+  for (const rv of rovellons) drawShadow(rv.x, rv.y, rv.r * 0.9, 3.8, 0.44);
+  for (const cg of caganers) drawShadow(cg.x, cg.y + 7, 10, 3.2, 0.44);
+  for (const tb of tombstones) drawShadow(tb.x, tb.y + 10, 11, 3.4, 0.46);
+
+  ctx.restore();
+}
+
 function drawRovello(ctx, rv) {
   ctx.save();
   ctx.translate(rv.x, rv.y);
@@ -6346,6 +7608,64 @@ function drawCaganer(ctx, cg) {
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
+
+  ctx.restore();
+}
+
+function drawEscudella(ctx, ol) {
+  ctx.save();
+  ctx.translate(ol.x, ol.y);
+
+  // Glowing wood embers underneath the cauldron
+  ctx.fillStyle = Math.sin(tNow * 9 + ol.steamPhase) > 0 ? '#ff7b29' : '#e03e1a';
+  ctx.beginPath();
+  ctx.ellipse(0, 11, 11, 3.2, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Traditional black cast-iron Catalan Olla d'Escudella pot
+  ctx.fillStyle = '#23262e';
+  ctx.strokeStyle = '#0e1014';
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.arc(0, 1, 13, 0, Math.PI, false);
+  ctx.lineTo(-11, -6);
+  ctx.lineTo(11, -6);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // Side iron handles
+  ctx.strokeStyle = '#3a3f4b';
+  ctx.lineWidth = 1.8;
+  ctx.beginPath();
+  ctx.arc(-12, -2, 3.2, Math.PI * 0.5, Math.PI * 1.5);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(12, -2, 3.2, -Math.PI * 0.5, Math.PI * 0.5);
+  ctx.stroke();
+
+  // Simmering golden Escudella broth rim
+  ctx.fillStyle = '#f2b949';
+  ctx.beginPath();
+  ctx.ellipse(0, -6, 10.5, 3.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  // Giant Catalan "Pilota" (spiced meatball) & Galet pasta bobbing in the broth!
+  const bob = Math.sin(tNow * 4.5 + ol.steamPhase) * 1.1;
+  ctx.fillStyle = '#a86438';
+  ctx.strokeStyle = '#4a2810';
+  ctx.lineWidth = 1.1;
+  ctx.beginPath();
+  ctx.ellipse(-2, -7.2 + bob, 5.2, 3.6, -0.1, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  // White Galet pasta shell beside the Pilota
+  ctx.fillStyle = '#fff5df';
+  ctx.beginPath();
+  ctx.arc(4.5, -6.5 - bob * 0.6, 2.8, 0, Math.PI * 2);
+  ctx.fill();
 
   ctx.restore();
 }
@@ -6747,6 +8067,13 @@ function drawFighterHead(ctx, f, bob, teamCol) {
     ctx.fill();
     ctx.stroke();
 
+    // Graphics G2: Sunlit Chitin Specular Rim Highlight on Head Capsule
+    ctx.strokeStyle = 'rgba(255, 250, 235, 0.34)';
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    ctx.arc(0.5, -0.5, 7.6, -Math.PI * 0.78, -Math.PI * 0.18);
+    ctx.stroke();
+
     // Cute/fierce curved caterpillar antennae with amber tips
     const antWiggle = Math.sin(tNow * 8 + f.x) * 1.4;
     ctx.strokeStyle = '#1b1e26';
@@ -6764,11 +8091,19 @@ function drawFighterHead(ctx, f, bob, teamCol) {
     ctx.arc(2 - antWiggle, -14, 1.5, 0, Math.PI * 2);
     ctx.fill();
 
+    // Details D1: Expressive Reactive Caterpillar Faces (Blinking, Panic near explosives, Charging war-squint)
+    const blinkCycle = (tNow * 0.9 + f.id * 1.73) % 4.2;
+    const isBlinking = blinkCycle > 4.04 && f.dizzyTimer <= 0 && f.hurtTimer <= 0;
+    const isNearDanger = projectiles.some(p => Math.hypot(p.x - f.x, p.y - f.y) < 115) ||
+                         mines.some(m => m.triggered && Math.hypot(m.x - f.x, m.y - f.y) < 115);
+    const isFiringSquint = (f === activeFighter && isCharging);
+
     // Expressive Amber/Ivory Eyes
+    const eyeScaleY = isBlinking ? 0.12 : (isNearDanger ? 1.22 : (isFiringSquint ? 0.78 : 1.0));
     ctx.fillStyle = '#fff8e7';
     ctx.beginPath();
-    ctx.ellipse(3.4, -1.2, 2.7, 3.3, 0, 0, Math.PI * 2);
-    ctx.ellipse(7.1, -1.2, 2.2, 2.8, 0, 0, Math.PI * 2);
+    ctx.ellipse(3.4, -1.2, 2.7, 3.3 * eyeScaleY, 0, 0, Math.PI * 2);
+    ctx.ellipse(7.1, -1.2, 2.2, 2.8 * eyeScaleY, 0, 0, Math.PI * 2);
     ctx.fill();
 
     if (f.dizzyTimer > 0 || f.hurtTimer > 0.2) {
@@ -6780,20 +8115,35 @@ function drawFighterHead(ctx, f, bob, teamCol) {
       ctx.moveTo(6.0, -2.2); ctx.lineTo(8.2, 0.0);
       ctx.moveTo(8.2, -2.2); ctx.lineTo(6.0, 0.0);
       ctx.stroke();
-    } else {
+    } else if (!isBlinking) {
       ctx.fillStyle = '#141110';
-      const pupilR = (f.sliding || f.drowning) ? 0.85 : 1.35;
+      const pupilR = (f.sliding || f.drowning || isNearDanger) ? 0.82 : 1.35;
       ctx.beginPath();
       ctx.arc(4.2, -1.2, pupilR, 0, Math.PI * 2);
       ctx.arc(7.7, -1.2, pupilR * 0.85, 0, Math.PI * 2);
       ctx.fill();
 
-      // Fierce brow ridge
+      // Glossy corneal catchlight dot
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(3.7, -2.0, 0.65, 0, Math.PI * 2);
+      ctx.arc(7.3, -1.9, 0.55, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Fierce or worried brow ridge
       ctx.strokeStyle = teamCol;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
-      ctx.moveTo(1.0, -4.6);
-      ctx.lineTo(8.6, -3.2);
+      if (isNearDanger) {
+        ctx.moveTo(1.0, -3.6);
+        ctx.lineTo(8.4, -5.0);
+      } else if (isFiringSquint) {
+        ctx.moveTo(0.8, -5.0);
+        ctx.lineTo(8.8, -2.5);
+      } else {
+        ctx.moveTo(1.0, -4.6);
+        ctx.lineTo(8.6, -3.2);
+      }
       ctx.stroke();
     }
 
@@ -6974,7 +8324,13 @@ function drawMine(ctx, m) {
 function drawTombstone(ctx, tb) {
   ctx.save();
   ctx.translate(tb.x, tb.y);
-  ctx.fillStyle = '#6c6a72';
+
+  // Carved Romanesque Stone Memorial
+  const sg = ctx.createLinearGradient(-9, -13, 9, 10);
+  sg.addColorStop(0, '#888590');
+  sg.addColorStop(0.5, '#6c6a72');
+  sg.addColorStop(1, '#49474f');
+  ctx.fillStyle = sg;
   ctx.strokeStyle = '#222026';
   ctx.lineWidth = 1.8;
   ctx.beginPath();
@@ -6986,12 +8342,41 @@ function drawTombstone(ctx, tb) {
   ctx.fill();
   ctx.stroke();
 
-  ctx.strokeStyle = '#3b3940';
-  ctx.lineWidth = 1.6;
+  // Mossy base tuft
+  ctx.fillStyle = '#4e7c3e';
   ctx.beginPath();
-  ctx.moveTo(0, -8); ctx.lineTo(0, 4);
-  ctx.moveTo(-4, -4); ctx.lineTo(4, -4);
+  ctx.arc(-6, 9.5, 2.4, Math.PI, 0);
+  ctx.arc(5, 9.5, 2.8, Math.PI, 0);
+  ctx.fill();
+
+  // Engraved Cross
+  ctx.strokeStyle = '#3b3940';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(0, -9); ctx.lineTo(0, 1);
+  ctx.moveTo(-3.5, -5.5); ctx.lineTo(3.5, -5.5);
   ctx.stroke();
+
+  // Details D2: Engraved fallen caterpillar name + resting Barretina on top!
+  if (tb.name) {
+    ctx.font = '700 5.5px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#e2dfd7';
+    ctx.fillText(tb.name.slice(0, 7).toUpperCase(), 0, 6.8);
+  }
+  // Miniature team-colored Barretina draped over the tombstone crest
+  const hatCol = tb.team === 0 ? '#d93228' : (tb.team === 1 ? '#3b82f6' : '#d93228');
+  ctx.fillStyle = hatCol;
+  ctx.strokeStyle = '#18161b';
+  ctx.lineWidth = 1.0;
+  ctx.beginPath();
+  ctx.moveTo(-5, -11.5);
+  ctx.quadraticCurveTo(0, -18, 7, -14);
+  ctx.quadraticCurveTo(3, -11, 4, -11.5);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
   ctx.restore();
 }
 
@@ -7177,6 +8562,65 @@ function drawHeldWeapon(ctx, f) {
     ctx.moveTo(11, -5);
     ctx.lineTo(11, -13);
     ctx.stroke();
+  } else if (wpn.id === 'CULLERA') {
+    // Giant Catalan Boxwood Wooden Spoon (Cullera de Fusta de Boix)
+    const scoopWobble = f.spoonTimer > 0 ? Math.sin(tNow * 28) * 0.28 : 0;
+    ctx.rotate(scoopWobble);
+    ctx.fillStyle = '#cfa05a';
+    ctx.strokeStyle = '#4a2c0d';
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    ctx.roundRect(2, -2, 16, 4, 1.5);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#e6b973';
+    ctx.beginPath();
+    ctx.ellipse(22, 0, 7.5, 5.0, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#b8843e';
+    ctx.beginPath();
+    ctx.ellipse(22.5, 0, 5.0, 3.2, 0, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (wpn.id === 'BARRINA') {
+    // Catalan Quarry Pneumatic Rock Drill (Barrina de Pedrera)
+    const drillJitter = f.drillTimer > 0 ? (Math.random() - 0.5) * 3.0 : 0;
+    ctx.translate(drillJitter, 0);
+    ctx.fillStyle = '#d97b29';
+    ctx.strokeStyle = '#1c1612';
+    ctx.lineWidth = 1.3;
+    ctx.fillRect(3, -4.5, 11, 9);
+    ctx.strokeRect(3, -4.5, 11, 9);
+    ctx.fillStyle = '#b8c2cf';
+    ctx.beginPath();
+    ctx.moveTo(14, -3.5);
+    ctx.lineTo(28, 0);
+    ctx.lineTo(14, 3.5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  } else if (wpn.id === 'PONT_PEDRA') {
+    // Mestre Marger Dry-Stone Trowel & Stone Block (Pedra Seca)
+    ctx.fillStyle = '#a8a298';
+    ctx.strokeStyle = '#2d2a26';
+    ctx.lineWidth = 1.3;
+    ctx.fillRect(8, -4.5, 13, 8);
+    ctx.strokeRect(8, -4.5, 13, 8);
+    ctx.fillStyle = '#82a858';
+    ctx.fillRect(8, -4.5, 13, 2.5);
+  } else if (wpn.id === 'GANXO') {
+    // Pyrenean Shepherd's Crook (Ganxo de Pastor)
+    ctx.strokeStyle = '#9c6234';
+    ctx.lineWidth = 2.6;
+    ctx.beginPath();
+    ctx.moveTo(2, 1);
+    ctx.lineTo(18, -1);
+    ctx.stroke();
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    ctx.arc(21, -1, 4.5, -Math.PI * 0.6, Math.PI * 0.65);
+    ctx.stroke();
   }
   ctx.restore();
 }
@@ -7288,8 +8732,55 @@ function drawAimingHUD(ctx, f) {
       ctx.stroke();
       ctx.restore();
     }
+  } else if (wpn.id === 'PONT_PEDRA') {
+    // Live Blueprint Preview of the Dry-Stone Wall / Bridge ("Marge de Pedra Seca")!
+    const gx = originX + dirX * 52;
+    const gy = originY + dirY * 52;
+    ctx.save();
+    ctx.translate(gx, gy);
+    ctx.rotate(aimAngle);
+    ctx.fillStyle = 'rgba(210, 200, 182, 0.36)';
+    ctx.strokeStyle = '#ffe082';
+    ctx.lineWidth = 1.8;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath();
+    ctx.roundRect(-41, -8, 82, 16, 5);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  } else if (wpn.id === 'GANXO') {
+    // Shepherd's Crook Grapple Sight Line & Latch Indicator!
+    let latchX = originX + dirX * 480;
+    let latchY = originY + dirY * 480;
+    let canLatch = false;
+    for (let d = 14; d <= 480; d += 5) {
+      const rx = originX + dirX * d;
+      const ry = originY + dirY * d;
+      if (ry >= WATER_Y - 6) break;
+      if (isSolid(rx, ry) || fighters.some(other => other !== f && other.alive && Math.hypot(other.x - rx, (other.y - 4) - ry) <= other.r + 8)) {
+        latchX = rx;
+        latchY = ry;
+        canLatch = true;
+        break;
+      }
+    }
+    ctx.strokeStyle = canLatch ? 'rgba(134, 239, 172, 0.72)' : 'rgba(248, 113, 113, 0.45)';
+    ctx.lineWidth = 1.8;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(originX + dirX * 18, originY + dirY * 18);
+    ctx.lineTo(latchX, latchY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    if (canLatch) {
+      ctx.strokeStyle = '#86efac';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.arc(latchX, latchY, 7 + Math.sin(tNow * 10) * 1.5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
   } else {
-    // Clean minimalist directional reticle for Melee & Instant weapons (El Fuet, La Falç, Pedrenyal)
+    // Clean minimalist directional reticle for Melee, Instant & Excavating Tools (El Fuet, La Falç, Pedrenyal, Cullera, Barrina)
     const cx = originX + dirX * 44;
     const cy = originY + dirY * 44;
     ctx.strokeStyle = 'rgba(245, 215, 150, 0.45)';
@@ -7342,6 +8833,34 @@ function drawBarrel(ctx, b) {
 }
 
 function drawProjectile(ctx, p) {
+  // Effects E1: Continuous Tapered Luminous Ribbon Trail behind flying projectiles
+  if (p.trail && p.trail.length > 2) {
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    const isHoly = p.type === 'HOLY';
+    const isUrticaria = p.type === 'URTICARIA';
+    const isBazooka = p.type === 'BAZOOKA' || p.type === 'BOMBLER';
+    for (let i = 1; i < p.trail.length; i++) {
+      const frac = i / p.trail.length;
+      const pt0 = p.trail[i - 1];
+      const pt1 = p.trail[i];
+      ctx.strokeStyle = isHoly
+        ? `rgba(255, 222, 115, ${frac * 0.55})`
+        : (isUrticaria
+          ? `rgba(216, 138, 255, ${frac * 0.52})`
+          : (isBazooka
+            ? `rgba(255, 165, 75, ${frac * 0.48})`
+            : `rgba(245, 238, 220, ${frac * 0.34})`));
+      ctx.lineWidth = Math.max(1.0, frac * (isHoly ? 7.5 : (isBazooka ? 6.0 : 4.2)));
+      ctx.beginPath();
+      ctx.moveTo(pt0.x, pt0.y);
+      ctx.lineTo(pt1.x, pt1.y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   ctx.save();
   ctx.translate(p.x, p.y);
 
@@ -7654,7 +9173,16 @@ function drawWaterFront(ctx) {
   ctx.beginPath();
   ctx.moveTo(leftEdge, bottomEdge);
   for (let x = leftEdge; x <= rightEdge; x += 28) {
-    const wy = WATER_Y + Math.sin(x * 0.022 - waveSpeed) * 4.5 + Math.cos(x * 0.05 + tNow * 1.6) * 2;
+    let wy = WATER_Y + Math.sin(x * 0.022 - waveSpeed) * 4.5 + Math.cos(x * 0.05 + tNow * 1.6) * 2;
+    // Rendering R2: Interactive Wave Displacement from explosions and water plunges!
+    for (let r = 0; r < waterRipples.length; r++) {
+      const rp = waterRipples[r];
+      const dist = Math.abs(x - rp.x);
+      if (dist < 260) {
+        const env = (1 - dist / 260) * rp.life;
+        wy += Math.sin(dist * 0.09 - rp.phase * 14) * rp.amp * env;
+      }
+    }
     ctx.lineTo(x, wy);
   }
   ctx.lineTo(rightEdge, bottomEdge);
@@ -7665,6 +9193,33 @@ function drawWaterFront(ctx) {
   ctx.strokeStyle = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? 'rgba(255, 224, 170, 0.58)' : 'rgba(235, 248, 255, 0.56)';
   ctx.lineWidth = 2.4;
   ctx.stroke();
+
+  // Rendering R2: Real-Time Water Surface Reflections (Horizon Sun/Moon Column + Live Fireball Blooms)
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+  const sunRefX = TERRAIN_W * 0.68;
+  const sunCol = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? 'rgba(255, 195, 110, 0.14)' : 'rgba(200, 235, 255, 0.13)';
+  ctx.fillStyle = sunCol;
+  for (let band = 0; band < 7; band++) {
+    const by = WATER_Y + 8 + band * 11;
+    const bw = (95 - band * 9) + Math.sin(tNow * 3.2 + band * 1.4) * 18;
+    const bx = sunRefX + Math.sin(tNow * 2.1 + band) * 10;
+    ctx.fillRect(bx - bw * 0.5, by, bw, 4.5);
+  }
+  // Mirrored reflections of active volumetric fireballs & glowing projectiles on the water surface!
+  for (const fb of fireballs) {
+    if (fb.life > 0 && fb.y < WATER_Y + 60) {
+      const refAlpha = clamp(fb.life * 0.38, 0, 0.42);
+      const rg = ctx.createRadialGradient(fb.x, WATER_Y + 24, 4, fb.x, WATER_Y + 34, fb.r * 1.35);
+      rg.addColorStop(0, fb.isHoly ? `rgba(255, 235, 140, ${refAlpha})` : `rgba(255, 150, 55, ${refAlpha})`);
+      rg.addColorStop(1, 'rgba(255, 90, 20, 0)');
+      ctx.fillStyle = rg;
+      ctx.beginPath();
+      ctx.ellipse(fb.x, WATER_Y + 28, fb.r * 1.35, fb.r * 0.45, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  ctx.restore();
 
   // Shimmering Sub-Surface Specular Ripples & Caustic Glints
   ctx.strokeStyle = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? 'rgba(255, 215, 145, 0.24)' : 'rgba(195, 238, 255, 0.24)';
@@ -7750,6 +9305,7 @@ function loop(now) {
 
   // Live Dynamic Wind, Multi-Layer Volumetric Clouds & Wind-Stream Ribbons!
   updateDynamicWind(dt);
+  SND.updateAmbient(wind, appStage === 'PLAYING');
 
   if (appStage === 'PLAYING' && isCharging && !isCurrentTurnAI() && turnPhase === 'TURN_PLAY') {
     chargePower += chargeDir * dt * 0.92;
@@ -7823,7 +9379,7 @@ function loop(now) {
         }
       }
 
-      const anyMovingFighter = fighters.some(f => f.alive && (f.drowning || !f.grounded || f.sliding));
+      const anyMovingFighter = fighters.some(f => f.alive && (f.drowning || !f.grounded || f.sliding || f.spoonTimer > 0 || f.drillTimer > 0 || !!f.grapple));
       const anyArmedMine = mines.some(m => m.triggered);
       const waitTimeout = (projectiles.length === 0 && airstrikePlanes.length === 0 && actionWaitTimer > 3.6) || actionWaitTimer > 6.2;
 
@@ -7837,6 +9393,9 @@ function loop(now) {
               f.vx = 0;
               f.vy = 0;
               f.sliding = false;
+              f.spoonTimer = 0;
+              f.drillTimer = 0;
+              f.grapple = null;
               f.grounded = true;
             }
           }
@@ -7916,12 +9475,45 @@ function loop(now) {
     const p = particles[i];
     if (!p.isBeam) {
       p.vy += (p.isHair ? 95 : 420) * dt;
-      p.x += (p.vx + (p.isHair ? wind * 0.8 : 0)) * dt;
-      p.y += p.vy * dt;
+      const nextX = p.x + (p.vx + (p.isHair ? wind * 0.8 : 0)) * dt;
+      const nextY = p.y + p.vy * dt;
+      // Physics P3: Terrain-Colliding Bouncing Rock Debris & Embers!
+      if (p.collidesTerrain && nextY < WATER_Y && isSolid(nextX, nextY)) {
+        if (!isSolid(p.x, nextY)) {
+          p.vx = -p.vx * 0.55;
+        } else {
+          p.vy = -Math.abs(p.vy) * (p.isEmber ? 0.52 : 0.42);
+          p.vx *= 0.74;
+        }
+        p.vrot *= 0.65;
+      } else {
+        p.x = nextX;
+        p.y = nextY;
+      }
+      if (p.collidesTerrain && p.y >= WATER_Y) {
+        // Quench ember or splash rock into water
+        if (p.isEmber) p.life = 0;
+        else { p.vy *= 0.35; p.vx *= 0.5; }
+      }
       p.rot += p.vrot * dt;
     }
     p.life -= p.decay * dt;
     if (p.life <= 0) particles.splice(i, 1);
+  }
+
+  for (let i = fireballs.length - 1; i >= 0; i--) {
+    const fb = fireballs[i];
+    fb.r += (fb.maxR - fb.r) * 10 * dt;
+    fb.y -= 18 * dt;
+    fb.life -= (fb.decay || 2.35) * dt;
+    if (!(fb.life > 0)) fireballs.splice(i, 1);
+  }
+
+  for (let i = waterRipples.length - 1; i >= 0; i--) {
+    const rp = waterRipples[i];
+    rp.phase = (rp.phase || 0) + dt;
+    rp.life -= 0.85 * dt;
+    if (!(rp.life > 0)) waterRipples.splice(i, 1);
   }
 
   for (let i = smokePuffs.length - 1; i >= 0; i--) {
@@ -8655,6 +10247,10 @@ function buildWeaponBar() {
   if (fireLbl && curWpn) {
     if (curWpn.type === 'CHARGE') fireLbl.textContent = 'MANTÉN: FOC!';
     else if (curWpn.id === 'AIRSTRIKE') fireLbl.textContent = 'CORREFOC!';
+    else if (curWpn.id === 'CULLERA') fireLbl.textContent = 'CULLERADA!';
+    else if (curWpn.id === 'BARRINA') fireLbl.textContent = 'BARRINA!';
+    else if (curWpn.id === 'PONT_PEDRA') fireLbl.textContent = 'PEDRA SECA!';
+    else if (curWpn.id === 'GANXO') fireLbl.textContent = 'GANXO!';
     else if (curWpn.type === 'MELEE') fireLbl.textContent = 'ATACA!';
     else if (curWpn.type === 'DROP') fireLbl.textContent = 'DEIXA TIÓ!';
     else if (curWpn.type === 'UTILITY_JET') fireLbl.textContent = 'ALES!';
@@ -8900,6 +10496,22 @@ document.getElementById('btn-map').onclick = () => {
   currentMapIdx = (currentMapIdx + 1) % MAPS.length;
   initMatch(true);
 };
+
+const btnRerollMap = document.getElementById('btn-reroll-map');
+if (btnRerollMap) {
+  btnRerollMap.onclick = () => {
+    SND.init();
+    SND.stoneBuild();
+    initMatch(true);
+    floatingTexts.push({
+      x: activeFighter ? activeFighter.x : TERRAIN_W * 0.5,
+      y: activeFighter ? activeFighter.y - 48 : 260,
+      text: `¡NOU RELLEU: ${currentTerrainArchetypeName.toUpperCase()}!`,
+      color: '#ffd966',
+      life: 2.2
+    });
+  };
+}
 
 // Initialize background world and open directly on the Up/Down Player Selection Menu!
 initMatch(true);
