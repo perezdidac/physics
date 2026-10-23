@@ -1,0 +1,1630 @@
+:root {
+  --bg-obsidian: #090b0f;
+  --slate-panel: #141820;
+  --slate-inner: #1b202b;
+  --brass-trim: #d4a153;
+  --brass-bright: #f6cf77;
+  --brass-dim: rgba(212, 161, 83, 0.34);
+  --ivory: #f2ecdf;
+  --ivory-muted: rgba(242, 236, 223, 0.64);
+  --amber-team: #f5b945;
+  --crimson-team: #ea5648;
+  --poison-violet: #c678ff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #06070a;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ivory);
+}
+
+#viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #06070a;
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MAIN PLAYER SELECTION MENU (UP/DOWN ARCADE MENU)
+   ═══════════════════════════════════════════════════════════════════ */
+#splash-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 36px 24px 64px;
+  background: radial-gradient(circle at 50% 38%, rgba(14, 18, 26, 0.38) 0%, rgba(5, 7, 10, 0.88) 100%);
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+#splash-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 820px;
+}
+
+.splash-kicker {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 4.5px;
+  color: #e6883a;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.splash-title {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 900;
+  letter-spacing: 4px;
+  line-height: 0.98;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #fff6df 0%, #f3c46b 48%, #b8742a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.95));
+}
+
+.splash-subtitle {
+  margin-top: 10px;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: clamp(13px, 1.7vw, 18px);
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: var(--ivory);
+  text-transform: uppercase;
+  padding: 5px 24px;
+  border-top: 1px solid var(--brass-dim);
+  border-bottom: 1px solid var(--brass-dim);
+  background: linear-gradient(90deg, transparent, rgba(20, 24, 32, 0.85), transparent);
+}
+
+/* Up/Down Player Selection Stack */
+.updown-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 440px;
+  max-width: 92vw;
+  z-index: 2;
+}
+
+.updown-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 22px;
+  background: linear-gradient(180deg, rgba(20, 25, 34, 0.92) 0%, rgba(11, 14, 20, 0.96) 100%);
+  border: 1px solid rgba(212, 161, 83, 0.32);
+  color: var(--ivory);
+  cursor: pointer;
+  text-align: left;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75);
+  transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+}
+
+.updown-item:hover,
+.updown-item.active {
+  transform: translateX(6px);
+  background: linear-gradient(90deg, rgba(212, 161, 83, 0.28) 0%, rgba(22, 27, 38, 0.96) 100%);
+  border-color: var(--brass-bright);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.88), 0 0 22px rgba(246, 207, 119, 0.22);
+}
+
+.updown-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--brass-bright);
+  opacity: 0.18;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.updown-item.active .updown-arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+.updown-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.updown-title {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ivory);
+}
+
+.updown-item.active .updown-title {
+  color: var(--brass-bright);
+}
+
+.updown-sub {
+  font-size: 11.5px;
+  color: var(--ivory-muted);
+}
+
+.updown-hint {
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(242, 236, 223, 0.72);
+  letter-spacing: 1px;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
+}
+
+.updown-hint b {
+  color: var(--brass-bright);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STAGE 3: AAA COMMAND LOBBY (PLAYER, SQUAD, HAT & MAP SELECTION)
+   ═══════════════════════════════════════════════════════════════════ */
+#campaign-lobby {
+  position: absolute;
+  inset: 0;
+  z-index: 75;
+  background: radial-gradient(circle at 50% 20%, rgba(18, 23, 33, 0.88) 0%, rgba(6, 8, 12, 0.96) 100%);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#campaign-lobby.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lobby-frame {
+  width: 1120px;
+  max-width: 96vw;
+  max-height: 94vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #161a23 0%, #0e1117 100%);
+  border: 1px solid var(--brass-trim);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  padding: 24px 28px;
+  box-shadow: 0 36px 96px rgba(0, 0, 0, 0.92);
+}
+
+.lobby-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(212, 161, 83, 0.26);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.lobby-header-left h1 {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--brass-bright);
+  text-transform: uppercase;
+}
+
+.lobby-header-left p {
+  font-size: 11.5px;
+  color: var(--ivory-muted);
+  margin-top: 2px;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--brass-trim);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lobby-top-bar {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.diff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.tactical-card {
+  padding: 10px 10px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(242, 236, 223, 0.14);
+  color: var(--ivory);
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
+  transition: all 0.14s ease;
+  text-align: left;
+}
+
+.tactical-card:hover {
+  background: rgba(212, 161, 83, 0.1);
+  border-color: rgba(212, 161, 83, 0.45);
+}
+
+.tactical-card.selected {
+  background: linear-gradient(180deg, rgba(212, 161, 83, 0.24) 0%, rgba(212, 161, 83, 0.08) 100%);
+  border-color: var(--brass-bright);
+}
+
+.tactical-card .tc-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ivory);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.tactical-card.selected .tc-title {
+  color: var(--brass-bright);
+}
+
+.tactical-card .tc-sub {
+  font-size: 10px;
+  color: var(--ivory-muted);
+  margin-top: 2px;
+}
+
+/* 4 Catalan Regional Scenic Theatre Cards */
+.theatre-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.theatre-card {
+  position: relative;
+  height: 132px;
+  border: 1px solid rgba(242, 236, 223, 0.18);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  overflow: hidden;
+  cursor: pointer;
+  background: #0d1016;
+  transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.theatre-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--brass-trim);
+}
+
+.theatre-card.selected {
+  border: 2px solid var(--brass-bright);
+  box-shadow: 0 8px 26px rgba(246, 207, 119, 0.25);
+}
+
+.theatre-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.84) saturate(1.08);
+  transition: transform 0.35s ease, filter 0.25s ease;
+}
+
+.theatre-card:hover img,
+.theatre-card.selected img {
+  transform: scale(1.05);
+  filter: brightness(1.0) saturate(1.15);
+}
+
+.theatre-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 8, 12, 0.15) 0%, rgba(6, 8, 12, 0.88) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px 12px;
+}
+
+.theatre-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  background: rgba(10, 12, 18, 0.82);
+  border: 1px solid var(--brass-dim);
+  color: var(--brass-bright);
+  text-transform: uppercase;
+}
+
+.theatre-name {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.6px;
+}
+
+.theatre-landmarks {
+  font-size: 10.5px;
+  color: rgba(242, 236, 223, 0.78);
+  margin-top: 2px;
+}
+
+/* Squad Customization Panels */
+.squad-custom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.squad-box {
+  background: rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(242, 236, 223, 0.12);
+  padding: 12px 14px;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+}
+
+.squad-box-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.squad-box-head h3 {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 13.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hat-select {
+  background: #141821;
+  border: 1px solid var(--brass-dim);
+  color: var(--ivory);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  outline: none;
+  cursor: pointer;
+}
+
+.oruga-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.oruga-row:last-child {
+  margin-bottom: 0;
+}
+
+.oruga-idx {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--ivory-muted);
+  width: 22px;
+}
+
+.oruga-row input[type="text"] {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(242, 236, 223, 0.18);
+  padding: 6px 10px;
+  color: var(--ivory);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  outline: none;
+}
+
+.oruga-row input[type="text"]:focus {
+  border-color: var(--brass-bright);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.face-upload-label {
+  height: 29px;
+  padding: 0 9px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(242, 236, 223, 0.18);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ivory-muted);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.face-upload-label:hover {
+  border-color: var(--brass-trim);
+  color: var(--brass-bright);
+}
+
+.lobby-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(212, 161, 83, 0.22);
+  padding-top: 14px;
+}
+
+.lobby-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-gold-deploy {
+  padding: 11px 28px;
+  background: linear-gradient(180deg, #f3be5c 0%, #c48224 100%);
+  border: 1px solid #ffe094;
+  color: #0b0d12;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+.btn-gold-deploy:hover {
+  filter: brightness(1.08);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   IN-GAME MINIMALIST GLASSMORPHIC HUD & COLLAPSIBLE WEAPON DRAWER
+   ═══════════════════════════════════════════════════════════════════ */
+#top-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 16px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.squad-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 245px;
+  background: rgba(14, 18, 26, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 195, 110, 0.28);
+  border-radius: 14px;
+  padding: 7px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42);
+}
+
+.squad-panel.right {
+  justify-self: end;
+  min-width: 225px;
+}
+
+.squad-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.squad-title {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.squad-hp-total {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ivory);
+}
+
+.squad-pips {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.worm-pip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.worm-pip-name {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(242, 236, 223, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.worm-pip.active .worm-pip-name {
+  color: #fff;
+}
+
+.worm-pip.dead {
+  opacity: 0.22;
+}
+
+.worm-pip-bar {
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.worm-pip-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.25s ease;
+}
+
+.center-chronometer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: auto;
+}
+
+.chrono-housing {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(14, 18, 26, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 195, 110, 0.42);
+  border-radius: 999px;
+  padding: 5px 18px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.52);
+}
+
+#turn-timer {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--brass-bright);
+  min-width: 28px;
+  text-align: center;
+  line-height: 1;
+}
+
+.turn-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(240, 195, 110, 0.28);
+}
+
+.turn-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+#turn-status {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--ivory);
+  letter-spacing: 0.3px;
+}
+
+#round-sub {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ivory-muted);
+}
+
+.anemometer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(14, 18, 26, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(240, 195, 110, 0.24);
+  border-radius: 999px;
+  padding: 3px 11px;
+}
+
+.anem-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--ivory-muted);
+  letter-spacing: 0.6px;
+}
+
+.wind-track {
+  position: relative;
+  width: 82px;
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+
+.wind-zero {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--brass-trim);
+}
+
+#wind-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 99px;
+  background: #7ec8e3;
+  transition: left 0.25s ease, width 0.25s ease;
+}
+
+.command-strip {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 5px;
+  pointer-events: auto;
+}
+
+.cmd-btn {
+  height: 27px;
+  padding: 0 11px;
+  background: rgba(16, 20, 28, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(240, 195, 110, 0.32);
+  border-radius: 999px;
+  color: var(--ivory);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.14s ease;
+}
+
+.cmd-btn:hover {
+  background: rgba(34, 42, 58, 0.92);
+  border-color: var(--brass-bright);
+  color: var(--brass-bright);
+}
+
+.cmd-btn svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+#bottom-hud {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.fuse-picker {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  background: rgba(14, 18, 26, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(240, 195, 110, 0.35);
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ivory-muted);
+  pointer-events: auto;
+}
+
+.fuse-picker.visible {
+  display: flex;
+}
+
+.fuse-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: var(--ivory);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  cursor: pointer;
+}
+
+.fuse-btn.active {
+  background: var(--brass-trim);
+  border-color: var(--brass-trim);
+  color: #0d0f13;
+}
+
+/* Sleek Active Weapon Pill & Collapsible Arsenal Drawer */
+.weapon-pill-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+#weapon-toggle-btn {
+  height: 44px;
+  padding: 0 16px;
+  background: linear-gradient(180deg, rgba(24, 30, 42, 0.90) 0%, rgba(12, 15, 22, 0.95) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(240, 195, 110, 0.58);
+  border-radius: 999px;
+  color: var(--ivory);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
+  transition: transform 0.12s ease, border-color 0.14s ease, background 0.14s ease;
+}
+
+#weapon-toggle-btn:hover {
+  border-color: var(--brass-bright);
+  transform: translateY(-1px);
+}
+
+#weapon-toggle-btn.open {
+  background: linear-gradient(180deg, rgba(212, 161, 83, 0.28) 0%, rgba(18, 22, 32, 0.96) 100%);
+  border-color: var(--brass-bright);
+}
+
+.wt-icon {
+  width: 30px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wt-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.wt-name {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.wt-ammo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--brass-bright);
+  background: rgba(240, 184, 73, 0.14);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.wt-chevron {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--ivory-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-left: 2px;
+}
+
+.ordnance-rack {
+  display: none;
+  grid-template-columns: repeat(5, 64px);
+  gap: 5px;
+  background: rgba(14, 18, 26, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(240, 195, 110, 0.42);
+  border-radius: 16px;
+  padding: 7px 9px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.82);
+  pointer-events: auto;
+  animation: drawerPop 0.16s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.ordnance-rack.open {
+  display: grid;
+}
+
+@keyframes drawerPop {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ord-slot {
+  position: relative;
+  width: 62px;
+  height: 54px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(242, 236, 223, 0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 3px 3px;
+  transition: all 0.14s ease;
+}
+
+.ord-slot:hover {
+  background: rgba(212, 161, 83, 0.14);
+  border-color: rgba(212, 161, 83, 0.5);
+}
+
+.ord-slot.active {
+  background: linear-gradient(180deg, rgba(212, 161, 83, 0.28) 0%, rgba(212, 161, 83, 0.08) 100%);
+  border-color: var(--brass-bright);
+  box-shadow: inset 0 0 12px rgba(240, 184, 73, 0.22);
+}
+
+.ord-slot.depleted {
+  opacity: 0.26;
+  pointer-events: none;
+}
+
+.ord-hotkey {
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: rgba(242, 236, 223, 0.45);
+}
+
+.ord-ammo {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--brass-bright);
+}
+
+.ord-icon {
+  width: 32px;
+  height: 22px;
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ord-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ord-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  color: rgba(242, 236, 223, 0.88);
+  white-space: nowrap;
+}
+
+.tactical-legend {
+  display: none;
+}
+
+/* Post-Match Victory & MVP Podium Overlay */
+#victory-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 65;
+  background: rgba(6, 8, 12, 0.82);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#victory-modal.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.victory-card {
+  width: 540px;
+  max-width: 92vw;
+  background: linear-gradient(180deg, #181d27 0%, #0e1117 100%);
+  border: 1px solid var(--brass-bright);
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  padding: 28px 32px;
+  text-align: center;
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.92);
+}
+
+.victory-title {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.victory-stats {
+  margin: 18px 0;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  text-align: left;
+  font-size: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE & TOUCH GAMEPAD + PORTRAIT / LANDSCAPE RESPONSIVE LAYOUTS
+   ═══════════════════════════════════════════════════════════════════ */
+#mobile-controls {
+  display: none;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+  padding: 0 4px;
+}
+
+body.touch-device #mobile-controls {
+  display: flex;
+}
+
+@media (pointer: coarse), (max-width: 900px), (max-height: 560px) {
+  #mobile-controls {
+    display: flex;
+  }
+}
+
+.mc-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.mc-btn {
+  position: relative;
+  height: 44px;
+  min-width: 46px;
+  padding: 0 11px;
+  background: linear-gradient(180deg, rgba(24, 30, 42, 0.94) 0%, rgba(12, 15, 22, 0.97) 100%);
+  border: 1.5px solid rgba(212, 161, 83, 0.52);
+  color: var(--ivory);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.72);
+  touch-action: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.08s ease, background 0.1s ease, border-color 0.1s ease;
+}
+
+.mc-btn:active,
+.mc-btn.pressed {
+  transform: scale(0.94);
+  background: linear-gradient(180deg, rgba(212, 161, 83, 0.38) 0%, rgba(30, 36, 50, 0.98) 100%);
+  border-color: var(--brass-bright);
+  color: var(--brass-bright);
+}
+
+.mc-btn.active-toggle {
+  background: linear-gradient(180deg, rgba(126, 200, 227, 0.34) 0%, rgba(20, 34, 48, 0.96) 100%);
+  border-color: #7ec8e3;
+  color: #dff6ff;
+  box-shadow: 0 0 14px rgba(126, 200, 227, 0.35);
+}
+
+.mc-btn-arrow {
+  font-size: 17px;
+  min-width: 48px;
+  padding: 0;
+}
+
+.mc-btn-util {
+  height: 36px;
+  min-width: 36px;
+  padding: 0 9px;
+  font-size: 11px;
+  border-radius: 7px;
+}
+
+.mc-btn-fire {
+  height: 50px;
+  min-width: 108px;
+  padding: 0 16px;
+  background: linear-gradient(180deg, #f5be58 0%, #d46528 55%, #9e261b 100%);
+  border: 2px solid #ffe49e;
+  color: #fff;
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 8px 24px rgba(212, 101, 40, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  overflow: hidden;
+}
+
+.mc-btn-fire:active,
+.mc-btn-fire.pressed {
+  transform: scale(0.95);
+  filter: brightness(1.12);
+}
+
+.mc-fire-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+  transition: width 0.04s linear;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   PORTRAIT MOBILE MODE (Phones held vertically, e.g. 360x780..430x932)
+   ─────────────────────────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  #splash-screen {
+    padding: 20px 14px 32px;
+    gap: 18px;
+    overflow-y: auto;
+  }
+
+  .splash-kicker {
+    font-size: 10px;
+    letter-spacing: 2.2px;
+  }
+
+  .splash-subtitle {
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    padding: 4px 14px;
+  }
+
+  .updown-item {
+    padding: 12px 15px;
+    gap: 10px;
+  }
+
+  .updown-title {
+    font-size: 13.5px;
+  }
+
+  .updown-sub {
+    font-size: 10.5px;
+  }
+
+  #campaign-lobby {
+    padding: 8px;
+    align-items: flex-start;
+  }
+
+  .lobby-frame {
+    max-width: 100%;
+    max-height: 96dvh;
+    padding: 14px 12px 20px;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  .lobby-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .lobby-header-left h1 {
+    font-size: 16px;
+  }
+
+  .lobby-top-bar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .theatre-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .theatre-card {
+    height: 104px;
+  }
+
+  .theatre-name {
+    font-size: 12px;
+  }
+
+  .theatre-landmarks {
+    font-size: 9.5px;
+  }
+
+  .squad-custom-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .squad-box-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .hat-select {
+    width: 100%;
+  }
+
+  .lobby-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .lobby-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-gold-deploy {
+    width: 100%;
+    text-align: center;
+    padding: 13px 16px;
+  }
+
+  /* Compact 2-Row Top HUD for Portrait Mode */
+  #top-hud {
+    padding: max(6px, env(safe-area-inset-top)) 8px 4px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "chrono chrono"
+      "t1     t2"
+      "cmds   cmds";
+    gap: 5px;
+  }
+
+  #top-hud > .squad-panel:first-child {
+    grid-area: t1;
+    max-width: none;
+    padding: 5px 8px;
+  }
+
+  #top-hud > .center-chronometer {
+    grid-area: chrono;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    gap: 6px;
+  }
+
+  .chrono-housing {
+    padding: 4px 10px;
+    gap: 8px;
+    flex: 1;
+  }
+
+  #turn-timer {
+    font-size: 18px;
+    min-width: 24px;
+  }
+
+  #turn-status {
+    font-size: 11px;
+  }
+
+  #round-sub {
+    font-size: 8.5px;
+  }
+
+  .anemometer {
+    padding: 3px 8px;
+    gap: 5px;
+  }
+
+  .wind-track {
+    width: 54px;
+  }
+
+  #top-hud > div:last-child {
+    grid-area: t2;
+    justify-self: stretch !important;
+    display: contents;
+  }
+
+  .squad-panel.right {
+    grid-area: t2;
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+    padding: 5px 8px;
+  }
+
+  .squad-title {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .squad-hp-total {
+    font-size: 10px;
+  }
+
+  .worm-pip-name {
+    font-size: 8.5px;
+  }
+
+  .command-strip {
+    grid-area: cmds;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0;
+    gap: 4px;
+  }
+
+  .cmd-btn {
+    height: 25px;
+    padding: 0 7px;
+    font-size: 9.5px;
+  }
+
+  /* Bottom HUD & Collapsible 6x2 Weapon Drawer in Portrait Mode */
+  #bottom-hud {
+    bottom: max(6px, env(safe-area-inset-bottom));
+    width: calc(100vw - 12px);
+    gap: 5px;
+  }
+
+  .ordnance-rack {
+    display: none;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    width: 100%;
+    padding: 6px;
+  }
+
+  .ordnance-rack.open {
+    display: grid;
+  }
+
+  .ord-slot {
+    width: 100%;
+    height: 44px;
+    padding: 2px;
+  }
+
+  .ord-hotkey {
+    display: none;
+  }
+
+  .ord-icon {
+    width: 24px;
+    height: 16px;
+    margin-top: 6px;
+  }
+
+  .ord-label {
+    font-size: 7.5px;
+  }
+
+  .tactical-legend {
+    display: none;
+  }
+
+  .victory-card {
+    padding: 18px 16px;
+  }
+
+  .victory-title {
+    font-size: 20px;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   LANDSCAPE MOBILE MODE (Phones held horizontally, e.g. 667x375..932x430)
+   ─────────────────────────────────────────────────────────────────── */
+@media (max-height: 540px) and (orientation: landscape) {
+  #splash-screen {
+    padding: 10px 16px;
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .splash-title {
+    font-size: 34px;
+  }
+
+  .splash-subtitle {
+    font-size: 11px;
+    margin-top: 4px;
+    padding: 2px 14px;
+  }
+
+  .updown-menu {
+    gap: 6px;
+    width: 420px;
+  }
+
+  .updown-item {
+    padding: 8px 14px;
+  }
+
+  .updown-title {
+    font-size: 13px;
+  }
+
+  .updown-sub {
+    font-size: 10px;
+  }
+
+  #campaign-lobby {
+    padding: 6px;
+  }
+
+  .lobby-frame {
+    max-height: 95dvh;
+    padding: 12px 16px;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  .theatre-card {
+    height: 88px;
+  }
+
+  #top-hud {
+    padding: 4px max(10px, env(safe-area-inset-right)) 0 max(10px, env(safe-area-inset-left));
+    grid-template-columns: minmax(160px, 215px) auto minmax(160px, 235px);
+    gap: 6px;
+  }
+
+  .squad-panel,
+  .squad-panel.right {
+    padding: 4px 8px;
+    min-width: 0;
+    max-width: 225px;
+    gap: 2px;
+  }
+
+  .squad-title {
+    font-size: 10px;
+  }
+
+  .squad-hp-total {
+    font-size: 10px;
+  }
+
+  .worm-pip-name {
+    font-size: 8.5px;
+  }
+
+  .chrono-housing {
+    padding: 3px 10px;
+    gap: 8px;
+  }
+
+  #turn-timer {
+    font-size: 17px;
+    min-width: 22px;
+  }
+
+  #turn-status {
+    font-size: 10.5px;
+  }
+
+  #round-sub {
+    font-size: 8px;
+  }
+
+  .anemometer {
+    padding: 2px 8px;
+  }
+
+  .command-strip {
+    margin-top: 3px;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .cmd-btn {
+    height: 22px;
+    padding: 0 8px;
+    font-size: 8.5px;
+  }
+
+  .cmd-btn svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  #bottom-hud {
+    bottom: max(4px, env(safe-area-inset-bottom));
+    width: calc(100vw - 16px);
+    gap: 4px;
+  }
+
+  .mc-btn {
+    height: 36px;
+    min-width: 38px;
+    padding: 0 8px;
+    font-size: 10.5px;
+  }
+
+  .mc-btn-fire {
+    height: 40px;
+    min-width: 92px;
+    font-size: 12.5px;
+  }
+
+  #weapon-toggle-btn {
+    height: 36px;
+    padding: 0 12px;
+  }
+
+  .ordnance-rack {
+    display: none;
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 4px 6px;
+    gap: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ordnance-rack.open {
+    display: flex;
+  }
+
+  .ord-slot {
+    width: 48px;
+    min-width: 48px;
+    height: 40px;
+    padding: 2px;
+  }
+
+  .ord-hotkey {
+    display: none;
+  }
+
+  .ord-icon {
+    width: 22px;
+    height: 14px;
+    margin-top: 5px;
+  }
+
+  .ord-label {
+    font-size: 7px;
+  }
+
+  .tactical-legend {
+    display: none;
+  }
+}
