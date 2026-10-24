@@ -50,7 +50,33 @@
       </button>
 
       <div class="updown-hint">
-        <b>Toca</b> o <b>&uarr;/&darr; + INTRO</b> per Seleccionar &nbsp;&middot;&nbsp; Compatible en Vertical i Horitzontal
+        <b>Toca</b> o <b>&uarr;/&darr; + INTRO</b> per Seleccionar &nbsp;&middot;&nbsp; 100% Jugable amb Teclat o M&ograve;bil Horitzontal
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════════════
+       PHONE PORTRAIT -> LANDSCAPE ORIENTATION PROMPT OVERLAY
+       ═════════════════════════════════════════════════════════════════ -->
+  <div id="rotate-device-overlay" aria-live="polite">
+    <div class="rotate-card">
+      <div class="rotate-icon-wrap">
+        <svg class="rotate-phone-svg" viewBox="0 0 80 80" fill="none">
+          <rect x="22" y="10" width="36" height="60" rx="6" stroke="#f6cf77" stroke-width="3" fill="rgba(20, 24, 32, 0.9)"/>
+          <line x1="35" y1="15" x2="45" y2="15" stroke="#d4a153" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="40" cy="63" r="2.5" fill="#f6cf77"/>
+          <path d="M12 44 C10 28 20 16 32 14" stroke="#f5b945" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 3"/>
+          <polygon points="32,10 38,14 31,18" fill="#f5b945"/>
+        </svg>
+      </div>
+      <div class="splash-kicker">FORMAT APA&Iuml;SAT RECOMANAT</div>
+      <h2 class="rotate-title">GIRA EL M&Ograve;BIL EN HORITZONTAL</h2>
+      <p class="rotate-sub">
+        Per veure tot el camp de batalla i utilitzar c&ograve;modament els controls t&agrave;ctils de <b>CUCS</b>, gira el tel&egrave;fon en mode horitzontal.
+      </p>
+      <div class="rotate-actions">
+        <button class="btn-gold-deploy" id="btn-lock-landscape">Pantalla Completa Horitzontal</button>
+        <button class="cmd-btn" id="btn-dismiss-rotate">Continua igualment</button>
       </div>
     </div>
   </div>
@@ -63,9 +89,9 @@
       <div class="lobby-header">
         <div class="lobby-header-left">
           <h1>CUCS &mdash; Personalitza la Partida i els Escamots</h1>
-          <p>Tria el mode de combat, l'indret hist&ograve;ric de Catalunya, el barret tradicional dels cucs, els noms i les fotos dels teus amics.</p>
+          <p>Tria el mode de combat, l'indret de Catalunya, el barret tradicional, els noms i les fotos. <span class="kb-hint-inline">Teclat: &uarr;&darr;&larr;&rarr; / Tab per navegar &middot; Intro/Espai per canviar &middot; Ctrl+Intro per desplegar</span></p>
         </div>
-        <button class="cmd-btn" id="btn-back-menu">&larr; Men&uacute; Principal</button>
+        <button class="cmd-btn" id="btn-back-menu">&larr; Men&uacute; Principal [Esc]</button>
       </div>
 
       <div class="lobby-top-bar">
@@ -106,15 +132,28 @@
         </div>
       </div>
 
-      <div class="section-label">3. Tria l'Indret de Catalunya</div>
+      <div style="margin-bottom: 18px;">
+        <div class="section-label">3. Nombre de Cucs per Escamot (1 a 6 Cucs)</div>
+        <div class="worms-count-grid" id="worms-count-selector">
+          <div class="tactical-card" data-count="1"><div class="tc-title">1 Cuc</div><div class="tc-sub">Duel 1 vs 1</div></div>
+          <div class="tactical-card" data-count="2"><div class="tc-title">2 Cucs</div><div class="tc-sub">Parella T&agrave;ctica</div></div>
+          <div class="tactical-card" data-count="3"><div class="tc-title">3 Cucs</div><div class="tc-sub">Escamot Lleuger</div></div>
+          <div class="tactical-card selected" data-count="4"><div class="tc-title">4 Cucs</div><div class="tc-sub">Cl&agrave;ssic (4 vs 4)</div></div>
+          <div class="tactical-card" data-count="5"><div class="tc-title">5 Cucs</div><div class="tc-sub">Columna Gran</div></div>
+          <div class="tactical-card" data-count="6"><div class="tc-title">6 Cucs</div><div class="tc-sub">Guerra Total (6 vs 6)</div></div>
+        </div>
+      </div>
+
+      <div class="section-label">4. Tria d'entre els 8 Indrets de Catalunya</div>
       <div class="theatre-grid" id="map-selector"></div>
 
-      <div class="section-label">4. Personalitza els Escamots de Cucs i Cares d'Amics</div>
+      <div class="section-label">5. Personalitza els Escamots de Cucs i Cares d'Amics</div>
       <div class="squad-custom-grid">
         <div class="squad-box">
           <div class="squad-box-head">
             <h3 style="color:#f5b945">I. Brigada del Pinar (Or)</h3>
             <select class="hat-select" id="hat-t0">
+              <option value="VARIED">Barret: Variat (Cada Cuc Diferent!)</option>
               <option value="CATALAN">Barret: Barretina Catalana</option>
               <option value="CASTELLER">Barret: Casc de Casteller (Senyera)</option>
               <option value="BANDOLER">Barret: Capell de Bandoler (Serrallonga)</option>
@@ -129,6 +168,7 @@
           <div class="squad-box-head">
             <h3 style="color:#ea5648">II. Columna Tramuntana (Grana)</h3>
             <select class="hat-select" id="hat-t1">
+              <option value="VARIED">Barret: Variat (Cada Cuc Diferent!)</option>
               <option value="BANDOLER">Barret: Capell de Bandoler (Serrallonga)</option>
               <option value="CATALAN">Barret: Barretina Catalana</option>
               <option value="CASTELLER">Barret: Casc de Casteller (Senyera)</option>
@@ -213,7 +253,7 @@
   <!-- Bottom Collapsible Ordnance Drawer + Sleek Active Weapon Pill + Mobile Gamepad! -->
   <div id="bottom-hud">
     <div class="fuse-picker" id="fuse-picker">
-      <span>METXA:</span>
+      <span>METXA [Q/E]:</span>
       <button class="fuse-btn" data-fuse="1">1s</button>
       <button class="fuse-btn" data-fuse="2">2s</button>
       <button class="fuse-btn active" data-fuse="3">3s</button>
@@ -224,33 +264,37 @@
     <div class="ordnance-rack" id="weapon-bar"></div>
 
     <!-- Tactile Mobile & Touch Controls + Sleek Active Weapon Pill -->
-    <div id="mobile-controls">
+    <div id="bottom-bar-row">
       <div class="mc-cluster mc-left">
         <button class="mc-btn mc-btn-arrow" id="mc-left" aria-label="Moure a l'esquerra">&#9664;</button>
         <button class="mc-btn mc-btn-arrow" id="mc-right" aria-label="Moure a la dreta">&#9654;</button>
         <button class="mc-btn mc-btn-arrow" id="mc-aim-up" aria-label="Apuntar amunt">&#9650;</button>
         <button class="mc-btn mc-btn-arrow" id="mc-aim-down" aria-label="Apuntar avall">&#9660;</button>
-        <button class="mc-btn" id="mc-jump" aria-label="Salt endavant (2 tocs = enrere)">Salt</button>
+      </div>
+
+      <div class="weapon-pill-bar">
+        <button class="wp-nav-btn" id="weapon-prev-btn" title="Arma anterior [Z o [ ]">&#9664;</button>
+        <button id="weapon-toggle-btn" title="Toca o prem [B] per obrir les 16 armes catalanes (Z/X per canviar r&agrave;pid)">
+          <span class="wt-icon" id="wt-icon"></span>
+          <span class="wt-name" id="wt-name">Trabuc</span>
+          <span class="wt-ammo" id="wt-ammo">&infin;</span>
+          <span class="wt-chevron" id="wt-chevron">&#9650; Arsenal [B]</span>
+        </button>
+        <button class="wp-nav-btn" id="weapon-next-btn" title="Arma seg&uuml;ent [X o ] ]">&#9654;</button>
+        <button class="mc-btn mc-btn-util" id="mc-switch-worm" title="Canvia quin cuc controles abans de moure [Tab]">Cuc &#8644;</button>
       </div>
 
       <div class="mc-cluster mc-right">
-        <button class="mc-btn mc-btn-util" id="mc-zoom-out" title="Allunya la c&agrave;mera">&minus;</button>
-        <button class="mc-btn mc-btn-util" id="mc-zoom-in" title="Apropa la c&agrave;mera">+</button>
-        <button class="mc-btn mc-btn-util" id="mc-pan" title="Centra la c&agrave;mera">Centra</button>
+        <button class="mc-btn" id="mc-jump" title="Salt endavant [Intro]">Salt</button>
+        <button class="mc-btn mc-btn-util" id="mc-backflip" title="Salt mortal enrere [Retroc&eacute;s]">Mortal</button>
+        <button class="mc-btn mc-btn-util" id="mc-zoom-out" title="Allunya la c&agrave;mera [AvP&agrave;g]">&minus;</button>
+        <button class="mc-btn mc-btn-util" id="mc-zoom-in" title="Apropa la c&agrave;mera [ReP&agrave;g]">+</button>
+        <button class="mc-btn mc-btn-util" id="mc-pan" title="Centra la c&agrave;mera [V]">Centra</button>
         <button class="mc-btn mc-btn-fire" id="mc-fire">
           <div class="mc-fire-fill" id="mc-fire-fill"></div>
           <span id="mc-fire-label">FOC!</span>
         </button>
       </div>
-    </div>
-
-    <div class="weapon-pill-bar">
-      <button id="weapon-toggle-btn" title="Toca per triar d'entre les 12 armes catalanes">
-        <span class="wt-icon" id="wt-icon"></span>
-        <span class="wt-name" id="wt-name">Trabuc</span>
-        <span class="wt-ammo" id="wt-ammo">&infin;</span>
-        <span class="wt-chevron" id="wt-chevron">&#9650; Arsenal</span>
-      </button>
     </div>
   </div>
 
@@ -261,9 +305,9 @@
       <div class="victory-title" id="vic-title">VICT&Ograve;RIA DE LA BRIGADA DEL PINAR</div>
       <div style="font-size:13px;color:var(--ivory-muted)" id="vic-sub">La process&oacute; conquista el pinar!</div>
       <div class="victory-stats" id="vic-stats"></div>
-      <div style="display:flex;justify-content:center;gap:12px;">
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
         <button class="cmd-btn" id="btn-vic-lobby">Canvia Indret / Escamot</button>
-        <button class="btn-gold-deploy" id="btn-vic-rematch">Torna a Jugar</button>
+        <button class="btn-gold-deploy" id="btn-vic-rematch">Torna a Jugar [Intro]</button>
       </div>
     </div>
   </div>

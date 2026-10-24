@@ -64,7 +64,7 @@ function ridgedFbm(x, y, octaves = 5) {
   return val / max;
 }
 
-// 4 Hyper-Specific, Geographically Authentic Catalan Theatres!
+// 8 Hyper-Specific, Geographically Authentic Catalan Theatres!
 const MAPS = [
   {
     id: 'MONTSERRAT',
@@ -80,7 +80,8 @@ const MAPS = [
     turfCol: [92, 118, 52],
     soilCol: [134, 84, 58],
     rockCol: [148, 128, 122], // Pale pinkish-grey Montserrat conglomerate rock!
-    treeStyle: 'UMBRELLA_PINE'
+    treeStyle: 'UMBRELLA_PINE',
+    preferredTexture: 'CONGLOMERATE_PEBBLES'
   },
   {
     id: 'CADAQUES',
@@ -96,7 +97,8 @@ const MAPS = [
     turfCol: [88, 108, 56],
     soilCol: [92, 76, 62],
     rockCol: [74, 80, 92], // Dark Cap de Creus Empordà slate (pissarra)!
-    treeStyle: 'CYPRESS'
+    treeStyle: 'CYPRESS',
+    preferredTexture: 'SLATE_FRACTURES'
   },
   {
     id: 'TAULL',
@@ -112,7 +114,8 @@ const MAPS = [
     turfCol: [64, 126, 56],
     soilCol: [78, 58, 42],
     rockCol: [98, 106, 116], // Pyrenean granite & slate!
-    treeStyle: 'DOUGLAS_FIR'
+    treeStyle: 'DOUGLAS_FIR',
+    preferredTexture: 'STRATA_WAVES'
   },
   {
     id: 'CASTELLFOLLIT',
@@ -128,7 +131,76 @@ const MAPS = [
     turfCol: [118, 104, 46],
     soilCol: [86, 52, 38],
     rockCol: [64, 62, 68], // Dark volcanic Garrotxa basalt columns!
-    treeStyle: 'UMBRELLA_PINE'
+    treeStyle: 'UMBRELLA_PINE',
+    preferredTexture: 'BASALT_COLUMNS'
+  },
+  {
+    id: 'DELTA_EBRE',
+    name: 'Delta de l\'Ebre i Buda',
+    subtitle: 'Arrossars, Barraques, Far del Fangar i Flamencs (Montsià)',
+    badge: 'FLAMENCS I DUNES',
+    bgPath: 'assets/bg_delta.jpg',
+    weather: 'POLLEN',
+    slideFriction: 0.960,
+    sky: ['#2d1b38', '#733857', '#c45d56', '#f29f60', '#ffebb3'],
+    waterTop: 'rgba(38, 166, 154, 0.82)',
+    waterDeep: 'rgba(10, 52, 56, 0.98)',
+    turfCol: [112, 142, 54],
+    soilCol: [168, 122, 74],
+    rockCol: [184, 152, 108], // Golden Ebre alluvial sand dunes & reed clay!
+    treeStyle: 'PALM_DELTA',
+    preferredTexture: 'TERRACOTTA_DUNES'
+  },
+  {
+    id: 'TARRACO',
+    name: 'Tàrraco Imperial',
+    subtitle: 'Amfiteatre Romà, Pont del Diable i Mare Nostrum (Tarragonès)',
+    badge: 'PEDRA ROMANA',
+    bgPath: 'assets/bg_tarraco.jpg',
+    weather: 'GULLS_BREEZE',
+    slideFriction: 0.965,
+    sky: ['#162a4a', '#2e557c', '#6e7889', '#d98a54', '#fce0a2'],
+    waterTop: 'rgba(22, 138, 188, 0.84)',
+    waterDeep: 'rgba(8, 36, 68, 0.98)',
+    turfCol: [96, 120, 48],
+    soilCol: [148, 76, 48],
+    rockCol: [182, 146, 98], // Warm golden Roman limestone ashlar ("Mèdol")!
+    treeStyle: 'CYPRESS',
+    preferredTexture: 'ASHLAR_BLOCKS'
+  },
+  {
+    id: 'PEDRAFORCA',
+    name: 'Massís del Pedraforca',
+    subtitle: 'L\'Enforcadura, Tartera i Serra del Cadí (Berguedà)',
+    badge: 'CIM MÀGIC',
+    bgPath: 'assets/bg_pedraforca.jpg',
+    weather: 'SNOW',
+    slideFriction: 0.972,
+    sky: ['#1a1636', '#382e63', '#5c5b94', '#8ea8cf', '#dbf0fa'],
+    waterTop: 'rgba(54, 142, 176, 0.82)',
+    waterDeep: 'rgba(14, 38, 58, 0.98)',
+    turfCol: [58, 118, 68],
+    soilCol: [88, 74, 68],
+    rockCol: [118, 128, 146], // Silver-blue dolomitic limestone scree!
+    treeStyle: 'DOUGLAS_FIR',
+    preferredTexture: 'SLATE_FRACTURES'
+  },
+  {
+    id: 'MONTBLANC',
+    name: 'Muralles de Montblanc',
+    subtitle: 'Torres Medievals, Llegenda de Sant Jordi i Prades (Conca)',
+    badge: 'DRAC I ROSES',
+    bgPath: 'assets/bg_montblanc.jpg',
+    weather: 'AUTUMN_LEAVES',
+    slideFriction: 0.966,
+    sky: ['#24111c', '#541e33', '#8f3438', '#cf6a44', '#f7be79'],
+    waterTop: 'rgba(64, 96, 118, 0.82)',
+    waterDeep: 'rgba(18, 26, 40, 0.98)',
+    turfCol: [104, 112, 44],
+    soilCol: [128, 54, 44],
+    rockCol: [152, 82, 72], // Crimson-red Prades sandstone & medieval masonry!
+    treeStyle: 'UMBRELLA_PINE',
+    preferredTexture: 'ASHLAR_BLOCKS'
   }
 ];
 
@@ -256,6 +328,24 @@ function stampDestructibleTree(tx, ty, style, frontData, backData, scale = 1.0) 
           const px = Math.floor(tx + dx), py = Math.floor(cy + dy);
           const shade = clamp(0.8 - dy * 0.016 + (noise2D(px * 0.2, py * 0.2) - 0.5) * 0.25, 0.45, 1.2);
           setTerrainPixel(px, py, 38 * shade, 88 * shade, 56 * shade, frontData, backData, 20, 44, 28);
+        }
+      }
+    }
+  } else if (style === 'PALM_DELTA') {
+    // Delta de l'Ebre Fan Palm / Date Palm fronds radiating from the crown
+    for (let f = -3; f <= 3; f++) {
+      const angle = f * 0.42;
+      const len = Math.round((36 - Math.abs(f) * 3) * scale);
+      for (let s = 0; s <= len; s++) {
+        const fx = tx + Math.sin(angle) * s * 1.15;
+        const fy = crownY - Math.cos(angle) * s * 0.45 + (s * s) * 0.016;
+        const leafW = Math.max(2, Math.round((1 - s / (len + 4)) * 6 * scale));
+        for (let dy = -leafW; dy <= leafW; dy++) {
+          for (let dx = -2; dx <= 2; dx++) {
+            const px = Math.floor(fx + dx), py = Math.floor(fy + dy);
+            const shade = clamp(0.85 - dy * 0.04, 0.55, 1.22);
+            setTerrainPixel(px, py, 74 * shade, 118 * shade, 46 * shade, frontData, backData, 32, 52, 22);
+          }
         }
       }
     }
@@ -430,6 +520,45 @@ function stampSkyTerracePlatform(cx, deckY, halfW, fd, bd, mCfg) {
 }
 
 let currentTerrainArchetypeName = 'Feixes i Cingles';
+let currentTextureStyle = 'STRATA_WAVES';
+let currentSkyMood = null;
+
+const TEXTURE_STYLES = [
+  'STRATA_WAVES',
+  'BASALT_COLUMNS',
+  'ASHLAR_BLOCKS',
+  'CONGLOMERATE_PEBBLES',
+  'SLATE_FRACTURES',
+  'TERRACOTTA_DUNES'
+];
+
+// Landmark 8: Traditional Whitewashed "Barraca del Delta" with Steep Thatched Reed Roof!
+function stampBarracaDelta(cx, sy, fd, bd) {
+  const w = 36, wallH = 30, roofH = 38;
+  // Whitewashed lime walls
+  for (let y = sy - wallH; y <= sy + 10; y++) {
+    for (let x = cx - w; x <= cx + w; x++) {
+      const n = (noise2D(x * 0.18, y * 0.18) - 0.5) * 18;
+      setTerrainPixel(x, y, 236 + n, 230 + n, 216 + n, fd, bd, 92, 86, 78);
+    }
+  }
+  // Steep triangular thatched reed roof ("borró i canyís")
+  for (let dy = 0; dy <= roofH; dy++) {
+    const span = Math.round(((roofH - dy) / roofH) * (w + 8));
+    const y = sy - wallH - dy;
+    for (let x = cx - span; x <= cx + span; x++) {
+      const reed = ((x + dy) % 4 === 0) ? 1.08 : 0.92;
+      const n = (noise2D(x * 0.2, y * 0.2) - 0.5) * 20;
+      setTerrainPixel(x, y, (158 + n) * reed, (124 + n) * reed, (74 + n) * reed, fd, bd, 68, 52, 32);
+    }
+  }
+  // Hollow doorway shelter inside the barraca
+  for (let y = sy - 22; y <= sy - 2; y++) {
+    for (let x = cx - 12; x <= cx + 12; x++) {
+      clearTerrainPixel(x, y, fd);
+    }
+  }
+}
 
 function generateDestructibleTerrain(mapIdx) {
   const mCfg = MAPS[mapIdx];
@@ -438,6 +567,50 @@ function generateDestructibleTerrain(mapIdx) {
   terrainMask.fill(0);
   generatedTreeSpots = [];
   generatedValleySpots = [];
+
+  // Choose texture style: 50% chance regional signature texture, 50% chance any of the 6 geological textures for high variety!
+  if (mCfg.preferredTexture && Math.random() < 0.50) {
+    currentTextureStyle = mCfg.preferredTexture;
+  } else {
+    currentTextureStyle = TEXTURE_STYLES[Math.floor(Math.random() * TEXTURE_STYLES.length)];
+  }
+
+  // Per-match color harmony variation so even the same region feels fresh every game!
+  const turfHueShift = [
+    Math.round((Math.random() - 0.5) * 28),
+    Math.round((Math.random() - 0.5) * 28),
+    Math.round((Math.random() - 0.5) * 22)
+  ];
+  const rockHueShift = [
+    Math.round((Math.random() - 0.5) * 32),
+    Math.round((Math.random() - 0.5) * 28),
+    Math.round((Math.random() - 0.5) * 32)
+  ];
+  const soilHueShift = [
+    Math.round((Math.random() - 0.5) * 24),
+    Math.round((Math.random() - 0.5) * 22),
+    Math.round((Math.random() - 0.5) * 20)
+  ];
+  const matchTurf = [
+    clamp(mCfg.turfCol[0] + turfHueShift[0], 32, 210),
+    clamp(mCfg.turfCol[1] + turfHueShift[1], 42, 215),
+    clamp(mCfg.turfCol[2] + turfHueShift[2], 24, 175)
+  ];
+  const matchSoil = [
+    clamp(mCfg.soilCol[0] + soilHueShift[0], 35, 210),
+    clamp(mCfg.soilCol[1] + soilHueShift[1], 30, 190),
+    clamp(mCfg.soilCol[2] + soilHueShift[2], 22, 165)
+  ];
+  const matchRock = [
+    clamp(mCfg.rockCol[0] + rockHueShift[0], 42, 220),
+    clamp(mCfg.rockCol[1] + rockHueShift[1], 42, 215),
+    clamp(mCfg.rockCol[2] + rockHueShift[2], 42, 220)
+  ];
+
+  // Rebuild procedural parallax mountains & clouds if state helpers are ready
+  if (typeof regenerateMatchAtmosphere === 'function') {
+    regenerateMatchAtmosphere(mCfg);
+  }
 
   // 8 Diverse Multi-Level & Hilly Catalan Terrain Archetypes!
   const archetypes = [
@@ -542,6 +715,24 @@ function generateDestructibleTerrain(mapIdx) {
       h += alpinePeak;
     } else if (mCfg.id === 'CASTELLFOLLIT') {
       h = Math.round(h / 28) * 28 + Math.sin(x * 0.008) * 18;
+    } else if (mCfg.id === 'DELTA_EBRE') {
+      // Sweeping sandy dune bars, lagoons & raised rice-paddy dikes!
+      const dune = Math.sin(x * 0.007 + mapSeed) * 26 + Math.cos(x * 0.019) * 12;
+      h = lerp(h, 430 + dune, 0.28);
+    } else if (mCfg.id === 'TARRACO') {
+      // Stepped Roman amphitheatre tiers & Mediterranean cliffside terraces
+      const tier = Math.round(h / 32) * 32;
+      h = lerp(h, tier, 0.55) + Math.cos(x * 0.009) * 16;
+    } else if (mCfg.id === 'PEDRAFORCA') {
+      // Iconic twin-peaked "Enforcadura" saddle & steep limestone scree!
+      const saddle = Math.exp(-Math.pow((x - 1600) / 210, 2)) * 125
+        - Math.exp(-Math.pow((x - 1160) / 190, 2)) * 95
+        - Math.exp(-Math.pow((x - 2040) / 190, 2)) * 95;
+      h += saddle;
+    } else if (mCfg.id === 'MONTBLANC') {
+      // Crenellated medieval hillside bastions & red sandstone ridges
+      const bastion = Math.round(Math.sin(x * 0.014) * 2) * 14;
+      h += bastion;
     }
 
     surfaceY[x] = lerp(WATER_Y + 95, clamp(h, 165, WATER_Y + 65), smoothEnv);
@@ -586,16 +777,56 @@ function generateDestructibleTerrain(mapIdx) {
         }
       }
 
-      // Painterly low-frequency gouache strata instead of harsh pixel noise
+      // Painterly multi-style geological rock textures (6 distinct styles!)
       const n1 = fbm(x * 0.014 + mapSeed, y * 0.014, 3);
       const n2 = ridgedFbm(x * 0.028, y * 0.028, 2);
-      const strata = Math.sin(y * 0.075 + n1 * 4.2 + Math.cos(x * 0.008) * 1.5) * 0.5 + 0.5;
+      let strata = 0.5;
+      let texMod = 0;
+
+      if (currentTextureStyle === 'BASALT_COLUMNS') {
+        // Vertical hexagonal volcanic prism columns with horizontal cooling joints
+        const colPhase = Math.abs(((x + Math.sin(y * 0.02) * 4) % 18) - 9) / 9;
+        const joint = Math.abs(((y + Math.floor(x / 18) * 11) % 34) - 17) < 1.6 ? -18 : 0;
+        strata = colPhase;
+        texMod = (colPhase > 0.78 ? -16 : (colPhase < 0.25 ? 12 : 0)) + joint;
+      } else if (currentTextureStyle === 'ASHLAR_BLOCKS') {
+        // Dressed Roman / Medieval sandstone blocks & mortar courses
+        const row = Math.floor(y / 16);
+        const bx = (x + (row % 2) * 19) % 38;
+        const by = y % 16;
+        const isMortar = bx < 1.8 || by < 1.6;
+        const blockHash = ((row * 13 + Math.floor((x + (row % 2) * 19) / 38) * 7) & 7) - 3.5;
+        strata = isMortar ? 0.15 : 0.65;
+        texMod = isMortar ? -22 : blockHash * 4.5;
+      } else if (currentTextureStyle === 'CONGLOMERATE_PEBBLES') {
+        // Rounded Montserrat conglomerate boulders & embedded mineral pebbles
+        const cellX = (x + Math.sin(y * 0.05) * 6) * 0.085;
+        const cellY = y * 0.085;
+        const peb = Math.sin(cellX * Math.PI) * Math.sin(cellY * Math.PI);
+        strata = peb * 0.5 + 0.5;
+        texMod = peb > 0.45 ? 16 : (peb < -0.45 ? -14 : 0);
+      } else if (currentTextureStyle === 'SLATE_FRACTURES') {
+        // Sharp diagonal Empordà slate / Pedraforca dolomitic fault cleavage lines
+        const diag = Math.sin((x * 0.09 + y * 0.14) + n2 * 3.8);
+        strata = diag * 0.5 + 0.5;
+        texMod = diag > 0.65 ? 15 : (diag < -0.68 ? -18 : 0);
+      } else if (currentTextureStyle === 'TERRACOTTA_DUNES') {
+        // Cross-bedded Ebre dune ripples & warm terracotta clay bands
+        const ripple = Math.sin(y * 0.14 + Math.sin(x * 0.025 + mapSeed) * 3.2);
+        strata = ripple * 0.5 + 0.5;
+        texMod = ripple * 14;
+      } else {
+        // STRATA_WAVES: classic folded sedimentary strata
+        strata = Math.sin(y * 0.075 + n1 * 4.2 + Math.cos(x * 0.008) * 1.5) * 0.5 + 0.5;
+        texMod = strata > 0.72 ? 12 : (strata < 0.25 ? -8 : 0);
+      }
+
       const rockVal = n1 * 0.55 + n2 * 0.22 + strata * 0.23;
 
       const idx4 = (y * TERRAIN_W + x) * 4;
-      bd[idx4]     = mCfg.rockCol[0] * 0.48 + rockVal * 22;
-      bd[idx4 + 1] = mCfg.rockCol[1] * 0.48 + rockVal * 20;
-      bd[idx4 + 2] = mCfg.rockCol[2] * 0.48 + rockVal * 24;
+      bd[idx4]     = matchRock[0] * 0.48 + rockVal * 22;
+      bd[idx4 + 1] = matchRock[1] * 0.48 + rockVal * 20;
+      bd[idx4 + 2] = matchRock[2] * 0.48 + rockVal * 24;
       bd[idx4 + 3] = 255;
 
       if (inCavern) continue;
@@ -607,9 +838,9 @@ function generateDestructibleTerrain(mapIdx) {
       const grassThick = Math.max(5, Math.floor(14 - Math.abs(slope) * 2.8 + tuftWave));
       if (depth <= grassThick) {
         const turfLight = clamp(0.88 - slope * 0.18 + (n1 - 0.5) * 0.18, 0.54, 1.24);
-        r = clamp(mCfg.turfCol[0] * turfLight, 24, 255);
-        g = clamp(mCfg.turfCol[1] * turfLight, 24, 255);
-        b = clamp(mCfg.turfCol[2] * turfLight, 24, 255);
+        r = clamp(matchTurf[0] * turfLight, 24, 255);
+        g = clamp(matchTurf[1] * turfLight, 24, 255);
+        b = clamp(matchTurf[2] * turfLight, 24, 255);
         if (depth <= 2) {
           const sunRim = clamp(1.32 - slope * 0.16 - depth * 0.09, 1.02, 1.48);
           r = clamp(r * sunRim + 22, 0, 255);
@@ -623,16 +854,15 @@ function generateDestructibleTerrain(mapIdx) {
       } else if (depth <= grassThick + 16) {
         const ao = depth <= grassThick + 4 ? 0.74 : 0.88;
         const soil = (0.78 + rockVal * 0.36) * ao;
-        r = mCfg.soilCol[0] * soil;
-        g = mCfg.soilCol[1] * soil;
-        b = mCfg.soilCol[2] * soil;
+        r = matchSoil[0] * soil;
+        g = matchSoil[1] * soil;
+        b = matchSoil[2] * soil;
       } else {
         const depthFade = clamp(1.0 - (depth - 20) * 0.0009, 0.72, 1.0);
         const sunShade = clamp(0.92 - slope * 0.14, 0.62, 1.14) * depthFade;
-        const bandHighlight = strata > 0.72 ? 12 : (strata < 0.25 ? -8 : 0);
-        r = (mCfg.rockCol[0] + rockVal * 48 + bandHighlight) * sunShade;
-        g = (mCfg.rockCol[1] + rockVal * 45 + bandHighlight) * sunShade;
-        b = (mCfg.rockCol[2] + rockVal * 49 + bandHighlight * 1.1) * sunShade;
+        r = (matchRock[0] + rockVal * 48 + texMod) * sunShade;
+        g = (matchRock[1] + rockVal * 45 + texMod) * sunShade;
+        b = (matchRock[2] + rockVal * 49 + texMod * 1.1) * sunShade;
       }
 
       fd[idx4]     = clamp(r, 0, 255);
@@ -659,7 +889,7 @@ function generateDestructibleTerrain(mapIdx) {
   // ─────────────────────────────────────────────────────────────────────────
   // RANDOMIZED PROCEDURAL LANDMARKS (2–4 chosen per match so every game is unique!)
   // ─────────────────────────────────────────────────────────────────────────
-  const landmarkPool = ['WATCHTOWER', 'HOLLOW_LOG', 'ROCK_ARCH', 'MONOLITHS', 'BRIDGE_SPAN', 'SECOND_TOWER'];
+  const landmarkPool = ['WATCHTOWER', 'HOLLOW_LOG', 'ROCK_ARCH', 'MONOLITHS', 'BRIDGE_SPAN', 'SECOND_TOWER', 'BARRACA_DELTA'];
   landmarkPool.sort(() => Math.random() - 0.5);
   const chosenLandmarks = landmarkPool.slice(0, 2 + Math.floor(Math.random() * 2));
 
@@ -673,13 +903,15 @@ function generateDestructibleTerrain(mapIdx) {
     if (lm === 'BRIDGE_SPAN') {
       const spanHalf = 190 + Math.random() * 70;
       const deckY = Math.min(zy - 45, 340 + Math.random() * 60);
-      if (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT' || Math.random() < 0.72) {
+      if (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT' || mCfg.id === 'TARRACO' || mCfg.id === 'MONTBLANC' || Math.random() < 0.75) {
         stampRomanesqueViaduct(zx - spanHalf, zx + spanHalf, deckY, fd, bd);
       } else {
         stampSteelTrussSpan(zx - spanHalf, zx + spanHalf, deckY, fd, bd, mCfg.id === 'MONTSERRAT');
       }
     } else if (zy < WATER_Y - 45) {
-      if (lm === 'WATCHTOWER' || lm === 'SECOND_TOWER') {
+      if (lm === 'BARRACA_DELTA' || mCfg.id === 'DELTA_EBRE') {
+        stampBarracaDelta(zx, zy, fd, bd);
+      } else if (lm === 'WATCHTOWER' || lm === 'SECOND_TOWER') {
         stampStoneWatchtower(zx, zy, fd, bd);
       } else if (lm === 'HOLLOW_LOG') {
         stampHollowFallenLog(zx, zy, fd, bd);
@@ -691,15 +923,17 @@ function generateDestructibleTerrain(mapIdx) {
     }
   });
 
-  // Stamp 5 to 8 randomized regional Pine Trees across the 3200px map!
-  const treeCount = 5 + Math.floor(Math.random() * 4);
+  // Stamp 5 to 9 randomized regional Trees across the 3200px map (mixing styles for extra variety!)
+  const treeStylesPool = [mCfg.treeStyle, mCfg.treeStyle, 'UMBRELLA_PINE', 'CYPRESS', 'DOUGLAS_FIR', 'PALM_DELTA'];
+  const treeCount = 5 + Math.floor(Math.random() * 5);
   for (let i = 0; i < treeCount; i++) {
     const sectorW = (TERRAIN_W - 560) / treeCount;
     const tx = Math.floor(280 + i * sectorW + (Math.random() - 0.5) * (sectorW * 0.55));
     const ty = Math.floor(surfaceY[clamp(tx, 100, TERRAIN_W - 100)]);
     if (ty < WATER_Y - 50 && !isSolid(tx, ty - 25)) {
-      const scale = 0.85 + Math.random() * 0.35;
-      const treeInfo = stampDestructibleTree(tx, ty, mCfg.treeStyle, fd, bd, scale);
+      const scale = 0.82 + Math.random() * 0.42;
+      const pickedTreeStyle = Math.random() < 0.72 ? mCfg.treeStyle : treeStylesPool[Math.floor(Math.random() * treeStylesPool.length)];
+      const treeInfo = stampDestructibleTree(tx, ty, pickedTreeStyle, fd, bd, scale);
       generatedTreeSpots.push(treeInfo);
     }
   }

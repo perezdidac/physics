@@ -219,16 +219,47 @@ resizeCanvas();
 
 buildBackgroundAssets();
 
-// Authentic Catalan Procesionaria Caterpillar Squad Names
+// Rich Pool of 60 Authentic Catalan Caterpillar Names (Randomized every fresh game unless customized in Lobby!)
+const CATALAN_NAMES_POOL_0 = [
+  'Peluda', 'Serrallonga', 'Pinassa', 'Rovelló', 'Botifarra', 'Calçot',
+  'Gaudí', 'Garbí', 'Fuet', 'Escudella', 'Barretina', 'Porró',
+  'Senyera', 'Caganer', 'Timbaler', 'Casteller', 'Enxaneta', 'Gralla',
+  'Sardana', 'Ginesta', 'Romaní', 'Pinyó', 'Llobregat', 'Montseny',
+  'Carquinyoli', 'Crema', 'Allioli', 'Romesco', 'Cargol', 'Bolets'
+];
+const CATALAN_NAMES_POOL_1 = [
+  'Urticària', 'Tramuntana', 'Boira', 'Espina', 'Tió', 'Fageda',
+  'Ratafia', 'Empordà', 'Canigó', 'Pedraforca', 'Bruixa', 'Drac',
+  'Correfoc', 'Diable', 'Mestral', 'Xaloc', 'Llevant', 'Pissarra',
+  'Basalt', 'Cingle', 'Falç', 'Trabuc', ' Bandoler', 'Gorg',
+  'Albera', 'Cadí', 'Priorat', 'Batea', 'Lo Riu', 'Garrotxa'
+];
+
+let wormsPerTeam = 4; // Customizable in Lobby from 1 to 6 Cucs per team!
+let hasCustomLobbyNames = false;
+
 const teamNames = [
-  ['Peluda', 'Serrallonga', 'Pinassa', 'Rovelló'],
-  ['Urticària', 'Tramuntana', 'Boira', 'Calçot']
+  ['Peluda', 'Serrallonga', 'Pinassa', 'Rovelló', 'Botifarra', 'Calçot'],
+  ['Urticària', 'Tramuntana', 'Boira', 'Espina', 'Ratafia', 'Canigó']
 ];
 const teamHats = ['CATALAN', 'BANDOLER'];
 const customFaces = [
-  [null, null, null, null],
-  [null, null, null, null]
+  [null, null, null, null, null, null],
+  [null, null, null, null, null, null]
 ];
+
+function randomizeSquadNames(force = false) {
+  if (hasCustomLobbyNames && !force) return;
+  const p0 = [...CATALAN_NAMES_POOL_0].sort(() => Math.random() - 0.5);
+  const p1 = [...CATALAN_NAMES_POOL_1].sort(() => Math.random() - 0.5);
+  for (let i = 0; i < 6; i++) {
+    teamNames[0][i] = p0[i].trim();
+    teamNames[1][i] = p1[i].trim();
+  }
+}
+
+// Randomize names right on initial load so every session starts fresh!
+randomizeSquadNames(true);
 
 const GAME_MODES = ['1P_CPU', '2P_LOCAL', 'CPU_CPU'];
 const MODE_SHORT = {
@@ -412,33 +443,133 @@ const weatherParticles = Array.from({ length: 110 }, () => ({
   phase: Math.random() * Math.PI * 2
 }));
 
-// Multi-layered Volumetric Cloud Clusters (3 parallax tiers: far cirrus, mid cumulus, foreground mist)
-const cloudFlock = Array.from({ length: 24 }, (_, idx) => {
-  const tier = idx < 8 ? 0 : (idx < 17 ? 1 : 2);
-  const z = tier === 0 ? 0.09 : (tier === 1 ? 0.20 : 0.36);
-  const scale = tier === 0 ? (0.65 + Math.random() * 0.35) : (tier === 1 ? (0.95 + Math.random() * 0.55) : (1.15 + Math.random() * 0.55));
-  const lobeCount = 5 + Math.floor(Math.random() * 3);
-  const lobes = [];
-  for (let l = 0; l < lobeCount; l++) {
-    const frac = (l / (lobeCount - 1)) - 0.5;
-    lobes.push({
-      ox: frac * 115 * scale + (Math.random() - 0.5) * 16,
-      oy: Math.abs(frac) * 18 * scale - (l === Math.floor(lobeCount * 0.5) ? 14 * scale : 0) + (Math.random() - 0.5) * 8,
-      rx: (34 + (1 - Math.abs(frac)) * 32 + Math.random() * 14) * scale,
-      ry: (22 + (1 - Math.abs(frac)) * 20 + Math.random() * 10) * scale
+// Multi-layered Volumetric Cloud Clusters (4 styles: CUMULUS, LENTICULAR, CIRRUS_STREAKS, BILLOWING_ANVIL)
+let currentCloudStyle = 'CUMULUS';
+let currentMountainStyle = 'PYRENEAN_PEAKS';
+let mountainRidgeFar = [];
+let mountainRidgeNear = [];
+let currentSkyPalette = null;
+const cloudFlock = [];
+
+function hexToRgbArr(hex) {
+  const clean = hex.replace('#', '');
+  const num = parseInt(clean, 16);
+  return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+}
+
+function rgbArrToHex(rgb) {
+  const h = v => clamp(Math.round(v), 0, 255).toString(16).padStart(2, '0');
+  return `#${h(rgb[0])}${h(rgb[1])}${h(rgb[2])}`;
+}
+
+function regenerateMatchAtmosphere(mCfg) {
+  // 1. Pick one of 4 distinct Cloud Formation Styles each game!
+  const cloudStyles = ['CUMULUS', 'LENTICULAR', 'CIRRUS_STREAKS', 'BILLOWING_ANVIL'];
+  currentCloudStyle = cloudStyles[Math.floor(Math.random() * cloudStyles.length)];
+
+  // 2. Subtle per-match Sky & Light Color Harmony Shift
+  const rShift = (Math.random() - 0.5) * 28;
+  const gShift = (Math.random() - 0.5) * 22;
+  const bShift = (Math.random() - 0.5) * 30;
+  currentSkyPalette = mCfg.sky.map(hex => {
+    const [r, g, b] = hexToRgbArr(hex);
+    return rgbArrToHex([r + rShift, g + gShift, b + bShift]);
+  });
+
+  // 3. Rebuild cloudFlock with shapes tailored to currentCloudStyle!
+  cloudFlock.length = 0;
+  const totalClouds = currentCloudStyle === 'CIRRUS_STREAKS' ? 28 : 24;
+  for (let idx = 0; idx < totalClouds; idx++) {
+    const tier = idx < 8 ? 0 : (idx < 17 ? 1 : 2);
+    const z = tier === 0 ? 0.09 : (tier === 1 ? 0.20 : 0.36);
+    const scale = tier === 0 ? (0.65 + Math.random() * 0.35) : (tier === 1 ? (0.95 + Math.random() * 0.55) : (1.15 + Math.random() * 0.55));
+    const lobeCount = currentCloudStyle === 'LENTICULAR' ? 4 : (5 + Math.floor(Math.random() * 4));
+    const lobes = [];
+    for (let l = 0; l < lobeCount; l++) {
+      const frac = (l / Math.max(1, lobeCount - 1)) - 0.5;
+      if (currentCloudStyle === 'LENTICULAR') {
+        // Sleek stacked almond-shaped Pyrenean lenticular wave clouds
+        lobes.push({
+          ox: frac * 90 * scale,
+          oy: (l - 1.5) * 7 * scale,
+          rx: (68 - Math.abs(frac) * 35 + Math.random() * 14) * scale,
+          ry: (10 + (1 - Math.abs(frac)) * 7) * scale
+        });
+      } else if (currentCloudStyle === 'CIRRUS_STREAKS') {
+        // High wispy windswept Tramuntana mares'-tails
+        lobes.push({
+          ox: frac * 155 * scale + (Math.random() - 0.5) * 22,
+          oy: Math.sin(frac * 4) * 6 * scale,
+          rx: (52 + Math.random() * 28) * scale,
+          ry: (6.5 + Math.random() * 5.5) * scale
+        });
+      } else if (currentCloudStyle === 'BILLOWING_ANVIL') {
+        // Dramatic towering anvil cumulus
+        const towerLift = l === Math.floor(lobeCount * 0.5) ? -28 * scale : 0;
+        lobes.push({
+          ox: frac * 105 * scale + (Math.random() - 0.5) * 14,
+          oy: Math.abs(frac) * 22 * scale + towerLift,
+          rx: (38 + (1 - Math.abs(frac)) * 36 + Math.random() * 14) * scale,
+          ry: (28 + (1 - Math.abs(frac)) * 28 + Math.random() * 12) * scale
+        });
+      } else {
+        // Classic sculpted Mediterranean cumulus
+        lobes.push({
+          ox: frac * 115 * scale + (Math.random() - 0.5) * 16,
+          oy: Math.abs(frac) * 18 * scale - (l === Math.floor(lobeCount * 0.5) ? 14 * scale : 0) + (Math.random() - 0.5) * 8,
+          rx: (34 + (1 - Math.abs(frac)) * 32 + Math.random() * 14) * scale,
+          ry: (22 + (1 - Math.abs(frac)) * 20 + Math.random() * 10) * scale
+        });
+      }
+    }
+    cloudFlock.push({
+      x: (idx / totalClouds) * 3800 - 300 + (Math.random() - 0.5) * 120,
+      y: tier === 0 ? (45 + Math.random() * 90) : (tier === 1 ? (85 + Math.random() * 135) : (165 + Math.random() * 130)),
+      z,
+      tier,
+      scale,
+      style: currentCloudStyle,
+      tintShift: (Math.random() - 0.5) * 18,
+      baseDrift: (Math.random() - 0.5) * 8,
+      bobPhase: Math.random() * Math.PI * 2,
+      lobes
     });
   }
-  return {
-    x: (idx / 24) * 3800 - 300 + (Math.random() - 0.5) * 120,
-    y: tier === 0 ? (45 + Math.random() * 90) : (tier === 1 ? (85 + Math.random() * 135) : (165 + Math.random() * 130)),
-    z,
-    tier,
-    scale,
-    baseDrift: (Math.random() - 0.5) * 8,
-    bobPhase: Math.random() * Math.PI * 2,
-    lobes
-  };
-});
+
+  // 4. Generate 2 Procedural Parallax Distant Mountain / Horizon Ridge Layers!
+  const mtnStyles = ['AGULLES_NEEDLES', 'ENFORCADURA_TWIN', 'VOLCANIC_CONES', 'PYRENEAN_PEAKS', 'COASTAL_CAPES', 'CASTLE_RIDGES'];
+  currentMountainStyle = mtnStyles[Math.floor(Math.random() * mtnStyles.length)];
+  const seedFar = Math.random() * 100;
+  const seedNear = Math.random() * 100 + 37.5;
+  mountainRidgeFar = [];
+  mountainRidgeNear = [];
+  const steps = 96;
+  for (let i = 0; i <= steps; i++) {
+    const u = i / steps; // 0..1 across panoramic horizon
+    let hFar = 0.42 + fbm(u * 4.5 + seedFar, seedFar, 4) * 0.35;
+    let hNear = 0.54 + fbm(u * 6.2 + seedNear, seedNear, 4) * 0.32;
+
+    if (currentMountainStyle === 'AGULLES_NEEDLES' || mCfg.id === 'MONTSERRAT') {
+      hFar -= Math.pow(Math.abs(Math.sin(u * Math.PI * 14 + seedFar)), 2.2) * 0.16;
+      hNear -= Math.pow(Math.abs(Math.sin(u * Math.PI * 18 + seedNear)), 2.4) * 0.14;
+    } else if (currentMountainStyle === 'ENFORCADURA_TWIN' || mCfg.id === 'PEDRAFORCA') {
+      const twin = Math.exp(-Math.pow((u - 0.42) / 0.08, 2)) * 0.24 +
+                   Math.exp(-Math.pow((u - 0.58) / 0.08, 2)) * 0.22 -
+                   Math.exp(-Math.pow((u - 0.50) / 0.04, 2)) * 0.18;
+      hFar -= twin;
+    } else if (currentMountainStyle === 'VOLCANIC_CONES' || mCfg.id === 'CASTELLFOLLIT') {
+      const cone = Math.max(0, 0.22 - Math.abs(u - 0.35) * 1.4) + Math.max(0, 0.18 - Math.abs(u - 0.72) * 1.3);
+      hNear -= cone;
+    } else if (currentMountainStyle === 'CASTLE_RIDGES' || mCfg.id === 'MONTBLANC' || mCfg.id === 'TARRACO') {
+      hNear = Math.round(hNear * 18) / 18;
+    }
+
+    mountainRidgeFar.push(clamp(hFar, 0.18, 0.85));
+    mountainRidgeNear.push(clamp(hNear, 0.28, 0.90));
+  }
+}
+
+regenerateMatchAtmosphere(MAPS[currentMapIdx]);
 
 // Live Wind-Stream Air Ribbons sweeping across the sky and battlefield
 const windRibbons = Array.from({ length: 16 }, () => ({
@@ -543,13 +674,21 @@ function initMatch(regenerateMap = true) {
     for (const w of WEAPONS) teamAmmo[t][w.id] = w.defaultAmmo;
   }
 
-  // Spread fighters across the 3200px battlefield AND across multiple vertical levels (upper balconies & lower terraces)!
-  const baseT1 = [420, 1020, 1840, 2480];
-  const baseT2 = [700, 1420, 2160, 2820];
+  // Randomize squad names each fresh game unless the user customized them in the Lobby!
+  if (!hasCustomLobbyNames) {
+    randomizeSquadNames(false);
+  }
 
-  for (let i = 0; i < 4; i++) {
-    const s1 = findMultiLevelSpawnSpot(baseT1[i] + (Math.random() - 0.5) * 160, 260, i % 2 === 1);
-    const s2 = findMultiLevelSpawnSpot(baseT2[i] + (Math.random() - 0.5) * 160, 260, i % 2 === 0);
+  // Spread `wormsPerTeam` (1..6) fighters across the 3200px battlefield AND across multiple vertical levels!
+  const count = clamp(wormsPerTeam, 1, 6);
+  const usableSpan = TERRAIN_W - 760;
+  for (let i = 0; i < count; i++) {
+    const frac1 = count === 1 ? (0.22 + Math.random() * 0.18) : (i + 0.15 + Math.random() * 0.35) / count;
+    const frac2 = count === 1 ? (0.60 + Math.random() * 0.18) : (i + 0.50 + Math.random() * 0.35) / count;
+    const prefX1 = 380 + frac1 * usableSpan;
+    const prefX2 = 380 + frac2 * usableSpan;
+    const s1 = findMultiLevelSpawnSpot(prefX1, 260, i % 2 === 1);
+    const s2 = findMultiLevelSpawnSpot(prefX2, 260, i % 2 === 0);
     fighters.push(createFighter(0, i, teamNames[0][i], s1.x, 1, s1.y));
     fighters.push(createFighter(1, i, teamNames[1][i], s2.x, -1, s2.y));
   }
@@ -697,12 +836,19 @@ function initMatch(regenerateMap = true) {
 
   document.getElementById('lbl-map').textContent = MAPS[currentMapIdx].name;
   document.getElementById('victory-modal').classList.remove('open');
-  teamTurnIdx = [0, 0];
-  activeTeam = 1;
+  // Randomize which worm in each squad acts first so you never start with the exact same character!
+  const startIdx0 = Math.floor(Math.random() * Math.max(1, wormsPerTeam));
+  const startIdx1 = Math.floor(Math.random() * Math.max(1, wormsPerTeam));
+  teamTurnIdx = [startIdx0, startIdx1];
+  // In 2P Local or CPU vs CPU, also randomize which team gets the opening turn!
+  activeTeam = (gameMode === '1P_CPU') ? 1 : (Math.random() < 0.5 ? 0 : 1);
   startNextTurn();
   updateHUD();
   buildWeaponBar();
 }
+
+let nextFighterId = 1;
+const ALL_HAT_STYLES = ['CATALAN', 'CASTELLER', 'BANDOLER', 'PAGES', 'BRISTLES'];
 
 function createFighter(team, memberIdx, name, x, facing, explicitSurfY = null) {
   const sy = explicitSurfY !== null ? explicitSurfY : findSurfaceY(x, 30);
@@ -715,7 +861,21 @@ function createFighter(team, memberIdx, name, x, facing, explicitSurfY = null) {
       y: fy + 4
     });
   }
+  // Unique visual personality traits per worm so every character looks distinct!
+  const bodyPalettes = [
+    ['#424859', '#252934', '#111318'], // Classic slate velvet
+    ['#4f3d36', '#2e221d', '#16100d'], // Warm chestnut-obsidian
+    ['#364a45', '#1e2b28', '#0e1514'], // Pyrenean pine-charcoal
+    ['#483b54', '#282030', '#130f18'], // Royal plum-slate
+    ['#4d4738', '#2b281f', '#14120d'], // Olive-bronze chitin
+    ['#384556', '#1f2733', '#0e131a']  // Cap de Creus deep navy-slate
+  ];
+  const dorsalPalettes0 = ['#f58529', '#ffb338', '#e66030', '#ff9442', '#d99b26', '#f26d3d'];
+  const dorsalPalettes1 = ['#e03a2b', '#ff5263', '#c92a42', '#eb4d36', '#d43559', '#ff6938'];
+  const palIdx = (memberIdx + Math.floor(Math.random() * bodyPalettes.length)) % bodyPalettes.length;
+
   return {
+    id: nextFighterId++,
     team,
     memberIdx,
     name,
@@ -752,11 +912,15 @@ function createFighter(team, memberIdx, name, x, facing, explicitSurfY = null) {
     jetFuel: 0,
     batSwingTimer: 0,
     facing,
-    walkCycle: 0,
+    walkCycle: Math.random() * Math.PI * 2,
     hurtTimer: 0,
     dmgDealt: 0,
     lastAimPitch: -0.42,
     lastChargePower: null,
+    bodyColors: bodyPalettes[palIdx],
+    dorsalColor: team === 0 ? dorsalPalettes0[palIdx] : dorsalPalettes1[palIdx],
+    individualHat: ALL_HAT_STYLES[(memberIdx + team * 2 + Math.floor(Math.random() * 2)) % ALL_HAT_STYLES.length],
+    hasMustache: Math.random() < 0.38, // Cute Dalí / Bandoler moustache on some worms!
     segs,
     customFaceImg: customFaces[team][memberIdx]
   };
@@ -907,6 +1071,10 @@ function showVictoryModal(winningTeam) {
 
   if (appStage === 'PLAYING') {
     modal.classList.add('open');
+    if (typeof updateVictoryFocusUI === 'function') {
+      victoryFocusIdx = 1;
+      updateVictoryFocusUI();
+    }
   }
 }
 

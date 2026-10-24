@@ -53,13 +53,14 @@ function render() {
   const dxCam = tr.cx - TERRAIN_W * 0.5;
   const dyCam = tr.cy - 400;
 
-  // 1. Fallback Biome Sky Dome
+  // 1. Fallback Biome Sky Dome (with per-match color harmony shift!)
+  const skyPal = (typeof currentSkyPalette !== 'undefined' && currentSkyPalette) ? currentSkyPalette : mCfg.sky;
   const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-  skyGrad.addColorStop(0,    mCfg.sky[0]);
-  skyGrad.addColorStop(0.32, mCfg.sky[1]);
-  skyGrad.addColorStop(0.64, mCfg.sky[2]);
-  skyGrad.addColorStop(0.86, mCfg.sky[3]);
-  skyGrad.addColorStop(1.0,  mCfg.sky[4]);
+  skyGrad.addColorStop(0,    skyPal[0]);
+  skyGrad.addColorStop(0.32, skyPal[1]);
+  skyGrad.addColorStop(0.64, skyPal[2]);
+  skyGrad.addColorStop(0.86, skyPal[3]);
+  skyGrad.addColorStop(1.0,  skyPal[4]);
   ctx.fillStyle = skyGrad;
   ctx.fillRect(0, 0, W, H);
 
@@ -88,6 +89,9 @@ function render() {
     ctx.fillStyle = atmo;
     ctx.fillRect(0, 0, W, H);
   }
+
+  // 2b. Procedural Multi-Layer Parallax Mountain & Horizon Silhouettes (Fresh every match!)
+  drawParallaxMountainRidges(ctx, W, H, tr, dxCam, dyCam, mCfg, skyPal);
 
   // 3. Volumetric God-Rays, Sun Halo, Sky Birds & Multi-Layered Volumetric Clouds!
   drawSkyAtmosphereAndClouds(ctx, W, H, tr, dxCam, dyCam, mCfg);
@@ -633,15 +637,65 @@ function drawSplashProcessionSilhouette(ctx, W, H) {
   ctx.restore();
 }
 
+function drawParallaxMountainRidges(ctx, W, H, tr, dxCam, dyCam, mCfg, skyPal) {
+  if (typeof mountainRidgeFar === 'undefined' || !mountainRidgeFar.length) return;
+  ctx.save();
+
+  const spanW = W * 1.48;
+  const parFarX = -dxCam * 0.065 * tr.scale - cam.smoothMouseX * 0.8;
+  const parFarY = -dyCam * 0.08 * tr.scale;
+  const startFarX = (W - spanW) * 0.5 + clamp(parFarX, -(spanW - W) * 0.48, (spanW - W) * 0.48);
+
+  // Far atmospheric mountain silhouette
+  const farGrad = ctx.createLinearGradient(0, H * 0.25, 0, H);
+  farGrad.addColorStop(0, skyPal ? skyPal[1] + '44' : 'rgba(55, 65, 90, 0.26)');
+  farGrad.addColorStop(1, 'rgba(10, 14, 22, 0.34)');
+  ctx.fillStyle = farGrad;
+  ctx.beginPath();
+  ctx.moveTo(startFarX, H);
+  for (let i = 0; i < mountainRidgeFar.length; i++) {
+    const px = startFarX + (i / (mountainRidgeFar.length - 1)) * spanW;
+    const py = H * mountainRidgeFar[i] + parFarY;
+    ctx.lineTo(px, py);
+  }
+  ctx.lineTo(startFarX + spanW, H);
+  ctx.closePath();
+  ctx.fill();
+
+  // Nearer mid-horizon mountain ridge with sunlit crest rim
+  const parNearX = -dxCam * 0.115 * tr.scale - cam.smoothMouseX * 1.3;
+  const parNearY = -dyCam * 0.13 * tr.scale;
+  const startNearX = (W - spanW) * 0.5 + clamp(parNearX, -(spanW - W) * 0.48, (spanW - W) * 0.48);
+
+  const nearGrad = ctx.createLinearGradient(0, H * 0.38, 0, H);
+  nearGrad.addColorStop(0, skyPal ? skyPal[0] + '52' : 'rgba(28, 34, 48, 0.32)');
+  nearGrad.addColorStop(1, 'rgba(8, 10, 16, 0.42)');
+  ctx.fillStyle = nearGrad;
+  ctx.beginPath();
+  ctx.moveTo(startNearX, H);
+  for (let i = 0; i < mountainRidgeNear.length; i++) {
+    const px = startNearX + (i / (mountainRidgeNear.length - 1)) * spanW;
+    const py = H * mountainRidgeNear[i] + parNearY;
+    ctx.lineTo(px, py);
+  }
+  ctx.lineTo(startNearX + spanW, H);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+}
+
 function drawSkyAtmosphereAndClouds(ctx, W, H, tr, dxCam, dyCam, mCfg) {
   ctx.save();
 
-  // 1. Celestial Sun / Golden-Hour Glow & Angled Volumetric God-Rays across the 4 Catalan Comarques
-  const sunX = W * (mCfg.id === 'MONTSERRAT' ? 0.68 : (mCfg.id === 'CADAQUES' ? 0.30 : (mCfg.id === 'TAULL' ? 0.44 : 0.62))) - dxCam * 0.04 * tr.scale;
+  // 1. Celestial Sun / Golden-Hour Glow & Angled Volumetric God-Rays across the 8 Catalan Comarques
+  const isWarm = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT' || mCfg.id === 'DELTA_EBRE' || mCfg.id === 'MONTBLANC' || mCfg.id === 'TARRACO');
+  const sunX = W * (mCfg.id === 'MONTSERRAT' || mCfg.id === 'DELTA_EBRE' ? 0.68 : (mCfg.id === 'CADAQUES' || mCfg.id === 'TARRACO' ? 0.30 : (mCfg.id === 'TAULL' || mCfg.id === 'PEDRAFORCA' ? 0.44 : 0.62))) - dxCam * 0.04 * tr.scale;
   const sunY = H * 0.19 - dyCam * 0.04 * tr.scale;
-  const sunCol = mCfg.id === 'MONTSERRAT' ? '255, 205, 115'
-    : (mCfg.id === 'CADAQUES' ? '255, 232, 165'
-    : (mCfg.id === 'TAULL' ? '210, 235, 255' : '255, 198, 125'));
+  const sunCol = mCfg.id === 'DELTA_EBRE' ? '255, 175, 135'
+    : (mCfg.id === 'MONTBLANC' ? '255, 165, 105'
+    : (mCfg.id === 'PEDRAFORCA' ? '215, 210, 255'
+    : (isWarm ? '255, 205, 115' : (mCfg.id === 'CADAQUES' ? '255, 232, 165' : '210, 235, 255'))));
 
   const sunGlow = ctx.createRadialGradient(sunX, sunY, 8 * tr.scale, sunX, sunY, 340 * tr.scale);
   sunGlow.addColorStop(0, `rgba(${sunCol}, 0.42)`);
@@ -710,10 +764,17 @@ function drawSkyAtmosphereAndClouds(ctx, W, H, tr, dxCam, dyCam, mCfg) {
   }
   ctx.restore();
 
-  // 4. Multi-Layered Sculpted Volumetric Clouds (3 Parallax Depth Tiers reacting to live Wind!)
-  const rimCol = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? '#fff0d4' : (mCfg.id === 'CADAQUES' ? '#fff9eb' : '#ebf5ff');
-  const midCol = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? '#f0cbb0' : (mCfg.id === 'CADAQUES' ? '#dce6f0' : '#c4d6e8');
-  const shdCol = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT') ? 'rgba(98, 74, 88, 0.42)' : 'rgba(68, 84, 104, 0.42)';
+  // 4. Multi-Layered Sculpted Volumetric Clouds (4 Styles & 3 Parallax Depth Tiers reacting to live Wind!)
+  const rimCol = mCfg.id === 'DELTA_EBRE' ? '#ffe5dc'
+    : (mCfg.id === 'MONTBLANC' ? '#ffe0c8'
+    : (mCfg.id === 'PEDRAFORCA' ? '#eee8ff'
+    : ((mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT' || mCfg.id === 'TARRACO') ? '#fff0d4' : (mCfg.id === 'CADAQUES' ? '#fff9eb' : '#ebf5ff'))));
+  const midCol = mCfg.id === 'DELTA_EBRE' ? '#f2b6b0'
+    : (mCfg.id === 'MONTBLANC' ? '#de9e8b'
+    : (mCfg.id === 'PEDRAFORCA' ? '#c8bfe8'
+    : ((mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT' || mCfg.id === 'TARRACO') ? '#f0cbb0' : (mCfg.id === 'CADAQUES' ? '#dce6f0' : '#c4d6e8'))));
+  const shdCol = (mCfg.id === 'MONTSERRAT' || mCfg.id === 'CASTELLFOLLIT' || mCfg.id === 'DELTA_EBRE' || mCfg.id === 'MONTBLANC')
+    ? 'rgba(98, 64, 84, 0.42)' : 'rgba(64, 80, 108, 0.42)';
 
   for (const c of cloudFlock) {
     const cx = W * 0.5 + (c.x - TERRAIN_W * 0.5 - dxCam * c.z) * tr.scale;
@@ -845,6 +906,72 @@ function drawSurfaceFlora(ctx) {
       ctx.beginPath();
       ctx.arc(0, -10, 1.5, 0, Math.PI * 2);
       ctx.fill();
+    } else if (fl.type === 'DELTA_EBRE') {
+      // Delta de l'Ebre Tall Reed Bulrushes ("Boga i Canyís") & Golden Rice Stalks
+      ctx.strokeStyle = '#6c8f3f';
+      ctx.lineWidth = 1.5;
+      for (let b = -1; b <= 1; b++) {
+        const rx = b * 3.5;
+        ctx.beginPath();
+        ctx.moveTo(rx * 0.4, 1);
+        ctx.quadraticCurveTo(rx, -8, rx * 1.3, -15);
+        ctx.stroke();
+      }
+      // Dark brown cattail cylinder on central stalk
+      ctx.fillStyle = '#5c381e';
+      ctx.beginPath();
+      ctx.roundRect(-1.6, -13, 3.2, 5.5, 1.5);
+      ctx.fill();
+    } else if (fl.type === 'TARRACO') {
+      // Roman Tàrraco Wild Red Poppies ("Roselles") & Golden Wheat/Olive shoots
+      ctx.strokeStyle = '#4e7332';
+      ctx.lineWidth = 1.4;
+      for (let b = -1; b <= 1; b += 2) {
+        ctx.beginPath();
+        ctx.moveTo(0, 1);
+        ctx.quadraticCurveTo(b * 3, -6, b * 4.5, -11);
+        ctx.stroke();
+        ctx.fillStyle = '#e53935';
+        ctx.beginPath();
+        ctx.arc(b * 4.5, -11, 2.6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#1c1816';
+        ctx.beginPath();
+        ctx.arc(b * 4.5, -11, 0.9, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else if (fl.type === 'PEDRAFORCA') {
+      // Pedraforca Alpine Blue Gentians ("Genciana") & Mountain Tufts
+      ctx.strokeStyle = '#3b6952';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, 1);
+      ctx.lineTo(-2, -9);
+      ctx.moveTo(0, 1);
+      ctx.lineTo(2.5, -10);
+      ctx.stroke();
+      ctx.fillStyle = '#448aff';
+      ctx.beginPath();
+      ctx.arc(-2, -9.5, 2.3, 0, Math.PI * 2);
+      ctx.arc(2.5, -10.5, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (fl.type === 'MONTBLANC') {
+      // Montblanc Crimson Roses of Sant Jordi ("Roses de Sant Jordi") & Thorny Stems
+      ctx.strokeStyle = '#2e5928';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(0, 1);
+      ctx.quadraticCurveTo(1.5, -6, 0, -12);
+      ctx.stroke();
+      ctx.fillStyle = '#d50000';
+      ctx.beginPath();
+      ctx.arc(0, -12.5, 3.0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ff8a80';
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      ctx.arc(0, -12.5, 1.4, 0, Math.PI * 1.4);
+      ctx.stroke();
     } else {
       // Castellfollit / La Garrotxa Autumn Ferns & Red/Amber Beech Saplings
       const col = fl.variant === 0 ? '#d9531e' : (fl.variant === 1 ? '#e89b2d' : '#6e8c3a');
@@ -1173,7 +1300,8 @@ function drawFighter(ctx, f) {
 
   const isCurrent = (f === activeFighter && turnPhase !== 'GAME_OVER');
   const teamCol = f.team === 0 ? '#f5b945' : '#ea5648';
-  const dorsalCol = f.team === 0 ? '#e87a24' : '#d93b2b';
+  const dorsalCol = f.dorsalColor || (f.team === 0 ? '#e87a24' : '#d93b2b');
+  const bodyCols = f.bodyColors || ['#3a3f4d', '#22252e', '#111318'];
   const bristleCol = f.urticatingTicks > 0 ? '#d88aff' : 'rgba(245, 236, 215, 0.82)';
 
   // 1. Draw the 6 articulated furry Oruga Procesionaria segments from tail (5) to neck (0)
@@ -1219,15 +1347,15 @@ function drawFighter(ctx, f) {
         ctx.stroke();
       }
 
-      // Dark charcoal-slate velvety caterpillar segment body
+      // Dark charcoal-slate velvety caterpillar segment body (with individual worm color tint!)
       const sg = ctx.createRadialGradient(-1, -2, 1, 0, 0, segR);
       if (f.drowning) {
         sg.addColorStop(0, '#6a9ab8');
         sg.addColorStop(1, '#263e52');
       } else {
-        sg.addColorStop(0, '#3a3f4d');
-        sg.addColorStop(0.65, '#22252e');
-        sg.addColorStop(1, '#111318');
+        sg.addColorStop(0, bodyCols[0]);
+        sg.addColorStop(0.65, bodyCols[1]);
+        sg.addColorStop(1, bodyCols[2]);
       }
       ctx.fillStyle = sg;
       ctx.strokeStyle = '#0d0e12';
@@ -1562,10 +1690,23 @@ function drawFighterHead(ctx, f, bob, teamCol) {
     ctx.lineTo(5.0, 6.2);
     ctx.closePath();
     ctx.fill();
+
+    // Optional cute Dalí / Serrallonga upturned moustache whiskers for individual character variety!
+    if (f.hasMustache) {
+      ctx.strokeStyle = '#181412';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(4.5, 3.0);
+      ctx.quadraticCurveTo(1.0, 3.5, -1.5, 1.0);
+      ctx.moveTo(5.5, 3.0);
+      ctx.quadraticCurveTo(9.0, 3.2, 10.8, 0.8);
+      ctx.stroke();
+    }
   }
 
-  // Catalan Headgear (Barretina Catalana, Casc de Casteller, Capell de Bandoler, Barret de Palla de Pagès, or Plomall de Pèls Urticants)
-  drawOrugaHat(ctx, teamHats[f.team], teamCol);
+  // Catalan Headgear (supports individual varied hats when teamHats is 'VARIED'!)
+  const chosenHat = teamHats[f.team] === 'VARIED' ? (f.individualHat || 'CATALAN') : teamHats[f.team];
+  drawOrugaHat(ctx, chosenHat, teamCol);
 
   ctx.restore();
 }
@@ -2049,7 +2190,10 @@ function drawAimingHUD(ctx, f) {
     ctx.font = '800 11px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = '#ffe082';
-    ctx.fillText('OBJECTIU CORREFOC', mouseWorld.x, mouseWorld.y - 28);
+    ctx.fillText('OBJECTIU CORREFOC', mouseWorld.x, mouseWorld.y - 34);
+    ctx.font = '700 9.5px "Plus Jakarta Sans", sans-serif';
+    ctx.fillStyle = 'rgba(255, 245, 220, 0.88)';
+    ctx.fillText('↑/↓ o TOCA: MOU OBJECTIU · ESPAI/FOC: ATACA', mouseWorld.x, mouseWorld.y - 22);
     ctx.restore();
     return;
   }

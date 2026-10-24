@@ -4,6 +4,34 @@
 //  11. MAIN GAME LOOP (DIRECT PLAYER SELECTION MENU, CUSTOMIZE & MATCH)
 // ═══════════════════════════════════════════════════════════════════════════
 let lastT = performance.now();
+let rotateOverlayDismissed = false;
+let shiftHeld = false;
+const panKeys = { left: false, right: false, up: false, down: false };
+let drawerCursorIdx = 0;
+let lobbyFocusIdx = 0;
+let victoryFocusIdx = 1; // 0 = Canvia Indret / Escamot, 1 = Torna a Jugar
+
+function isMobilePhoneDevice() {
+  return document.body.classList.contains('touch-device') ||
+    (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+    /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent || '');
+}
+
+function updateRotateDeviceOverlay() {
+  const overlay = document.getElementById('rotate-device-overlay');
+  if (!overlay) return false;
+  const isPortrait = viewH > viewW * 1.04 && viewW <= 880;
+  if (!isPortrait) {
+    // Reset manual dismissal once the user is in landscape so rotating back to portrait reminds them again
+    rotateOverlayDismissed = false;
+  }
+  const shouldShow = isPortrait && isMobilePhoneDevice() && !rotateOverlayDismissed;
+  overlay.classList.toggle('open', shouldShow);
+  return shouldShow;
+}
+
+window.addEventListener('resize', updateRotateDeviceOverlay);
+window.addEventListener('orientationchange', () => setTimeout(updateRotateDeviceOverlay, 140));
 
 function updateMenuCursorUI() {
   document.querySelectorAll('#updown-menu .updown-item').forEach((el, idx) => {
@@ -30,10 +58,14 @@ function exitCurrentMatchToMenu() {
 
 function activateMenuOption(idx) {
   SND.init();
+  const hatChoices = ['VARIED', 'CATALAN', 'CASTELLER', 'BANDOLER', 'PAGES', 'BRISTLES'];
   if (idx === 0) {
-    // Start Quick Game vs CPU immediately with a RANDOM Catalan background & level!
+    // Start Quick Game vs CPU immediately with a RANDOM Catalan background, random names & varied hats!
     SND.titleFanfare();
     gameMode = '1P_CPU';
+    hasCustomLobbyNames = false;
+    teamHats[0] = hatChoices[Math.floor(Math.random() * hatChoices.length)];
+    teamHats[1] = hatChoices[Math.floor(Math.random() * hatChoices.length)];
     currentMapIdx = Math.floor(Math.random() * MAPS.length);
     document.getElementById('lbl-mode').textContent = MODE_SHORT[gameMode];
     hasStartedMatchOnce = true;
@@ -42,9 +74,12 @@ function activateMenuOption(idx) {
     appStage = 'PLAYING';
     initMatch(true);
   } else if (idx === 1) {
-    // Start 2 Players Local immediately with a RANDOM Catalan background & level!
+    // Start 2 Players Local immediately with a RANDOM Catalan background, random names & varied hats!
     SND.titleFanfare();
     gameMode = '2P_LOCAL';
+    hasCustomLobbyNames = false;
+    teamHats[0] = hatChoices[Math.floor(Math.random() * hatChoices.length)];
+    teamHats[1] = hatChoices[Math.floor(Math.random() * hatChoices.length)];
     currentMapIdx = Math.floor(Math.random() * MAPS.length);
     document.getElementById('lbl-mode').textContent = MODE_SHORT[gameMode];
     hasStartedMatchOnce = true;
@@ -94,15 +129,38 @@ function loop(now) {
   updateDynamicWind(dt);
   SND.updateAmbient(wind, appStage === 'PLAYING');
 
+  const rotatePromptOpen = updateRotateDeviceOverlay();
+
+  // Update mobile "Cuc ⇄" switch-worm button visibility (available at start of turn before moving/acting)
+  const swBtn = document.getElementById('mc-switch-worm');
+  if (swBtn) {
+    const canSwitch = appStage === 'PLAYING' && turnPhase === 'TURN_PLAY' && !hasActedOrMovedThisTurn &&
+      !isCurrentTurnAI() && fighters.filter(f => f.team === activeTeam && f.alive && !f.drowning).length > 1;
+    swBtn.classList.toggle('can-switch', canSwitch);
+  }
+
+  // Keyboard Camera Panning when holding Shift + Arrows/WASD!
+  if (appStage === 'PLAYING' && shiftHeld) {
+    const panX = (panKeys.right ? 1 : 0) - (panKeys.left ? 1 : 0);
+    const panY = (panKeys.down ? 1 : 0) - (panKeys.up ? 1 : 0);
+    if (panX !== 0 || panY !== 0) {
+      cam.panOffsetX = clamp(cam.panOffsetX + panX * 560 * rawDt, -TERRAIN_W * 0.85, TERRAIN_W * 0.85);
+      cam.panOffsetY = clamp(cam.panOffsetY + panY * 420 * rawDt, -360, 320);
+    }
+  }
+
   // Classic Worms Keyboard & Button Pitch Aiming (Up / Down smoothly rotates the aim guide!)
-  if (appStage === 'PLAYING' && !isCurrentTurnAI() && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT') &&
+  if (appStage === 'PLAYING' && !shiftHeld && !isWeaponDrawerOpen() && !isCurrentTurnAI() &&
+      (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT') &&
       activeFighter && activeFighter.alive && !activeFighter.drowning) {
     const pitchInput = (keys.down ? 1 : 0) - (keys.up ? 1 : 0);
     if (pitchInput !== 0) {
       const curWpn = WEAPONS[selectedWeaponIdx];
       if (curWpn && curWpn.id === 'AIRSTRIKE') {
-        mouseWorld.x = clamp(mouseWorld.x - pitchInput * activeFighter.facing * 360 * dt, 120, TERRAIN_W - 120);
+        mouseWorld.x = clamp(mouseWorld.x - pitchInput * activeFighter.facing * 420 * dt, 120, TERRAIN_W - 120);
         mouseWorld.y = clamp(findSurfaceY(mouseWorld.x, 220) - 24, 90, WATER_Y - 40);
+        // Smoothly pan camera toward the Correfoc target beacon so keyboard players can aim across the whole map!
+        cam.panOffsetX = clamp(lerp(cam.panOffsetX, (mouseWorld.x - activeFighter.x) * 0.75, 0.16), -TERRAIN_W * 0.85, TERRAIN_W * 0.85);
       } else {
         aimPitch = clamp(aimPitch + pitchInput * 1.55 * dt, -1.48, 1.30);
         syncAimAngleFromPitch();
@@ -141,7 +199,9 @@ function loop(now) {
     const timerEl = document.getElementById('turn-timer');
     if (turnPhase === 'TURN_PLAY') {
       actionWaitTimer = 0;
-      turnTimer -= dt;
+      if (!rotatePromptOpen) {
+        turnTimer -= dt;
+      }
       const ceilSec = Math.max(0, Math.ceil(turnTimer));
       if (timerEl) {
         timerEl.textContent = ceilSec;
@@ -268,7 +328,8 @@ function loop(now) {
       cam.targetY = clamp(impactCam.y, 160, 560);
       cam.targetZoom = slowMoTimer > 0 ? 1.18 : 1.08;
     } else if (activeFighter && activeFighter.alive) {
-      if (keys.left || keys.right || keys.up) {
+      const isAimingAirstrike = WEAPONS[selectedWeaponIdx] && WEAPONS[selectedWeaponIdx].id === 'AIRSTRIKE';
+      if (keys.left || keys.right || (keys.up && !isAimingAirstrike)) {
         cam.panOffsetX = lerp(cam.panOffsetX, 0, 0.14);
         cam.panOffsetY = lerp(cam.panOffsetY, 0, 0.14);
       }
@@ -749,7 +810,15 @@ canvas.addEventListener('touchend', e => {
       if ((turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT') &&
           activeFighter && activeFighter.alive && !activeFighter.drowning &&
           activeFighter.jetFuel <= 0 && !isCurrentTurnAI()) {
-        if (canvasTapCount === 1 && !hasActedOrMovedThisTurn && turnPhase === 'TURN_PLAY') {
+        const curWpn = WEAPONS[selectedWeaponIdx];
+        if (canvasTapCount === 1 && curWpn && curWpn.id === 'AIRSTRIKE' && turnPhase === 'TURN_PLAY') {
+          // Single-tap on battlefield when Correfoc (AIRSTRIKE) is selected moves the airstrike beacon there!
+          const tapWorld = screenToWorld(touchLastX, touchLastY);
+          mouseWorld.x = clamp(tapWorld.x, 120, TERRAIN_W - 120);
+          mouseWorld.y = clamp(findSurfaceY(mouseWorld.x, 220) - 24, 90, WATER_Y - 40);
+          SND.tick();
+          touchRipples.push({ x: touchLastX, y: touchLastY, r: 10, life: 1.0, label: 'OBJECTIU CORREFOC', color: '#ff6b5b' });
+        } else if (canvasTapCount === 1 && !hasActedOrMovedThisTurn && turnPhase === 'TURN_PLAY') {
           // Single-tap directly on another allied worm before moving switches active worm!
           const tapWorld = screenToWorld(touchLastX, touchLastY);
           const tappedAlly = fighters.find(f =>
@@ -909,16 +978,231 @@ document.getElementById('mc-pan').onclick = e => {
   cam.panOffsetY = 0;
 };
 
+const mcBackflipBtn = document.getElementById('mc-backflip');
+if (mcBackflipBtn) {
+  bindHoldButton('mc-backflip', () => {
+    if ((turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT') &&
+        activeFighter && activeFighter.alive && !activeFighter.drowning &&
+        activeFighter.jetFuel <= 0 && !isCurrentTurnAI() &&
+        activeFighter.grounded && !activeFighter.sliding) {
+      triggerBackwardsJump(activeFighter);
+    }
+  }, () => {});
+}
+
+const mcSwitchWormBtn = document.getElementById('mc-switch-worm');
+if (mcSwitchWormBtn) {
+  mcSwitchWormBtn.onclick = e => {
+    e.stopPropagation();
+    SND.init();
+    switchActiveWormBeforeMove();
+  };
+}
+
+const wpnPrevBtn = document.getElementById('weapon-prev-btn');
+if (wpnPrevBtn) {
+  wpnPrevBtn.onclick = e => {
+    e.stopPropagation();
+    SND.init();
+    cycleAvailableWeapon(-1);
+  };
+}
+
+const wpnNextBtn = document.getElementById('weapon-next-btn');
+if (wpnNextBtn) {
+  wpnNextBtn.onclick = e => {
+    e.stopPropagation();
+    SND.init();
+    cycleAvailableWeapon(1);
+  };
+}
+
+const btnLockLandscape = document.getElementById('btn-lock-landscape');
+if (btnLockLandscape) {
+  btnLockLandscape.onclick = async e => {
+    e.stopPropagation();
+    SND.init();
+    SND.tick();
+    try {
+      if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      }
+      if (screen.orientation && screen.orientation.lock) {
+        await screen.orientation.lock('landscape');
+      }
+    } catch (_) {}
+    rotateOverlayDismissed = true;
+    updateRotateDeviceOverlay();
+  };
+}
+
+const btnDismissRotate = document.getElementById('btn-dismiss-rotate');
+if (btnDismissRotate) {
+  btnDismissRotate.onclick = e => {
+    e.stopPropagation();
+    SND.init();
+    SND.tick();
+    rotateOverlayDismissed = true;
+    updateRotateDeviceOverlay();
+  };
+}
+
 // ───────────────────────────────────────────────────────────────────────────
-//  CLASSIC WORMS KEYBOARD CONTROLS:
+//  WEAPON SELECTION & KEYBOARD NAVIGATION HELPERS (100% Mouse-Free Support!)
+// ───────────────────────────────────────────────────────────────────────────
+function isWeaponDrawerOpen() {
+  const bar = document.getElementById('weapon-bar');
+  return !!(bar && bar.classList.contains('open'));
+}
+
+function selectWeaponByIndex(idx, closeDrawer = false) {
+  if (idx < 0 || idx >= WEAPONS.length) return false;
+  const w = WEAPONS[idx];
+  const ammo = teamAmmo[activeTeam] ? teamAmmo[activeTeam][w.id] : w.defaultAmmo;
+  if (isCurrentTurnAI() || ammo <= 0) return false;
+
+  selectedWeaponIdx = idx;
+  drawerCursorIdx = idx;
+  teamSelectedWeaponIdx[activeTeam] = idx;
+  if (w.id === 'AIRSTRIKE' && activeFighter) {
+    mouseWorld = {
+      x: clamp(activeFighter.x + activeFighter.facing * 220, 200, TERRAIN_W - 200),
+      y: clamp(findSurfaceY(activeFighter.x + activeFighter.facing * 220, 220) - 24, 90, WATER_Y - 40)
+    };
+  }
+  buildWeaponBar();
+  if (closeDrawer) {
+    setWeaponDrawerOpen(false);
+  }
+  return true;
+}
+
+function cycleAvailableWeapon(step) {
+  if (isCurrentTurnAI()) return;
+  const n = WEAPONS.length;
+  for (let offset = 1; offset <= n; offset++) {
+    const candidate = (selectedWeaponIdx + step * offset + n * 10) % n;
+    const w = WEAPONS[candidate];
+    const ammo = teamAmmo[activeTeam] ? teamAmmo[activeTeam][w.id] : w.defaultAmmo;
+    if (ammo > 0) {
+      SND.tick();
+      selectWeaponByIndex(candidate, false);
+      return;
+    }
+  }
+}
+
+function moveDrawerCursor(delta) {
+  const n = WEAPONS.length;
+  drawerCursorIdx = (drawerCursorIdx + delta + n * 10) % n;
+  SND.tick();
+  const w = WEAPONS[drawerCursorIdx];
+  const ammo = teamAmmo[activeTeam] ? teamAmmo[activeTeam][w.id] : w.defaultAmmo;
+  if (ammo > 0 && !isCurrentTurnAI()) {
+    selectedWeaponIdx = drawerCursorIdx;
+    teamSelectedWeaponIdx[activeTeam] = drawerCursorIdx;
+    if (w.id === 'AIRSTRIKE' && activeFighter) {
+      mouseWorld = {
+        x: clamp(activeFighter.x + activeFighter.facing * 220, 200, TERRAIN_W - 200),
+        y: clamp(findSurfaceY(activeFighter.x + activeFighter.facing * 220, 220) - 24, 90, WATER_Y - 40)
+      };
+    }
+  }
+  buildWeaponBar();
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+//  LOBBY & VICTORY MODAL FULL KEYBOARD NAVIGATION (No Mouse Required!)
+// ───────────────────────────────────────────────────────────────────────────
+const HAT_OPTIONS = ['VARIED', 'CATALAN', 'CASTELLER', 'BANDOLER', 'PAGES', 'BRISTLES'];
+
+function getLobbyFocusableItems() {
+  if (!lobbyModal) return [];
+  const raw = Array.from(lobbyModal.querySelectorAll(
+    '#btn-back-menu, #mode-selector .tactical-card, #diff-selector .tactical-card, #worms-count-selector .tactical-card, #map-selector .theatre-card, #hat-t0, #t1-inputs input[type="text"], #hat-t1, #t2-inputs input[type="text"], #btn-random-names, #btn-close-setup, #btn-restart-match'
+  ));
+  return raw.filter(el => el.offsetParent !== null && getComputedStyle(el).display !== 'none');
+}
+
+function updateLobbyFocusUI(scrollIntoView = true) {
+  const items = getLobbyFocusableItems();
+  if (!items.length) return;
+  lobbyFocusIdx = ((lobbyFocusIdx % items.length) + items.length) % items.length;
+  items.forEach((el, idx) => {
+    const active = idx === lobbyFocusIdx;
+    el.classList.toggle('kb-focus', active);
+    if (active) {
+      if (el.tagName === 'INPUT') {
+        el.focus({ preventScroll: true });
+      } else if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+        document.activeElement.blur();
+      }
+      if (scrollIntoView) {
+        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+  });
+}
+
+function activateLobbyFocusedItem(el, dir = 0) {
+  if (!el) return;
+  SND.init();
+  SND.tick();
+  if (el.classList.contains('tactical-card') || el.classList.contains('theatre-card')) {
+    el.click();
+  } else if (el.tagName === 'SELECT') {
+    const curIdx = Math.max(0, HAT_OPTIONS.indexOf(el.value));
+    const step = dir !== 0 ? dir : 1;
+    el.value = HAT_OPTIONS[(curIdx + step + HAT_OPTIONS.length) % HAT_OPTIONS.length];
+    readLobbyCustomization();
+  } else if (el.tagName === 'BUTTON') {
+    el.click();
+  }
+}
+
+function updateVictoryFocusUI() {
+  const btns = [
+    document.getElementById('btn-vic-lobby'),
+    document.getElementById('btn-vic-rematch')
+  ];
+  btns.forEach((btn, idx) => {
+    if (btn) btn.classList.toggle('kb-focus', idx === victoryFocusIdx);
+  });
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+//  CLASSIC WORMS KEYBOARD CONTROLS (100% PLAYABLE WITHOUT MOUSE!):
 //  - Up / Down (or W / S)   -> Rotate Aim Guide Up / Down (`aimPitch`)
 //  - Left / Right (or A / D)-> Walk Worm Left / Right
+//  - Z / X or [ / ] or , / .-> Previous / Next Weapon with Ammo!
+//  - B or R                 -> Open / Close 16-Weapon Arsenal Grid (Arrows + Enter)
+//  - Q / E                  -> Decrease / Increase Grenade & Calçotada Fuse (1s..5s)
 //  - Spacebar               -> Hold to Charge Power, Release to Shoot!
 //  - Enter (or J)           -> Jump Forward (Double-press Enter -> Backflip!)
 //  - Backspace              -> Jump Backwards (360° Backflip)
+//  - Tab                    -> Switch Active Worm Before Moving
+//  - Shift + Arrows / WASD  -> Pan Camera Around Battlefield (V or Home = Center)
+//  - PageUp / PageDown      -> Zoom Camera In / Out
 // ───────────────────────────────────────────────────────────────────────────
 window.addEventListener('keydown', e => {
-  // Up/Down Keyboard Navigation on the Main Player Selection Menu!
+  // Dismiss rotate overlay via keyboard if open
+  const rotOverlay = document.getElementById('rotate-device-overlay');
+  if (rotOverlay && rotOverlay.classList.contains('open')) {
+    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      rotateOverlayDismissed = true;
+      updateRotateDeviceOverlay();
+      return;
+    }
+  }
+
+  // [M] Toggle MIDI Music On / Off (unless typing a worm name in an input box)
+  if ((e.key === 'm' || e.key === 'M') && !e.repeat && (!document.activeElement || document.activeElement.tagName !== 'INPUT')) {
+    SND.init();
+    SND.toggleMusic();
+  }
+
+  // 1. Up/Down Keyboard Navigation on the Main Player Selection Menu!
   if (appStage === 'SPLASH') {
     if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
       e.preventDefault();
@@ -939,13 +1223,135 @@ window.addEventListener('keydown', e => {
     return;
   }
 
-  if (appStage === 'LOBBY' && e.key === 'Escape') {
-    lobbyModal.classList.remove('open');
-    if (hasStartedMatchOnce) {
-      appStage = 'PLAYING';
-    } else {
-      document.getElementById('splash-screen').classList.remove('hidden');
-      appStage = 'SPLASH';
+  // 2. Full Keyboard Navigation inside Customize Game & Squads Lobby!
+  if (appStage === 'LOBBY') {
+    const items = getLobbyFocusableItems();
+    const curEl = items[lobbyFocusIdx];
+    const isInputFocused = curEl && curEl.tagName === 'INPUT' && document.activeElement === curEl;
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      if (isInputFocused) {
+        curEl.blur();
+        return;
+      }
+      readLobbyCustomization();
+      lobbyModal.classList.remove('open');
+      if (hasStartedMatchOnce) {
+        appStage = 'PLAYING';
+      } else {
+        document.getElementById('splash-screen').classList.remove('hidden');
+        appStage = 'SPLASH';
+      }
+      return;
+    }
+
+    // Ctrl+Enter from anywhere in Lobby deploys directly to the battlefield!
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      document.getElementById('btn-restart-match').click();
+      return;
+    }
+
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      SND.init();
+      SND.tick();
+      lobbyFocusIdx += e.shiftKey ? -1 : 1;
+      updateLobbyFocusUI();
+      return;
+    }
+
+    if (isInputFocused) {
+      if (e.key === 'ArrowDown' || e.key === 'Enter') {
+        e.preventDefault();
+        SND.init();
+        SND.tick();
+        readLobbyCustomization();
+        lobbyFocusIdx++;
+        updateLobbyFocusUI();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        SND.init();
+        SND.tick();
+        readLobbyCustomization();
+        lobbyFocusIdx--;
+        updateLobbyFocusUI();
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+      e.preventDefault();
+      SND.init();
+      SND.tick();
+      // Jump to next logical group if currently on a horizontal card grid
+      if (curEl && curEl.parentElement && (curEl.parentElement.id === 'mode-selector' || curEl.parentElement.id === 'diff-selector' || curEl.parentElement.id === 'worms-count-selector' || curEl.parentElement.id === 'map-selector')) {
+        const parent = curEl.parentElement;
+        while (lobbyFocusIdx < items.length - 1 && items[lobbyFocusIdx].parentElement === parent) {
+          lobbyFocusIdx++;
+        }
+      } else {
+        lobbyFocusIdx++;
+      }
+      updateLobbyFocusUI();
+      return;
+    }
+
+    if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+      e.preventDefault();
+      SND.init();
+      SND.tick();
+      if (curEl && curEl.parentElement && (curEl.parentElement.id === 'mode-selector' || curEl.parentElement.id === 'diff-selector' || curEl.parentElement.id === 'worms-count-selector' || curEl.parentElement.id === 'map-selector')) {
+        const parent = curEl.parentElement;
+        while (lobbyFocusIdx > 0 && items[lobbyFocusIdx].parentElement === parent) {
+          lobbyFocusIdx--;
+        }
+      } else {
+        lobbyFocusIdx--;
+      }
+      updateLobbyFocusUI();
+      return;
+    }
+
+    if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+      e.preventDefault();
+      if (curEl && curEl.tagName === 'SELECT') {
+        activateLobbyFocusedItem(curEl, 1);
+      } else {
+        SND.init();
+        SND.tick();
+        lobbyFocusIdx++;
+        updateLobbyFocusUI();
+        const nextEl = items[lobbyFocusIdx];
+        if (nextEl && (nextEl.classList.contains('tactical-card') || nextEl.classList.contains('theatre-card'))) {
+          nextEl.click();
+        }
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+      e.preventDefault();
+      if (curEl && curEl.tagName === 'SELECT') {
+        activateLobbyFocusedItem(curEl, -1);
+      } else {
+        SND.init();
+        SND.tick();
+        lobbyFocusIdx--;
+        updateLobbyFocusUI();
+        const prevEl = items[lobbyFocusIdx];
+        if (prevEl && (prevEl.classList.contains('tactical-card') || prevEl.classList.contains('theatre-card'))) {
+          prevEl.click();
+        }
+      }
+      return;
+    }
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      activateLobbyFocusedItem(curEl, 1);
+      return;
     }
     return;
   }
@@ -953,33 +1359,154 @@ window.addEventListener('keydown', e => {
   if (appStage !== 'PLAYING') return;
   SND.init();
 
+  // 3. Victory Modal Keyboard Navigation when Match Ends!
+  const vicModal = document.getElementById('victory-modal');
+  if (turnPhase === 'GAME_OVER' && vicModal && vicModal.classList.contains('open')) {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'a' || e.key === 'A' || e.key === 'd' || e.key === 'D' || e.key === 'Tab') {
+      e.preventDefault();
+      SND.tick();
+      victoryFocusIdx = 1 - victoryFocusIdx;
+      updateVictoryFocusUI();
+      return;
+    }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      SND.tick();
+      if (victoryFocusIdx === 0) {
+        document.getElementById('btn-vic-lobby').click();
+      } else {
+        document.getElementById('btn-vic-rematch').click();
+      }
+      return;
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      exitCurrentMatchToMenu();
+      return;
+    }
+    return;
+  }
+
+  // Track Shift for Keyboard Camera Panning
+  if (e.key === 'Shift') {
+    shiftHeld = true;
+    keys.left = false;
+    keys.right = false;
+  }
+
+  // 4. Toggle 16-Weapon Arsenal Drawer with [B] or [R]
+  if ((e.key === 'b' || e.key === 'B' || e.key === 'r' || e.key === 'R') && !e.repeat) {
+    e.preventDefault();
+    SND.tick();
+    drawerCursorIdx = selectedWeaponIdx;
+    setWeaponDrawerOpen(!isWeaponDrawerOpen());
+    buildWeaponBar();
+    return;
+  }
+
+  // 5. If Arsenal Drawer is open, navigate the 8x2 Weapon Grid with Arrows/WASD and select with Enter/Space!
+  if (isWeaponDrawerOpen()) {
+    if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+      e.preventDefault();
+      moveDrawerCursor(1);
+      return;
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+      e.preventDefault();
+      moveDrawerCursor(-1);
+      return;
+    }
+    if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+      e.preventDefault();
+      moveDrawerCursor(8);
+      return;
+    }
+    if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+      e.preventDefault();
+      moveDrawerCursor(-8);
+      return;
+    }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      SND.tick();
+      selectWeaponByIndex(drawerCursorIdx, true);
+      return;
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      SND.tick();
+      setWeaponDrawerOpen(false);
+      return;
+    }
+  }
+
+  // 6. Quick Cycle Previous / Next Available Weapon with [Z]/[X], [[ ]/[] ], or [,]/[.]
+  if ((e.key === 'z' || e.key === 'Z' || e.key === '[' || e.key === ',') && !e.repeat) {
+    e.preventDefault();
+    cycleAvailableWeapon(-1);
+    return;
+  }
+  if ((e.key === 'x' || e.key === 'X' || e.key === ']' || e.key === '.') && !e.repeat) {
+    e.preventDefault();
+    cycleAvailableWeapon(1);
+    return;
+  }
+
+  // 7. Keyboard Camera Zoom (PageUp / PageDown) & Center Camera (V or Home)
+  if (e.key === 'PageUp') {
+    e.preventDefault();
+    userZoomMult = clamp(userZoomMult + 0.14, 0.50, 2.25);
+    return;
+  }
+  if (e.key === 'PageDown') {
+    e.preventDefault();
+    userZoomMult = clamp(userZoomMult - 0.14, 0.50, 2.25);
+    return;
+  }
+  if ((e.key === 'v' || e.key === 'V' || e.key === 'Home') && !e.repeat) {
+    e.preventDefault();
+    cam.panOffsetX = 0;
+    cam.panOffsetY = 0;
+    return;
+  }
+
   if (e.key === 'a' || e.key === 'A' || e.key === 'ArrowLeft') {
     if (e.key === 'ArrowLeft') e.preventDefault();
-    keys.left = true;
-    if (activeFighter && activeFighter.alive && !isCurrentTurnAI() && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT')) {
-      activeFighter.facing = -1;
-      syncAimAngleFromPitch();
+    if (shiftHeld) {
+      panKeys.left = true;
+    } else {
+      keys.left = true;
+      if (activeFighter && activeFighter.alive && !isCurrentTurnAI() && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT')) {
+        activeFighter.facing = -1;
+        syncAimAngleFromPitch();
+      }
     }
   }
   if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') {
     if (e.key === 'ArrowRight') e.preventDefault();
-    keys.right = true;
-    if (activeFighter && activeFighter.alive && !isCurrentTurnAI() && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT')) {
-      activeFighter.facing = 1;
-      syncAimAngleFromPitch();
+    if (shiftHeld) {
+      panKeys.right = true;
+    } else {
+      keys.right = true;
+      if (activeFighter && activeFighter.alive && !isCurrentTurnAI() && (turnPhase === 'TURN_PLAY' || turnPhase === 'RETREAT')) {
+        activeFighter.facing = 1;
+        syncAimAngleFromPitch();
+      }
     }
   }
 
   // Aim Up (Up Arrow / W) — also thrusts Jetpack / glides Moth Wings while airborne
   if (e.key === 'w' || e.key === 'W' || e.key === 'ArrowUp') {
     if (e.key === 'ArrowUp') e.preventDefault();
-    keys.up = true;
+    if (shiftHeld) panKeys.up = true;
+    else keys.up = true;
   }
 
   // Aim Down (Down Arrow / S)
   if (e.key === 's' || e.key === 'S' || e.key === 'ArrowDown') {
     if (e.key === 'ArrowDown') e.preventDefault();
-    keys.down = true;
+    if (shiftHeld) panKeys.down = true;
+    else keys.down = true;
   }
 
   // Spacebar: Hold to Charge & Fire Weapon along the Aim Guide!
@@ -1031,11 +1558,6 @@ window.addEventListener('keydown', e => {
     return;
   }
 
-  // [M] Toggle MIDI Music On / Off
-  if ((e.key === 'm' || e.key === 'M') && !e.repeat) {
-    SND.toggleMusic();
-  }
-
   // [Tab] Classic Worms "Worm Select" before moving or firing!
   if (e.key === 'Tab' && !e.repeat) {
     e.preventDefault();
@@ -1055,35 +1577,36 @@ window.addEventListener('keydown', e => {
   }
 
   if (e.key === 'q' || e.key === 'Q') {
+    SND.tick();
     customGrenadeFuse = Math.max(1, customGrenadeFuse - 1);
     updateFuseUI();
   }
   if (e.key === 'e' || e.key === 'E') {
+    SND.tick();
     customGrenadeFuse = Math.min(5, customGrenadeFuse + 1);
     updateFuseUI();
   }
 
-  const keyIdx = WEAPONS.findIndex(w => w.key === e.key);
+  const keyIdx = WEAPONS.findIndex(w => w.key === e.key.toLowerCase() || w.key === e.key);
   if (keyIdx >= 0 && keyIdx < WEAPONS.length) {
-    if (!isCurrentTurnAI() && teamAmmo[activeTeam][WEAPONS[keyIdx].id] > 0) {
-      selectedWeaponIdx = keyIdx;
-      teamSelectedWeaponIdx[activeTeam] = keyIdx;
-      if (WEAPONS[keyIdx].id === 'AIRSTRIKE' && activeFighter) {
-        mouseWorld = {
-          x: clamp(activeFighter.x + activeFighter.facing * 220, 200, TERRAIN_W - 200),
-          y: Math.max(160, activeFighter.y - 110)
-        };
-      }
-      buildWeaponBar();
+    if (selectWeaponByIndex(keyIdx, false)) {
+      SND.tick();
     }
   }
 });
 
 window.addEventListener('keyup', e => {
-  if (e.key === 'a' || e.key === 'A' || e.key === 'ArrowLeft') keys.left = false;
-  if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') keys.right = false;
-  if (e.key === 'w' || e.key === 'W' || e.key === 'ArrowUp') keys.up = false;
-  if (e.key === 's' || e.key === 'S' || e.key === 'ArrowDown') keys.down = false;
+  if (e.key === 'Shift') {
+    shiftHeld = false;
+    panKeys.left = false;
+    panKeys.right = false;
+    panKeys.up = false;
+    panKeys.down = false;
+  }
+  if (e.key === 'a' || e.key === 'A' || e.key === 'ArrowLeft') { keys.left = false; panKeys.left = false; }
+  if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') { keys.right = false; panKeys.right = false; }
+  if (e.key === 'w' || e.key === 'W' || e.key === 'ArrowUp') { keys.up = false; panKeys.up = false; }
+  if (e.key === 's' || e.key === 'S' || e.key === 'ArrowDown') { keys.down = false; panKeys.down = false; }
   if (e.key === ' ') {
     e.preventDefault();
     releaseChargedShot();
@@ -1155,9 +1678,10 @@ function setWeaponDrawerOpen(isOpen) {
   const toggleBtn = document.getElementById('weapon-toggle-btn');
   const chev = document.getElementById('wt-chevron');
   if (!bar || !toggleBtn) return;
+  if (isOpen) drawerCursorIdx = selectedWeaponIdx;
   bar.classList.toggle('open', isOpen);
   toggleBtn.classList.toggle('open', isOpen);
-  if (chev) chev.innerHTML = isOpen ? '&#9660; Tanca' : '&#9650; Arsenal';
+  if (chev) chev.innerHTML = isOpen ? '&#9660; Tanca [B]' : '&#9650; Arsenal [B]';
 }
 
 const weaponToggleBtnEl = document.getElementById('weapon-toggle-btn');
@@ -1206,14 +1730,16 @@ function buildWeaponBar() {
     else fireLbl.textContent = 'FOC!';
   }
 
+  const drawerOpen = isWeaponDrawerOpen();
   WEAPONS.forEach((w, i) => {
     const ammo = teamAmmo[activeTeam] ? teamAmmo[activeTeam][w.id] : w.defaultAmmo;
     const slot = document.createElement('div');
     slot.className = 'ord-slot' +
       (i === selectedWeaponIdx ? ' active' : '') +
+      (drawerOpen && i === drawerCursorIdx ? ' kb-cursor' : '') +
       (ammo <= 0 ? ' depleted' : '');
     slot.innerHTML = `
-      <span class="ord-hotkey">${w.key}</span>
+      <span class="ord-hotkey">${w.key.toUpperCase()}</span>
       <span class="ord-ammo">${ammo === Infinity ? '∞' : ammo}</span>
       <div class="ord-icon">${w.svg}</div>
       <span class="ord-label">${w.name}</span>
@@ -1222,33 +1748,25 @@ function buildWeaponBar() {
       if (!isCurrentTurnAI() && ammo > 0) {
         SND.init();
         SND.tick();
-        selectedWeaponIdx = i;
-        teamSelectedWeaponIdx[activeTeam] = i;
-        if (w.id === 'AIRSTRIKE' && activeFighter) {
-          mouseWorld = {
-            x: clamp(activeFighter.x + activeFighter.facing * 220, 200, TERRAIN_W - 200),
-            y: Math.max(160, activeFighter.y - 110)
-          };
-        }
-        buildWeaponBar();
-        setWeaponDrawerOpen(false);
+        selectWeaponByIndex(i, true);
       }
     };
     bar.appendChild(slot);
   });
 }
 
-// Campaign Lobby Modal (Modes, Difficulty, 4 Catalan Theatres, Hats, Names & Faces)
+// Campaign Lobby Modal (Modes, Difficulty, Worms Per Team 1..6, 8 Catalan Theatres, Hats, Names & Faces)
 const lobbyModal = document.getElementById('campaign-lobby');
 
-function openLobbyModal() {
-  appStage = 'LOBBY';
+function renderLobbySquadInputs() {
   const t1Container = document.getElementById('t1-inputs');
   const t2Container = document.getElementById('t2-inputs');
+  if (!t1Container || !t2Container) return;
   t1Container.innerHTML = '';
   t2Container.innerHTML = '';
 
-  for (let i = 0; i < 4; i++) {
+  const count = clamp(wormsPerTeam, 1, 6);
+  for (let i = 0; i < count; i++) {
     t1Container.innerHTML += `
       <div class="oruga-row">
         <span class="oruga-idx">0${i + 1}</span>
@@ -1270,6 +1788,11 @@ function openLobbyModal() {
       </div>
     `;
   }
+}
+
+function openLobbyModal() {
+  appStage = 'LOBBY';
+  renderLobbySquadInputs();
 
   document.getElementById('hat-t0').value = teamHats[0];
   document.getElementById('hat-t1').value = teamHats[1];
@@ -1279,6 +1802,9 @@ function openLobbyModal() {
   });
   document.querySelectorAll('#diff-selector .tactical-card').forEach(el => {
     el.classList.toggle('selected', el.dataset.diff === aiDifficulty);
+  });
+  document.querySelectorAll('#worms-count-selector .tactical-card').forEach(el => {
+    el.classList.toggle('selected', parseInt(el.dataset.count, 10) === wormsPerTeam);
   });
 
   const mapSel = document.getElementById('map-selector');
@@ -1304,6 +1830,11 @@ function openLobbyModal() {
 
   document.getElementById('btn-close-setup').style.display = hasStartedMatchOnce ? 'inline-flex' : 'none';
   lobbyModal.classList.add('open');
+  // Focus the first Combat Mode card (or Deploy button) for instant keyboard navigation!
+  const items = getLobbyFocusableItems();
+  const deployIdx = items.findIndex(el => el.id === 'btn-restart-match');
+  lobbyFocusIdx = deployIdx >= 0 ? 1 : 0;
+  updateLobbyFocusUI(false);
 }
 
 window.handleFaceUpload = function(team, idx, inputEl) {
@@ -1340,17 +1871,28 @@ document.querySelectorAll('#diff-selector .tactical-card').forEach(el => {
   };
 });
 
+document.querySelectorAll('#worms-count-selector .tactical-card').forEach(el => {
+  el.onclick = () => {
+    readLobbyCustomization();
+    wormsPerTeam = clamp(parseInt(el.dataset.count, 10) || 4, 1, 6);
+    document.querySelectorAll('#worms-count-selector .tactical-card').forEach(o => o.classList.toggle('selected', o === el));
+    renderLobbySquadInputs();
+  };
+});
+
 function readLobbyCustomization() {
-  for (let i = 0; i < 4; i++) {
-    const v0 = document.getElementById(`inp-t0-${i}`).value.trim();
-    const v1 = document.getElementById(`inp-t1-${i}`).value.trim();
-    if (v0) teamNames[0][i] = v0;
-    if (v1) teamNames[1][i] = v1;
+  for (let i = 0; i < 6; i++) {
+    const el0 = document.getElementById(`inp-t0-${i}`);
+    const el1 = document.getElementById(`inp-t1-${i}`);
+    if (el0 && el0.value.trim()) teamNames[0][i] = el0.value.trim();
+    if (el1 && el1.value.trim()) teamNames[1][i] = el1.value.trim();
   }
   teamHats[0] = document.getElementById('hat-t0').value;
   teamHats[1] = document.getElementById('hat-t1').value;
   for (const f of fighters) {
-    f.name = teamNames[f.team][f.memberIdx];
+    if (teamNames[f.team][f.memberIdx]) {
+      f.name = teamNames[f.team][f.memberIdx];
+    }
   }
   if (activeFighter) {
     document.getElementById('turn-status').textContent = `Torn de ${activeFighter.name}`;
@@ -1359,17 +1901,15 @@ function readLobbyCustomization() {
 }
 
 document.getElementById('btn-random-names').onclick = () => {
-  const pool0 = ['Peluda', 'Serrallonga', 'Pinassa', 'Rovelló', 'Botifarra', 'Calçot', 'Gaudí', 'Garbí', 'Fuet', 'Escudella'];
-  const pool1 = ['Urticària', 'Tramuntana', 'Boira', 'Espina', 'Caganer', 'Tió', 'Fageda', 'Ratafia', 'Empordà', 'Canigó'];
-  pool0.sort(() => Math.random() - 0.5);
-  pool1.sort(() => Math.random() - 0.5);
-  for (let i = 0; i < 4; i++) {
-    teamNames[0][i] = pool0[i];
-    teamNames[1][i] = pool1[i];
+  SND.init();
+  SND.tick();
+  randomizeSquadNames(true);
+  hasCustomLobbyNames = true;
+  for (let i = 0; i < 6; i++) {
     const i0 = document.getElementById(`inp-t0-${i}`);
     const i1 = document.getElementById(`inp-t1-${i}`);
-    if (i0) i0.value = pool0[i];
-    if (i1) i1.value = pool1[i];
+    if (i0) i0.value = teamNames[0][i];
+    if (i1) i1.value = teamNames[1][i];
   }
 };
 
@@ -1417,6 +1957,7 @@ document.getElementById('btn-close-setup').onclick = () => {
 document.getElementById('btn-restart-match').onclick = () => {
   SND.init();
   readLobbyCustomization();
+  hasCustomLobbyNames = true;
   hasStartedMatchOnce = true;
   lobbyModal.classList.remove('open');
   document.getElementById('splash-screen').classList.add('hidden');

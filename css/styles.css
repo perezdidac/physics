@@ -294,6 +294,18 @@ html, body {
   gap: 8px;
 }
 
+.worms-count-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 820px) {
+  .worms-count-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .tactical-card {
   padding: 10px 10px;
   background: rgba(255, 255, 255, 0.025);
@@ -343,7 +355,7 @@ html, body {
 
 .theatre-card {
   position: relative;
-  height: 132px;
+  height: 112px;
   border: 1px solid rgba(242, 236, 223, 0.18);
   clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
   overflow: hidden;
@@ -842,11 +854,72 @@ html, body {
 }
 
 /* Sleek Active Weapon Pill & Collapsible Arsenal Drawer */
+#bottom-bar-row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+  padding: 0 4px;
+}
+
+body.touch-device #bottom-bar-row {
+  justify-content: space-between;
+}
+
+@media (pointer: coarse), (max-width: 920px), (max-height: 560px) {
+  #bottom-bar-row {
+    justify-content: space-between;
+  }
+}
+
 .weapon-pill-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   pointer-events: auto;
+}
+
+.wp-nav-btn {
+  height: 40px;
+  width: 36px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(24, 30, 42, 0.90) 0%, rgba(12, 15, 22, 0.95) 100%);
+  border: 1.5px solid rgba(240, 195, 110, 0.48);
+  color: var(--brass-bright);
+  font-size: 13px;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  transition: transform 0.1s ease, border-color 0.12s ease, background 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wp-nav-btn:hover,
+.wp-nav-btn:active {
+  border-color: var(--brass-bright);
+  background: rgba(212, 161, 83, 0.25);
+  transform: scale(0.95);
+}
+
+#mc-switch-worm {
+  display: none;
+  border-color: rgba(246, 207, 119, 0.65);
+  color: var(--brass-bright);
+}
+
+body.touch-device #mc-switch-worm.can-switch {
+  display: inline-flex;
+}
+
+@media (pointer: coarse), (max-width: 920px), (max-height: 560px) {
+  #mc-switch-worm.can-switch {
+    display: inline-flex;
+  }
 }
 
 #weapon-toggle-btn {
@@ -919,15 +992,15 @@ html, body {
 
 .ordnance-rack {
   display: none;
-  grid-template-columns: repeat(5, 64px);
+  grid-template-columns: repeat(8, 62px);
   gap: 5px;
-  background: rgba(14, 18, 26, 0.92);
+  background: rgba(14, 18, 26, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(240, 195, 110, 0.42);
+  border: 1.5px solid rgba(240, 195, 110, 0.52);
   border-radius: 16px;
-  padding: 7px 9px;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.82);
+  padding: 8px 10px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.85);
   pointer-events: auto;
   animation: drawerPop 0.16s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
@@ -966,6 +1039,128 @@ html, body {
   background: linear-gradient(180deg, rgba(212, 161, 83, 0.28) 0%, rgba(212, 161, 83, 0.08) 100%);
   border-color: var(--brass-bright);
   box-shadow: inset 0 0 12px rgba(240, 184, 73, 0.22);
+}
+
+.ord-slot.kb-cursor {
+  outline: 2px solid #ffffff;
+  outline-offset: 1px;
+  background: linear-gradient(180deg, rgba(246, 207, 119, 0.42) 0%, rgba(212, 161, 83, 0.16) 100%);
+  border-color: #ffffff;
+  transform: translateY(-2px) scale(1.04);
+  z-index: 2;
+}
+
+/* Global Keyboard Navigation Highlight Ring (.kb-focus) */
+.kb-focus,
+.tactical-card.kb-focus,
+.theatre-card.kb-focus,
+.cmd-btn.kb-focus,
+.btn-gold-deploy.kb-focus,
+.hat-select.kb-focus,
+.face-upload-label.kb-focus,
+.oruga-row input.kb-focus {
+  outline: 2.5px solid #ffd966 !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(246, 207, 119, 0.28), 0 8px 24px rgba(0, 0, 0, 0.65) !important;
+  border-color: #ffe49e !important;
+}
+
+.kb-hint-inline {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(246, 207, 119, 0.12);
+  border: 1px solid rgba(246, 207, 119, 0.35);
+  color: var(--brass-bright);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHONE PORTRAIT -> LANDSCAPE ORIENTATION OVERLAY
+   ═══════════════════════════════════════════════════════════════════ */
+#rotate-device-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: radial-gradient(circle at 50% 35%, rgba(28, 35, 50, 0.96) 0%, rgba(8, 10, 15, 0.99) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+#rotate-device-overlay.open {
+  display: flex;
+}
+
+.rotate-card {
+  max-width: 390px;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(24, 29, 39, 0.96) 0%, rgba(12, 15, 22, 0.98) 100%);
+  border: 1.5px solid var(--brass-bright);
+  border-radius: 18px;
+  padding: 28px 22px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.92), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.rotate-icon-wrap {
+  width: 84px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.rotate-phone-svg {
+  width: 76px;
+  height: 76px;
+  animation: tiltToLandscape 2.2s ease-in-out infinite;
+}
+
+@keyframes tiltToLandscape {
+  0%, 15%   { transform: rotate(0deg); }
+  55%, 80%  { transform: rotate(-90deg); }
+  100%      { transform: rotate(0deg); }
+}
+
+.rotate-title {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: var(--brass-bright);
+  line-height: 1.25;
+}
+
+.rotate-sub {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ivory-muted);
+}
+
+.rotate-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.rotate-actions .btn-gold-deploy,
+.rotate-actions .cmd-btn {
+  width: 100%;
+  justify-content: center;
 }
 
 .ord-slot.depleted {
@@ -1078,31 +1273,21 @@ html, body {
 /* ═══════════════════════════════════════════════════════════════════
    MOBILE & TOUCH GAMEPAD + PORTRAIT / LANDSCAPE RESPONSIVE LAYOUTS
    ═══════════════════════════════════════════════════════════════════ */
-#mobile-controls {
-  display: none;
-  width: 100%;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 8px;
-  pointer-events: none;
-  padding: 0 4px;
-}
-
-body.touch-device #mobile-controls {
-  display: flex;
-}
-
-@media (pointer: coarse), (max-width: 900px), (max-height: 560px) {
-  #mobile-controls {
-    display: flex;
-  }
-}
-
 .mc-cluster {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 6px;
   pointer-events: auto;
+}
+
+body.touch-device .mc-cluster {
+  display: flex;
+}
+
+@media (pointer: coarse), (max-width: 920px), (max-height: 560px) {
+  .mc-cluster {
+    display: flex;
+  }
 }
 
 .mc-btn {
@@ -1568,7 +1753,16 @@ body.touch-device #mobile-controls {
 
   #bottom-hud {
     bottom: max(4px, env(safe-area-inset-bottom));
-    width: calc(100vw - 16px);
+    width: calc(100vw - max(14px, env(safe-area-inset-left) + env(safe-area-inset-right)));
+    gap: 4px;
+  }
+
+  #bottom-bar-row {
+    gap: 6px;
+    padding: 0 2px;
+  }
+
+  .mc-cluster {
     gap: 4px;
   }
 
@@ -1579,34 +1773,62 @@ body.touch-device #mobile-controls {
     font-size: 10.5px;
   }
 
+  .mc-btn-arrow {
+    min-width: 40px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  .mc-btn-util {
+    height: 34px;
+    min-width: 32px;
+    padding: 0 7px;
+    font-size: 10px;
+  }
+
   .mc-btn-fire {
     height: 40px;
-    min-width: 92px;
-    font-size: 12.5px;
+    min-width: 88px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .wp-nav-btn {
+    height: 34px;
+    width: 32px;
+    font-size: 11px;
   }
 
   #weapon-toggle-btn {
     height: 36px;
-    padding: 0 12px;
+    padding: 0 11px;
+    gap: 6px;
+  }
+
+  .wt-name {
+    font-size: 11px;
+  }
+
+  .wt-chevron {
+    display: none;
   }
 
   .ordnance-rack {
     display: none;
-    overflow-x: auto;
-    max-width: 100%;
-    padding: 4px 6px;
+    grid-template-columns: repeat(8, minmax(48px, 1fr));
+    width: min(94vw, 520px);
+    padding: 6px 8px;
     gap: 4px;
-    -webkit-overflow-scrolling: touch;
   }
 
   .ordnance-rack.open {
-    display: flex;
+    display: grid;
   }
 
   .ord-slot {
-    width: 48px;
-    min-width: 48px;
-    height: 40px;
+    width: 100%;
+    min-width: 0;
+    height: 42px;
     padding: 2px;
   }
 
