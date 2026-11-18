@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MapList" format=3]
+
+[ext_resource type="Script" path="res://data/types/map_def.gd" id="1_bis6k"]
+[ext_resource type="Resource" path="res://data/maps/00_montserrat.tres" id="2_8fqyf"]
+[ext_resource type="Resource" path="res://data/maps/01_cadaques.tres" id="3_6jb8b"]
+[ext_resource type="Resource" path="res://data/maps/02_taull.tres" id="4_eepkg"]
+[ext_resource type="Resource" path="res://data/maps/03_castellfollit.tres" id="5_63y7x"]
+[ext_resource type="Resource" path="res://data/maps/04_delta_ebre.tres" id="6_jiu0l"]
+[ext_resource type="Resource" path="res://data/maps/05_tarraco.tres" id="7_6ovnj"]
+[ext_resource type="Resource" path="res://data/maps/06_pedraforca.tres" id="8_6sacc"]
+[ext_resource type="Resource" path="res://data/maps/07_montblanc.tres" id="9_roqwn"]
+[ext_resource type="Script" path="res://data/types/map_list.gd" id="10_p216y"]
+
+[resource]
+script = ExtResource("10_p216y")
+maps = Array[ExtResource("1_bis6k")]([ExtResource("2_8fqyf"), ExtResource("3_6jb8b"), ExtResource("4_eepkg"), ExtResource("5_63y7x"), ExtResource("6_jiu0l"), ExtResource("7_6ovnj"), ExtResource("8_6sacc"), ExtResource("9_roqwn")])

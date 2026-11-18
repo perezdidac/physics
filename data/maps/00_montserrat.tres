@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MapDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/map_def.gd" id="1_1wfc4"]
+
+[resource]
+script = ExtResource("1_1wfc4")
+id = "MONTSERRAT"
+name_key = "MAP_MONTSERRAT_NAME"
+subtitle_key = "MAP_MONTSERRAT_SUBTITLE"
+badge_key = "MAP_MONTSERRAT_BADGE"
+background_key = "montserrat"
+weather = "POLLEN"
+slide_friction = 0.964
+sky = PackedColorArray(0.16470589, 0.11764706, 0.18039216, 1, 0.34901962, 0.23137255, 0.30980393, 1, 0.6117647, 0.3882353, 0.32156864, 1, 0.87058824, 0.5882353, 0.34901962, 1, 0.98039216, 0.9019608, 0.69411767, 1)
+water_top = Color(0.16470589, 0.44705883, 0.47843137, 0.82)
+water_deep = Color(0.047058824, 0.14117648, 0.17254902, 0.98)
+turf_col = Color(0.36078432, 0.4627451, 0.20392157, 1)
+soil_col = Color(0.5254902, 0.32941177, 0.22745098, 1)
+rock_col = Color(0.5803922, 0.5019608, 0.47843137, 1)
+tree_style = "UMBRELLA_PINE"
+preferred_texture = "CONGLOMERATE_PEBBLES"

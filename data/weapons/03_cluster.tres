@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_sfhk4"]
+
+[resource]
+script = ExtResource("1_sfhk4")
+id = "CLUSTER"
+key = "4"
+name_key = "WPN_CLUSTER"
+default_ammo = 3
+type = "CHARGE"
+fuse = 3.0
+has_custom_fuse = true
+blast_r = 36.0
+max_dmg = 30.0
+knockback = 350.0

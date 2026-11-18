@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_o0cbs"]
+
+[resource]
+script = ExtResource("1_o0cbs")
+id = "GRENADE"
+key = "3"
+name_key = "WPN_GRENADE"
+type = "CHARGE"
+fuse = 3.0
+has_custom_fuse = true
+blast_r = 48.0
+max_dmg = 45.0
+knockback = 440.0

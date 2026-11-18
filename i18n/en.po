@@ -1,0 +1,837 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CUCS\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "FT_TURN_SWITCH"
+msgstr "TURN OF %s! [TAB]"
+
+msgid "FT_GUST_RIGHT"
+msgstr "TRAMUNTANA GUST! »"
+
+msgid "FT_GUST_LEFT"
+msgstr "« GARBÍ WIND!"
+
+msgid "FT_TIDE"
+msgstr "SUDDEN DEATH — THE TIDE RISES!"
+
+msgid "FT_NEST_BURST"
+msgstr "SILK NEST BURST! +PINE NUTS AND LARVAE!"
+
+msgid "FT_WEB_SPUN"
+msgstr "ELASTIC SILK WOVEN!"
+
+msgid "FT_METAMORPHOSIS"
+msgstr "%s: WINGED METAMORPHOSIS! (HOLD W TO GLIDE)"
+
+msgid "FT_ROVELLO_ROASTED"
+msgstr "GRILLED MUSHROOM!"
+
+msgid "FT_WINE_SPLASH"
+msgstr "PRIORAT WINE SOAKING!"
+
+msgid "FT_ESCUDELLA_EXPLODE"
+msgstr "EXPLOSIVE ESCUDELLA! RAIN OF PASTA SHELLS!"
+
+msgid "FT_DAMAGE"
+msgstr "-%s"
+
+msgid "FT_DAMAGE_LABEL"
+msgstr "%s -%s"
+
+msgid "FT_FALLEN"
+msgstr "%s HAS FALLEN!"
+
+msgid "FT_CASTELL"
+msgstr "CASTELL DE CUCS! +30% TOP-CLIMBER STRENGTH!"
+
+msgid "FT_PROCESSION_FURY"
+msgstr "PROCESSION FURY! +%s%% DAMAGE"
+
+msgid "FT_CARQUINYOLIS"
+msgstr "TOOTH-BREAKING CARQUINYOLIS!"
+
+msgid "FT_BAT_DEFLECT"
+msgstr "MASTER'S REBOUND!"
+
+msgid "FT_FUET_SLICE"
+msgstr "FUET SLICE!"
+
+msgid "FT_TIO"
+msgstr "CAGA TIÓ, CAGA TORRÓ!"
+
+msgid "FT_JETPACK"
+msgstr "PINE WINGS (W/A/D)!"
+
+msgid "FT_SPOON"
+msgstr "BOXWOOD SPOONFUL! MAKING WAY!"
+
+msgid "FT_DRILL"
+msgstr "MINER'S DRILL! Brrrrr!"
+
+msgid "FT_GIRDER"
+msgstr "DRY-STONE WALL BUILT!"
+
+msgid "FT_GRAPPLE"
+msgstr "SHEPHERD'S CROOK! UP WE GO!"
+
+msgid "FT_GRAPPLE_SHORT"
+msgstr "CROOK TOO SHORT!"
+
+msgid "FT_MEDKIT"
+msgstr "+35 HP PINE RESIN!"
+
+msgid "FT_CRATE_WEAPON"
+msgstr "+1 %s!"
+
+msgid "FT_MINE_ARMED"
+msgstr "CLICK! MINE ARMED!"
+
+msgid "FT_HOLY_CHOIR"
+msgstr "♪ VIROLAI! HALLELUJAH! ♪"
+
+msgid "FT_DYNAMITE_BOOM"
+msgstr "CAGA TIÓ!"
+
+msgid "FT_PARACHUTE_CUT"
+msgstr "PARACHUTE BROKEN!"
+
+msgid "FT_WEB_RICOCHET"
+msgstr "SILK RICOCHET!"
+
+msgid "FT_CAGANER"
+msgstr "CAGANER'S BLESSING! +30 HP AND +1 PORRÓ!"
+
+msgid "FT_ESCUDELLA_BUFF"
+msgstr "+25 HP MEATBALL POWER! (+25% DAMAGE)"
+
+msgid "FT_PINE_NUT"
+msgstr "+20 HP GOLDEN PINE NUT!"
+
+msgid "FT_WEB_BOING"
+msgstr "SILK BOING!"
+
+msgid "FT_ROVELLO_BOING"
+msgstr "MUSHROOM BOING! +8 HP"
+
+msgid "FT_CARAMBOLA"
+msgstr "CAROM!"
+
+msgid "FT_DROWN"
+msgstr "%s: Glub glub... SPLASH!"
+
+msgid "DMG_URTICARIA"
+msgstr "URTICARIA!"
+
+msgid "DMG_SILK_SHIELD"
+msgstr "SILK SHIELD"
+
+msgid "DMG_ITCH"
+msgstr "STINGING ITCH!"
+
+msgid "DMG_CRATE"
+msgstr "CRATE ON THE HEAD!"
+
+msgid "DMG_CARQUINYOLI_BITE"
+msgstr "CRUNCH! TOOTH-BREAKER!"
+
+msgid "DMG_FUET"
+msgstr "VIC FUET WHIP!"
+
+msgid "DMG_BAT"
+msgstr "GOOD SICKLE BLOW!"
+
+msgid "DMG_HOOK"
+msgstr "SHEPHERD'S YANK!"
+
+msgid "DMG_SPOON"
+msgstr "SPOONFUL!"
+
+msgid "DMG_DRILL"
+msgstr "DRILL!"
+
+msgid "DMG_LARVAE"
+msgstr "LARVAE!"
+
+msgid "DMG_SLAM"
+msgstr "THUD!"
+
+msgid "DMG_CARAMBOLA"
+msgstr "CAROM!"
+
+msgid "BUBBLE_CAGANER"
+msgstr "The Lucky Caganer!"
+
+msgid "BUBBLE_ESCUDELLA"
+msgstr "What a tasty Escudella!"
+
+msgid "BUBBLE_CASTELL"
+msgstr "Castell de Cucs! Aleta!"
+
+msgid "TAUNT_TURN_1"
+msgstr "To the pine!"
+
+msgid "TAUNT_TURN_2"
+msgstr "In procession!"
+
+msgid "TAUNT_TURN_3"
+msgstr "Ready the blunderbuss!"
+
+msgid "TAUNT_TURN_4"
+msgstr "Taste the Vic fuet!"
+
+msgid "TAUNT_TURN_5"
+msgstr "Tooth-breaking carquinyoli!"
+
+msgid "TAUNT_TURN_6"
+msgstr "A good sickle blow!"
+
+msgid "TAUNT_HIT_1"
+msgstr "Ouch, my hairs!"
+
+msgid "TAUNT_HIT_2"
+msgstr "How itchy!"
+
+msgid "TAUNT_HIT_3"
+msgstr "Blast it!"
+
+msgid "TAUNT_HIT_4"
+msgstr "My cocoon!"
+
+msgid "TAUNT_URTICARIA_1"
+msgstr "Stinging dust!"
+
+msgid "TAUNT_URTICARIA_2"
+msgstr "Scratch, scratch!"
+
+msgid "TAUNT_URTICARIA_3"
+msgstr "Total allergy!"
+
+msgid "TAUNT_PROCESSION_1"
+msgstr "United column!"
+
+msgid "TAUNT_PROCESSION_2"
+msgstr "Processionary fury!"
+
+msgid "TAUNT_PROCESSION_3"
+msgstr "Silk and iron!"
+
+msgid "TAUNT_METAMORPH_1"
+msgstr "METAMORPHOSIS!"
+
+msgid "TAUNT_METAMORPH_2"
+msgstr "Wings of Thaumetopoea!"
+
+msgid "TAUNT_METAMORPH_3"
+msgstr "Now I can glide!"
+
+msgid "WPN_BAZOOKA"
+msgstr "Blunderbuss"
+
+msgid "WPN_CARQUINYOLI"
+msgstr "Carquinyolis"
+
+msgid "WPN_GRENADE"
+msgstr "Pine cone"
+
+msgid "WPN_CLUSTER"
+msgstr "Calçotada"
+
+msgid "WPN_URTICARIA"
+msgstr "Urticating"
+
+msgid "WPN_SHOTGUN"
+msgstr "Flintlock"
+
+msgid "WPN_FUET"
+msgstr "The Fuet"
+
+msgid "WPN_BAT"
+msgstr "The Sickle"
+
+msgid "WPN_DYNAMITE"
+msgstr "The Tió"
+
+msgid "WPN_HOLY"
+msgstr "Holy Porró"
+
+msgid "WPN_AIRSTRIKE"
+msgstr "Correfoc"
+
+msgid "WPN_JETPACK"
+msgstr "Pine Wings"
+
+msgid "WPN_CULLERA"
+msgstr "Boxwood Spoon"
+
+msgid "WPN_BARRINA"
+msgstr "Quarry Drill"
+
+msgid "WPN_PONT_PEDRA"
+msgstr "Dry Stone"
+
+msgid "WPN_GANXO"
+msgstr "Shepherd's Crook"
+
+msgid "MAP_MONTSERRAT_NAME"
+msgstr "Montserrat Massif"
+
+msgid "MAP_MONTSERRAT_SUBTITLE"
+msgstr "Santa Maria Monastery, Needles and Cable Car (Bages)"
+
+msgid "MAP_MONTSERRAT_BADGE"
+msgstr "MIST AND PINES"
+
+msgid "MAP_CADAQUES_NAME"
+msgstr "Cadaqués and Cap de Creus"
+
+msgid "MAP_CADAQUES_SUBTITLE"
+msgstr "Santa Maria Church, Llaguts and Terraces (Alt Empordà)"
+
+msgid "MAP_CADAQUES_BADGE"
+msgstr "LIVELY TRAMUNTANA"
+
+msgid "MAP_TAULL_NAME"
+msgstr "Taüll and the Vall de Boí"
+
+msgid "MAP_TAULL_SUBTITLE"
+msgstr "Sant Climent de Taüll and Aigüestortes (Alta Ribagorça)"
+
+msgid "MAP_TAULL_BADGE"
+msgstr "PYRENEAN SNOW"
+
+msgid "MAP_CASTELLFOLLIT_NAME"
+msgstr "Castellfollit de la Roca"
+
+msgid "MAP_CASTELLFOLLIT_SUBTITLE"
+msgstr "Basalt Cliff and Fageda d'en Jordà beech forest (La Garrotxa)"
+
+msgid "MAP_CASTELLFOLLIT_BADGE"
+msgstr "BEECH LEAVES"
+
+msgid "MAP_DELTA_EBRE_NAME"
+msgstr "Ebro Delta and Buda"
+
+msgid "MAP_DELTA_EBRE_SUBTITLE"
+msgstr "Rice Fields, Barracas, Fangar Lighthouse and Flamingos (Montsià)"
+
+msgid "MAP_DELTA_EBRE_BADGE"
+msgstr "FLAMINGOS AND DUNES"
+
+msgid "MAP_TARRACO_NAME"
+msgstr "Imperial Tarraco"
+
+msgid "MAP_TARRACO_SUBTITLE"
+msgstr "Roman Amphitheatre, Devil's Bridge and Mare Nostrum (Tarragonès)"
+
+msgid "MAP_TARRACO_BADGE"
+msgstr "ROMAN STONE"
+
+msgid "MAP_PEDRAFORCA_NAME"
+msgstr "Pedraforca Massif"
+
+msgid "MAP_PEDRAFORCA_SUBTITLE"
+msgstr "The Enforcadura, Scree and Serra del Cadí (Berguedà)"
+
+msgid "MAP_PEDRAFORCA_BADGE"
+msgstr "MAGIC PEAK"
+
+msgid "MAP_MONTBLANC_NAME"
+msgstr "Walls of Montblanc"
+
+msgid "MAP_MONTBLANC_SUBTITLE"
+msgstr "Medieval Towers, Legend of Saint George and Prades (Conca)"
+
+msgid "MAP_MONTBLANC_BADGE"
+msgstr "DRAGON AND ROSES"
+
+msgid "ARCH_FEIXES_TERRACED"
+msgstr "Dry-Stone Terraces"
+
+msgid "ARCH_AGULLES_SPIRES"
+msgstr "Spires and Cliffs"
+
+msgid "ARCH_MULTI_DECK_GROTTO"
+msgstr "Two-Level Cave"
+
+msgid "ARCH_FLOATING_BALCONIES"
+msgstr "Hanging Balconies"
+
+msgid "ARCH_TWIN_MASSIFS"
+msgstr "Twin Massifs"
+
+msgid "ARCH_STEPPED_CANYONS"
+msgstr "Stepped Gorge"
+
+msgid "ARCH_CITADEL_CALDERA"
+msgstr "High Citadel"
+
+msgid "ARCH_ARCHIPELAGO"
+msgstr "Stepped Islands"
+
+msgid "SPLASH_KICKER"
+msgstr "Thaumetopoea pityocampa · Tactical War in the Pine Forests of Catalonia"
+
+msgid "SPLASH_TITLE"
+msgstr "CUCS"
+
+msgid "SPLASH_SUBTITLE"
+msgstr "THE IRON PROCESSION"
+
+msgid "MENU_QUICK_TITLE"
+msgstr "Quick Match vs the CPU"
+
+msgid "MENU_QUICK_SUB"
+msgstr "Jump straight into battle against the AI"
+
+msgid "MENU_2P_TITLE"
+msgstr "2 Players, Local"
+
+msgid "MENU_2P_SUB"
+msgstr "Take turns on the same phone or computer"
+
+msgid "MENU_CUSTOM_TITLE"
+msgstr "Custom Match"
+
+msgid "MENU_CUSTOM_SUB"
+msgstr "Places of Catalonia, difficulty, hats, names and friends' faces"
+
+msgid "MENU_HINT"
+msgstr "[b]Tap[/b] or [b]↑/↓ + ENTER[/b] to select  ·  100% playable with keyboard or a phone in landscape"
+
+msgid "ROTATE_KICKER"
+msgstr "LANDSCAPE FORMAT RECOMMENDED"
+
+msgid "ROTATE_TITLE"
+msgstr "TURN YOUR PHONE SIDEWAYS"
+
+msgid "ROTATE_BODY"
+msgstr "To see the whole battlefield and use the touch controls of [b]CUCS[/b] comfortably, turn your phone to landscape."
+
+msgid "ROTATE_BTN_FULLSCREEN"
+msgstr "Landscape Fullscreen"
+
+msgid "ROTATE_BTN_CONTINUE"
+msgstr "Continue anyway"
+
+msgid "LOBBY_TITLE"
+msgstr "CUCS — Customize the Match and the Squads"
+
+msgid "LOBBY_SUBTITLE"
+msgstr "Choose the combat mode, the place in Catalonia, the traditional hat, the names and the photos."
+
+msgid "LOBBY_KB_HINT"
+msgstr "Keyboard: ↑↓←→ / Tab to move · Enter/Space to change · Ctrl+Enter to deploy"
+
+msgid "LOBBY_BTN_BACK"
+msgstr "← Main Menu [Esc]"
+
+msgid "LOBBY_SEC_MODE"
+msgstr "1. Combat Mode"
+
+msgid "LOBBY_SEC_DIFF"
+msgstr "2. CPU Tactical Intelligence"
+
+msgid "LOBBY_SEC_COUNT"
+msgstr "3. Caterpillars per Squad (1 to 6)"
+
+msgid "LOBBY_SEC_MAP"
+msgstr "4. Choose one of the 8 Places of Catalonia"
+
+msgid "LOBBY_SEC_SQUADS"
+msgstr "5. Customize the Caterpillar Squads and Friends' Faces"
+
+msgid "LOBBY_MODE_1P_TITLE"
+msgstr "1P vs CPU"
+
+msgid "LOBBY_MODE_1P_SUB"
+msgstr "Solo Campaign vs AI"
+
+msgid "LOBBY_MODE_2P_TITLE"
+msgstr "2P Local"
+
+msgid "LOBBY_MODE_2P_SUB"
+msgstr "Two Players, Same PC"
+
+msgid "LOBBY_MODE_CPU_TITLE"
+msgstr "CPU vs CPU"
+
+msgid "LOBBY_MODE_CPU_SUB"
+msgstr "AI Exhibition Battle"
+
+msgid "LOBBY_DIFF_ROOKIE_TITLE"
+msgstr "Rookie"
+
+msgid "LOBBY_DIFF_ROOKIE_SUB"
+msgstr "Forgiving Aim"
+
+msgid "LOBBY_DIFF_VETERAN_TITLE"
+msgstr "Veteran"
+
+msgid "LOBBY_DIFF_VETERAN_SUB"
+msgstr "Balanced Tactics"
+
+msgid "LOBBY_DIFF_NIGHTMARE_TITLE"
+msgstr "Nightmare"
+
+msgid "LOBBY_DIFF_NIGHTMARE_SUB"
+msgstr "Deadly Wind Calculation"
+
+msgid "LOBBY_COUNT_1_TITLE"
+msgstr "1 Caterpillar"
+
+msgid "LOBBY_COUNT_1_SUB"
+msgstr "1 vs 1 Duel"
+
+msgid "LOBBY_COUNT_2_TITLE"
+msgstr "2 Caterpillars"
+
+msgid "LOBBY_COUNT_2_SUB"
+msgstr "Tactical Pair"
+
+msgid "LOBBY_COUNT_3_TITLE"
+msgstr "3 Caterpillars"
+
+msgid "LOBBY_COUNT_3_SUB"
+msgstr "Light Squad"
+
+msgid "LOBBY_COUNT_4_TITLE"
+msgstr "4 Caterpillars"
+
+msgid "LOBBY_COUNT_4_SUB"
+msgstr "Classic (4 vs 4)"
+
+msgid "LOBBY_COUNT_5_TITLE"
+msgstr "5 Caterpillars"
+
+msgid "LOBBY_COUNT_5_SUB"
+msgstr "Large Column"
+
+msgid "LOBBY_COUNT_6_TITLE"
+msgstr "6 Caterpillars"
+
+msgid "LOBBY_COUNT_6_SUB"
+msgstr "Total War (6 vs 6)"
+
+msgid "LOBBY_SQUAD_1"
+msgstr "I. Pine Brigade (Gold)"
+
+msgid "LOBBY_SQUAD_2"
+msgstr "II. Tramuntana Column (Crimson)"
+
+msgid "HAT_VARIED"
+msgstr "Hat: Varied (Every Caterpillar Different!)"
+
+msgid "HAT_CATALAN"
+msgstr "Hat: Catalan Barretina"
+
+msgid "HAT_CASTELLER"
+msgstr "Hat: Casteller Helmet (Senyera)"
+
+msgid "HAT_BANDOLER"
+msgstr "Hat: Bandit Hat (Serrallonga)"
+
+msgid "HAT_PAGES"
+msgstr "Hat: Farmer's Straw Hat"
+
+msgid "HAT_BRISTLES"
+msgstr "Hat: Urticating Hair Plume"
+
+msgid "LOBBY_FACE_ADD"
+msgstr "+ Face"
+
+msgid "LOBBY_FACE_READY"
+msgstr "✓ Face Ready"
+
+msgid "LOBBY_FACE_TOOLTIP"
+msgstr "Upload a friend's face photo for this caterpillar"
+
+msgid "LOBBY_BTN_RANDOM"
+msgstr "Random Catalan Names"
+
+msgid "LOBBY_BTN_BACK_TO_GAME"
+msgstr "Back to the Current Match"
+
+msgid "LOBBY_BTN_DEPLOY"
+msgstr "DEPLOY TO THE BATTLEFIELD"
+
+msgid "MAP_MONTSERRAT_SUB"
+msgstr "Santa Maria Monastery, Needles and Cable Car (Bages)"
+
+msgid "MAP_CADAQUES_SUB"
+msgstr "Santa Maria Church, Fishing Boats and Terraces (Alt Empordà)"
+
+msgid "MAP_TAULL_SUB"
+msgstr "Sant Climent de Taüll and Aigüestortes (Alta Ribagorça)"
+
+msgid "MAP_CASTELLFOLLIT_SUB"
+msgstr "Basalt Cliff and Fageda d'en Jordà Beech Forest (La Garrotxa)"
+
+msgid "MAP_DELTA_EBRE_SUB"
+msgstr "Rice Fields, Barracas, Fangar Lighthouse and Flamingos (Montsià)"
+
+msgid "MAP_TARRACO_SUB"
+msgstr "Roman Amphitheatre, Devil's Bridge and Mare Nostrum (Tarragonès)"
+
+msgid "MAP_PEDRAFORCA_SUB"
+msgstr "The Enforcadura, Scree and Serra del Cadí (Berguedà)"
+
+msgid "MAP_MONTBLANC_SUB"
+msgstr "Medieval Towers, Legend of Saint George and Prades (Conca de Barberà)"
+
+msgid "HUD_SQUAD_1"
+msgstr "I. Pine Brigade"
+
+msgid "HUD_SQUAD_2"
+msgstr "II. Tramuntana"
+
+msgid "HUD_HP_TOTAL"
+msgstr "%d HP"
+
+msgid "HUD_TURN_OF"
+msgstr "%s's turn"
+
+msgid "HUD_ROUND_SUB"
+msgstr "Round %d · %s"
+
+msgid "HUD_WIND"
+msgstr "WIND"
+
+msgid "HUD_MUSIC_ON"
+msgstr "Music: On"
+
+msgid "HUD_MUSIC_OFF"
+msgstr "Music: Off"
+
+msgid "HUD_MUSIC_TOOLTIP"
+msgstr "Turns the Catalan MIDI music on or off"
+
+msgid "HUD_EXIT"
+msgstr "Exit"
+
+msgid "HUD_EXIT_TOOLTIP"
+msgstr "Leaves the current match and returns to the main menu"
+
+msgid "HUD_PIP_OWN"
+msgstr "Tap before moving to play with this caterpillar"
+
+msgid "HUD_PIP_OTHER"
+msgstr "Tap to look where this caterpillar is"
+
+msgid "HUD_END_WIN_0"
+msgstr "Victory for the Pine Brigade!"
+
+msgid "HUD_END_WIN_1"
+msgstr "Victory for the Tramuntana!"
+
+msgid "HUD_END_DRAW"
+msgstr "Mutual Destruction — Draw!"
+
+msgid "HUD_FUSE"
+msgstr "FUSE [Q/E]:"
+
+msgid "HUD_ARSENAL_OPEN"
+msgstr "▲ Arsenal [B]"
+
+msgid "HUD_ARSENAL_CLOSE"
+msgstr "▼ Close [B]"
+
+msgid "HUD_WEAPON_PREV_TOOLTIP"
+msgstr "Previous weapon [Z or [ ]"
+
+msgid "HUD_WEAPON_NEXT_TOOLTIP"
+msgstr "Next weapon [X or ] ]"
+
+msgid "HUD_WEAPON_TOGGLE_TOOLTIP"
+msgstr "Tap or press [B] to open the 16 Catalan weapons (Z/X to switch quickly)"
+
+msgid "HUD_SWITCH_WORM"
+msgstr "Caterpillar ⇄"
+
+msgid "HUD_SWITCH_WORM_TOOLTIP"
+msgstr "Change which caterpillar you control before moving [Tab]"
+
+msgid "HUD_MOVE_LEFT"
+msgstr "Move left"
+
+msgid "HUD_MOVE_RIGHT"
+msgstr "Move right"
+
+msgid "HUD_AIM_UP"
+msgstr "Aim up"
+
+msgid "HUD_AIM_DOWN"
+msgstr "Aim down"
+
+msgid "HUD_JUMP"
+msgstr "Jump"
+
+msgid "HUD_JUMP_TOOLTIP"
+msgstr "Jump forward [Enter]"
+
+msgid "HUD_FLIP"
+msgstr "Flip"
+
+msgid "HUD_FLIP_TOOLTIP"
+msgstr "Backflip [Backspace]"
+
+msgid "HUD_ZOOM_OUT_TOOLTIP"
+msgstr "Zoom the camera out [PageDown]"
+
+msgid "HUD_ZOOM_IN_TOOLTIP"
+msgstr "Zoom the camera in [PageUp]"
+
+msgid "HUD_CENTER"
+msgstr "Center"
+
+msgid "HUD_CENTER_TOOLTIP"
+msgstr "Center the camera [V]"
+
+msgid "FIRE_HOLD"
+msgstr "HOLD: FIRE!"
+
+msgid "FIRE_AIRSTRIKE"
+msgstr "CORREFOC!"
+
+msgid "FIRE_CULLERA"
+msgstr "SPOON SMACK!"
+
+msgid "FIRE_BARRINA"
+msgstr "DRILL!"
+
+msgid "FIRE_PONT_PEDRA"
+msgstr "DRY STONE!"
+
+msgid "FIRE_GANXO"
+msgstr "HOOK!"
+
+msgid "FIRE_MELEE"
+msgstr "ATTACK!"
+
+msgid "FIRE_DROP"
+msgstr "DROP TIÓ!"
+
+msgid "FIRE_JET"
+msgstr "WINGS!"
+
+msgid "FIRE_DEFAULT"
+msgstr "FIRE!"
+
+msgid "WEAPON_BAZOOKA"
+msgstr "Blunderbuss"
+
+msgid "WEAPON_CARQUINYOLI"
+msgstr "Carquinyolis"
+
+msgid "WEAPON_GRENADE"
+msgstr "Pine Cone"
+
+msgid "WEAPON_CLUSTER"
+msgstr "Calçotada"
+
+msgid "WEAPON_URTICARIA"
+msgstr "Urticating"
+
+msgid "WEAPON_SHOTGUN"
+msgstr "Flintlock"
+
+msgid "WEAPON_FUET"
+msgstr "The Fuet"
+
+msgid "WEAPON_BAT"
+msgstr "The Sickle"
+
+msgid "WEAPON_DYNAMITE"
+msgstr "The Tió"
+
+msgid "WEAPON_HOLY"
+msgstr "Holy Porró"
+
+msgid "WEAPON_AIRSTRIKE"
+msgstr "Correfoc"
+
+msgid "WEAPON_JETPACK"
+msgstr "Pine Wings"
+
+msgid "WEAPON_CULLERA"
+msgstr "Boxwood Spoon"
+
+msgid "WEAPON_BARRINA"
+msgstr "Drill"
+
+msgid "WEAPON_PONT_PEDRA"
+msgstr "Dry Stone"
+
+msgid "WEAPON_GANXO"
+msgstr "Shepherd's Hook"
+
+msgid "VICTORY_KICKER"
+msgstr "DISTRICT BATTLE COMPLETE"
+
+msgid "VICTORY_TITLE_0"
+msgstr "VICTORY FOR THE PINE BRIGADE!"
+
+msgid "VICTORY_TITLE_1"
+msgstr "VICTORY FOR THE TRAMUNTANA COLUMN!"
+
+msgid "VICTORY_TITLE_DRAW"
+msgstr "MUTUAL DESTRUCTION — DRAW!"
+
+msgid "VICTORY_SUB_0"
+msgstr "The Golden Procession conquers %s!"
+
+msgid "VICTORY_SUB_1"
+msgstr "The Crimson Procession conquers %s!"
+
+msgid "VICTORY_SUB_DRAW"
+msgstr "All the caterpillars have fallen in combat!"
+
+msgid "VICTORY_STAT_MAP"
+msgstr "Place:"
+
+msgid "VICTORY_STAT_ROUNDS"
+msgstr "Total Rounds:"
+
+msgid "VICTORY_STAT_DMG_0"
+msgstr "Pine Brigade Damage:"
+
+msgid "VICTORY_STAT_DMG_1"
+msgstr "Tramuntana Damage:"
+
+msgid "VICTORY_STAT_MVP"
+msgstr "Processionary Caterpillar MVP:"
+
+msgid "VICTORY_MVP_VALUE"
+msgstr "%s (%d damage points)"
+
+msgid "VICTORY_BTN_LOBBY"
+msgstr "Change Place / Squad"
+
+msgid "VICTORY_BTN_REMATCH"
+msgstr "Play Again [Enter]"
+
+msgid "AIM_AIRSTRIKE_TARGET"
+msgstr "CORREFOC TARGET"
+
+msgid "AIM_AIRSTRIKE_HINT"
+msgstr "UP/DOWN OR TAP: MOVE TARGET · SPACE/FIRE: ATTACK"
+
+msgid "AIM_SWITCH_HINT"
+msgstr "TAB / TAP CATERPILLAR: SWITCH"
+
+msgid "TRACKER_METERS"
+msgstr "▲ %dm"
+
+msgid "TOUCH_TARGET"
+msgstr "CORREFOC TARGET"
+
+msgid "TOUCH_JUMP"
+msgstr "JUMP!"
+
+msgid "TOUCH_BACKFLIP"
+msgstr "BACKFLIP!"
+

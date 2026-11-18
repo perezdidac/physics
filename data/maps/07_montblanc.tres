@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MapDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/map_def.gd" id="1_rw6no"]
+
+[resource]
+script = ExtResource("1_rw6no")
+id = "MONTBLANC"
+name_key = "MAP_MONTBLANC_NAME"
+subtitle_key = "MAP_MONTBLANC_SUBTITLE"
+badge_key = "MAP_MONTBLANC_BADGE"
+background_key = "montblanc"
+weather = "AUTUMN_LEAVES"
+slide_friction = 0.966
+sky = PackedColorArray(0.14117648, 0.06666667, 0.10980392, 1, 0.32941177, 0.11764706, 0.2, 1, 0.56078434, 0.20392157, 0.21960784, 1, 0.8117647, 0.41568628, 0.26666668, 1, 0.96862745, 0.74509805, 0.4745098, 1)
+water_top = Color(0.2509804, 0.3764706, 0.4627451, 0.82)
+water_deep = Color(0.07058824, 0.101960786, 0.15686275, 0.98)
+turf_col = Color(0.40784314, 0.4392157, 0.17254902, 1)
+soil_col = Color(0.5019608, 0.21176471, 0.17254902, 1)
+rock_col = Color(0.59607846, 0.32156864, 0.28235295, 1)
+tree_style = "UMBRELLA_PINE"
+preferred_texture = "ASHLAR_BLOCKS"

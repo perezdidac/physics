@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_mq46s"]
+
+[resource]
+script = ExtResource("1_mq46s")
+id = "JETPACK"
+key = "="
+name_key = "WPN_JETPACK"
+default_ammo = 2
+type = "UTILITY_JET"

@@ -1,0 +1,837 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CUCS\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "FT_TURN_SWITCH"
+msgstr "¡TORN DE %s! [TAB]"
+
+msgid "FT_GUST_RIGHT"
+msgstr "¡RÀFEGA DE TRAMUNTANA! »"
+
+msgid "FT_GUST_LEFT"
+msgstr "« ¡VENT DE GARBÍ!"
+
+msgid "FT_TIDE"
+msgstr "¡MORT SOBTADA — PUJA LA MAREA!"
+
+msgid "FT_NEST_BURST"
+msgstr "¡BOSSA DE SEDA REBENTADA! +PINYONS I LARVES!"
+
+msgid "FT_WEB_SPUN"
+msgstr "¡SEDA ELÀSTICA TEIXIDA!"
+
+msgid "FT_METAMORPHOSIS"
+msgstr "¡%s: METAMORFOSI ALADA! (MANTÉN W PER PLANAR)"
+
+msgid "FT_ROVELLO_ROASTED"
+msgstr "¡ROVELLÓ A LA BRASA!"
+
+msgid "FT_WINE_SPLASH"
+msgstr "¡XOP DE VI DEL PRIORAT!"
+
+msgid "FT_ESCUDELLA_EXPLODE"
+msgstr "¡ESCUDELLA EXPLOSIVA! ¡PLUJA DE GALETS!"
+
+msgid "FT_DAMAGE"
+msgstr "-%s"
+
+msgid "FT_DAMAGE_LABEL"
+msgstr "%s -%s"
+
+msgid "FT_FALLEN"
+msgstr "¡%s CAIGUT!"
+
+msgid "FT_CASTELL"
+msgstr "¡CASTELL DE CUCS! +30% FORÇA ENXANETA!"
+
+msgid "FT_PROCESSION_FURY"
+msgstr "¡FÚRIA EN PROCESSÓ! +%s%% DANY"
+
+msgid "FT_CARQUINYOLIS"
+msgstr "¡CARQUINYOLIS TRENCADENTS!"
+
+msgid "FT_BAT_DEFLECT"
+msgstr "¡REBOT DE MESTRE!"
+
+msgid "FT_FUET_SLICE"
+msgstr "¡ZASCA DE FUET!"
+
+msgid "FT_TIO"
+msgstr "¡CAGA TIÓ, CAGA TORRÓ!"
+
+msgid "FT_JETPACK"
+msgstr "¡ALES DE PINAR (W/A/D)!"
+
+msgid "FT_SPOON"
+msgstr "¡CULLERADA DE BOIX! ¡OBRINT PAS!"
+
+msgid "FT_DRILL"
+msgstr "¡BARRINA DE MINAIRE! ¡Brrrrr!"
+
+msgid "FT_GIRDER"
+msgstr "¡MARGE DE PEDRA SECA CONSTRUÏT!"
+
+msgid "FT_GRAPPLE"
+msgstr "¡GANXO DE PASTOR! ¡AMUNT!"
+
+msgid "FT_GRAPPLE_SHORT"
+msgstr "¡GANXO CURT!"
+
+msgid "FT_MEDKIT"
+msgstr "+35 PV ¡RESINA DE PI!"
+
+msgid "FT_CRATE_WEAPON"
+msgstr "+1 %s!"
+
+msgid "FT_MINE_ARMED"
+msgstr "¡CLIC! MINA ARMADA!"
+
+msgid "FT_HOLY_CHOIR"
+msgstr "♪ VIROLAI! AL·LELUIA! ♪"
+
+msgid "FT_DYNAMITE_BOOM"
+msgstr "¡CAGA TIÓ!"
+
+msgid "FT_PARACHUTE_CUT"
+msgstr "¡PARACAIGUDES TRENCAT!"
+
+msgid "FT_WEB_RICOCHET"
+msgstr "¡REBOT EN SEDA!"
+
+msgid "FT_CAGANER"
+msgstr "¡BENEDICCIÓ DEL CAGANER! +30 PV I +1 PORRÓ!"
+
+msgid "FT_ESCUDELLA_BUFF"
+msgstr "+25 PV ¡FORÇA DE LA PILOTA! (+25% DANY)"
+
+msgid "FT_PINE_NUT"
+msgstr "+20 PV ¡PINYÓ DAURAT!"
+
+msgid "FT_WEB_BOING"
+msgstr "¡BOING DE SEDA!"
+
+msgid "FT_ROVELLO_BOING"
+msgstr "¡BOING DE ROVELLÓ! +8 PV"
+
+msgid "FT_CARAMBOLA"
+msgstr "¡CARAMBOLA!"
+
+msgid "FT_DROWN"
+msgstr "%s: Glu glu... XOF!"
+
+msgid "DMG_URTICARIA"
+msgstr "¡URTICÀRIA!"
+
+msgid "DMG_SILK_SHIELD"
+msgstr "ESCUT DE SEDA"
+
+msgid "DMG_ITCH"
+msgstr "¡PICOR URTICANT!"
+
+msgid "DMG_CRATE"
+msgstr "¡CAIXA AL CAP!"
+
+msgid "DMG_CARQUINYOLI_BITE"
+msgstr "¡CREC! TRENCADENTS!"
+
+msgid "DMG_FUET"
+msgstr "¡COP DE FUET DE VIC!"
+
+msgid "DMG_BAT"
+msgstr "¡BON COP DE FALÇ!"
+
+msgid "DMG_HOOK"
+msgstr "¡GANXADA DE PASTOR!"
+
+msgid "DMG_SPOON"
+msgstr "¡CULLERADA!"
+
+msgid "DMG_DRILL"
+msgstr "¡BARRINA!"
+
+msgid "DMG_LARVAE"
+msgstr "¡LARVES!"
+
+msgid "DMG_SLAM"
+msgstr "PATACADA!"
+
+msgid "DMG_CARAMBOLA"
+msgstr "¡CARAMBOLA!"
+
+msgid "BUBBLE_CAGANER"
+msgstr "¡El Caganer de la Sort!"
+
+msgid "BUBBLE_ESCUDELLA"
+msgstr "¡Quina Escudella més bona!"
+
+msgid "BUBBLE_CASTELL"
+msgstr "¡Castell de Cucs! ¡Aleta!"
+
+msgid "TAUNT_TURN_1"
+msgstr "A pel pi!"
+
+msgid "TAUNT_TURN_2"
+msgstr "En processó!"
+
+msgid "TAUNT_TURN_3"
+msgstr "Prepara el trabuc!"
+
+msgid "TAUNT_TURN_4"
+msgstr "Tasta el fuet de Vic!"
+
+msgid "TAUNT_TURN_5"
+msgstr "Carquinyoli trencadents!"
+
+msgid "TAUNT_TURN_6"
+msgstr "Bon cop de falç!"
+
+msgid "TAUNT_HIT_1"
+msgstr "Ai els meus pèls!"
+
+msgid "TAUNT_HIT_2"
+msgstr "Quina picor!"
+
+msgid "TAUNT_HIT_3"
+msgstr "Mal llamp!"
+
+msgid "TAUNT_HIT_4"
+msgstr "El meu capoll!"
+
+msgid "TAUNT_URTICARIA_1"
+msgstr "Pols urticant!"
+
+msgid "TAUNT_URTICARIA_2"
+msgstr "Grata, grata!"
+
+msgid "TAUNT_URTICARIA_3"
+msgstr "Al·lèrgia total!"
+
+msgid "TAUNT_PROCESSION_1"
+msgstr "Columna unida!"
+
+msgid "TAUNT_PROCESSION_2"
+msgstr "Fúria processionària!"
+
+msgid "TAUNT_PROCESSION_3"
+msgstr "Seda i ferro!"
+
+msgid "TAUNT_METAMORPH_1"
+msgstr "METAMORFOSI!"
+
+msgid "TAUNT_METAMORPH_2"
+msgstr "Ales de Thaumetopoea!"
+
+msgid "TAUNT_METAMORPH_3"
+msgstr "Ja puc planar!"
+
+msgid "WPN_BAZOOKA"
+msgstr "Trabuc"
+
+msgid "WPN_CARQUINYOLI"
+msgstr "Carquinyolis"
+
+msgid "WPN_GRENADE"
+msgstr "Pinya"
+
+msgid "WPN_CLUSTER"
+msgstr "Calçotada"
+
+msgid "WPN_URTICARIA"
+msgstr "Urticant"
+
+msgid "WPN_SHOTGUN"
+msgstr "Pedrenyal"
+
+msgid "WPN_FUET"
+msgstr "El Fuet"
+
+msgid "WPN_BAT"
+msgstr "La Falç"
+
+msgid "WPN_DYNAMITE"
+msgstr "El Tió"
+
+msgid "WPN_HOLY"
+msgstr "Porró Sagrat"
+
+msgid "WPN_AIRSTRIKE"
+msgstr "Correfoc"
+
+msgid "WPN_JETPACK"
+msgstr "Ales Pinar"
+
+msgid "WPN_CULLERA"
+msgstr "Cullera Boix"
+
+msgid "WPN_BARRINA"
+msgstr "Barrina"
+
+msgid "WPN_PONT_PEDRA"
+msgstr "Pedra Seca"
+
+msgid "WPN_GANXO"
+msgstr "Ganxo Pastor"
+
+msgid "MAP_MONTSERRAT_NAME"
+msgstr "Massís de Montserrat"
+
+msgid "MAP_MONTSERRAT_SUBTITLE"
+msgstr "Monestir de Santa Maria, Agulles i Aeri (Bages)"
+
+msgid "MAP_MONTSERRAT_BADGE"
+msgstr "BOIRA I PINARS"
+
+msgid "MAP_CADAQUES_NAME"
+msgstr "Cadaqués i Cap de Creus"
+
+msgid "MAP_CADAQUES_SUBTITLE"
+msgstr "Església de Santa Maria, Llaguts i Feixes (Alt Empordà)"
+
+msgid "MAP_CADAQUES_BADGE"
+msgstr "TRAMUNTANA VIVA"
+
+msgid "MAP_TAULL_NAME"
+msgstr "Taüll i la Vall de Boí"
+
+msgid "MAP_TAULL_SUBTITLE"
+msgstr "Sant Climent de Taüll i Aigüestortes (Alta Ribagorça)"
+
+msgid "MAP_TAULL_BADGE"
+msgstr "NEU DEL PIRINEU"
+
+msgid "MAP_CASTELLFOLLIT_NAME"
+msgstr "Castellfollit de la Roca"
+
+msgid "MAP_CASTELLFOLLIT_SUBTITLE"
+msgstr "Cinglera Basàltica i Fageda d'en Jordà (La Garrotxa)"
+
+msgid "MAP_CASTELLFOLLIT_BADGE"
+msgstr "FULLES DE FAIG"
+
+msgid "MAP_DELTA_EBRE_NAME"
+msgstr "Delta de l'Ebre i Buda"
+
+msgid "MAP_DELTA_EBRE_SUBTITLE"
+msgstr "Arrossars, Barraques, Far del Fangar i Flamencs (Montsià)"
+
+msgid "MAP_DELTA_EBRE_BADGE"
+msgstr "FLAMENCS I DUNES"
+
+msgid "MAP_TARRACO_NAME"
+msgstr "Tàrraco Imperial"
+
+msgid "MAP_TARRACO_SUBTITLE"
+msgstr "Amfiteatre Romà, Pont del Diable i Mare Nostrum (Tarragonès)"
+
+msgid "MAP_TARRACO_BADGE"
+msgstr "PEDRA ROMANA"
+
+msgid "MAP_PEDRAFORCA_NAME"
+msgstr "Massís del Pedraforca"
+
+msgid "MAP_PEDRAFORCA_SUBTITLE"
+msgstr "L'Enforcadura, Tartera i Serra del Cadí (Berguedà)"
+
+msgid "MAP_PEDRAFORCA_BADGE"
+msgstr "CIM MÀGIC"
+
+msgid "MAP_MONTBLANC_NAME"
+msgstr "Muralles de Montblanc"
+
+msgid "MAP_MONTBLANC_SUBTITLE"
+msgstr "Torres Medievals, Llegenda de Sant Jordi i Prades (Conca)"
+
+msgid "MAP_MONTBLANC_BADGE"
+msgstr "DRAC I ROSES"
+
+msgid "ARCH_FEIXES_TERRACED"
+msgstr "Feixes de Pedra Seca"
+
+msgid "ARCH_AGULLES_SPIRES"
+msgstr "Agulles i Cingles"
+
+msgid "ARCH_MULTI_DECK_GROTTO"
+msgstr "Cova de Dos Nivells"
+
+msgid "ARCH_FLOATING_BALCONIES"
+msgstr "Balcons Sospesos"
+
+msgid "ARCH_TWIN_MASSIFS"
+msgstr "Doble Massís"
+
+msgid "ARCH_STEPPED_CANYONS"
+msgstr "Congost Escalonat"
+
+msgid "ARCH_CITADEL_CALDERA"
+msgstr "Ciutadella Alta"
+
+msgid "ARCH_ARCHIPELAGO"
+msgstr "Illes Escalonades"
+
+msgid "SPLASH_KICKER"
+msgstr "Thaumetopoea Pityocampa · Guerra Tàctica als Pinars de Catalunya"
+
+msgid "SPLASH_TITLE"
+msgstr "CUCS"
+
+msgid "SPLASH_SUBTITLE"
+msgstr "LA PROCESSÓ DE FERRO"
+
+msgid "MENU_QUICK_TITLE"
+msgstr "Partida Ràpida contra la CPU"
+
+msgid "MENU_QUICK_SUB"
+msgstr "Salta directament al camp de batalla contra la IA"
+
+msgid "MENU_2P_TITLE"
+msgstr "2 Jugadors en Local"
+
+msgid "MENU_2P_SUB"
+msgstr "Jugueu per torns al mateix mòbil o ordinador"
+
+msgid "MENU_CUSTOM_TITLE"
+msgstr "Personalitza la Partida"
+
+msgid "MENU_CUSTOM_SUB"
+msgstr "Indrets de Catalunya, dificultat, barrets, noms i cares d'amics"
+
+msgid "MENU_HINT"
+msgstr "[b]Toca[/b] o [b]↑/↓ + INTRO[/b] per Seleccionar  ·  100% Jugable amb Teclat o Mòbil Horitzontal"
+
+msgid "ROTATE_KICKER"
+msgstr "FORMAT APAÏSAT RECOMANAT"
+
+msgid "ROTATE_TITLE"
+msgstr "GIRA EL MÒBIL EN HORITZONTAL"
+
+msgid "ROTATE_BODY"
+msgstr "Per veure tot el camp de batalla i utilitzar còmodament els controls tàctils de [b]CUCS[/b], gira el telèfon en mode horitzontal."
+
+msgid "ROTATE_BTN_FULLSCREEN"
+msgstr "Pantalla Completa Horitzontal"
+
+msgid "ROTATE_BTN_CONTINUE"
+msgstr "Continua igualment"
+
+msgid "LOBBY_TITLE"
+msgstr "CUCS — Personalitza la Partida i els Escamots"
+
+msgid "LOBBY_SUBTITLE"
+msgstr "Tria el mode de combat, l'indret de Catalunya, el barret tradicional, els noms i les fotos."
+
+msgid "LOBBY_KB_HINT"
+msgstr "Teclat: ↑↓←→ / Tab per navegar · Intro/Espai per canviar · Ctrl+Intro per desplegar"
+
+msgid "LOBBY_BTN_BACK"
+msgstr "← Menú Principal [Esc]"
+
+msgid "LOBBY_SEC_MODE"
+msgstr "1. Mode de Combat"
+
+msgid "LOBBY_SEC_DIFF"
+msgstr "2. Intel·ligència Tàctica de la CPU"
+
+msgid "LOBBY_SEC_COUNT"
+msgstr "3. Nombre de Cucs per Escamot (1 a 6 Cucs)"
+
+msgid "LOBBY_SEC_MAP"
+msgstr "4. Tria d'entre els 8 Indrets de Catalunya"
+
+msgid "LOBBY_SEC_SQUADS"
+msgstr "5. Personalitza els Escamots de Cucs i Cares d'Amics"
+
+msgid "LOBBY_MODE_1P_TITLE"
+msgstr "1J vs CPU"
+
+msgid "LOBBY_MODE_1P_SUB"
+msgstr "Campanya en Solitari vs IA"
+
+msgid "LOBBY_MODE_2P_TITLE"
+msgstr "2J en Local"
+
+msgid "LOBBY_MODE_2P_SUB"
+msgstr "Dos Jugadors, Mateix PC"
+
+msgid "LOBBY_MODE_CPU_TITLE"
+msgstr "CPU vs CPU"
+
+msgid "LOBBY_MODE_CPU_SUB"
+msgstr "Batalla d'Exhibició IA"
+
+msgid "LOBBY_DIFF_ROOKIE_TITLE"
+msgstr "Novell"
+
+msgid "LOBBY_DIFF_ROOKIE_SUB"
+msgstr "Punteria Benèvola"
+
+msgid "LOBBY_DIFF_VETERAN_TITLE"
+msgstr "Veterà"
+
+msgid "LOBBY_DIFF_VETERAN_SUB"
+msgstr "Tàctica Equilibrada"
+
+msgid "LOBBY_DIFF_NIGHTMARE_TITLE"
+msgstr "Malson"
+
+msgid "LOBBY_DIFF_NIGHTMARE_SUB"
+msgstr "Càlcul Mortal del Vent"
+
+msgid "LOBBY_COUNT_1_TITLE"
+msgstr "1 Cuc"
+
+msgid "LOBBY_COUNT_1_SUB"
+msgstr "Duel 1 vs 1"
+
+msgid "LOBBY_COUNT_2_TITLE"
+msgstr "2 Cucs"
+
+msgid "LOBBY_COUNT_2_SUB"
+msgstr "Parella Tàctica"
+
+msgid "LOBBY_COUNT_3_TITLE"
+msgstr "3 Cucs"
+
+msgid "LOBBY_COUNT_3_SUB"
+msgstr "Escamot Lleuger"
+
+msgid "LOBBY_COUNT_4_TITLE"
+msgstr "4 Cucs"
+
+msgid "LOBBY_COUNT_4_SUB"
+msgstr "Clàssic (4 vs 4)"
+
+msgid "LOBBY_COUNT_5_TITLE"
+msgstr "5 Cucs"
+
+msgid "LOBBY_COUNT_5_SUB"
+msgstr "Columna Gran"
+
+msgid "LOBBY_COUNT_6_TITLE"
+msgstr "6 Cucs"
+
+msgid "LOBBY_COUNT_6_SUB"
+msgstr "Guerra Total (6 vs 6)"
+
+msgid "LOBBY_SQUAD_1"
+msgstr "I. Brigada del Pinar (Or)"
+
+msgid "LOBBY_SQUAD_2"
+msgstr "II. Columna Tramuntana (Grana)"
+
+msgid "HAT_VARIED"
+msgstr "Barret: Variat (Cada Cuc Diferent!)"
+
+msgid "HAT_CATALAN"
+msgstr "Barret: Barretina Catalana"
+
+msgid "HAT_CASTELLER"
+msgstr "Barret: Casc de Casteller (Senyera)"
+
+msgid "HAT_BANDOLER"
+msgstr "Barret: Capell de Bandoler (Serrallonga)"
+
+msgid "HAT_PAGES"
+msgstr "Barret: Barret de Palla de Pagès"
+
+msgid "HAT_BRISTLES"
+msgstr "Barret: Plomall de Pèls Urticants"
+
+msgid "LOBBY_FACE_ADD"
+msgstr "+ Cara"
+
+msgid "LOBBY_FACE_READY"
+msgstr "✓ Cara Llista"
+
+msgid "LOBBY_FACE_TOOLTIP"
+msgstr "Puja la foto de la cara d'un amic per a aquest cuc"
+
+msgid "LOBBY_BTN_RANDOM"
+msgstr "Noms Catalans Aleatoris"
+
+msgid "LOBBY_BTN_BACK_TO_GAME"
+msgstr "Torna a la Partida Actual"
+
+msgid "LOBBY_BTN_DEPLOY"
+msgstr "DESPLEGA AL CAMP DE BATALLA"
+
+msgid "MAP_MONTSERRAT_SUB"
+msgstr "Monestir de Santa Maria, Agulles i Aeri (Bages)"
+
+msgid "MAP_CADAQUES_SUB"
+msgstr "Església de Santa Maria, Llaguts i Feixes (Alt Empordà)"
+
+msgid "MAP_TAULL_SUB"
+msgstr "Sant Climent de Taüll i Aigüestortes (Alta Ribagorça)"
+
+msgid "MAP_CASTELLFOLLIT_SUB"
+msgstr "Cinglera Basàltica i Fageda d'en Jordà (La Garrotxa)"
+
+msgid "MAP_DELTA_EBRE_SUB"
+msgstr "Arrossars, Barraques, Far del Fangar i Flamencs (Montsià)"
+
+msgid "MAP_TARRACO_SUB"
+msgstr "Amfiteatre Romà, Pont del Diable i Mare Nostrum (Tarragonès)"
+
+msgid "MAP_PEDRAFORCA_SUB"
+msgstr "L'Enforcadura, Tartera i Serra del Cadí (Berguedà)"
+
+msgid "MAP_MONTBLANC_SUB"
+msgstr "Torres Medievals, Llegenda de Sant Jordi i Prades (Conca)"
+
+msgid "HUD_SQUAD_1"
+msgstr "I. Brigada del Pinar"
+
+msgid "HUD_SQUAD_2"
+msgstr "II. Tramuntana"
+
+msgid "HUD_HP_TOTAL"
+msgstr "%d PV"
+
+msgid "HUD_TURN_OF"
+msgstr "Torn de %s"
+
+msgid "HUD_ROUND_SUB"
+msgstr "Ronda %d · %s"
+
+msgid "HUD_WIND"
+msgstr "VENT"
+
+msgid "HUD_MUSIC_ON"
+msgstr "Música: Sí"
+
+msgid "HUD_MUSIC_OFF"
+msgstr "Música: No"
+
+msgid "HUD_MUSIC_TOOLTIP"
+msgstr "Activa o silencia la música MIDI catalana"
+
+msgid "HUD_EXIT"
+msgstr "Sortir"
+
+msgid "HUD_EXIT_TOOLTIP"
+msgstr "Surt de la partida actual i torna al menú principal"
+
+msgid "HUD_PIP_OWN"
+msgstr "Toca abans de moure per jugar amb aquest cuc"
+
+msgid "HUD_PIP_OTHER"
+msgstr "Toca per mirar on és aquest cuc"
+
+msgid "HUD_END_WIN_0"
+msgstr "¡Victòria de la Brigada del Pinar!"
+
+msgid "HUD_END_WIN_1"
+msgstr "¡Victòria de la Tramuntana!"
+
+msgid "HUD_END_DRAW"
+msgstr "¡Destrucció Mútua — Empat!"
+
+msgid "HUD_FUSE"
+msgstr "METXA [Q/E]:"
+
+msgid "HUD_ARSENAL_OPEN"
+msgstr "▲ Arsenal [B]"
+
+msgid "HUD_ARSENAL_CLOSE"
+msgstr "▼ Tanca [B]"
+
+msgid "HUD_WEAPON_PREV_TOOLTIP"
+msgstr "Arma anterior [Z o [ ]"
+
+msgid "HUD_WEAPON_NEXT_TOOLTIP"
+msgstr "Arma següent [X o ] ]"
+
+msgid "HUD_WEAPON_TOGGLE_TOOLTIP"
+msgstr "Toca o prem [B] per obrir les 16 armes catalanes (Z/X per canviar ràpid)"
+
+msgid "HUD_SWITCH_WORM"
+msgstr "Cuc ⇄"
+
+msgid "HUD_SWITCH_WORM_TOOLTIP"
+msgstr "Canvia quin cuc controles abans de moure [Tab]"
+
+msgid "HUD_MOVE_LEFT"
+msgstr "Moure a l'esquerra"
+
+msgid "HUD_MOVE_RIGHT"
+msgstr "Moure a la dreta"
+
+msgid "HUD_AIM_UP"
+msgstr "Apuntar amunt"
+
+msgid "HUD_AIM_DOWN"
+msgstr "Apuntar avall"
+
+msgid "HUD_JUMP"
+msgstr "Salt"
+
+msgid "HUD_JUMP_TOOLTIP"
+msgstr "Salt endavant [Intro]"
+
+msgid "HUD_FLIP"
+msgstr "Mortal"
+
+msgid "HUD_FLIP_TOOLTIP"
+msgstr "Salt mortal enrere [Retrocés]"
+
+msgid "HUD_ZOOM_OUT_TOOLTIP"
+msgstr "Allunya la càmera [AvPàg]"
+
+msgid "HUD_ZOOM_IN_TOOLTIP"
+msgstr "Apropa la càmera [RePàg]"
+
+msgid "HUD_CENTER"
+msgstr "Centra"
+
+msgid "HUD_CENTER_TOOLTIP"
+msgstr "Centra la càmera [V]"
+
+msgid "FIRE_HOLD"
+msgstr "MANTÉN: FOC!"
+
+msgid "FIRE_AIRSTRIKE"
+msgstr "CORREFOC!"
+
+msgid "FIRE_CULLERA"
+msgstr "CULLERADA!"
+
+msgid "FIRE_BARRINA"
+msgstr "BARRINA!"
+
+msgid "FIRE_PONT_PEDRA"
+msgstr "PEDRA SECA!"
+
+msgid "FIRE_GANXO"
+msgstr "GANXO!"
+
+msgid "FIRE_MELEE"
+msgstr "ATACA!"
+
+msgid "FIRE_DROP"
+msgstr "DEIXA TIÓ!"
+
+msgid "FIRE_JET"
+msgstr "ALES!"
+
+msgid "FIRE_DEFAULT"
+msgstr "FOC!"
+
+msgid "WEAPON_BAZOOKA"
+msgstr "Trabuc"
+
+msgid "WEAPON_CARQUINYOLI"
+msgstr "Carquinyolis"
+
+msgid "WEAPON_GRENADE"
+msgstr "Pinya"
+
+msgid "WEAPON_CLUSTER"
+msgstr "Calçotada"
+
+msgid "WEAPON_URTICARIA"
+msgstr "Urticant"
+
+msgid "WEAPON_SHOTGUN"
+msgstr "Pedrenyal"
+
+msgid "WEAPON_FUET"
+msgstr "El Fuet"
+
+msgid "WEAPON_BAT"
+msgstr "La Falç"
+
+msgid "WEAPON_DYNAMITE"
+msgstr "El Tió"
+
+msgid "WEAPON_HOLY"
+msgstr "Porró Sagrat"
+
+msgid "WEAPON_AIRSTRIKE"
+msgstr "Correfoc"
+
+msgid "WEAPON_JETPACK"
+msgstr "Ales Pinar"
+
+msgid "WEAPON_CULLERA"
+msgstr "Cullera Boix"
+
+msgid "WEAPON_BARRINA"
+msgstr "Barrina"
+
+msgid "WEAPON_PONT_PEDRA"
+msgstr "Pedra Seca"
+
+msgid "WEAPON_GANXO"
+msgstr "Ganxo Pastor"
+
+msgid "VICTORY_KICKER"
+msgstr "BATALLA COMARCAL COMPLETADA"
+
+msgid "VICTORY_TITLE_0"
+msgstr "¡VICTÒRIA DE LA BRIGADA DEL PINAR!"
+
+msgid "VICTORY_TITLE_1"
+msgstr "¡VICTÒRIA DE LA COLUMNA TRAMUNTANA!"
+
+msgid "VICTORY_TITLE_DRAW"
+msgstr "¡DESTRUCCIÓ MÚTUA — EMPAT!"
+
+msgid "VICTORY_SUB_0"
+msgstr "La Processó Daurada conquereix %s!"
+
+msgid "VICTORY_SUB_1"
+msgstr "La Processó Grana conquereix %s!"
+
+msgid "VICTORY_SUB_DRAW"
+msgstr "Tots els cucs han caigut en combat!"
+
+msgid "VICTORY_STAT_MAP"
+msgstr "Indret:"
+
+msgid "VICTORY_STAT_ROUNDS"
+msgstr "Rondes Totals:"
+
+msgid "VICTORY_STAT_DMG_0"
+msgstr "Dany Brigada del Pinar:"
+
+msgid "VICTORY_STAT_DMG_1"
+msgstr "Dany Tramuntana:"
+
+msgid "VICTORY_STAT_MVP"
+msgstr "Cuc Processionari MVP:"
+
+msgid "VICTORY_MVP_VALUE"
+msgstr "%s (%d punts de dany)"
+
+msgid "VICTORY_BTN_LOBBY"
+msgstr "Canvia Indret / Escamot"
+
+msgid "VICTORY_BTN_REMATCH"
+msgstr "Torna a Jugar [Intro]"
+
+msgid "AIM_AIRSTRIKE_TARGET"
+msgstr "OBJECTIU CORREFOC"
+
+msgid "AIM_AIRSTRIKE_HINT"
+msgstr "↑/↓ o TOCA: MOU OBJECTIU · ESPAI/FOC: ATACA"
+
+msgid "AIM_SWITCH_HINT"
+msgstr "TAB / TOCA CUC: CANVIA"
+
+msgid "TRACKER_METERS"
+msgstr "▲ %dm"
+
+msgid "TOUCH_TARGET"
+msgstr "OBJECTIU CORREFOC"
+
+msgid "TOUCH_JUMP"
+msgstr "¡SALT!"
+
+msgid "TOUCH_BACKFLIP"
+msgstr "¡MORTAL ENRERE!"
+

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MapDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/map_def.gd" id="1_8pb6t"]
+
+[resource]
+script = ExtResource("1_8pb6t")
+id = "PEDRAFORCA"
+name_key = "MAP_PEDRAFORCA_NAME"
+subtitle_key = "MAP_PEDRAFORCA_SUBTITLE"
+badge_key = "MAP_PEDRAFORCA_BADGE"
+background_key = "pedraforca"
+weather = "SNOW"
+slide_friction = 0.972
+sky = PackedColorArray(0.101960786, 0.08627451, 0.21176471, 1, 0.21960784, 0.18039216, 0.3882353, 1, 0.36078432, 0.35686275, 0.5803922, 1, 0.5568628, 0.65882355, 0.8117647, 1, 0.85882354, 0.9411765, 0.98039216, 1)
+water_top = Color(0.21176471, 0.5568628, 0.6901961, 0.82)
+water_deep = Color(0.05490196, 0.14901961, 0.22745098, 0.98)
+turf_col = Color(0.22745098, 0.4627451, 0.26666668, 1)
+soil_col = Color(0.34509805, 0.2901961, 0.26666668, 1)
+rock_col = Color(0.4627451, 0.5019608, 0.57254905, 1)
+tree_style = "DOUGLAS_FIR"
+preferred_texture = "SLATE_FRACTURES"

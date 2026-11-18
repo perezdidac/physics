@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_jkmpr"]
+
+[resource]
+script = ExtResource("1_jkmpr")
+id = "DYNAMITE"
+key = "9"
+name_key = "WPN_DYNAMITE"
+default_ammo = 2
+type = "DROP"
+fuse = 4.0
+blast_r = 74.0
+max_dmg = 75.0
+knockback = 610.0

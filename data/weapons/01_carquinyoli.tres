@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_a1qbq"]
+
+[resource]
+script = ExtResource("1_a1qbq")
+id = "CARQUINYOLI"
+key = "2"
+name_key = "WPN_CARQUINYOLI"
+type = "CHARGE"
+wind_factor = 0.25
+blast_r = 32.0
+max_dmg = 26.0
+knockback = 360.0

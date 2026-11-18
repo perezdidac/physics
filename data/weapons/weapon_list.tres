@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="WeaponList" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_list.gd" id="1_uo5ie"]
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="2_l14tf"]
+[ext_resource type="Resource" path="res://data/weapons/00_bazooka.tres" id="3_7hhuf"]
+[ext_resource type="Resource" path="res://data/weapons/01_carquinyoli.tres" id="4_wnows"]
+[ext_resource type="Resource" path="res://data/weapons/02_grenade.tres" id="5_p4scj"]
+[ext_resource type="Resource" path="res://data/weapons/03_cluster.tres" id="6_wc2og"]
+[ext_resource type="Resource" path="res://data/weapons/04_urticaria.tres" id="7_r8vfg"]
+[ext_resource type="Resource" path="res://data/weapons/05_shotgun.tres" id="8_hs24e"]
+[ext_resource type="Resource" path="res://data/weapons/06_fuet.tres" id="9_nwdlh"]
+[ext_resource type="Resource" path="res://data/weapons/07_bat.tres" id="10_igptq"]
+[ext_resource type="Resource" path="res://data/weapons/08_dynamite.tres" id="11_ljswa"]
+[ext_resource type="Resource" path="res://data/weapons/09_holy.tres" id="12_bwgx8"]
+[ext_resource type="Resource" path="res://data/weapons/10_airstrike.tres" id="13_r663g"]
+[ext_resource type="Resource" path="res://data/weapons/11_jetpack.tres" id="14_fj2cf"]
+[ext_resource type="Resource" path="res://data/weapons/12_cullera.tres" id="15_boubu"]
+[ext_resource type="Resource" path="res://data/weapons/13_barrina.tres" id="16_2i814"]
+[ext_resource type="Resource" path="res://data/weapons/14_pont_pedra.tres" id="17_hsyaa"]
+[ext_resource type="Resource" path="res://data/weapons/15_ganxo.tres" id="18_21gev"]
+
+[resource]
+script = ExtResource("1_uo5ie")
+weapons = Array[ExtResource("2_l14tf")]([ExtResource("3_7hhuf"), ExtResource("4_wnows"), ExtResource("5_p4scj"), ExtResource("6_wc2og"), ExtResource("7_r8vfg"), ExtResource("8_hs24e"), ExtResource("9_nwdlh"), ExtResource("10_igptq"), ExtResource("11_ljswa"), ExtResource("12_bwgx8"), ExtResource("13_r663g"), ExtResource("14_fj2cf"), ExtResource("15_boubu"), ExtResource("16_2i814"), ExtResource("17_hsyaa"), ExtResource("18_21gev")])
