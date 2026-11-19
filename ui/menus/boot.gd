@@ -114,7 +114,8 @@ func _build() -> void:
 	_titles.clear()
 	var real_vp: Vector2 = get_viewport_rect().size
 	var vp: Vector2 = TouchMetrics.logical_size(real_vp) # the layout below is built for this size, then scaled up
-	var compact: bool = UiUtil.is_compact(vp)
+	# Phones whose scaled layout is a bit taller than "compact" (UI scale 1.0-1.33) still need the tight two-column menu to fit.
+	var compact: bool = UiUtil.is_compact(vp) or (vp.y < 640.0 and TouchMetrics.ui_scale(real_vp) > 1.0)
 	var tap: float = minf(TouchMetrics.tap_min(real_vp), vp.y * 0.16)
 	var backdrop := MenuBackdrop.new()
 	add_child(backdrop)
