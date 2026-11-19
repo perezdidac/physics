@@ -9,6 +9,12 @@ signal terrain_changed(rect: Rect2i)
 const W: int = 3200
 const H: int = 820
 ## R8 colour that stores the byte 1 (0.004 * 255 = 1.02, truncated to 1).
+## Width and height (px) of the anthill mound.
+const ANTHILL_W: int = 72
+const ANTHILL_HALF: int = 36
+const ANTHILL_H: int = 24
+## Height (px) of the rock a ramp removes above its line.
+const _RAMP_CLEAR: int = 150
 const _SOLID: Color = Color(0.004, 0.0, 0.0, 1.0)
 
 ## Largest and smallest jitter of carve_crater (derived from the proven noise range).
@@ -29,6 +35,8 @@ var last_change_kind: String = ""
 var last_carve: Dictionary = {}
 ## Last build_girder call: {rect: Rect2i, added: PackedByteArray}; `added` is rect-sized, 1 where a pixel turned from air to solid.
 var last_build: Dictionary = {}
+## Every rectangle ever announced with terrain_changed, in order (SimNav reads the new entries to refresh its walking map).
+var edit_log: Array[Rect2i] = []
 var water_y: float = 700.0
 var map: MapDef
 var archetype_id: String = ""
@@ -50,6 +58,9 @@ var match_soil: Vector3 = Vector3.ZERO
 var match_rock: Vector3 = Vector3.ZERO
 
 var _rng: RandomNumberGenerator
+## Playable span (world x) of the match. The whole terrain for classic matches; a story level with `arena_width` removes the land outside it.
+var arena_x0: float = 0.0
+var arena_x1: float = float(W)
 
 
 func _init() -> void:
@@ -124,9 +135,74 @@ func find_all_walkable_surfaces_at_x(x: float) -> PackedInt32Array:
 	return surfaces
 
 
+## Closest to an arena edge (px) that placement margins shrink to when the arena is narrower than the terrain.
+const ARENA_MIN_MARGIN: float = 110.0
+
+
+## True when the playable span is narrower than the terrain.
+func is_clipped() -> bool:
+	return arena_x0 > 0.0 or arena_x1 < float(W)
+
+
+## Width of the playable span.
+func arena_width() -> float:
+	return arena_x1 - arena_x0
+
+
+## World x at `frac` (0..1) of the playable span.
+func arena_at(frac: float) -> float:
+	return arena_x0 + (arena_x1 - arena_x0) * frac
+
+
+## x clamped to the playable span, keeping `margin` px from its edges (the margin shrinks to ARENA_MIN_MARGIN in a clipped arena).
+## For the whole terrain this is clampf(x, margin, W - margin).
+func clamp_x(x: float, margin: float) -> float:
+	var m: float = edge_margin(margin)
+	return clampf(x, arena_x0 + m, arena_x1 - m)
+
+
+## The placement margin `margin` of the whole terrain, shrunk in a clipped arena.
+func edge_margin(margin: float) -> float:
+	return minf(margin, ARENA_MIN_MARGIN) if is_clipped() else margin
+
+
+## x clamped to the playable span with an exact `margin` (movement limits of fighters).
+func clamp_hard(x: float, margin: float) -> float:
+	return clampf(x, arena_x0 + margin, arena_x1 - margin)
+
+
+## Restricts the match to the span [x0, x1]: the land outside it is removed (down to the water and the void, nobody can stand there),
+## and the tree and valley spots outside are dropped. Call right after generate(), before anything is placed.
+func set_arena(x0: float, x1: float) -> void:
+	arena_x0 = clampf(x0, 0.0, float(W))
+	arena_x1 = clampf(x1, arena_x0, float(W))
+	for y in H:
+		var row: int = y * W
+		for x in range(0, int(ceilf(arena_x0))):
+			mask[row + x] = 0
+		for x in range(int(floorf(arena_x1)), W):
+			mask[row + x] = 0
+	var trees: Array[Dictionary] = []
+	for t in tree_spots:
+		if float(t["tx"]) >= arena_x0 and float(t["tx"]) <= arena_x1:
+			trees.append(t)
+	tree_spots = trees
+	var valleys: Array[int] = []
+	for v in valley_spots:
+		if float(v) >= arena_x0 and float(v) <= arena_x1:
+			valleys.append(v)
+	valley_spots = valleys
+
+
 # ---------------------------------------------------------------------------
 # Edits
 # ---------------------------------------------------------------------------
+
+## Records the changed rectangle in `edit_log` and emits terrain_changed.
+func _announce(rect: Rect2i) -> void:
+	edit_log.append(rect)
+	terrain_changed.emit(rect)
+
 
 ## Destroys a noisy disc of terrain (mask only); emits terrain_changed.
 func carve_crater(cx: float, cy: float, radius: float) -> void:
@@ -157,7 +233,24 @@ func carve_crater(cx: float, cy: float, radius: float) -> void:
 	if x1 >= x0 and y1 >= y0:
 		last_change_kind = "carve"
 		last_carve = {"x": cx, "y": cy, "r": radius}
-		terrain_changed.emit(Rect2i(x0, y0, x1 - x0 + 1, y1 - y0 + 1))
+		_announce(Rect2i(x0, y0, x1 - x0 + 1, y1 - y0 + 1))
+
+
+## Cuts a straight ramp into the rock (the road of a procession level): it starts at the foot of a wall (x, ground y) and climbs `rise` px
+## going `dir` (+1 right, -1 left) at `slope` px per px; all the rock above the ramp line is removed, so the walkers can climb it.
+func cut_ramp(foot: Vector2, dir: int, rise: float, slope: float = 0.5) -> void:
+	var length: int = int(ceilf(rise / slope))
+	var x_a: int = clampi(int(foot.x), 0, W - 1)
+	var x_b: int = clampi(int(foot.x) + dir * length, 0, W - 1)
+	for t in range(0, length + 1):
+		var x: int = int(foot.x) + dir * t
+		if x < 0 or x >= W:
+			continue
+		var line_y: int = int(roundf(foot.y - slope * t))
+		for y in range(maxi(0, line_y - _RAMP_CLEAR), mini(H, line_y)):
+			mask[y * W + x] = 0
+	var y_top: int = maxi(0, int(foot.y - rise) - _RAMP_CLEAR)
+	_announce(Rect2i(mini(x_a, x_b), y_top, absi(x_b - x_a) + 1, int(foot.y) - y_top + 2))
 
 
 ## Builds a dry-stone girder (capsule) of solid terrain; emits terrain_changed and records a stamp.
@@ -191,8 +284,24 @@ func build_girder(cx: float, cy: float, angle: float, length: float = 78.0, thic
 	stamps.append({"kind": "GIRDER", "x": cx, "y": cy, "angle": angle, "length": length, "thickness": thickness,
 		"rect": Rect2i(x0, y0, x1 - x0 + 1, y1 - y0 + 1)})
 	last_change_kind = "build"
-	last_build = {"rect": Rect2i(x0, y0, x1 - x0 + 1, y1 - y0 + 1), "added": added}
-	terrain_changed.emit(Rect2i(x0, y0, x1 - x0 + 1, y1 - y0 + 1))
+	last_build = {"rect": Rect2i(x0, y0, x1 - x0 + 1, y1 - y0 + 1), "added": added, "x": cx, "y": cy, "angle": angle, "length": length, "thickness": thickness}
+	_announce(Rect2i(x0, y0, x1 - x0 + 1, y1 - y0 + 1))
+
+
+## Anthill mound (story WAVES levels): a solid dome of ANTHILL_W px and ANTHILL_H px high on the ground at (cx, sy), recorded as an
+## ANTHILL stamp ({x, y = ground y, w, h}). The hole the ants come out of is the top of the dome.
+func stamp_anthill(cx: int, sy: int) -> void:
+	var half: int = ANTHILL_HALF
+	for dx in range(-half, half + 1):
+		var h: int = int(roundf(ANTHILL_H * cos(float(dx) / half * PI * 0.5)))
+		var y: int = sy - h
+		while y < sy + 70:
+			_set_px(cx + dx, y)
+			if y >= sy and mask[mini(H - 1, y + 1) * W + clampi(cx + dx, 0, W - 1)] == 1:
+				break
+			y += 1
+	stamps.append({"kind": "ANTHILL", "x": cx, "y": sy, "w": ANTHILL_W + 1, "h": ANTHILL_H + 8})
+	_announce(Rect2i(cx - half, sy - ANTHILL_H, ANTHILL_W + 1, ANTHILL_H + 70))
 
 
 # ---------------------------------------------------------------------------
@@ -234,6 +343,8 @@ func generate(map_def: MapDef, rng: RandomNumberGenerator, deterministic: bool =
 	if not deterministic:
 		_carried_map_seed = map_seed
 	mask.fill(0)
+	arena_x0 = 0.0
+	arena_x1 = float(W)
 	tree_spots = []
 	valley_spots = []
 	stamps = []

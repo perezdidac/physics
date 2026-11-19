@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="256" height="256">
+<defs><radialGradient id="y" cx="0.4" cy="0.3" r="0.85"><stop offset="0" stop-color="#fff0a0"/><stop offset="0.45" stop-color="#ffcc2e"/><stop offset="1" stop-color="#c78a0c"/></radialGradient><radialGradient id="k" cx="0.4" cy="0.3" r="0.9"><stop offset="0" stop-color="#5a4a38"/><stop offset="0.5" stop-color="#2b2118"/><stop offset="1" stop-color="#0e0905"/></radialGradient></defs>
+<g stroke="#1a120b" stroke-width="1.8" stroke-linecap="round"><path d="M50 50 l-3 -6 M58 48 l-1 -7 M66 47 l1 -7 M74 49 l3 -6 M80 53 l5 -4"/></g>
+<ellipse cx="64" cy="64" rx="18.5" ry="17" fill="url(#k)" stroke="#1a120b" stroke-width="2.6"/>
+<path d="M76 50 C82 56 82 72 76 78 C86 74 88 56 80 48 Z" fill="#ffcc2e" stroke="#c78a0c" stroke-width="1.2"/>
+<g stroke="#ffcc2e" stroke-width="2.6" stroke-linecap="round" opacity="0.95"><path d="M78 48 l7 -2 M81 54 l8 -1 M82 61 l8 1 M81 68 l8 3 M78 75 l7 5"/></g>
+<ellipse cx="55" cy="55" rx="9" ry="3.4" fill="#fff" opacity="0.2" transform="rotate(-20 55 55)"/>
+<path d="M50 58 q2 8 0 14 M58 52 q2 12 0 24" stroke="#ffcc2e" stroke-width="2" fill="none" opacity="0.5" stroke-linecap="round"/>
+</svg>

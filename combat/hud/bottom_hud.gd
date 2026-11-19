@@ -1,12 +1,12 @@
-## Bottom HUD: fuse picker, 16-weapon arsenal drawer, active weapon pill with previous/next buttons, and the touch gamepad
-## (move/aim arrows, jump, flip, zoom, centre, fire with charge bar, switch worm).
+## Bottom HUD: fuse picker, 16-weapon arsenal drawer, active weapon pill with previous/next buttons, and the touch controls
+## (TouchPad: walk arrows, jump, backflip, aim, fire with charge ring, weapon picker, move, centre; TouchOverlay: aim-drag
+## feedback and the phase hint). On touch the turn has two phases: MOVE (arrows, camera drag) and AIM (drag rotates the aim, FIRE).
 ## Owns the weapon keys of the original: B/R drawer, Z/X [ ] , . cycle, 1..0 - = u i o p select, Q/E fuse, and the drawer navigation.
 ## Contract: `bind(sim)` with a CombatSim; every call into the sim is guarded.
 class_name BottomHud
 extends Control
 
-## Camera requests: CombatScreen applies them (JS userZoomMult +-0.16 and pan reset).
-signal zoom_requested(delta: float)
+## Camera request: CombatScreen resets the pan (the touch centre button).
 signal center_requested
 
 const PHASE_TURN_PLAY := 0
@@ -28,15 +28,22 @@ var toggle_button: ChamferButton
 var prev_button: Button
 var next_button: Button
 var switch_button: HoldButton
-var left_cluster: Control
-var right_cluster: Control
-var fire_button: HoldButton
-var left_button: HoldButton
-var right_button: HoldButton
-var up_button: HoldButton
-var down_button: HoldButton
-var jump_button: HoldButton
-var flip_button: HoldButton
+var touch_pad: TouchPad
+var touch_overlay: TouchOverlay
+## Safe insets the column was built for (see TouchMetrics.safe_insets).
+var _ins: Vector4 = Vector4.ZERO
+var fire_button: TouchButton
+var jump_button: TouchButton
+var flip_button: TouchButton
+## Touch phase: false = MOVE, true = AIM (see `set_touch_aim`).
+var touch_aim: bool = false
+## Story mode only: ends the turn early (eggs have no weapon to use) and the hint shown when the team has no weapon.
+var pass_button: HoldButton
+## El Bolsó: the REPAIR action (key T), shown only next to a damaged nest; the touch layout has its own button on the TouchPad.
+var repair_button: HoldButton
+var hint_panel: PanelContainer
+## "NEW!" chip beside the active weapon name (story: unlocked by the last level won).
+var _new_chip: PanelContainer
 var _icon_rect: TextureRect
 var _name_label: Label
 var _ammo_label: Label
@@ -45,6 +52,8 @@ var _compact: bool = false
 var _narrow: bool = false
 var _last_jump_msec: int = -10000
 var _drawer_tween: Tween
+var _built_story: bool = false
+var _touch_built: bool = false
 
 
 func _ready() -> void:
@@ -54,6 +63,7 @@ func _ready() -> void:
 	add_to_group("bottom_hud")
 	_build()
 	get_viewport().size_changed.connect(_on_resized)
+	Options.button_size_changed.connect(_on_button_size_changed)
 	rebuild_weapon_bar()
 
 
@@ -65,13 +75,20 @@ func bind(new_sim: Variant) -> void:
 	if sim.has_signal("hud_changed"):
 		sim.hud_changed.connect(rebuild_weapon_bar)
 	if sim.has_signal("turn_started"):
-		sim.turn_started.connect(func(_t: int, _f: Variant) -> void: rebuild_weapon_bar())
+		sim.turn_started.connect(func(_t: int, _f: Variant) -> void:
+			set_touch_aim(false)
+			rebuild_weapon_bar())
+	if is_story():
+		_build()
+	elif touch_overlay != null:
+		_bind_overlay()
 	rebuild_weapon_bar()
 
 
 func _on_resized() -> void:
 	var vp: Vector2 = get_viewport_rect().size
-	if UiUtil.is_compact(vp) != _compact or (vp.x < 820.0) != _narrow:
+	if UiUtil.is_compact(vp) != _compact or (vp.x < 820.0) != _narrow or _touch_ui() != _touch_built \
+			or not TouchMetrics.safe_insets(vp).is_equal_approx(_ins):
 		var was_open: bool = is_drawer_open()
 		_build()
 		set_drawer_open(was_open, false)
@@ -79,7 +96,16 @@ func _on_resized() -> void:
 	_update_touch_visibility()
 
 
+func _on_button_size_changed() -> void:
+	var was_open: bool = is_drawer_open()
+	_build()
+	set_drawer_open(was_open, false)
+	rebuild_weapon_bar()
+
+
 func _process(_delta: float) -> void:
+	if _touch_ui() != _touch_built:
+		_on_resized()
 	_update_touch_visibility()
 	if sim == null:
 		return
@@ -88,9 +114,111 @@ func _process(_delta: float) -> void:
 	var phase: int = int(UiUtil.prop(sim, "turn_phase", PHASE_TURN_PLAY))
 	var can_switch: bool = phase == PHASE_TURN_PLAY and not bool(UiUtil.prop(sim, "has_acted_or_moved_this_turn", false)) and not _is_ai_turn() and _alive_in_active_team() > 1
 	switch_button.visible = can_switch and _touch_ui()
+	if pass_button != null:
+		pass_button.visible = phase == PHASE_TURN_PLAY and not _is_ai_turn()
+	var can_repair: bool = can_repair_nest()
+	if repair_button != null:
+		repair_button.visible = can_repair and not _touch_built
+	touch_pad.repair_button.visible = can_repair and _touch_built
+	_update_phase(phase)
+
+
+## Keeps the touch phase valid (AIM only while this human can still shoot) and shows the buttons and the hint of the phase.
+func _update_phase(phase: int) -> void:
+	var none: bool = arsenal().is_empty()
+	var open: bool = is_drawer_open()
+	var fighter: Variant = UiUtil.prop(sim, "active_fighter")
+	var jetting: bool = fighter != null and float(UiUtil.prop(fighter, "jet_fuel", 0.0)) > 0.0
+	var can_aim: bool = phase == PHASE_TURN_PLAY and not none and not _is_ai_turn() and not jetting
+	if touch_aim and not can_aim:
+		set_touch_aim(false)
+	var pad: TouchPad = touch_pad
+	var jumper: bool = _active_can_jump()
+	var move_ui: bool = not touch_aim and not open
+	var aim_ui: bool = touch_aim and not open
+	pad.left_button.visible = move_ui
+	pad.right_button.visible = move_ui
+	pad.jump_button.visible = jumper and move_ui
+	pad.flip_button.visible = jumper and move_ui
+	pad.aim_button.visible = move_ui and can_aim
+	pad.fire_button.visible = aim_ui
+	pad.move_button.visible = aim_ui
+	pad.weapon_button.visible = not none
+	pad.center_button.visible = not open
+	touch_overlay.phase_text = "" if open or _is_ai_turn() else _phase_hint()
+
+
+func _phase_hint() -> String:
+	if not touch_aim:
+		return tr("TOUCH_PHASE_MOVE")
+	var id: String = HudWeapons.id_of(selected_idx)
+	if id == "AIRSTRIKE":
+		return tr("TOUCH_PHASE_TARGET")
+	if HudWeapons.fire_label_key(selected_idx) == "FIRE_HOLD":
+		return tr("TOUCH_PHASE_AIM_HOLD")
+	return tr("TOUCH_PHASE_AIM_TAP")
+
+
+## Switches between the MOVE (false) and AIM (true) touch phase.
+func set_touch_aim(on: bool) -> void:
+	if on == touch_aim:
+		return
+	touch_aim = on
+	touch_pad.set_aim(on)
+	var input: Node = _input_node()
+	if input != null:
+		input.set("touch_aim", on)
+
+
+func _input_node() -> Node:
+	return get_tree().get_first_node_in_group("combat_input") if is_inside_tree() else null
+
+
+func _hold_key(cmd: String, held: bool) -> void:
+	var input: Node = _input_node()
+	if input != null:
+		input.call("set_key", cmd, held)
 
 
 # ---- sim helpers (guarded) ----------------------------------------------------------------------
+
+## True in a story level (the sim has a LevelDef).
+func is_story() -> bool:
+	return UiUtil.prop(sim, "level") != null
+
+
+## Weapon indices the active team may use: the level arsenal in story mode, the 16 classic weapons otherwise.
+func arsenal() -> Array[int]:
+	if sim != null and sim.has_method("team_arsenal"):
+		return sim.call("team_arsenal", int(UiUtil.prop(sim, "active_team", 0)))
+	var all: Array[int] = []
+	for i in HudWeapons.count():
+		all.append(i)
+	return all
+
+
+## True in a story level when weapon `idx` was unlocked by the last level won (the human team only).
+func _is_new(idx: int) -> bool:
+	return _built_story and int(UiUtil.prop(sim, "active_team", 0)) == 0 and HudWeapons.new_ids(StoryProgress).has(HudWeapons.id_of(idx))
+
+
+## Ends the turn early (the Pass button and its key).
+func pass_turn() -> void:
+	if sim != null and not _is_ai_turn():
+		UiUtil.sfx("tick")
+		_call_sim("end_turn")
+
+## True when the active caterpillar can repair the nest now (next to a damaged nest on a human turn).
+func can_repair_nest() -> bool:
+	return sim != null and sim.has_method("can_repair_nest") and bool(sim.call("can_repair_nest"))
+
+
+## REPAIR: the active caterpillar weaves the nest back together (the button and the T key).
+func repair_nest() -> void:
+	if can_repair_nest():
+		UiUtil.sfx("tick")
+		_call_sim("repair_nest")
+
 
 func _call_sim(method: String, args: Array = []) -> Variant:
 	if sim != null and sim.has_method(method):
@@ -103,6 +231,12 @@ func _is_ai_turn() -> bool:
 		return false
 	var r: Variant = _call_sim("is_current_turn_ai")
 	return bool(r) if r != null else false
+
+
+## False when the active unit cannot jump (the egg): the jump buttons are hidden.
+func _active_can_jump() -> bool:
+	var f: Variant = UiUtil.prop(sim, "active_fighter")
+	return f == null or not (f is Object) or not (f as Object).has_method("can_jump") or bool((f as Object).call("can_jump"))
 
 
 func _alive_in_active_team() -> int:
@@ -119,14 +253,12 @@ func _ammo(idx: int) -> int:
 
 
 func _touch_ui() -> bool:
-	return UiUtil.is_touch_ui(get_viewport_rect().size)
+	return TouchMetrics.active(get_viewport_rect().size)
 
 
 func _update_touch_visibility() -> void:
-	var on: bool = _touch_ui()
-	if left_cluster != null and left_cluster.visible != on:
-		left_cluster.visible = on
-		right_cluster.visible = on
+	if touch_pad != null:
+		touch_pad.visible = _touch_built
 
 
 # ---- weapons -----------------------------------------------------------------------------------
@@ -148,10 +280,11 @@ func select_weapon(idx: int, close_drawer: bool) -> bool:
 
 ## Moves to the previous/next weapon that still has ammo (JS cycleAvailableWeapon).
 func cycle_weapon(step: int) -> void:
-	var n: int = HudWeapons.count()
-	var cur: int = _current_weapon()
+	var list: Array[int] = arsenal()
+	var n: int = list.size()
+	var pos: int = maxi(0, list.find(_current_weapon()))
 	for i in range(1, n + 1):
-		var cand: int = posmod(cur + step * i, n)
+		var cand: int = list[posmod(pos + step * i, n)]
 		if _ammo(cand) != 0:
 			UiUtil.sfx("tick")
 			select_weapon(cand, false)
@@ -159,7 +292,7 @@ func cycle_weapon(step: int) -> void:
 
 
 func _current_weapon() -> int:
-	return clampi(int(UiUtil.prop(sim, "selected_weapon_idx", selected_idx)), 0, HudWeapons.count() - 1)
+	return clampi(int(UiUtil.prop(sim, "selected_weapon_idx", selected_idx)), 0, HudWeapons.total() - 1)
 
 
 ## Sets the fuse (1..5 s) of grenade-like weapons.
@@ -178,16 +311,30 @@ func rebuild_weapon_bar() -> void:
 	if slots.is_empty():
 		return
 	selected_idx = _current_weapon()
-	fuse_picker.visible = HudWeapons.has_fuse(selected_idx)
+	var list: Array[int] = arsenal()
+	var none: bool = list.is_empty()
+	if none and is_drawer_open():
+		set_drawer_open(false)
+		return
+	var open: bool = is_drawer_open()
+	var touch: bool = _touch_built
+	hint_panel.visible = none
+	toggle_button.visible = not none and not touch
+	prev_button.visible = not none and list.size() > 1 and not touch
+	next_button.visible = prev_button.visible
+	fuse_picker.visible = not none and HudWeapons.has_fuse(selected_idx)
 	_update_fuse_buttons(int(UiUtil.prop(sim, "custom_grenade_fuse", 3)))
 	var ammo: int = _ammo(selected_idx)
 	_icon_rect.texture = HudWeapons.icon(selected_idx)
 	_name_label.text = tr(HudWeapons.name_key(selected_idx)).to_upper()
 	_ammo_label.text = "∞" if ammo < 0 else str(ammo)
 	fire_button.text = tr(HudWeapons.fire_label_key(selected_idx))
-	var open: bool = is_drawer_open()
+	touch_pad.weapon_button.icon = _icon_rect.texture
+	touch_pad.weapon_button.sub_text = _ammo_label.text
 	for i in slots.size():
-		slots[i].setup(i, _ammo(i), i == selected_idx, open and i == drawer_cursor, _compact)
+		slots[i].visible = list.has(i)
+		slots[i].setup(i, _ammo(i), i == selected_idx, open and i == drawer_cursor, _compact, _is_new(i))
+	_new_chip.visible = not none and _is_new(selected_idx)
 
 
 ## True while the arsenal drawer is shown.
@@ -225,8 +372,10 @@ func _toggle_drawer() -> void:
 
 
 func _move_cursor(delta: int) -> void:
-	var n: int = HudWeapons.count()
-	drawer_cursor = posmod(drawer_cursor + delta, n)
+	var list: Array[int] = arsenal()
+	if list.is_empty():
+		return
+	drawer_cursor = list[posmod(maxi(0, list.find(drawer_cursor)) + delta, list.size())]
 	UiUtil.sfx("tick")
 	if not _is_ai_turn() and _ammo(drawer_cursor) != 0:
 		var ok: Variant = _call_sim("select_weapon", [drawer_cursor])
@@ -280,6 +429,18 @@ func handle_key(keycode: Key, echo: bool = false) -> bool:
 				return true
 	if echo:
 		return false
+	if keycode == KEY_N and is_story():
+		pass_turn()
+		return true
+	if keycode == KEY_T and is_story() and UiUtil.prop(sim, "nest") != null:
+		repair_nest()
+		return true
+	if is_story() and keycode >= KEY_1 and keycode <= KEY_9:
+		var list: Array[int] = arsenal()
+		var slot: int = keycode - KEY_1
+		if slot < list.size() and select_weapon(list[slot], false):
+			UiUtil.sfx("tick")
+		return true
 	match keycode:
 		KEY_Z, KEY_BRACKETLEFT, KEY_COMMA:
 			cycle_weapon(-1)
@@ -302,15 +463,7 @@ func handle_key(keycode: Key, echo: bool = false) -> bool:
 	return false
 
 
-# ---- touch gamepad ------------------------------------------------------------------------------
-
-func _hold_move(dir: int) -> void:
-	_call_sim("set_move", [dir])
-
-
-func _hold_aim(dir: int) -> void:
-	_call_sim("set_aim_input", [dir])
-
+# ---- touch buttons ------------------------------------------------------------------------------
 
 func _on_jump() -> void:
 	var grounded: bool = true
@@ -333,16 +486,22 @@ func _build() -> void:
 		c.queue_free()
 	slots.clear()
 	fuse_buttons.clear()
+	_built_story = is_story()
 	var vp: Vector2 = get_viewport_rect().size
+	_touch_built = TouchMetrics.active(vp)
 	_compact = UiUtil.is_compact(vp)
 	_narrow = vp.x < 820.0
 
+	touch_aim = false
+	_build_touch(vp)
 	var column := VBoxContainer.new()
 	column.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	column.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	column.offset_left = 4.0 if _compact else 10.0
-	column.offset_right = -(4.0 if _compact else 10.0)
-	column.offset_bottom = -(4.0 if _compact else 10.0)
+	var ins: Vector4 = TouchMetrics.safe_insets(vp)
+	_ins = ins
+	column.offset_left = (4.0 if _compact else 10.0) + ins.x
+	column.offset_right = -(4.0 if _compact else 10.0) - ins.z
+	column.offset_bottom = -(4.0 if _compact else 10.0) - ins.w
 	column.add_theme_constant_override("separation", 4 if _compact else 6)
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.alignment = BoxContainer.ALIGNMENT_END
@@ -356,41 +515,50 @@ func _build() -> void:
 	rack.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	column.add_child(rack)
 
-	left_cluster = _make_left_cluster()
-	right_cluster = _make_right_cluster()
 	var pill: Control = _make_weapon_pill()
-	if _narrow and not _compact:
-		# Portrait: the pill on its own row, the gamepad clusters wrap below it.
-		pill.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		column.add_child(pill)
-		var flow := FlowContainer.new()
-		flow.alignment = FlowContainer.ALIGNMENT_CENTER
-		flow.add_theme_constant_override("h_separation", 10)
-		flow.add_theme_constant_override("v_separation", 4)
-		flow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		flow.add_child(left_cluster)
-		flow.add_child(right_cluster)
-		column.add_child(flow)
-	else:
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 6 if _compact else 10)
-		row.alignment = BoxContainer.ALIGNMENT_CENTER
-		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		column.add_child(row)
-		row.add_child(left_cluster)
-		var spacer_l := Control.new()
-		spacer_l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		spacer_l.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(spacer_l)
-		row.add_child(pill)
-		var spacer_r := Control.new()
-		spacer_r.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		spacer_r.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(spacer_r)
-		row.add_child(right_cluster)
+	pill.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	column.add_child(pill)
 	_update_touch_visibility()
-	left_cluster.visible = _touch_ui()
-	right_cluster.visible = _touch_ui()
+
+
+func _touch_button_size() -> Vector2:
+	return TouchMetrics.bar_button_size(get_viewport_rect().size)
+
+
+## The touch pad (buttons) and the gesture overlay; both exist on every layout, the pad is only shown on touch UIs.
+func _build_touch(vp: Vector2) -> void:
+	touch_overlay = TouchOverlay.new()
+	add_child(touch_overlay)
+	touch_pad = TouchPad.new()
+	add_child(touch_pad)
+	touch_pad.layout(vp)
+	fire_button = touch_pad.fire_button
+	jump_button = touch_pad.jump_button
+	flip_button = touch_pad.flip_button
+	fire_button.pressed_down.connect(func() -> void: _call_sim("begin_charge_or_fire"))
+	fire_button.released.connect(func() -> void: _call_sim("release_charge"))
+	jump_button.pressed_down.connect(func() -> void:
+		_on_jump()
+		_hold_key("up", true))
+	jump_button.released.connect(func() -> void: _hold_key("up", false))
+	touch_pad.left_button.pressed_down.connect(func() -> void: _hold_key("left", true))
+	touch_pad.left_button.released.connect(func() -> void: _hold_key("left", false))
+	touch_pad.right_button.pressed_down.connect(func() -> void: _hold_key("right", true))
+	touch_pad.right_button.released.connect(func() -> void: _hold_key("right", false))
+	touch_pad.aim_button.tapped.connect(func() -> void: set_touch_aim(true))
+	touch_pad.move_button.tapped.connect(func() -> void: set_touch_aim(false))
+	flip_button.pressed_down.connect(func() -> void: _call_sim("jump_backward"))
+	touch_pad.weapon_button.tapped.connect(_toggle_drawer)
+	touch_pad.center_button.tapped.connect(func() -> void: center_requested.emit())
+	touch_pad.repair_button.tapped.connect(repair_nest)
+	_bind_overlay()
+
+
+func _bind_overlay() -> void:
+	var input: Node = _input_node()
+	if input != null:
+		touch_overlay.bind_input(input)
+		input.set("touch_aim", touch_aim)
 
 
 func _make_fuse_picker() -> Control:
@@ -417,6 +585,8 @@ func _make_fuse_picker() -> Control:
 		b.toggle_mode = true
 		b.focus_mode = Control.FOCUS_NONE
 		b.pressed.connect(set_fuse.bind(s))
+		if _touch_built:
+			b.custom_minimum_size = Vector2(0.0, _touch_button_size().y)
 		row.add_child(b)
 		fuse_buttons.append(b)
 	return panel
@@ -433,7 +603,7 @@ func _make_rack(vp: Vector2) -> PanelContainer:
 	grid.add_theme_constant_override("h_separation", 5)
 	grid.add_theme_constant_override("v_separation", 5)
 	panel.add_child(grid)
-	for i in HudWeapons.count():
+	for i in (HudWeapons.total() if _built_story else HudWeapons.count()):
 		var slot := WeaponSlot.new()
 		slot.pressed.connect(_on_slot_pressed)
 		grid.add_child(slot)
@@ -446,7 +616,8 @@ func _make_rack(vp: Vector2) -> PanelContainer:
 func _on_slot_pressed(idx: int) -> void:
 	if not _is_ai_turn() and _ammo(idx) != 0:
 		UiUtil.sfx("tick")
-		select_weapon(idx, true)
+		if select_weapon(idx, true) and _touch_built and int(UiUtil.prop(sim, "turn_phase", PHASE_TURN_PLAY)) == PHASE_TURN_PLAY:
+			set_touch_aim(true)
 
 
 func _make_weapon_pill() -> Control:
@@ -485,6 +656,20 @@ func _make_weapon_pill() -> Control:
 	inner.add_child(_icon_rect)
 	_name_label = UiUtil.label("", "BodyBoldLabel", 12, Color.WHITE)
 	inner.add_child(_name_label)
+	_new_chip = PanelContainer.new()
+	var new_sb := StyleBoxFlat.new()
+	new_sb.bg_color = Palette.TEAM_GOLD
+	new_sb.set_corner_radius_all(999)
+	new_sb.content_margin_left = 6
+	new_sb.content_margin_right = 6
+	new_sb.content_margin_top = 0
+	new_sb.content_margin_bottom = 0
+	_new_chip.add_theme_stylebox_override("panel", new_sb)
+	_new_chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_new_chip.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_new_chip.visible = false
+	_new_chip.add_child(UiUtil.label(tr("HUD_NEW"), "MonoHeavyLabel", 9, Palette.INK_ON_BRASS))
+	inner.add_child(_new_chip)
 	var chip := PanelContainer.new()
 	var chip_sb := StyleBoxFlat.new()
 	chip_sb.bg_color = Palette.CHIP_BG
@@ -525,62 +710,30 @@ func _make_weapon_pill() -> Control:
 	switch_button.visible = false
 	switch_button.tapped.connect(func() -> void: _call_sim("switch_fighter"))
 	bar.add_child(switch_button)
+	if _touch_built:
+		switch_button.custom_minimum_size = _touch_button_size()
+	hint_panel = PanelContainer.new()
+	hint_panel.theme_type_variation = "PillPanel"
+	hint_panel.add_child(UiUtil.label(tr("HUD_NO_WEAPONS"), "BodyBoldLabel", 10 if _compact else 12, Palette.IVORY))
+	hint_panel.visible = false
+	bar.add_child(hint_panel)
+	pass_button = null
+	repair_button = null
+	if _built_story and UiUtil.prop(sim, "nest") != null:
+		repair_button = HoldButton.new(HoldButton.Kind.NORMAL, tr("HUD_REPAIR"))
+		repair_button.set_compact(_compact)
+		repair_button.custom_minimum_size.x = 64 if _compact else 86
+		repair_button.tooltip_text = tr("HUD_REPAIR_TOOLTIP")
+		repair_button.visible = false
+		repair_button.tapped.connect(repair_nest)
+		bar.add_child(repair_button)
+	if _built_story:
+		pass_button = HoldButton.new(HoldButton.Kind.NORMAL, tr("HUD_PASS"))
+		pass_button.set_compact(_compact)
+		pass_button.custom_minimum_size.x = 50 if _compact else 64
+		pass_button.tooltip_text = tr("HUD_PASS_TOOLTIP")
+		pass_button.tapped.connect(pass_turn)
+		if _touch_built:
+			pass_button.custom_minimum_size = _touch_button_size()
+		bar.add_child(pass_button)
 	return bar
-
-
-func _hold(kind: HoldButton.Kind, label: String, on_down: Callable, on_up: Callable) -> HoldButton:
-	var b := HoldButton.new(kind, label)
-	b.set_compact(_compact)
-	b.pressed_down.connect(on_down)
-	b.released.connect(on_up)
-	return b
-
-
-func _make_left_cluster() -> Control:
-	var box := HBoxContainer.new()
-	box.add_theme_constant_override("separation", 4 if _compact else 6)
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	left_button = _hold(HoldButton.Kind.ARROW, "◀", _hold_move.bind(-1), _hold_move.bind(0))
-	right_button = _hold(HoldButton.Kind.ARROW, "▶", _hold_move.bind(1), _hold_move.bind(0))
-	up_button = _hold(HoldButton.Kind.ARROW, "▲", _hold_aim.bind(-1), _hold_aim.bind(0))
-	down_button = _hold(HoldButton.Kind.ARROW, "▼", _hold_aim.bind(1), _hold_aim.bind(0))
-	for b in [left_button, right_button, up_button, down_button]:
-		box.add_child(b)
-	left_button.tooltip_text = tr("HUD_MOVE_LEFT")
-	right_button.tooltip_text = tr("HUD_MOVE_RIGHT")
-	up_button.tooltip_text = tr("HUD_AIM_UP")
-	down_button.tooltip_text = tr("HUD_AIM_DOWN")
-	return box
-
-
-func _make_right_cluster() -> Control:
-	var box := HBoxContainer.new()
-	box.add_theme_constant_override("separation", 4 if _compact else 6)
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	jump_button = HoldButton.new(HoldButton.Kind.NORMAL, tr("HUD_JUMP"))
-	jump_button.set_compact(_compact)
-	jump_button.pressed_down.connect(_on_jump)
-	jump_button.tooltip_text = tr("HUD_JUMP_TOOLTIP")
-	box.add_child(jump_button)
-	flip_button = HoldButton.new(HoldButton.Kind.UTIL, tr("HUD_FLIP"))
-	flip_button.set_compact(_compact)
-	flip_button.tooltip_text = tr("HUD_FLIP_TOOLTIP")
-	flip_button.pressed_down.connect(func() -> void: _call_sim("jump_backward"))
-	box.add_child(flip_button)
-	box.add_child(_click_button("−", tr("HUD_ZOOM_OUT_TOOLTIP"), func() -> void: zoom_requested.emit(-0.16)))
-	box.add_child(_click_button("+", tr("HUD_ZOOM_IN_TOOLTIP"), func() -> void: zoom_requested.emit(0.16)))
-	box.add_child(_click_button(tr("HUD_CENTER"), tr("HUD_CENTER_TOOLTIP"), func() -> void: center_requested.emit()))
-	fire_button = HoldButton.new(HoldButton.Kind.FIRE, tr("FIRE_DEFAULT"))
-	fire_button.set_compact(_compact)
-	fire_button.pressed_down.connect(func() -> void: _call_sim("begin_charge_or_fire"))
-	fire_button.released.connect(func() -> void: _call_sim("release_charge"))
-	box.add_child(fire_button)
-	return box
-
-
-func _click_button(label: String, tip: String, on_tap: Callable) -> HoldButton:
-	var b := HoldButton.new(HoldButton.Kind.UTIL, label)
-	b.set_compact(_compact)
-	b.tooltip_text = tip
-	b.tapped.connect(on_tap)
-	return b

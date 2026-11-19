@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="2_unit"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="u_ant"]
+[ext_resource type="Resource" path="res://data/units/blue_tit.tres" id="u_blue_tit"]
+[ext_resource type="Resource" path="res://data/units/larva_l3.tres" id="u_larva_l3"]
+
+[resource]
+script = ExtResource("1_level")
+id = "cuca_2"
+stage = "LARVA"
+order = 13
+playable = true
+mode = "COMBAT"
+title_key = "LVL_CUCA_2_TITLE"
+intro_key = "LVL_CUCA_2_INTRO"
+goal_key = "LVL_CUCA_2_GOAL"
+tip_key = "LVL_CUCA_2_TIP"
+map_idx = 7
+background_key = "siurana_tardor"
+seed = 5362
+arena_width = 1300.0
+hiding_spots = 0
+supply_drops = true
+turn_time = 30.0
+ai_difficulty = "ROOKIE"
+wind_scale = 1.0
+abilities = Array[String](["SILK_WEB"])
+player_unit = ExtResource("u_larva_l3")
+player_names = Array[String](["Pelussa", "Flocs", "Fileta", "Brins"])
+enemy_unit = ExtResource("u_ant")
+enemy_count = 2
+enemy_units = Array[ExtResource("2_unit")]([ExtResource("u_ant"), ExtResource("u_blue_tit")])
+enemy_counts = Array[int]([2, 1])
+player_arsenal = {"URTICARIA": -1}
+enemy_arsenal = {"MOSSEGADA": -1, "PICOTADA": -1}
+use_unlocked = true
+win_rule = "COLLECT"
+survive_rounds = 8
+collect_count = 5
+collect_need = 4
+star_survivors = Array[int]([3, 4])
+unlocks = Array[String](["GRENADE"])

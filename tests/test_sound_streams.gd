@@ -27,11 +27,11 @@ func _ready() -> void:
 		_check(files.size() > 0, "%s has wav files (%d)" % [dir, files.size()])
 		for f in files:
 			var s := load(dir + f) as AudioStreamWAV
-			var good: bool = s != null and s.data.size() > 100 and s.mix_rate == 44100
+			var good: bool = s != null and s.data.size() > 100 and s.mix_rate in [22050, 44100]
 			_check(good, "loads " + dir.trim_prefix("res://assets/audio/") + f)
 			if s != null:
 				total_bytes += s.data.size()
-	_check(total_bytes < 8 * 1024 * 1024, "total audio %.2f MB < 8 MB" % (total_bytes / 1048576.0))
+	_check(total_bytes < 15 * 1024 * 1024, "total audio %.2f MB < 15 MB" % (total_bytes / 1048576.0))
 	for key in T.sfx_keys():
 		_check(FileAccess.file_exists(T.SFX_DIR + key + ".wav"), "sfx file " + key)
 	for key in T.voice_keys():

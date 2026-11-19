@@ -1,7 +1,7 @@
 ## Loads every project script and reports failures. Run with: bash tools/lint.sh (it turns warnings into errors).
 extends Node
 
-const DIRS: Array[String] = ["res://core", "res://combat", "res://ui", "res://data", "res://tests", "res://tools"]
+const DIRS: Array[String] = ["res://core", "res://combat", "res://ui", "res://data", "res://platform", "res://tests", "res://tools"]
 
 
 func _ready() -> void:
@@ -10,7 +10,9 @@ func _ready() -> void:
 	for dir in DIRS:
 		for path in _scripts(dir):
 			count += 1
-			if ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REUSE) == null:
+			var script: GDScript = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REUSE) as GDScript
+			# A script with a parse error may still load; can_instantiate() is false for it.
+			if script == null or not script.can_instantiate():
 				print("FAIL loading ", path)
 				failures += 1
 	print("LINT: %d scripts, %d failures" % [count, failures])

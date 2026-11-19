@@ -43,7 +43,7 @@ static func _step_planes(sim: CombatSim, dt: float) -> void:
 					p.r = 5.0
 					p.wind_factor = 0.4
 					p.blast_r = 42.0
-					p.max_dmg = 38.0
+					p.max_dmg = 38.0 * sim.damage_mult[sim.active_team]
 					p.knockback = 390.0
 					sim.projectiles.append(p)
 		if absf(pl.x - pl.target_x) > 820.0 or pl.x < -300.0 or pl.x > SimTables.TERRAIN_W + 300.0:
@@ -429,8 +429,15 @@ static func _step_nuts(sim: CombatSim, dt: float) -> void:
 		elif not terrain.is_solid(pn.x, pn.y + pn.r + 2.0):
 			pn.grounded = false
 
+		var goal_nut: bool = SimGoals.is_goal_nut(sim, pn)
 		for f in sim.fighters:
 			if f.alive and not f.drowning and Vector2(f.x - pn.x, f.y - pn.y).length() <= f.r + pn.r + 6.0:
+				if goal_nut:
+					if f.team != 0:
+						continue
+					SimGoals.on_nut(sim, pn, f)
+					sim.pine_nuts.remove_at(i)
+					break
 				sim.play("crate_pickup")
 				f.max_hp = mini(160, f.max_hp + 15)
 				f.hp = mini(f.max_hp, f.hp + 20)

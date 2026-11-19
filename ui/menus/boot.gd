@@ -1,8 +1,9 @@
-## Boot screen: splash (kicker, title, subtitle) and the up/down main menu (quick match, 2 players, custom match).
+## Boot screen: splash (kicker, title, subtitle) and the up/down main menu (story, quick match, 2 players, custom match).
 ## Keyboard: Up/Down or W/S move the cursor, Enter/Space activate. Mouse hover moves the cursor, click activates. Touch = tap.
 extends Control
 
 const MENU_KEYS: Array[Array] = [
+	["MENU_STORY_TITLE", "MENU_STORY_SUB"],
 	["MENU_QUICK_TITLE", "MENU_QUICK_SUB"],
 	["MENU_2P_TITLE", "MENU_2P_SUB"],
 	["MENU_CUSTOM_TITLE", "MENU_CUSTOM_SUB"],
@@ -53,14 +54,17 @@ func _shift_item(value: float, item: ChamferButton) -> void:
 func activate(idx: int) -> void:
 	match idx:
 		0:
+			UiUtil.sfx("tick")
+			_go("story_map")
+		1:
 			UiUtil.sfx("title_fanfare")
 			GameState.prepare_quick_match("1P_CPU")
 			_go("combat")
-		1:
+		2:
 			UiUtil.sfx("title_fanfare")
 			GameState.prepare_quick_match("2P_LOCAL")
 			_go("combat")
-		2:
+		3:
 			UiUtil.sfx("tick")
 			_go("lobby")
 
@@ -108,19 +112,22 @@ func _build() -> void:
 	items.clear()
 	_arrows.clear()
 	_titles.clear()
-	var vp: Vector2 = get_viewport_rect().size
+	var real_vp: Vector2 = get_viewport_rect().size
+	var vp: Vector2 = TouchMetrics.logical_size(real_vp) # the layout below is built for this size, then scaled up
 	var compact: bool = UiUtil.is_compact(vp)
+	var tap: float = minf(TouchMetrics.tap_min(real_vp), vp.y * 0.16)
 	var backdrop := MenuBackdrop.new()
 	add_child(backdrop)
 	backdrop.set_map(randi() % UiMaps.IDS.size())
 	backdrop.use_splash_shade()
 
+	var root: Control = TouchMetrics.scaled_root(self, real_vp)
 	var column := VBoxContainer.new()
 	column.set_anchors_preset(Control.PRESET_FULL_RECT)
 	column.alignment = BoxContainer.ALIGNMENT_CENTER
 	column.add_theme_constant_override("separation", 10 if compact else 28)
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(column)
+	root.add_child(column)
 
 	# Title block
 	var head := VBoxContainer.new()
@@ -139,14 +146,24 @@ func _build() -> void:
 	head.add_child(_make_subtitle(tr("SPLASH_SUBTITLE"), compact))
 
 	# Menu
-	var menu := VBoxContainer.new()
-	menu.add_theme_constant_override("separation", 6 if compact else 10)
-	menu.custom_minimum_size.x = minf(440.0, vp.x * 0.92)
+	# Phone-sized layouts put the four entries in two columns so they stay tall enough to tap and still fit.
+	var two_cols: bool = compact and vp.x >= 640.0
+	var menu: Container = GridContainer.new() if two_cols else VBoxContainer.new()
+	if two_cols:
+		(menu as GridContainer).columns = 2
+		menu.add_theme_constant_override("h_separation", 10)
+		menu.add_theme_constant_override("v_separation", 8)
+	else:
+		menu.add_theme_constant_override("separation", 6 if compact else 10)
+	menu.custom_minimum_size.x = minf(760.0 if two_cols else 440.0, vp.x * 0.92)
 	menu.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	menu.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(menu)
 	for i in MENU_KEYS.size():
-		menu.add_child(_make_item(i, tr(MENU_KEYS[i][0]), tr(MENU_KEYS[i][1]), compact))
+		var item: ChamferButton = _make_item(i, tr(MENU_KEYS[i][0]), tr(MENU_KEYS[i][1]), compact)
+		item.custom_minimum_size.y = tap
+		item.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		menu.add_child(item)
 
 	var hint := RichTextLabel.new()
 	hint.bbcode_enabled = true

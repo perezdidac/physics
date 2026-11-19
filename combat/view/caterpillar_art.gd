@@ -3,23 +3,56 @@
 class_name CaterpillarArt
 extends RefCounted
 
+## Registry ids this view draws through (checked by the registry test).
+const ART_KINDS: Array[String] = ["creature:", "creature:CATERPILLAR", "tuft_front", "convoy_marks", "weapon:held"]
+
 
 ## Draws one fighter. `ctx` carries the per-frame facts (time, active fighter, hats, projectiles ...).
 static func draw_fighter(ci: CanvasItem, f: Variant, ctx: ViewCtx) -> void:
+	var kind: String = ViewUtil.gs(f, "kind", "CATERPILLAR")
+	if kind != "CATERPILLAR":
+		_draw_critter(ci, f, ctx, kind)
+		return
+	var team: int = ViewUtil.gi(f, "team")
+	var fx: float = ViewUtil.gf(f, "x")
+	var fy: float = ViewUtil.gf(f, "y")
+	var drowning: bool = ViewUtil.gb(f, "drowning")
+	var is_current: bool = f == ctx.active and ctx.phase != ViewCtx.PH_GAME_OVER
+	var team_col: Color = ViewColors.team(team)
+	# 1-4. body: segments, thorax, head, wings, sparks, stars (sprite rig, the old vector drawing while parts are missing)
+	ArtRegistry.draw("creature:CATERPILLAR", ci, f, ArtContext.of(ctx))
+	var root := Transform2D(0.0, Vector2.ONE, 0.0, Vector2(fx, fy))
+	ci.draw_set_transform_matrix(root)
+
+	# 5. held weapon (hidden in the touch MOVE phase, like the aim guides)
+	var sliding: bool = ViewUtil.gb(f, "sliding")
+	if is_current and not sliding and not drowning and ((ctx.phase == ViewCtx.PH_TURN_PLAY and ctx.aim_shown) or ctx.phase == ViewCtx.PH_RETREAT):
+		ArtRegistry.draw("weapon:held", ci, {"root": root, "f": f}, ArtContext.of(ctx))
+		ci.draw_set_transform_matrix(root)
+
+	# 6. nameplate / health pill
+	if not drowning:
+		draw_plate(ci, f, ctx, is_current, team_col)
+	ci.draw_set_transform_matrix(Transform2D.IDENTITY)
+	ArtRegistry.draw("convoy_marks", ci, f, ArtContext.of(ctx))
+
+
+
+## The old procedural body of the fighter (segments, thorax, head, wings, sparks, stars): the vector fallback of CaterpillarSpriteArt.
+static func draw_body_vector(ci: CanvasItem, f: Variant, ctx: ViewCtx) -> void:
 	var t: float = ctx.t_now
 	var team: int = ViewUtil.gi(f, "team")
 	var fx: float = ViewUtil.gf(f, "x")
 	var fy: float = ViewUtil.gf(f, "y")
 	var drowning: bool = ViewUtil.gb(f, "drowning")
 	var grounded: bool = ViewUtil.gb(f, "grounded", true)
-	var is_current: bool = f == ctx.active and ctx.phase != ViewCtx.PH_GAME_OVER
 	var team_col: Color = ViewColors.team(team)
 	var dorsal_v: Variant = ViewUtil.g(f, "dorsal_color")
 	var dorsal_col: Color = ViewColors.parse(dorsal_v, ViewColors.DORSAL_0 if team == 0 else ViewColors.DORSAL_1) if dorsal_v != null else (ViewColors.DORSAL_0 if team == 0 else ViewColors.DORSAL_1)
 	var body_cols: Array[Color] = _body_colors(ViewUtil.g(f, "body_colors"))
 	var urticating: bool = ViewUtil.gi(f, "urticating_ticks") > 0
 	var bristle: Color = ViewColors.BRISTLE_URTICATING if urticating else ViewColors.BRISTLE
-	var walk: float = ViewUtil.gf(f, "walk_cycle")
+	var walk: float = ctx.walk_of(f)
 
 	# 1. segments tail -> neck
 	var segs: Variant = ViewUtil.g(f, "segs", [])
@@ -73,17 +106,32 @@ static func draw_fighter(ci: CanvasItem, f: Variant, ctx: ViewCtx) -> void:
 		for i in 3:
 			var a2: float = t * 6.5 + float(i) * TAU / 3.0
 			ci.draw_circle(Vector2(cos(a2) * 14.0, -24.0 + sin(a2) * 4.5), 2.6, ViewColors.h("#ffe066") if i % 2 == 0 else Color.WHITE)
-
-	# 5. held weapon
-	var sliding: bool = ViewUtil.gb(f, "sliding")
-	if is_current and not sliding and not drowning and (ctx.phase == ViewCtx.PH_TURN_PLAY or ctx.phase == ViewCtx.PH_RETREAT):
-		WeaponArt.draw_held(ci, root, f, ctx)
-		ci.draw_set_transform_matrix(root)
-
-	# 6. nameplate / health pill
-	if not drowning:
-		_draw_plate(ci, f, ctx, is_current, team_col)
 	ci.draw_set_transform_matrix(Transform2D.IDENTITY)
+
+## Story-mode units (egg, ant): their own art plus the shared nameplate; a hidden one is faded with needles in front.
+static func _draw_critter(ci: CanvasItem, f: Variant, ctx: ViewCtx, kind: String) -> void:
+	var hidden: bool = ViewUtil.gb(f, "hidden")
+	var is_boss: bool = ctx.boss != null and f == ctx.boss
+	if is_boss:
+		BossArt.draw(ci, f, ctx)
+	else:
+		ArtRegistry.draw("creature:" + kind, ci, f, ArtContext.of(ctx))
+	if hidden:
+		ArtRegistry.draw("tuft_front", ci, {"ground": Vector2(ViewUtil.gf(f, "x"), ViewUtil.gf(f, "y") + ViewUtil.gf(f, "r", 10.0)), "seed": ViewUtil.gi(f, "id")}, ArtContext.of(ctx))
+	ArtRegistry.draw("convoy_marks", ci, f, ArtContext.of(ctx))
+	if not ViewUtil.gb(f, "drowning") and not is_boss and kind != "WILD_BOAR":
+		var is_current: bool = f == ctx.active and ctx.phase != ViewCtx.PH_GAME_OVER
+		draw_plate(ci, f, ctx, is_current, ViewColors.team(ViewUtil.gi(f, "team")))
+	ci.draw_set_transform_matrix(Transform2D.IDENTITY)
+
+
+## The weapon in the hands of the active larva (same as the caterpillar's), anchored at the fighter centre.
+static func draw_larva_held(ci: CanvasItem, f: Variant, ctx: ViewCtx) -> void:
+	var drowning: bool = ViewUtil.gb(f, "drowning")
+	if f == ctx.active and not ViewUtil.gb(f, "sliding") and not drowning and ((ctx.phase == ViewCtx.PH_TURN_PLAY and ctx.aim_shown) or ctx.phase == ViewCtx.PH_RETREAT):
+		var root := Transform2D(0.0, Vector2.ONE, 0.0, ViewUtil.pos(f))
+		ArtRegistry.draw("weapon:held", ci, {"root": root, "f": f}, ArtContext.of(ctx))
+		ci.draw_set_transform_matrix(Transform2D.IDENTITY)
 
 
 static func _body_colors(v: Variant) -> Array[Color]:
@@ -240,7 +288,8 @@ static func draw_hat(ci: CanvasItem, hat: String) -> void:
 			ci.draw_line(Vector2(float(i) * 1.8, -8.0), Vector2(float(i) * 2.8, -15.0 - (2.0 if i % 2 == 0 else 0.0)), ViewColors.h("#ffae42"), 1.4, true)
 
 
-static func _draw_plate(ci: CanvasItem, f: Variant, ctx: ViewCtx, is_current: bool, team_col: Color) -> void:
+## Name tag / health pill above the fighter (shared by the story-mode units).
+static func draw_plate(ci: CanvasItem, f: Variant, ctx: ViewCtx, is_current: bool, team_col: Color) -> void:
 	var t: float = ctx.t_now
 	var linked: Array = ViewUtil.g(f, "linked_allies", [])
 	var castell: bool = ViewUtil.gb(f, "castell_tower")

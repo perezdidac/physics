@@ -20,5 +20,7 @@ extends Resource
 @export var knockback: float = 0.0
 ## Melee reach in pixels (0 when not a melee weapon).
 @export var reach: float = 0.0
+## Story-mode weapon: hidden from classic matches (CombatSim drops it when MatchConfig.level is null).
+@export var story_only: bool = false
 ## Icon filled in later by the data/i18n wave.
 @export var icon: Texture2D

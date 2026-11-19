@@ -4,7 +4,6 @@ class_name SimFighterStep
 extends RefCounted
 
 const GRAVITY: float = SimTables.GRAVITY
-const W: float = SimTables.TERRAIN_W
 
 
 static func step(sim: CombatSim, dt: float) -> void:
@@ -18,7 +17,7 @@ static func step(sim: CombatSim, dt: float) -> void:
 
 static func _update_links(sim: CombatSim) -> void:
 	for f in sim.fighters:
-		if not f.alive or f.drowning:
+		if not f.alive or f.drowning or f.unit != null:
 			f.linked_allies = []
 			f.castell_tower = false
 			continue
@@ -113,7 +112,14 @@ static func _step_one(sim: CombatSim, f: SimFighter, dt: float, can_control: boo
 		_step_grapple(sim, f, dt)
 		return
 
-	if f.grounded and not terrain.is_solid(f.x, f.y + f.r + 2.0) and not terrain.is_solid(f.x - 4.0, f.y + f.r + 2.0) and not terrain.is_solid(f.x + 4.0, f.y + f.r + 2.0):
+	if f.unit != null and f.unit.flies:
+		_step_bird_state(f)
+
+	if f.climb != 0.0 and (not f.grounded or not sim.is_actor(f)):
+		f.climb = 0.0
+	# a critter on a wall has no floor under its feet but is not falling
+	var on_wall: bool = sim.is_actor(f) and bool(sim.plan_of(f).get("climbing", false))
+	if f.grounded and not on_wall and not f.flying and not terrain.is_solid(f.x, f.y + f.r + 2.0) and not terrain.is_solid(f.x - 4.0, f.y + f.r + 2.0) and not terrain.is_solid(f.x + 4.0, f.y + f.r + 2.0):
 		f.grounded = false
 		f.sliding = false
 		f.slide_angle = 0.0
@@ -148,7 +154,7 @@ static func _step_one(sim: CombatSim, f: SimFighter, dt: float, can_control: boo
 	_step_billiards(sim, f)
 	update_segments(sim, f, dt)
 
-	if f.y >= wy and not f.drowning:
+	if f.y >= wy and not f.drowning and not SimBoss.rescue_from_water(sim, f):
 		f.drowning = true
 		f.drown_timer = 1.85
 		f.hp = 0
@@ -157,6 +163,15 @@ static func _step_one(sim: CombatSim, f: SimFighter, dt: float, can_control: boo
 		SimCombat.water_plunge(sim, f.x, wy, 1.25)
 		sim.ftext(f.x, wy - 26.0, "FT_DROWN", Palette.FT_WATER, 2.2, [f.name])
 		sim.hud()
+
+
+## A bird knocked out of the air falls under the normal physics ("fall") until it lands; then it is "idle" again.
+static func _step_bird_state(f: SimFighter) -> void:
+	if f.flying and not f.grounded:
+		f.flying = false
+		f.ai_state = "fall"
+	elif not f.flying and f.grounded and f.ai_state == "fall":
+		f.ai_state = "idle"
 
 
 static func _step_spoon(sim: CombatSim, f: SimFighter, dt: float) -> void:
@@ -173,7 +188,7 @@ static func _step_spoon(sim: CombatSim, f: SimFighter, dt: float) -> void:
 	f.facing = 1 if s_dir_x >= 0.0 else -1
 	f.walk_cycle += dt * 22.0
 
-	f.x = SimMath.clamp_js(f.x + s_dir_x * 64.0 * dt, 28.0, W - 28.0)
+	f.x = terrain.clamp_hard(f.x + s_dir_x * 64.0 * dt, 28.0)
 	f.y = SimMath.clamp_js(f.y + s_dir_y * 42.0 * dt, 38.0, terrain.water_y - 18.0)
 	f.jump_start_y = f.y
 	f.peak_air_y = f.y
@@ -220,7 +235,7 @@ static func _step_drill(sim: CombatSim, f: SimFighter, dt: float) -> void:
 	f.squash_y = 1.0 - sin(sim.t_now * 55.0) * 0.12
 	sim.screen_shake.emit(3.5)
 
-	f.x = SimMath.clamp_js(f.x + d_dir_x * 52.0 * dt, 28.0, W - 28.0)
+	f.x = terrain.clamp_hard(f.x + d_dir_x * 52.0 * dt, 28.0)
 	f.y = SimMath.clamp_js(f.y + d_dir_y * 56.0 * dt, 38.0, terrain.water_y - 22.0)
 	f.jump_start_y = f.y
 	f.peak_air_y = f.y
@@ -315,18 +330,20 @@ static func _step_walk(sim: CombatSim, f: SimFighter, dt: float, can_control: bo
 			move_dir = 1
 	else:
 		move_dir = int(sim.ai_plan.get("walk_dir", 0))
-	if move_dir == 0 or sim.is_charging:
+	if move_dir == 0 or sim.is_charging or SimConvoy.walk_blocked(sim, f):
 		return
 	if can_control:
 		sim.has_acted_or_moved_this_turn = true
+	f.hidden = false
 	if f.facing != move_dir:
 		f.facing = move_dir
 		if not sim.is_current_turn_ai():
 			sim.sync_aim_angle_from_pitch()
 	f.walk_cycle += dt * 12.0
 	sim.play("crawl_step")
-	var step_x: float = SimMath.clamp_js(f.x + move_dir * 78.0 * dt, 30.0, W - 30.0)
-	var found_y: float = _find_step_y(terrain, step_x, f.y, f.r, -9, 10)
+	var step_x: float = terrain.clamp_hard(f.x + move_dir * 78.0 * f.speed_mult() * dt, 30.0)
+	var climb: int = -9 if f.unit == null else -18
+	var found_y: float = _find_step_y(terrain, step_x, f.y, f.r, climb, 10)
 	if not is_nan(found_y):
 		f.x = step_x
 		f.y = found_y
@@ -362,7 +379,7 @@ static func _step_slide(sim: CombatSim, f: SimFighter, dt: float) -> void:
 	f.slide_timer += dt
 	var friction_base: float = 0.90 if f.is_minor_slide else terrain.map.slide_friction
 	f.vx *= pow(friction_base, dt * 60.0)
-	var step_x: float = SimMath.clamp_js(f.x + f.vx * dt, 24.0, W - 24.0)
+	var step_x: float = terrain.clamp_hard(f.x + f.vx * dt, 24.0)
 	f.facing = 1 if f.vx >= 0.0 else -1
 
 	var found_y: float = _find_step_y(terrain, step_x, f.y, f.r, -10, 12)
@@ -426,7 +443,7 @@ static func _step_air(sim: CombatSim, f: SimFighter, dt: float, can_control: boo
 
 	f.vy += GRAVITY * dt
 	for s in 4:
-		f.x = SimMath.clamp_js(f.x + (f.vx * dt) / 4.0, 18.0, W - 18.0)
+		f.x = terrain.clamp_hard(f.x + (f.vx * dt) / 4.0, 18.0)
 		f.y += (f.vy * dt) / 4.0
 		f.peak_air_y = minf(f.peak_air_y, f.y)
 

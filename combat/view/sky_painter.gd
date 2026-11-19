@@ -141,7 +141,7 @@ func draw_veil(ci: CanvasItem) -> void:
 	veil_mat.set_shader_parameter("tile_h", ch)
 	veil_mat.set_shader_parameter("base_ox", base_ox)
 	veil_mat.set_shader_parameter("top_y", oy)
-	veil_mat.set_shader_parameter("veil_alpha", 0.48 if atmo.map_id == "TAULL" else 0.34)
+	veil_mat.set_shader_parameter("veil_alpha", 0.30 if atmo.map_id == "TAULL" else 0.16)
 	ci.draw_rect(Rect2(0.0, oy, view.x, ch), Color.WHITE)
 
 
@@ -194,7 +194,7 @@ func draw_clouds(ci: CanvasItem) -> void:
 		if cxs < -320.0 * s or cxs > W + 320.0 * s:
 			continue
 		var tier: int = int(c["tier"])
-		var ga: float = 0.52 if tier == 0 else (0.76 if tier == 1 else 0.46)
+		var ga: float = 0.26 if tier == 0 else (0.36 if tier == 1 else 0.22)
 		ci.draw_set_transform_matrix(Transform2D(Vector2(s, 0.0), Vector2(shear * s, s), Vector2(cxs, cys)))
 		var passes: Array = c["passes"]
 		var cols: Array[Color] = [Color(shade, shade.a * ga), Color(mid, ga), Color(rim, ga)]

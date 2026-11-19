@@ -18,7 +18,12 @@
 [ext_resource type="Resource" path="res://data/weapons/13_barrina.tres" id="16_2i814"]
 [ext_resource type="Resource" path="res://data/weapons/14_pont_pedra.tres" id="17_hsyaa"]
 [ext_resource type="Resource" path="res://data/weapons/15_ganxo.tres" id="18_21gev"]
+[ext_resource type="Resource" path="res://data/weapons/16_empenta.tres" id="19_empenta"]
+[ext_resource type="Resource" path="res://data/weapons/17_mossegada.tres" id="20_mossegada"]
+[ext_resource type="Resource" path="res://data/weapons/18_picotada.tres" id="21_picotada"]
+[ext_resource type="Resource" path="res://data/weapons/19_picotada_forta.tres" id="22_picotada_forta"]
+[ext_resource type="Resource" path="res://data/weapons/20_perxada.tres" id="23_perxada"]
 
 [resource]
 script = ExtResource("1_uo5ie")
-weapons = Array[ExtResource("2_l14tf")]([ExtResource("3_7hhuf"), ExtResource("4_wnows"), ExtResource("5_p4scj"), ExtResource("6_wc2og"), ExtResource("7_r8vfg"), ExtResource("8_hs24e"), ExtResource("9_nwdlh"), ExtResource("10_igptq"), ExtResource("11_ljswa"), ExtResource("12_bwgx8"), ExtResource("13_r663g"), ExtResource("14_fj2cf"), ExtResource("15_boubu"), ExtResource("16_2i814"), ExtResource("17_hsyaa"), ExtResource("18_21gev")])
+weapons = Array[ExtResource("2_l14tf")]([ExtResource("3_7hhuf"), ExtResource("4_wnows"), ExtResource("5_p4scj"), ExtResource("6_wc2og"), ExtResource("7_r8vfg"), ExtResource("8_hs24e"), ExtResource("9_nwdlh"), ExtResource("10_igptq"), ExtResource("11_ljswa"), ExtResource("12_bwgx8"), ExtResource("13_r663g"), ExtResource("14_fj2cf"), ExtResource("15_boubu"), ExtResource("16_2i814"), ExtResource("17_hsyaa"), ExtResource("18_21gev"), ExtResource("19_empenta"), ExtResource("20_mossegada"), ExtResource("21_picotada"), ExtResource("22_picotada_forta"), ExtResource("23_perxada")])

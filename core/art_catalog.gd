@@ -15,6 +15,21 @@ const BACKGROUNDS: Dictionary = {
 	"pedraforca": "res://assets/backgrounds/bg_pedraforca.jpg",
 	"tarraco": "res://assets/backgrounds/bg_tarraco.jpg",
 	"taull": "res://assets/backgrounds/bg_taull.jpg",
+	# Story-mode backgrounds (Gemini, prompts in docs/background_prompts.md).
+	"cardona_glacada": "res://assets/backgrounds/bg_cardona_glacada.jpg",
+	"cerdanya_neu": "res://assets/backgrounds/bg_cerdanya_neu.jpg",
+	"collserola_barcelona": "res://assets/backgrounds/bg_collserola_barcelona.jpg",
+	"costa_brava_pins": "res://assets/backgrounds/bg_costa_brava_pins.jpg",
+	"emporda_sant_pere": "res://assets/backgrounds/bg_emporda_sant_pere.jpg",
+	"garrotxa_volcans": "res://assets/backgrounds/bg_garrotxa_volcans.jpg",
+	"montserrat_nit": "res://assets/backgrounds/bg_montserrat_nit.jpg",
+	"pinar_montseny": "res://assets/backgrounds/bg_pinar_montseny.jpg",
+	"pinar_montserrat_capvespre": "res://assets/backgrounds/bg_pinar_montserrat_capvespre.jpg",
+	"pinar_montserrat_tempesta": "res://assets/backgrounds/bg_pinar_montserrat_tempesta.jpg",
+	"poblet_tardor": "res://assets/backgrounds/bg_poblet_tardor.jpg",
+	"siurana_tardor": "res://assets/backgrounds/bg_siurana_tardor.jpg",
+	"sota_terra_pedraforca": "res://assets/backgrounds/bg_sota_terra_pedraforca.jpg",
+	"tossa_nit": "res://assets/backgrounds/bg_tossa_nit.jpg",
 }
 
 

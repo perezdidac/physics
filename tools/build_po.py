@@ -14,6 +14,29 @@ SOURCES = [
     "docs/i18n_keys_sim.md",
     "docs/i18n_keys_ui.md",
     "docs/i18n_keys_extra.md",
+    "docs/i18n_keys_story_sim.md",
+    "docs/i18n_keys_story_ui.md",
+    "docs/i18n_keys_story_levels.md",
+    "docs/i18n_keys_story_view.md",
+    "docs/i18n_keys_platform_sim.md",
+    "docs/i18n_keys_platform_view.md",
+    "docs/i18n_keys_touch.md",
+    "docs/i18n_keys_boss_sim.md",
+    "docs/i18n_keys_boss_view.md",
+    "docs/i18n_keys_cuca.md",
+    "docs/i18n_keys_nest_sim.md",
+    "docs/i18n_keys_nest_view.md",
+    "docs/i18n_keys_plat2.md",
+    "docs/i18n_keys_plat2_view.md",
+    "docs/i18n_keys_proc.md",
+    "docs/i18n_keys_proc_view.md",
+    "docs/i18n_keys_stomp.md",
+    "docs/i18n_keys_buttons.md",
+    "docs/i18n_keys_silk.md",
+    "docs/i18n_keys_uiscale.md",
+    "docs/i18n_keys_touchphases.md",
+    "docs/i18n_keys_levels2.md",
+    "docs/i18n_keys_stages.md",
 ]
 KEY_RE = re.compile(r"[A-Z][A-Z0-9_]+")
 PLACEHOLDER_RE = re.compile(r"%[-+ #0]*\d*(?:\.\d+)?[sdifxc]")
@@ -84,6 +107,9 @@ def main():
     counts = []
     for source in SOURCES:
         path = os.path.join(ROOT, source)
+        if not os.path.exists(path):
+            print("SKIPPED (missing): %s" % source)
+            continue
         rows = parse_table(path)
         counts.append("%s %d" % (os.path.basename(source), len(rows)))
         for key, ca, en, _ in rows:

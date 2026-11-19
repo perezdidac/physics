@@ -52,7 +52,7 @@ func _drive() -> void:
 	var boot: Node = _scene()
 	_check(boot != null and boot.has_method("activate"), "boot screen is up")
 	GameState.has_started_match = false
-	boot.call("activate", 0)
+	boot.call("activate", 1)
 	GameState.game_mode = "CPU_CPU"
 	GameState.worms_per_team = 2
 	GameState.ai_difficulty = "ROOKIE"

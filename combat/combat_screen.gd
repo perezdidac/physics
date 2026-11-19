@@ -4,8 +4,11 @@ class_name CombatScreen
 extends Node
 
 const SIM_SCRIPT: String = "res://combat/sim/combat_sim.gd"
-const HUD_SCENES: Array[String] = ["res://combat/hud/TopHud.tscn", "res://combat/hud/BottomHud.tscn", "res://combat/hud/VictoryModal.tscn"]
+const HUD_SCENES: Array[String] = ["res://combat/hud/TopHud.tscn", "res://combat/hud/BottomHud.tscn", "res://combat/hud/BossHud.tscn", "res://combat/hud/VictoryModal.tscn"]
 const SLOW_MO_FACTOR: float = 0.38
+const VICTORY_MODAL: String = "res://combat/hud/VictoryModal.tscn"
+## Seconds between the end of a story level and the results screen (like the classic victory delay).
+const STORY_END_DELAY: float = 2.0
 
 ## When true the screen creates its own CombatSim from GameState on _ready (set false to call start() yourself).
 var auto_start: bool = true
@@ -27,6 +30,10 @@ var spotlight: float = 0.0
 var huds: Array[Node] = []
 var rotate_overlay: RotateOverlay = null
 var _unlocked: bool = false
+## Story mode: seconds left until the results screen (-1 = the level is still running).
+var story_end_timer: float = -1.0
+## Replaceable in tests: called with the target screen name instead of ScreenRouter.go.
+var go_callable: Callable = Callable()
 
 
 func _ready() -> void:
@@ -72,6 +79,7 @@ func start(sim_obj: Object) -> void:
 	view.setup(sim)
 	input.sim = sim
 	cam.playing = ViewUtil.gb(sim, "playing", true)
+	cam.user_zoom = CameraRig.STORY_USER_ZOOM if is_story() else CameraRig.DEFAULT_USER_ZOOM
 	var a: Variant = ViewUtil.g(sim, "active_fighter")
 	if a != null:
 		cam.x = ViewUtil.gf(a, "x")
@@ -99,6 +107,18 @@ func _connect_sim() -> void:
 	_try_connect("slow_mo", _on_slow_mo)
 	_try_connect("terrain_changed", _on_terrain_changed)
 	_try_connect("turn_started", _on_turn_started)
+	_try_connect("game_over", _on_game_over)
+	_try_connect("boss_attack", _on_boss_attack)
+	_try_connect("boss_phase_changed", _on_boss_phase_changed)
+	_try_connect("boss_defeated", _on_boss_defeated)
+	_try_connect("nest_hit", _on_nest_hit)
+	_try_connect("pole_sweep", _on_pole_sweep)
+	_try_connect("spore_tick", _on_spore_tick)
+
+
+## True when the bound sim runs a story level.
+func is_story() -> bool:
+	return sim != null and ViewUtil.g(sim, "level") != null
 
 
 func _try_connect(sig: String, fn: Callable) -> void:
@@ -113,7 +133,7 @@ func _instance_huds() -> void:
 		h.queue_free()
 	huds.clear()
 	for path in HUD_SCENES:
-		if not ResourceLoader.exists(path):
+		if not ResourceLoader.exists(path) or (path == VICTORY_MODAL and is_story()):
 			continue
 		var ps: PackedScene = load(path) as PackedScene
 		if ps == null:
@@ -137,6 +157,7 @@ func _process(delta: float) -> void:
 	if sim == null:
 		return
 	var raw_dt: float = minf(delta, 0.033)
+	_tick_story_end(delta)
 	sim.set("rotate_prompt_open", rotate_overlay.is_open)
 	input.blocked = rotate_overlay.is_open
 	var snd: Node = get_node_or_null("/root/Sound")
@@ -172,6 +193,9 @@ func _process(delta: float) -> void:
 	cam.step(raw_dt)
 	var terr: Variant = ViewUtil.g(sim, "terrain")
 	view.fx.update(dt, ViewUtil.gf(sim, "wind"), terr, ViewUtil.gf(terr, "water_y", 700.0))
+	view.boss_fx.update(dt)
+	view.nest_fx.update(dt, view.ctx)
+	view.ctx.spore_pulse = maxf(0.0, view.ctx.spore_pulse - dt * 1.3)
 	_render(vs)
 
 
@@ -191,6 +215,7 @@ func _render(vs: Vector2) -> void:
 	ctx.flash_light = flash_light
 	ctx.flash_pos = flash_pos
 	ctx.spotlight_timer = spotlight
+	ctx.aim_shown = input.touch_aim or not TouchMetrics.active(vs)
 	ctx.human_turn = ctx.playing and not bool(sim.call("is_current_turn_ai")) if sim.has_method("is_current_turn_ai") else ctx.playing
 	input.drawer_open = _drawer_open()
 	view.render(cam, vs, shake)
@@ -222,6 +247,32 @@ func _input(event: InputEvent) -> void:
 	var snd: Node = get_node_or_null("/root/Sound")
 	if snd != null:
 		snd.call("unlock")
+
+
+# ---------------------------------------------------------------- story end
+
+## game_over of a story level: keeps the stats for the results screen (the classic victory modal is not shown).
+func _on_game_over(_winner: int, stats: Dictionary) -> void:
+	if not is_story():
+		return
+	var gs: Node = get_node_or_null("/root/GameState")
+	if gs != null:
+		gs.set("story_result", stats)
+	story_end_timer = STORY_END_DELAY
+
+
+func _tick_story_end(delta: float) -> void:
+	if story_end_timer < 0.0:
+		return
+	story_end_timer -= delta
+	if story_end_timer < 0.0:
+		story_end_timer = -1.0
+		if go_callable.is_valid():
+			go_callable.call("story_results")
+		else:
+			var router: Node = get_node_or_null("/root/ScreenRouter")
+			if router != null:
+				router.call("go", "story_results")
 
 
 # ---------------------------------------------------------------- sim signals
@@ -271,6 +322,39 @@ func _on_slow_mo(seconds: float, use_max: bool) -> void:
 
 func _on_terrain_changed(rect: Rect2i) -> void:
 	view.terrain_view.on_terrain_changed(rect)
+
+
+func _on_boss_attack(_attack_id: String, pos: Vector2) -> void:
+	view.boss_fx.attack_landed(pos)
+
+
+func _on_boss_phase_changed(_phase: int) -> void:
+	var b: Variant = ViewUtil.g(sim, "boss")
+	view.boss_fx.phase_changed(ViewUtil.pos(b))
+	shake = maxf(shake, 14.0)
+	flash_pos = ViewUtil.pos(b)
+	flash_light = maxf(flash_light, 0.6)
+
+
+func _on_boss_defeated() -> void:
+	var b: Variant = ViewUtil.g(sim, "boss")
+	view.boss_fx.defeated(ViewUtil.pos(b))
+	flash_pos = ViewUtil.pos(b)
+	flash_light = maxf(flash_light, 1.0)
+	slow_mo = maxf(slow_mo, 1.2)
+
+
+func _on_nest_hit(pos: Vector2, damage: int) -> void:
+	view.nest_fx.on_hit(pos, damage)
+
+
+func _on_pole_sweep(band: Rect2) -> void:
+	view.nest_fx.on_sweep(band)
+
+
+## A fighter coughs in a fungus cloud: the clouds flush for a moment.
+func _on_spore_tick(_fighter: Variant, _damage: int) -> void:
+	view.ctx.spore_pulse = 1.0
 
 
 func _on_turn_started(_team: int, _fighter: Variant) -> void:

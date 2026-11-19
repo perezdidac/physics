@@ -7,6 +7,12 @@ const SCREENS: Dictionary = {
 	"boot": "res://ui/menus/Boot.tscn",
 	"lobby": "res://ui/menus/Lobby.tscn",
 	"combat": "res://combat/CombatScreen.tscn",
+	"platform": "res://platform/PlatformScreen.tscn",
+	"story_map": "res://ui/story/StoryMap.tscn",
+	"stage_card": "res://ui/story/StageCard.tscn",
+	"level_intro": "res://ui/story/LevelIntro.tscn",
+	"story_results": "res://ui/story/StoryResults.tscn",
+	"nest_hub": "res://ui/story/NestHub.tscn",
 }
 const BASE_SIZE := Vector2(1280.0, 720.0)
 const MAX_UI_SCALE := 3.5

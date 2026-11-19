@@ -835,3 +835,1740 @@ msgstr "¡SALT!"
 msgid "TOUCH_BACKFLIP"
 msgstr "¡MORTAL ENRERE!"
 
+msgid "FT_HIDDEN"
+msgstr "%s s'amaga entre les agulles"
+
+msgid "FT_SNIFFED"
+msgstr "Una formiga ensuma %s"
+
+msgid "FT_HATCHED"
+msgstr "Les closques es trenquen!"
+
+msgid "DMG_EMPENTA"
+msgstr "Empenta!"
+
+msgid "DMG_MOSSEGADA"
+msgstr "Mossegada!"
+
+msgid "WPN_EMPENTA"
+msgstr "L'Empenta"
+
+msgid "WPN_MOSSEGADA"
+msgstr "La Mossegada"
+
+msgid "FT_WAVE"
+msgstr "Onada %s! Surten formigues del formiguer"
+
+msgid "DMG_PICOTADA"
+msgstr "Picotada!"
+
+msgid "WPN_PICOTADA"
+msgstr "La Picotada"
+
+msgid "UNIT_LARVA_L1"
+msgstr "Larva L1"
+
+msgid "UNIT_LARVA_L2"
+msgstr "Larva L2"
+
+msgid "UNIT_BLUE_TIT"
+msgstr "Mallerenga blava"
+
+msgid "MENU_STORY_TITLE"
+msgstr "Història: la vida de la Perleta"
+
+msgid "MENU_STORY_SUB"
+msgstr "Viu el cicle de la processionària, des de l'ou fins a la papallona"
+
+msgid "STORY_TITLE"
+msgstr "La vida de la Perleta"
+
+msgid "STORY_SUB"
+msgstr "Una processionària, set etapes i un munt de perills. Ànims, petita!"
+
+msgid "STORY_SEC_STAGES"
+msgstr "Les etapes del camí"
+
+msgid "STORY_STATE_OPEN"
+msgstr "Obert"
+
+msgid "STORY_STATE_SOON"
+msgstr "Aviat"
+
+msgid "STORY_STATE_LOCKED"
+msgstr "Bloquejat"
+
+msgid "STORY_LEVEL_N"
+msgstr "Nivell %d"
+
+msgid "STORY_MAP_HINT"
+msgstr "←/→ + INTRO per triar un nivell  ·  ESC per tornar"
+
+msgid "STORY_BTN_BACK"
+msgstr "Enrere"
+
+msgid "STORY_BTN_PLAY"
+msgstr "Juga"
+
+msgid "STORY_BTN_CONTINUE"
+msgstr "Continua"
+
+msgid "STORY_BTN_RETRY"
+msgstr "Torna-ho a provar"
+
+msgid "STORY_LABEL_REAL"
+msgstr "A la vida real"
+
+msgid "STORY_LABEL_GOAL"
+msgstr "Què has de fer"
+
+msgid "STORY_LABEL_TIP"
+msgstr "El truc"
+
+msgid "STORY_LABEL_ENEMIES"
+msgstr "Enemics"
+
+msgid "STORY_LABEL_WEAPONS"
+msgstr "Armes"
+
+msgid "STORY_NO_WEAPONS"
+msgstr "Cap: amaga't!"
+
+msgid "STORY_NONE"
+msgstr "Ningú"
+
+msgid "STORY_WEAPON_EMPENTA"
+msgstr "Empenta"
+
+msgid "STORY_WEAPON_MOSSEGADA"
+msgstr "Mossegada"
+
+msgid "STORY_RESULT_WON"
+msgstr "Ho has aconseguit!"
+
+msgid "STORY_RESULT_LOST"
+msgstr "Ai, quina pena!"
+
+msgid "STORY_RESULT_SURVIVORS"
+msgstr "Supervivents: %d de %d"
+
+msgid "STORY_RESULT_UNLOCKED"
+msgstr "Arma desbloquejada"
+
+msgid "STORY_REASON_SURVIVED"
+msgstr "Has aguantat fins que els ous han eclosionat."
+
+msgid "STORY_REASON_ELIMINATED_ENEMY"
+msgstr "Ja no queda cap enemic. Via lliure!"
+
+msgid "STORY_REASON_LOST"
+msgstr "Els teus no han sobreviscut. Torna-ho a provar!"
+
+msgid "STORY_STAGE_EGG"
+msgstr "Ou"
+
+msgid "STORY_STAGE_LARVA_EARLY"
+msgstr "Larves L1-L2"
+
+msgid "STORY_STAGE_LARVA"
+msgstr "Larves L3-L5"
+
+msgid "STORY_STAGE_NEST"
+msgstr "Niu d'hivern"
+
+msgid "STORY_STAGE_PROCESSION"
+msgstr "Processó"
+
+msgid "STORY_STAGE_PUPA"
+msgstr "Pupa"
+
+msgid "STORY_STAGE_MOTH"
+msgstr "Papallona"
+
+msgid "STORY_STAGE_EGG_NICK"
+msgstr "Ouet"
+
+msgid "STORY_STAGE_LARVA_EARLY_NICK"
+msgstr "Pelussa"
+
+msgid "STORY_STAGE_LARVA_NICK"
+msgstr "Cuca"
+
+msgid "STORY_STAGE_NEST_NICK"
+msgstr "El Bolsó"
+
+msgid "STORY_STAGE_PROCESSION_NICK"
+msgstr "La Processó"
+
+msgid "STORY_STAGE_PUPA_NICK"
+msgstr "La Crisàlide"
+
+msgid "STORY_STAGE_MOTH_NICK"
+msgstr "La Papallona"
+
+msgid "STORY_STAGE_EGG_BLURB"
+msgstr "Ple estiu, damunt d'una agulla de pi. Corre, salta i amaga't entre les mates fins a arribar al racó de sol on eclosionaràs."
+
+msgid "STORY_STAGE_LARVA_EARLY_BLURB"
+msgstr "Final d'estiu. Petits salts, els primers fils de seda i els primers pèls urticants."
+
+msgid "STORY_STAGE_LARVA_BLURB"
+msgstr "Tardor. Cada muda et fa créixer i el teu arsenal s'obre pas a pas."
+
+msgid "STORY_STAGE_NEST_BLURB"
+msgstr "Hivern. Defensa el niu de seda, que també és la teva llar."
+
+msgid "STORY_STAGE_PROCESSION_BLURB"
+msgstr "Primavera. Creua el bosc en processó, darrere de la cap de fila."
+
+msgid "STORY_STAGE_PUPA_BLURB"
+msgstr "Sota terra, a dins d'un capoll. Cava i no et deixis descobrir."
+
+msgid "STORY_STAGE_MOTH_BLURB"
+msgstr "Estiu un altre cop. Per fi vols! I el cicle torna a començar."
+
+msgid "STORY_STAGE_EGG_FACT"
+msgstr "Pel juliol, la mare diposita entre 70 i 300 ous al voltant de dues agulles de pi i els tapa amb les seves escates. Al cap d'un mes, més o menys, neixen les erugues."
+
+msgid "STORY_HERO_EGG"
+msgstr "Perleta, la perleta de la mare"
+
+msgid "UNIT_EGG"
+msgstr "Ou"
+
+msgid "UNIT_ANT"
+msgstr "Formiga"
+
+msgid "LVL_EGG_1_TITLE"
+msgstr "Ous de juliol"
+
+msgid "LVL_EGG_1_INTRO"
+msgstr "Ets la Perleta, un ou petitó amb moltes ganes de veure món. Al final del camí hi fa un solet ben calentó. Només hi ha un parell de formigues fent la ronda: ves amb compte!"
+
+msgid "LVL_EGG_1_GOAL"
+msgstr "Arriba al racó de sol i recull gotes de saba pel camí."
+
+msgid "LVL_EGG_1_TIP"
+msgstr "Salta amb l'espai o amb el botó SALTA; si el mantens premut, saltes més amunt. Si et quedes quieta dins d'una mata d'agulles, les formigues no et veuran."
+
+msgid "LVL_EGG_2_TITLE"
+msgstr "La patrulla de les formigues"
+
+msgid "LVL_EGG_2_INTRO"
+msgstr "Ara és tota una patrulla de formigues, amb el nas ben alt, ensumant ous per tot arreu. Algunes caminen damunt de les agulles de pi, així que haureu de saltar més amunt."
+
+msgid "LVL_EGG_2_GOAL"
+msgstr "Arriba al racó de sol i guarda els cors. Cada gota de saba et fa créixer una mica!"
+
+msgid "LVL_EGG_2_TIP"
+msgstr "Si una formiga et persegueix, corre cap a una mata d'agulles i espera que passi. O salta-li al damunt des de dalt i la deixaràs noquejada! Els forats costen un cor!"
+
+msgid "LVL_EGG_3_TITLE"
+msgstr "Abans de trencar la closca"
+
+msgid "LVL_EGG_3_INTRO"
+msgstr "Falta ben poc per trencar la closca! Però el camí és estret, ple de passos difícils, i les formigues vigilen les gotes de saba més bones."
+
+msgid "LVL_EGG_3_GOAL"
+msgstr "Arriba al racó de sol i intenta recollir totes les gotes de saba."
+
+msgid "LVL_EGG_3_TIP"
+msgstr "Hi ha dos banderins pel camí: si caus en un forat, tornaràs al darrer que hagis tocat. Calcula bé els salts!"
+
+msgid "LVL_EGG_4_TITLE"
+msgstr "La tempesta d'estiu"
+
+msgid "LVL_EGG_4_INTRO"
+msgstr "Aquesta tarda de juliol s'ha girat una bona tempesta! El vent bufa a ràfegues, plou a bots i barrals i el terra és ple de basses. Una gota grossa et farà rodar, però no et farà mal. Tu, bona nena, aguanta ben aferrada!"
+
+msgid "LVL_EGG_4_GOAL"
+msgstr "Arriba al racó de sol, entre ràfegues i gotes, i recull totes les gotes de saba que puguis."
+
+msgid "LVL_EGG_4_TIP"
+msgstr "Dins d'una mata d'agulles el vent no t'arriba. Si veus una ombra al terra, una gota grossa hi caurà d'aquí a res. Les basses et frenen: salta-les!"
+
+msgid "LVL_EGG_BOSS_TITLE"
+msgstr "La Vespa"
+
+msgid "LVL_EGG_BOSS_INTRO"
+msgstr "Una vespeta diminuta, l'Ooencyrtus, passeja per les postes de processionària. La mare diposita els seus ous a dins dels teus, i les seves larves se'ls mengen! Per sort, ja falta ben poc perquè eclosionis. Aguanta fins que trenquis la closca."
+
+msgid "LVL_EGG_BOSS_GOAL"
+msgstr "Sobreviu fins que s'acabi el compte enrere i Perleta eclosioni. Guarda els teus cors!"
+
+msgid "LVL_EGG_BOSS_TIP"
+msgstr "La vespa avisa abans de picar: busca la marca vermella i aparta't. Si t'amagues quieta dins d'una mata d'agulles, perdrà el rastre!"
+
+msgid "LVL_LARVA_1_TITLE"
+msgstr "Germanes de seda"
+
+msgid "LVL_LARVA_1_INTRO"
+msgstr "A finals d'estiu les larves neixen totes juntes i es queden unides, com una colla de germanes. Sou petites, clares i molt peludes: els vostres primers pèls encara són de broma, però ja teixiu seda. Dues formigues curioses se us acosten al fons de la vall."
+
+msgid "LVL_LARVA_1_GOAL"
+msgstr "Fes fora les dues formigues."
+
+msgid "LVL_LARVA_1_TIP"
+msgstr "Apunta amb el ratolí, mantén premut el botó de foc per carregar la força i deixa'l anar per llançar. El vent també hi té alguna cosa a dir!"
+
+msgid "LVL_LARVA_2_TITLE"
+msgstr "El fil de seda"
+
+msgid "LVL_LARVA_2_INTRO"
+msgstr "Allà dalt, a la punta d'una branca, hi ha les agulles més tendres del pi, i per arribar-hi cal travessar buits i pujar costers. Per sort ja sabeu teixir fil de seda! Dues formigues us segueixen i us piquen els talons."
+
+msgid "LVL_LARVA_2_GOAL"
+msgstr "Porta una cuca fins a la branca abans de %d rondes."
+
+msgid "LVL_LARVA_2_TIP"
+msgstr "Amb una sola cuca a la branca ja has guanyat: no cal lluitar, corre! El vent fa saltar els trets, així que millor teixir un fil de seda per amortir una caiguda o travessar un buit."
+
+msgid "LVL_LARVA_3_TITLE"
+msgstr "El formiguer"
+
+msgid "LVL_LARVA_3_INTRO"
+msgstr "Sota els pins hi ha un formiguer, i les formigues en surten a onades. Si en rebentes la cúpula, s'acabaran les onades! Al voltant hi ha uns barrils de vi del Priorat que no tenen gens de paciència: petarden a la mínima."
+
+msgid "LVL_LARVA_3_GOAL"
+msgstr "Destrueix el formiguer ({hp} punts de vida) o aguanta %d rondes. A cada ronda en surten dues formigues."
+
+msgid "LVL_LARVA_3_TIP"
+msgstr "Dispara a la cúpula del formiguer: la barra de dalt en mostra la vida. Els barrils fan molt més mal que un tret, i aparta't de la boca quan surti una onada."
+
+msgid "LVL_LARVA_4_TITLE"
+msgstr "La germana atrapada"
+
+msgid "LVL_LARVA_4_INTRO"
+msgstr "Heu mudat la pell per primer cop: ara sou larves de segon estadi, més grans i més fortes. Però una germana ha quedat embolicada en un capoll de seda, allà al fons, i us crida! Dues formigues i una mallerenga blava us volen aigualir el rescat, i l'aigua puja."
+
+msgid "LVL_LARVA_4_GOAL"
+msgstr "Arriba fins a la germana del capoll abans de %d rondes: s'afegirà a la colla."
+
+msgid "LVL_LARVA_4_TIP"
+msgstr "La marea puja a poc a poc: no et quedis als llocs baixos. La mallerenga s'atura a l'aire i mostra un «!» abans de llançar-se: aparta't."
+
+msgid "LVL_LARVA_5_TITLE"
+msgstr "Amaga't!"
+
+msgid "LVL_LARVA_5_INTRO"
+msgstr "Les formigues us busquen amb l'olfacte, i són capaces de cavar per dins de la paret per atrapar-vos. Només us pot salvar una mata d'agulles de pi: si t'hi amagues, no et veuran fins que se t'acostin molt. Compte amb les mines: no fan distincions!"
+
+msgid "LVL_LARVA_5_GOAL"
+msgstr "Sobreviu %d rondes: amaga't a les mates d'agulles."
+
+msgid "LVL_LARVA_5_TIP"
+msgstr "Acaba el torn sobre una mata i t'amagaràs: s'ha acabat el joc si una formiga hi para a prop. Una mina pot fer volar també les formigues."
+
+msgid "STORY_HERO_LARVA"
+msgstr "La Cuca i la seva colla"
+
+msgid "STORY_STAGE_LARVA_FACT"
+msgstr "A la tardor les erugues ja han mudat dues vegades i són de tercer estadi (L3). Els pèls urticants ara sí que piquen: els fan servir per defensar-se, i amb cada muda en tenen més. També comencen a teixir el niu d'hivern, gran i blanc, a la punta d'un pi."
+
+msgid "LVL_LARVA_BOSS_TITLE"
+msgstr "La Mosca Taquina"
+
+msgid "LVL_LARVA_BOSS_INTRO"
+msgstr "Una mosca grossa i pelluda volteja pel pinar buscant on pondre els ous... i us ha triat a vosaltres! Si us en posa un, les larves us rosegaran per dins. Per sort, la vostra seda us en neteja."
+
+msgid "LVL_LARVA_BOSS_GOAL"
+msgstr "Derrota la Mosca Taquina."
+
+msgid "LVL_LARVA_BOSS_TIP"
+msgstr "Quan anuncia la posta, allunya't o amaga't. Si t'ha posat ous, teixeix un fil de seda per netejar-te. Després de llançar-se es posa a terra un torn: és el moment de picar-la fort!"
+
+msgid "LVL_CUCA_1_TITLE"
+msgstr "L3: la colla creix"
+
+msgid "LVL_CUCA_1_INTRO"
+msgstr "Heu tornat a mudar la pell: ara sou larves de tercer estadi, més grosses i amb els primers pèls urticants de debò. La colla també ha crescut: sou quatre! Dues mallerengues blaves ja us han vist des de dalt, i fa un vent que gairebé tomba els pins."
+
+msgid "LVL_CUCA_1_GOAL"
+msgstr "Fes fora les dues mallerengues blaves."
+
+msgid "LVL_CUCA_1_TIP"
+msgstr "Vent molt fort: els trets es desvien un munt. Mira l'indicador de dalt i corregeix l'angle. Canvia de cuca amb el tabulador o tocant-ne una, i busca la que té el millor tret."
+
+msgid "LVL_CUCA_2_TITLE"
+msgstr "Pinyes de Poblet"
+
+msgid "LVL_CUCA_2_INTRO"
+msgstr "Al bosc del monestir de Poblet cauen pinyes i pinyons per tot arreu, i del cel baixen caixes de provisions. Cal fer-ne reserva per a l'hivern! Dues formigues i una mallerenga blava hi volen fer cap també."
+
+msgid "LVL_CUCA_2_GOAL"
+msgstr "Recull {need} pinyons dels {total} que hi ha al mapa abans de %d rondes."
+
+msgid "LVL_CUCA_2_TIP"
+msgstr "Els pinyons brillen amb un anell daurat i només els pots recollir tu. No te'ls deixis per al final, i agafa les caixes que cauen: porten armes i vida."
+
+msgid "LVL_CUCA_3_TITLE"
+msgstr "L4: pell nova"
+
+msgid "LVL_CUCA_3_INTRO"
+msgstr "Una altra muda, i ja sou de quart estadi: pell nova, més pèls i més força. Tres formigues s'han instal·lat vora uns barrils de vi del Priorat i us esperen amb cara de no haver trencat mai un plat."
+
+msgid "LVL_CUCA_3_GOAL"
+msgstr "Fes fora les tres formigues: aprofita els barrils!"
+
+msgid "LVL_CUCA_3_TIP"
+msgstr "Un tret a un barril fa petar els veïns: encadena tota una fila! Ara tens bazuca i granada; les explosions fan forats al terra, vigila on poses els peus."
+
+msgid "LVL_CUCA_4_TITLE"
+msgstr "El millor tret"
+
+msgid "LVL_CUCA_4_INTRO"
+msgstr "Una formiga s'ha ficat darrere d'un cingle i no es mou d'allà. Només us queden unes poques municions de bazuca i una granada, i ja no n'hi ha més. Amb el sol baix, el vent no us ho posa fàcil."
+
+msgid "LVL_CUCA_4_GOAL"
+msgstr "Elimina la formiga amagada amb els {shots} trets que tens: no te'n queden més."
+
+msgid "LVL_CUCA_4_TIP"
+msgstr "La bazuca vola en arc: puja l'angle per passar per sobre del cingle. Camina per trobar un lloc millor abans de disparar i compta amb el vent."
+
+msgid "LVL_CUCA_5_TITLE"
+msgstr "L5: la gran muda"
+
+msgid "LVL_CUCA_5_INTRO"
+msgstr "L'última muda! Ara sou de cinquè estadi, les erugues més grosses i peludes de tot el cicle. Dues mallerengues carboneres i una de blava us vigilen, i el camí està sembrat de mines que no són gens amigues vostres."
+
+msgid "LVL_CUCA_5_GOAL"
+msgstr "Elimina les dues mallerengues carboneres i la blava."
+
+msgid "LVL_CUCA_5_TIP"
+msgstr "Les mines peten quan algú s'hi acosta: no hi passis i fes-hi caure els enemics. Fes servir el ganxo per canviar de lloc, i cada cuca compta: no en perdis cap!"
+
+msgid "LVL_CUCA_6_TITLE"
+msgstr "Tardor a la vila"
+
+msgid "LVL_CUCA_6_INTRO"
+msgstr "A finals de tardor les erugues s'acosten a les cases, perquè els pins dels jardins també els agraden. Una carbonera us vigila i el formiguer no para: les primeres pluges fan pujar l'aigua. Cal aguantar fins que arribi el fred."
+
+msgid "LVL_CUCA_6_GOAL"
+msgstr "Aguanta %d rondes. A cada ronda surten dues formigues noves del formiguer."
+
+msgid "LVL_CUCA_6_TIP"
+msgstr "L'aigua puja des de la segona ronda: busca terreny alt. Els ocells ataquen per l'aire i les formigues per terra: no et deixis encerclar. El clúster va molt bé contra una colla."
+
+msgid "LVL_CUCA_BOSS_TITLE"
+msgstr "La Mallerenga"
+
+msgid "LVL_CUCA_BOSS_INTRO"
+msgstr "La mallerenga carbonera és la gran caçadora d'erugues: a l'hivern fins i tot obre els nius de seda a cops de bec. Aquesta és gegant! S'enfila dalt d'un arbre, es llança a picar qui tria i, si la toqueu, se'n va volant."
+
+msgid "LVL_CUCA_BOSS_GOAL"
+msgstr "Derrota la Mallerenga."
+
+msgid "LVL_CUCA_BOSS_TIP"
+msgstr "Només és vulnerable quan s'atura a dalt d'un arbre: aleshores, pica fort! Abans de cada atac et mostra on caurà: surt del cercle o amaga't."
+
+msgid "LVL_NEST_1_TITLE"
+msgstr "Teixint el bolsó"
+
+msgid "LVL_NEST_1_INTRO"
+msgstr "A l'hivern les processionàries viuen en un bolsó de seda blanca, teixit a la banda assolellada d'un pi, on el sol els fa companyia. De nit en surten a menjar agulles i, quan fa fred, tornen a dins. Però les mallerengues saben que allà dins hi ha un bon bocí!"
+
+msgid "LVL_NEST_1_GOAL"
+msgstr "Aguanta %d torns amb el bolsó dempeus."
+
+msgid "LVL_NEST_1_TIP"
+msgstr "Posa't al costat del bolsó i prem Repara (tecla T): teixeixes seda nova i el bolsó recupera vida. Dins del bolsó els cops piquen la meitat."
+
+msgid "LVL_NEST_2_TITLE"
+msgstr "Nit de glaçada"
+
+msgid "LVL_NEST_2_INTRO"
+msgstr "Les nits de gener poden baixar de zero, i una eruga a la intempèrie es glaça de seguida. Per això es fan el bolsó de seda: a dins fa uns quants graus més que a fora, i el sol del migdia l'escalfa encara més."
+
+msgid "LVL_NEST_2_GOAL"
+msgstr "Aguanta %d torns. Fora del bolsó fa fred: perds vida cada torn."
+
+msgid "LVL_NEST_2_TIP"
+msgstr "El fred et pica a l'inici del torn si ets fora del bolsó: dispara des de la vora i acaba cada torn a dins. Els cucs blavosos són els que passen fred."
+
+msgid "LVL_NEST_3_TITLE"
+msgstr "Mallerengues d'hivern"
+
+msgid "LVL_NEST_3_INTRO"
+msgstr "A l'hivern a les mallerengues els costa trobar menjar, i la processionària és de les poques erugues que hi són. Algunes han après a obrir els bolsons a cops de bec per atrapar-les. Avui en ve tot un estol!"
+
+msgid "LVL_NEST_3_GOAL"
+msgstr "Aguanta %d torns mentre les mallerengues piquen el bolsó."
+
+msgid "LVL_NEST_3_TIP"
+msgstr "Cada ocell va pel bolsó o pel cuc que té més a prop. Tria bé on et poses i repara el bolsó entre torn i torn."
+
+msgid "LVL_NEST_4_TITLE"
+msgstr "La perxa"
+
+msgid "LVL_NEST_4_INTRO"
+msgstr "Els forestals treuen els bolsons dels pins perquè les erugues urticants fan mal a la gent i al bosc. Ho fan amb una perxa llarga, tallant la branca sencera. El bolsó no ho entén gaire: només volia estar tranquil al sol."
+
+msgid "LVL_NEST_4_GOAL"
+msgstr "Aguanta %d torns. De tant en tant la perxa cau sobre una franja marcada."
+
+msgid "LVL_NEST_4_TIP"
+msgstr "La franja taronja t'avisa un torn abans: surt-ne a temps! Si el bolsó hi queda a sota, repara'l després."
+
+msgid "LVL_NEST_BOSS_TITLE"
+msgstr "La Brigada Forestal"
+
+msgid "LVL_NEST_BOSS_INTRO"
+msgstr "A la fi de l'hivern arriba la brigada forestal: el Capatàs, amb el casc blanc i el bigoti, i els seus homes, amb perxes i cartutxos per treure els bolsons. Només fan la seva feina, pobrets, però tu has de defensar casa teva fins que arribi la primavera."
+
+msgid "LVL_NEST_BOSS_GOAL"
+msgstr "Fes fora el Capatàs sense que el bolsó s'esfondri."
+
+msgid "LVL_NEST_BOSS_TIP"
+msgstr "El Capatàs avisa de la perxada amb una franja: surt-ne! Després de dos atacs es queda sense alè i s'asseu: aleshores, pica fort!"
+
+msgid "LVL_PUPA_1_TITLE"
+msgstr "Sota terra"
+
+msgid "LVL_PUPA_1_INTRO"
+msgstr "A la primavera les erugues baixen del pi en processó i s'enterren a uns quants centímetres de terra, en un lloc assolellat. Allà es fan un capoll i es transformen en pupa. Tu també: cava, cava, fins a una cambra segura!"
+
+msgid "LVL_PUPA_1_GOAL"
+msgstr "Cava fins a la cambra segura."
+
+msgid "LVL_PUPA_1_TIP"
+msgstr "Mantén premuda una direcció contra la terra per cavar. Recull les gotes de saba pel camí i no t'oblidis de les formigues."
+
+msgid "LVL_PUPA_2_TITLE"
+msgstr "Les arrels"
+
+msgid "LVL_PUPA_2_INTRO"
+msgstr "Sota el pi tot és un embull d'arrels que no es poden foradar. La pupa ha d'anar-les voltant, i vigilar: si caves sota una pedra, et pot caure al damunt!"
+
+msgid "LVL_PUPA_2_GOAL"
+msgstr "Troba el camí entre les arrels fins a la cambra segura."
+
+msgid "LVL_PUPA_2_TIP"
+msgstr "Les pedres cauen quan caves la terra que tenen sota: no hi passis per sota!"
+
+msgid "LVL_PUPA_3_TITLE"
+msgstr "Aiguats"
+
+msgid "LVL_PUPA_3_INTRO"
+msgstr "A la primavera pot ploure de valent, i l'aigua es cola per la terra i omple les galeries. Una pupa no pot respirar sota l'aigua, així que ha de pujar abans que se li empassi el camí."
+
+msgid "LVL_PUPA_3_GOAL"
+msgstr "Cava cap amunt i de costat abans que l'aigua t'atrapi."
+
+msgid "LVL_PUPA_3_TIP"
+msgstr "Si passes més de dos segons sota l'aigua, perds un cor. No et quedis aturada!"
+
+msgid "LVL_PUPA_BOSS_TITLE"
+msgstr "La Puput"
+
+msgid "LVL_PUPA_BOSS_INTRO"
+msgstr "La puput té un bec llarg i corbat per furgar a terra, i li agraden molt les pupes de processionària. Les troba escoltant els sorolls que fan. Per sort, qui està quiet no fa soroll!"
+
+msgid "LVL_PUPA_BOSS_GOAL"
+msgstr "Aguanta sota terra fins que la pupa es converteixi en papallona."
+
+msgid "LVL_PUPA_BOSS_TIP"
+msgstr "Cavar i moure's fa soroll, i la puput ve a picar. Si et quedes quieta no et sentirà; i si veus l'ombra del bec, aparta't!"
+
+msgid "LVL_MOTH_1_TITLE"
+msgstr "Primer vol"
+
+msgid "LVL_MOTH_1_INTRO"
+msgstr "Després de mesos sota terra, a l'estiu la pupa s'obre i en surt una papallona nocturna, de color gris. Les ales són noves i tremolen una mica. Les papallones adultes no mengen: només viuen un dia o dos i han de fer-ho tot de pressa!"
+
+msgid "LVL_MOTH_1_GOAL"
+msgstr "Vola fins al final del camí, entre els pins."
+
+msgid "LVL_MOTH_1_TIP"
+msgstr "Cada toc de salt és un batec d'ales. Si el mantens premut, planeges i caus més a poc a poc."
+
+msgid "LVL_MOTH_2_TITLE"
+msgstr "Llums del poble"
+
+msgid "LVL_MOTH_2_INTRO"
+msgstr "Les papallones volen de nit i els fanals dels carrers les confonen. A més, els forestals posen paranys de feromones, que fan olor de femella i atrapen els mascles. Sembla una festa, però és perillosa!"
+
+msgid "LVL_MOTH_2_GOAL"
+msgstr "Creua el poble sense tocar ni els fanals ni els paranys."
+
+msgid "LVL_MOTH_2_TIP"
+msgstr "Els fanals t'atreuen: bat les ales en sentit contrari. Un parany et fa tornar a l'última bandera."
+
+msgid "LVL_MOTH_3_TITLE"
+msgstr "L'enganyapastors"
+
+msgid "LVL_MOTH_3_INTRO"
+msgstr "L'enganyapastors és un ocell nocturn de boca molt ampla que caça papallones a l'aire. Si et veu de prop, et persegueix entre els pins."
+
+msgid "LVL_MOTH_3_GOAL"
+msgstr "Surt del pinar abans que l'enganyapastors t'atrapi."
+
+msgid "LVL_MOTH_3_TIP"
+msgstr "Amaga't a les ombres: a dins no et veu. Fes servir els arbres per esquivar-lo."
+
+msgid "LVL_MOTH_BOSS_TITLE"
+msgstr "El Ratpenat"
+
+msgid "LVL_MOTH_BOSS_INTRO"
+msgstr "Els ratpenats cacen papallones de nit amb ecolocalització: criden molt agut i escolten l'eco. Aquest és l'últim gran perill. Quan s'acabi la nit, pondràs els ous entre les agulles dels pins, i tot torna a començar!"
+
+msgid "LVL_MOTH_BOSS_GOAL"
+msgstr "Aguanta la nit entre les ombres fins que puguis pondre els ous."
+
+msgid "LVL_MOTH_BOSS_TIP"
+msgstr "Quan l'ona del ratpenat et passa per sobre fora de l'ombra, et marca i s'hi llança. Amaga't a les ombres abans que arribi!"
+
+msgid "STORY_HERO_PROCESSION"
+msgstr "La cap de fila i la seva processó"
+
+msgid "STORY_STAGE_PROCESSION_FACT"
+msgstr "A finals d'hivern i a la primavera les erugues surten del bolsó i baixen del pi en fila índia, una darrere l'altra i cap a cua, seguint el fil de seda que teixeix la primera. Van a la recerca de terra tova, on s'enterren per fer-se un capoll."
+
+msgid "LVL_PROC_1_TITLE"
+msgstr "En fila índia"
+
+msgid "LVL_PROC_1_INTRO"
+msgstr "S'ha acabat l'hivern i el bolsó us ha quedat petit. Les processionàries en surten de nit, baixen del pi en fila índia i segueixen el fil de seda que va teixint la primera. Ningú no es pot perdre: qui es quedi enrere no troba el camí!"
+
+msgid "LVL_PROC_1_GOAL"
+msgstr "Porta la processó fins a la terra tova, sense deixar ningú enrere."
+
+msgid "LVL_PROC_1_TIP"
+msgstr "Només tu portes la fila: les altres et segueixen soles. Cada torn pots caminar un tros (mira la barra Marxa) i, quan s'acaba, ja no pots avançar més. Si una companya queda lluny de la fila, torna enrere a buscar-la."
+
+msgid "LVL_PROC_2_TITLE"
+msgstr "El senglar"
+
+msgid "LVL_PROC_2_INTRO"
+msgstr "Un senglar rodola pel bosc a la recerca de fures i arrels, i no mira on posa les peülles. Si us creua pel camí, no hi ha fila que valgui: us tira a tots pels aires. No el podeu fer fora, només esquivar-lo."
+
+msgid "LVL_PROC_2_GOAL"
+msgstr "Creua el pas del senglar i arriba a la terra tova."
+
+msgid "LVL_PROC_2_TIP"
+msgstr "Un torn abans, una franja taronja i una fletxa avisen d'on vindrà el senglar. Quan la franja és lliure, travessa-la de pressa, o espera que el senglar hagi passat, perquè no s'atura per ningú."
+
+msgid "LVL_PROC_3_TITLE"
+msgstr "El Calosoma"
+
+msgid "LVL_PROC_3_INTRO"
+msgstr "El Calosoma sycophanta és un escarabat verd i daurat, ràpid i de potes llargues, que caça erugues de processionària. Els forestals l'aprecien molt perquè s'ho menja tot, però vosaltres el veieu venir amb altres ulls."
+
+msgid "LVL_PROC_3_GOAL"
+msgstr "Arriba a la terra tova o fes fora el Calosoma."
+
+msgid "LVL_PROC_3_TIP"
+msgstr "El Calosoma va molt de pressa i mossega les seguidores, de 20 en 20. Fes-li front amb l'urticària abans que arribi a la fila, que et surt més a compte que no pas córrer."
+
+msgid "LVL_PROC_4_TITLE"
+msgstr "Pluja de primavera"
+
+msgid "LVL_PROC_4_INTRO"
+msgstr "La pluja de primavera fa créixer un fong, la Beauveria, que forma núvols de pols verdosa entre els pins. Les espores es posen sobre les erugues i les maten per dins: és un dels enemics naturals de la processionària. I a sobre hi ha formigues i una mallerenga!"
+
+msgid "LVL_PROC_4_GOAL"
+msgstr "Arriba a la terra tova sense quedar-te dins dels núvols de fong."
+
+msgid "LVL_PROC_4_TIP"
+msgstr "Els núvols fereixen qui hi sigui a l'inici del seu torn, i es van movent a cada ronda. Rodeja'ls o travessa'ls de pressa, i compta els torns!"
+
+msgid "LVL_PROC_5_TITLE"
+msgstr "Terra tova"
+
+msgid "LVL_PROC_5_INTRO"
+msgstr "Ja ho teniu a prop: la terra tova on enterrar-vos i fer-vos el capoll. Però el camí és llarg i el bosc és ple de perills: senglars, fongs, escarabats i ocells. Ànim, que és l'últim tram!"
+
+msgid "LVL_PROC_5_GOAL"
+msgstr "Porta tantes companyes com puguis fins a la terra tova."
+
+msgid "LVL_PROC_5_TIP"
+msgstr "Hi ha de tot: mira les franges del senglar, rodeja els núvols de fong i protegeix la fila del Calosoma i dels ocells. Les companyes que arribin amb tu compten per a les estrelles."
+
+msgid "LVL_PROC_BOSS_TITLE"
+msgstr "El Cucut"
+
+msgid "LVL_PROC_BOSS_INTRO"
+msgstr "Al final del camí t'espera el cucut, un dels pocs ocells que s'atreveixen amb les erugues peludes. Arriba a la primavera, just quan sortiu del niu, amb la panxa barrada i la cua llarga, i només té ulls per a la teva fila."
+
+msgid "LVL_PROC_BOSS_GOAL"
+msgstr "Arriba a la terra tova o fes fora el cucut, i que la cap de fila no caigui."
+
+msgid "LVL_PROC_BOSS_TIP"
+msgstr "El cucut marca amb un cercle qui vol menjar-se: mou la fila perquè quedi fora. Quan s'ha afartat, es posa sadollat un torn i és vulnerable: pica fort!"
+
+msgid "HUD_OBJECTIVE_HATCH"
+msgstr "Eclosió d'aquí a %d torns"
+
+msgid "HUD_OBJECTIVE_HATCH_1"
+msgstr "Eclosió d'aquí a 1 torn"
+
+msgid "HUD_PASS"
+msgstr "Passa"
+
+msgid "HUD_PASS_TOOLTIP"
+msgstr "Acaba el torn sense fer res (N)"
+
+msgid "HUD_NO_WEAPONS"
+msgstr "Encara no tens armes: arrossega't i amaga't!"
+
+msgid "HUD_SQUAD_EGG"
+msgstr "Els Ous"
+
+msgid "HUD_SQUAD_ANT"
+msgstr "Les Formigues"
+
+msgid "HUD_OBJECTIVE_ENEMIES"
+msgstr "Enemics: %d"
+
+msgid "HUD_OBJECTIVE_WAVES"
+msgstr "Onades: %d"
+
+msgid "HUD_WAVE_BANNER"
+msgstr "Onada %d"
+
+msgid "HUD_NEW"
+msgstr "Nou!"
+
+msgid "HUD_SQUAD_LARVA_L1"
+msgstr "Les Germanes"
+
+msgid "HUD_SQUAD_LARVA_L2"
+msgstr "Les Germanes"
+
+msgid "HUD_SQUAD_BLUE_TIT"
+msgstr "Les Mallerengues"
+
+msgid "HUD_SQUAD_MIXED"
+msgstr "Els Enemics"
+
+msgid "STORY_LABEL_ABILITIES"
+msgstr "Habilitats"
+
+msgid "STORY_ABILITY_SILK_WEB"
+msgstr "Fil de seda (tecla C)"
+
+msgid "STORY_WEAPON_PICOTADA"
+msgstr "Picotada"
+
+msgid "STORY_HERO_LARVA_EARLY"
+msgstr "La Perleta i les seves germanes"
+
+msgid "STORY_STAGE_LARVA_EARLY_FACT"
+msgstr "A finals d'estiu les larves de processionària naixen totes juntes i teixeixen un primer niu de seda. De nit surten a menjar agulles de pi, en fila, i van mudant la pell. Els pèls urticants de debò no els tindran fins a la tercera edat (L3)."
+
+msgid "STORY_ENEMIES_WAVE"
+msgstr "%s × %d a cada onada"
+
+msgid "FT_PLAT_NUTRIENT"
+msgstr "Saba!"
+
+msgid "FT_PLAT_CHECKPOINT"
+msgstr "Punt de control"
+
+msgid "FT_PLAT_HURT"
+msgstr "Ai!"
+
+msgid "PLAT_PAUSE_TITLE"
+msgstr "Pausa"
+
+msgid "PLAT_RESUME"
+msgstr "Continua"
+
+msgid "PLAT_EXIT"
+msgstr "Surt al mapa"
+
+msgid "PLAT_JUMP"
+msgstr "SALTA"
+
+msgid "PLAT_HELP_KEYS"
+msgstr "Fletxes o A/D per moure't · Espai per saltar"
+
+msgid "PLAT_HELP_TOUCH"
+msgstr "Fletxes per moure't · SALTA per saltar"
+
+msgid "PLAT_BANNER_WON"
+msgstr "Quin solet més bo!"
+
+msgid "PLAT_BANNER_LOST"
+msgstr "Torna-ho a provar, Perleta!"
+
+msgid "PLAT_NO_WEAPONS"
+msgstr "Cap: salta i amaga't!"
+
+msgid "PLAT_RESULT_NUTRIENTS"
+msgstr "Gotes de saba: %d de %d"
+
+msgid "PLAT_RESULT_HEARTS"
+msgstr "Cors que et queden: %d"
+
+msgid "PLAT_REASON_REACHED_GOAL"
+msgstr "Has arribat al racó de sol. Quina escalforeta!"
+
+msgid "PLAT_REASON_LOST"
+msgstr "Les formigues han estat més ràpides. Torna-ho a provar!"
+
+msgid "PLAT_BOSS_BAR"
+msgstr "Eclosió en %d s"
+
+msgid "PLAT_BOSS_INTRO"
+msgstr "La Vespa!"
+
+msgid "PLAT_BANNER_HATCHED"
+msgstr "Perleta ha trencat la closca!"
+
+msgid "PLAT_REASON_HATCHED"
+msgstr "Has aguantat fins al final i la closca s'ha trencat. Benvinguda al món, erugueta!"
+
+msgid "PLAT_ENEMY_WASP"
+msgstr "Vespa paràsita"
+
+msgid "TOUCH_HINT"
+msgstr "Fes lliscar el dit a l'esquerra per caminar · arrossega des de l'eruga per apuntar"
+
+msgid "BOSS_TACHINID_NAME"
+msgstr "Mosca Taquina"
+
+msgid "BOSS_TACHINID_TITLE"
+msgstr "La paràsita del pinar"
+
+msgid "UNIT_SMALL_FLY"
+msgstr "Mosqueta"
+
+msgid "BOSS_NAMES_AND"
+msgstr "%s i %s"
+
+msgid "BOSS_INTENT_LAY_EGGS"
+msgstr "La Mosca vol pondre ous a %s!"
+
+msgid "BOSS_INTENT_BUZZ"
+msgstr "La Mosca brunzeix: aparteu-vos!"
+
+msgid "BOSS_INTENT_SUMMON"
+msgstr "La Mosca crida les seves cosines!"
+
+msgid "FT_ARMORED"
+msgstr "BLINDAT"
+
+msgid "FT_DODGED"
+msgstr "Esquivada!"
+
+msgid "FT_PARASITE"
+msgstr "Ous a l'esquena de %s!"
+
+msgid "FT_CLEANED"
+msgstr "%s es neteja amb seda!"
+
+msgid "FT_BOSS_LANDS"
+msgstr "S'ha posat: ara, piqueu-la!"
+
+msgid "FT_BOSS_TAKEOFF"
+msgstr "Torna a volar!"
+
+msgid "FT_BOSS_PHASE"
+msgstr "Ara s'ha enfadat de debò!"
+
+msgid "FT_BOSS_SUMMON"
+msgstr "Reforços!"
+
+msgid "FT_BOSS_SPLASH"
+msgstr "Xof! Ales xopes!"
+
+msgid "FT_BOSS_DEFEATED"
+msgstr "K.O.!"
+
+msgid "DMG_LAY_EGGS"
+msgstr "Posta!"
+
+msgid "DMG_PARASITE"
+msgstr "Larves!"
+
+msgid "DMG_BUZZ"
+msgstr "Brunzit!"
+
+msgid "DMG_SPLASH"
+msgstr "Remullada!"
+
+msgid "DMG_BOSS"
+msgstr "Cop!"
+
+msgid "STORY_REASON_BOSS_DEFEATED"
+msgstr "Heu fet fora el gran enemic de l'etapa!"
+
+msgid "BOSS_VULNERABLE"
+msgstr "Vulnerable!"
+
+msgid "BOSS_BANNER_KICKER"
+msgstr "Enemic de l'etapa"
+
+msgid "BOSS_PHASE_BANNER"
+msgstr "Fase %d"
+
+msgid "BOSS_DEFEATED_BANNER"
+msgstr "Fora de combat!"
+
+msgid "STORY_LABEL_BOSS"
+msgstr "Enemic de l'etapa"
+
+msgid "STORY_LABEL_BOSS_ATTACKS"
+msgstr "Com ataca"
+
+msgid "BOSS_TACHINID_FACT"
+msgstr "Phryxe caudata és una mosca parasitoide: la femella posa els ous sobre les erugues de la processionària i, quan neixen, les seves larves se les mengen per dins."
+
+msgid "BOSS_TACHINID_ATTACKS"
+msgstr "Avisa abans de cada atac: un cercle vermell marca qui rebrà la posta d'ous, i el brunzit empeny tothom qui té a prop. Després de llançar-se, es posa a terra un torn."
+
+msgid "BOSS_GREAT_TIT_FACT"
+msgstr "La mallerenga carbonera (Parus major) és una de les poques aus que s'atreveixen amb les erugues processionàries: a l'hivern obre els nius de seda a cops de bec per menjar-se'n les larves."
+
+msgid "BOSS_GREAT_TIT_ATTACKS"
+msgstr "Avisa abans de cada atac: es llança a picar qui marca amb un cercle vermell, i el cop d'ales empeny tothom qui té a prop. Només és vulnerable quan s'atura dalt d'un arbre."
+
+msgid "HUD_SQUAD_LARVA_L3"
+msgstr "La Colla"
+
+msgid "HUD_SQUAD_LARVA_L4"
+msgstr "La Colla"
+
+msgid "HUD_SQUAD_LARVA_L5"
+msgstr "La Colla"
+
+msgid "HUD_SQUAD_GREAT_TIT"
+msgstr "Les Carboneres"
+
+msgid "STORY_WEAPON_PICOTADA_FORTA"
+msgstr "Picotada forta"
+
+msgid "UNIT_LARVA_L3"
+msgstr "Larva L3"
+
+msgid "UNIT_LARVA_L4"
+msgstr "Larva L4"
+
+msgid "UNIT_LARVA_L5"
+msgstr "Larva L5"
+
+msgid "UNIT_GREAT_TIT"
+msgstr "Mallerenga carbonera"
+
+msgid "WPN_PICOTADA_FORTA"
+msgstr "La Picotada forta"
+
+msgid "DMG_PICOTADA_FORTA"
+msgstr "Picotada forta!"
+
+msgid "BOSS_GREAT_TIT_NAME"
+msgstr "La Mallerenga"
+
+msgid "BOSS_GREAT_TIT_TITLE"
+msgstr "La gran caçadora de pins"
+
+msgid "BOSS_INTENT_PERCH"
+msgstr "La Mallerenga busca una branca alta!"
+
+msgid "BOSS_INTENT_PECK_DIVE"
+msgstr "La Mallerenga pica en picat sobre %s!"
+
+msgid "BOSS_INTENT_WING_FLAP"
+msgstr "La Mallerenga bat les ales: aparteu-vos!"
+
+msgid "BOSS_INTENT_SUMMON_TITS"
+msgstr "La Mallerenga crida el seu estol!"
+
+msgid "DMG_PECK_DIVE"
+msgstr "Picada en picat!"
+
+msgid "DMG_WING_FLAP"
+msgstr "Cop d'ala!"
+
+msgid "UNIT_FORESTRY_WORKER"
+msgstr "Treballador forestal"
+
+msgid "WPN_PERXADA"
+msgstr "La Perxada"
+
+msgid "DMG_PERXADA"
+msgstr "Perxada!"
+
+msgid "DMG_POLE"
+msgstr "La perxa!"
+
+msgid "FT_COLD"
+msgstr "Fred"
+
+msgid "FT_SHELTERED"
+msgstr "Al recer"
+
+msgid "FT_NEST_DAMAGE"
+msgstr "Bolsó -%s"
+
+msgid "FT_NEST_REPAIRED"
+msgstr "Bolsó +%s"
+
+msgid "FT_NEST_DESTROYED"
+msgstr "S'ha esfondrat el bolsó!"
+
+msgid "FT_NEST_SAVED"
+msgstr "El bolsó ha aguantat l'hivern!"
+
+msgid "FT_POLE_WARN"
+msgstr "Compte, baixa la perxa!"
+
+msgid "FT_BOSS_WINDED"
+msgstr "Sense alè! Ara, piqueu-lo!"
+
+msgid "BOSS_BRIGADE_NAME"
+msgstr "El Capatàs"
+
+msgid "BOSS_BRIGADE_TITLE"
+msgstr "La Brigada Forestal"
+
+msgid "BOSS_INTENT_SUMMON_WORKERS"
+msgstr "El Capatàs crida els seus homes!"
+
+msgid "BOSS_INTENT_CATCH_BREATH"
+msgstr "El Capatàs es queda sense alè"
+
+msgid "BOSS_INTENT_POLE_SWEEP"
+msgstr "El Capatàs balanceja la perxa: aparteu-vos!"
+
+msgid "BOSS_INTENT_CARTRIDGE"
+msgstr "El Capatàs apunta el bolsó amb un cartutx!"
+
+msgid "UPG_TOUGH_SKIN_NAME"
+msgstr "Pell gruixuda"
+
+msgid "UPG_TOUGH_SKIN_DESC"
+msgstr "La colla té un 15 % més de vida màxima."
+
+msgid "UPG_SHARP_HAIRS_NAME"
+msgstr "Pèls esmolats"
+
+msgid "UPG_SHARP_HAIRS_DESC"
+msgstr "Les armes fan un 15 % més de mal."
+
+msgid "UPG_THICK_WALLS_NAME"
+msgstr "Parets gruixudes"
+
+msgid "UPG_THICK_WALLS_DESC"
+msgstr "El bolsó té 100 punts de vida més."
+
+msgid "UPG_WARM_SILK_NAME"
+msgstr "Seda càlida"
+
+msgid "UPG_WARM_SILK_DESC"
+msgstr "El fred ja no fa mal fora del bolsó."
+
+msgid "UPG_DOUBLE_WEB_NAME"
+msgstr "Doble teranyina"
+
+msgid "UPG_DOUBLE_WEB_DESC"
+msgstr "Pots filar dues teranyines per torn."
+
+msgid "UPG_FULL_POUCH_NAME"
+msgstr "Sarró ple"
+
+msgid "UPG_FULL_POUCH_DESC"
+msgstr "Una munició més a les armes limitades."
+
+msgid "HUD_OBJECTIVE_DEFEND"
+msgstr "Resisteix %d torns · Bolsó %d/%d"
+
+msgid "HUD_OBJECTIVE_DEFEND_1"
+msgstr "Resisteix 1 torn · Bolsó %d/%d"
+
+msgid "HUD_OBJECTIVE_NEST"
+msgstr "Bolsó %d/%d"
+
+msgid "HUD_REPAIR"
+msgstr "Repara"
+
+msgid "HUD_REPAIR_TOOLTIP"
+msgstr "Teixeix seda nova al bolsó (tecla T)"
+
+msgid "HUD_SQUAD_FORESTRY_WORKER"
+msgstr "Forestals"
+
+msgid "STORY_BTN_NEST"
+msgstr "El Bolsó · seda %d"
+
+msgid "STORY_BTN_HUB"
+msgstr "Gasta la seda"
+
+msgid "STORY_RESULT_SILK"
+msgstr "Seda guanyada: +%d"
+
+msgid "STORY_LABEL_RULES"
+msgstr "Regles especials"
+
+msgid "STORY_RULE_DEFEND"
+msgstr "Defensa el bolsó: aguanta %d torns sense que es quedi sense vida (%d punts)."
+
+msgid "STORY_RULE_NEST_BOSS"
+msgstr "El bolsó també compta: si es queda sense vida (%d punts), has perdut."
+
+msgid "STORY_RULE_REPAIR"
+msgstr "Repara: al costat del bolsó, el botó Repara (tecla T) gasta l'acció i li dona 40 punts de vida. Dins del bolsó els cops piquen la meitat."
+
+msgid "STORY_RULE_COLD"
+msgstr "Fred: a l'inici del teu torn, si ets fora del bolsó perds vida. La millora Seda càlida ho evita."
+
+msgid "STORY_RULE_POLE"
+msgstr "Perxa: una franja taronja marca on caurà la perxa un torn després. Fereix qui hi sigui i també el bolsó."
+
+msgid "STORY_MODE_DIG"
+msgstr "Cava: mantén premuda una direcció contra la terra. Els túnels que fas són el teu camí."
+
+msgid "STORY_MODE_FLY"
+msgstr "Vol: cada toc de salt és un batec d'ales; si el mantens premut, planeges."
+
+msgid "STORY_ENEMY_HOOPOE"
+msgstr "La puput"
+
+msgid "STORY_ENEMY_BAT"
+msgstr "El ratpenat"
+
+msgid "STORY_ENEMY_STONES"
+msgstr "Pedres que cauen × %d"
+
+msgid "STORY_ENEMY_WATER"
+msgstr "Aigua que puja"
+
+msgid "STORY_ENEMY_LAMPS"
+msgstr "Fanals × %d"
+
+msgid "STORY_ENEMY_TRAPS"
+msgstr "Paranys de feromones × %d"
+
+msgid "STORY_ENEMY_NIGHTJARS"
+msgstr "Enganyapastors × %d"
+
+msgid "STORY_REASON_NEST_SURVIVED"
+msgstr "Has aguantat l'hivern i el bolsó segueix dempeus."
+
+msgid "STORY_REASON_NEST_DESTROYED"
+msgstr "El bolsó s'ha esquinçat del tot. Torna-ho a provar!"
+
+msgid "STORY_REASON_METAMORPHOSIS"
+msgstr "Has aguantat sota terra i la pupa s'ha transformat en papallona. Quina meravella!"
+
+msgid "STORY_REASON_EGGS_LAID"
+msgstr "Has post els ous entre les agulles del pi. El cicle torna a començar!"
+
+msgid "STORY_REASON_DIG_REACHED_GOAL"
+msgstr "Has arribat a la cambra segura. Ara, a descansar!"
+
+msgid "STORY_REASON_FLY_REACHED_GOAL"
+msgstr "Has creuat la nit sencera sense cap ensurt."
+
+msgid "STORY_STAGE_NEST_FACT"
+msgstr "Les processionàries passen l'hivern en un bolsó de seda blanca, teixit a la banda assolellada del pi. De nit en surten a menjar agulles, i si fa massa fred es queden a dins. Les mallerengues els obren a cops de bec i els forestals els treuen amb una perxa."
+
+msgid "STORY_STAGE_PUPA_FACT"
+msgstr "A la primavera les erugues baixen del pi en processó, s'enterren a uns quants centímetres de terra i es fan un capoll. Hi passen mesos convertides en pupa, i algunes hi poden estar fins i tot uns quants anys abans de sortir."
+
+msgid "STORY_STAGE_MOTH_FACT"
+msgstr "A l'estiu, de nit, les papallones surten de terra. Són grises, no mengen i només viuen un dia o dos. Les femelles ponen els ous al voltant de dues agulles de pi i els tapen amb les escates del cos."
+
+msgid "STORY_HERO_NEST"
+msgstr "La Cuca i la colla, ben arrecerades"
+
+msgid "STORY_HERO_PUPA"
+msgstr "Perleta, ja pupa"
+
+msgid "STORY_HERO_MOTH"
+msgstr "Perleta, ara papallona"
+
+msgid "BOSS_BRIGADE_FACT"
+msgstr "A l'hivern els forestals treuen els bolsons dels pins tallant la branca amb una perxa llarga, perquè les erugues urticants fan mal a la gent. No tenen mala fe: només fan la seva feina."
+
+msgid "BOSS_BRIGADE_ATTACKS"
+msgstr "Crida els seus homes, balanceja la perxa sobre una franja marcada i dispara cartutxos al bolsó. Cada dos atacs es queda sense alè i s'asseu: és el moment de fer-li mal."
+
+msgid "NEST_HUB_TITLE"
+msgstr "El Bolsó"
+
+msgid "NEST_HUB_SUB"
+msgstr "Gasta la seda en millores per a la colla i per al niu."
+
+msgid "NEST_HUB_SILK"
+msgstr "Seda: %d"
+
+msgid "NEST_HUB_COST"
+msgstr "%d de seda"
+
+msgid "NEST_HUB_BUY"
+msgstr "Teixeix"
+
+msgid "NEST_HUB_NEED"
+msgstr "Falta seda"
+
+msgid "NEST_HUB_OWNED"
+msgstr "Teixida"
+
+msgid "NEST_HUB_HINT"
+msgstr "Cada estrella guanyada per primera vegada dona 6 de seda. Cada millora diu en quins nivells funciona."
+
+msgid "FT_PLAT2_DROWN"
+msgstr "T'ofegues!"
+
+msgid "PLAT_FLAP"
+msgstr "BATEC"
+
+msgid "PLAT_PAD_DIG"
+msgstr "Mantén per cavar"
+
+msgid "PLAT_HELP_DIG_KEYS"
+msgstr "Fletxes o WASD per cavar · Espai per fer un saltet"
+
+msgid "PLAT_HELP_DIG_TOUCH"
+msgstr "Mantén una fletxa per cavar · SALTA per fer un saltet"
+
+msgid "PLAT_HELP_FLY_KEYS"
+msgstr "Espai per batre les ales, mantén-lo per planar · Fletxes per dirigir-te"
+
+msgid "PLAT_HELP_FLY_TOUCH"
+msgstr "BATEC per batre les ales, mantén-lo per planar · Fletxes per dirigir-te"
+
+msgid "PLAT_BOSS_BAR_PUPA"
+msgstr "Metamorfosi en %d s"
+
+msgid "PLAT_BOSS_BAR_MOTH"
+msgstr "Posta en %d s"
+
+msgid "PLAT_BOSS_INTRO_HOOPOE"
+msgstr "La Puput!"
+
+msgid "PLAT_BOSS_INTRO_BAT"
+msgstr "El Ratpenat!"
+
+msgid "PLAT_BOSS_HINT_HOOPOE"
+msgstr "Queda't quieta i en silenci: la puput t'escolta"
+
+msgid "PLAT_BOSS_HINT_BAT"
+msgstr "Amaga't a l'ombra quan el ratpenat cridi"
+
+msgid "PLAT_BANNER_CHAMBER"
+msgstr "Ja ets a recer! Bona becaina, Perleta."
+
+msgid "PLAT_BANNER_LANDED"
+msgstr "Un bon lloc per reposar les ales!"
+
+msgid "PLAT_BANNER_METAMORPHOSIS"
+msgstr "Metamorfosi feta! Perleta ja té ales!"
+
+msgid "PLAT_BANNER_EGGS_LAID"
+msgstr "Posta feta! Els ous ja són a recer."
+
+msgid "PLAT_BANNER_CYCLE"
+msgstr "I el cicle torna a començar…"
+
+msgid "PLAT_REASON_METAMORPHOSIS"
+msgstr "Has aguantat en silenci i la crisàlide s'ha obert: ara tens ales!"
+
+msgid "PLAT_REASON_EGGS_LAID"
+msgstr "Has trobat l'amagatall, has post els ous i el cicle torna a començar."
+
+msgid "PLAT_ENEMY_HOOPOE"
+msgstr "Puput"
+
+msgid "PLAT_ENEMY_BAT"
+msgstr "Ratpenat"
+
+msgid "UNIT_WILD_BOAR"
+msgstr "Senglar"
+
+msgid "UNIT_CALOSOMA"
+msgstr "Calosoma"
+
+msgid "FT_LINE_LOST"
+msgstr "%s s'ha perdut de la fila!"
+
+msgid "FT_LINE_REJOINED"
+msgstr "%s torna a la fila"
+
+msgid "FT_GOAL_REACHED"
+msgstr "Terra tova! La processó s'enterra!"
+
+msgid "FT_BOAR_WARN"
+msgstr "Compte, ve un senglar!"
+
+msgid "DMG_BOAR"
+msgstr "Senglar!"
+
+msgid "DMG_SPORES"
+msgstr "Espores!"
+
+msgid "DMG_SWOOP"
+msgstr "Picada en picat!"
+
+msgid "BOSS_CUCKOO_NAME"
+msgstr "El Cucut"
+
+msgid "BOSS_CUCKOO_TITLE"
+msgstr "El Cucut"
+
+msgid "BOSS_INTENT_SWOOP"
+msgstr "El Cucut s'abalança sobre %s!"
+
+msgid "BOSS_INTENT_CUCKOO_GUST"
+msgstr "El Cucut bat les ales: aparteu-vos!"
+
+msgid "BOSS_INTENT_CUCKOO_PERCH"
+msgstr "El Cucut busca una branca per digerir"
+
+msgid "FT_BOSS_SATED"
+msgstr "Atipat! Ara, piqueu-lo!"
+
+msgid "HUD_OBJECTIVE_CONVOY"
+msgstr "Arriba a la terra tova · Seguidors %d/%d"
+
+msgid "HUD_MARCH"
+msgstr "Marxa %d px"
+
+msgid "HUD_SQUAD_CONVOY"
+msgstr "La Processó"
+
+msgid "HUD_SQUAD_WILD_BOAR"
+msgstr "El Senglar"
+
+msgid "HUD_SQUAD_CALOSOMA"
+msgstr "El Calosoma"
+
+msgid "PROC_GOAL_SIGN"
+msgstr "Terra tova"
+
+msgid "PROC_BOAR_WARN"
+msgstr "El senglar embesteix!"
+
+msgid "PROC_BOAR_WARN_N"
+msgstr "El senglar embestirà d'aquí a %d torns!"
+
+msgid "STORY_RULE_CONVOY"
+msgstr "Processó: només controles la cap de fila; les altres la segueixen soles. Guanyes quan la cap de fila arriba a la terra tova i perds si cau."
+
+msgid "STORY_RULE_MARCH"
+msgstr "Marxa: cada torn pots caminar fins a %d px (la barra de dalt)."
+
+msgid "STORY_RULE_LOST"
+msgstr "Si un cop envia una seguidora a més de 120 px de la fila, es perd (el «?»): torna-hi a prop perquè s'hi afegeixi. Les perdudes no compten per a les estrelles."
+
+msgid "STORY_RULE_BOAR"
+msgstr "Senglar: una franja taronja i una fletxa avisen un torn abans d'on embestirà. No es pot fer fora."
+
+msgid "STORY_RULE_SPORES"
+msgstr "Fong: els núvols verds fereixen qui hi sigui a l'inici del seu torn i es mouen cada ronda."
+
+msgid "STORY_RULE_MINI_BOSS"
+msgstr "També guanyes si fas fora l'enemic gran d'aquest nivell."
+
+msgid "STORY_RESULT_FOLLOWERS"
+msgstr "Seguidors salvats: %d de %d"
+
+msgid "STORY_REASON_PROCESSION_GOAL_REACHED"
+msgstr "La processó ha arribat a la terra tova. Ja podeu enterrar-vos!"
+
+msgid "STORY_REASON_PROCESSION_LOST"
+msgstr "La cap de fila ha caigut i la processó s'ha perdut. Torna-ho a provar!"
+
+msgid "STORY_REASON_PROCESSION_ELIMINATED_ENEMY"
+msgstr "Has fet fora l'enemic i el camí queda lliure."
+
+msgid "STORY_REASON_PROCESSION_BOSS_DEFEATED"
+msgstr "Has fet fora el cucut! La processó pot seguir tranquil·la."
+
+msgid "STORY_REASON_GOAL_REACHED"
+msgstr "La processó ha arribat a la terra tova. Ja podeu enterrar-vos!"
+
+msgid "BOSS_CUCKOO_FACT"
+msgstr "El cucut (Cuculus canorus) és una de les poques aus que mengen erugues peludes com les processionàries: arriba a la primavera i les empassa senceres, pèls inclosos."
+
+msgid "BOSS_CUCKOO_ATTACKS"
+msgstr "Avisa abans de cada atac: un cercle vermell marca la seguidora que s'abalançarà a menjar (dues a la segona fase) i el cop d'ales empeny la fila. Quan s'afarta, queda sadollat un torn: només llavors és vulnerable."
+
+msgid "FT_PLAT_STOMP"
+msgstr "Noquejada!"
+
+msgid "HUD_BTN_SIZE_SMALL"
+msgstr "Botons: petits"
+
+msgid "HUD_BTN_SIZE_NORMAL"
+msgstr "Botons: normals"
+
+msgid "HUD_BTN_SIZE_LARGE"
+msgstr "Botons: grans"
+
+msgid "HUD_BTN_SIZE_TOOLTIP"
+msgstr "Canvia la mida dels botons tàctils"
+
+msgid "UPG_TOUGH_SKIN_2_NAME"
+msgstr "Pell gruixuda II"
+
+msgid "UPG_TOUGH_SKIN_2_DESC"
+msgstr "La colla té un 15 % més de vida màxima, a sobre de la primera millora."
+
+msgid "UPG_SHARP_HAIRS_2_NAME"
+msgstr "Pèls esmolats II"
+
+msgid "UPG_SHARP_HAIRS_2_DESC"
+msgstr "Les armes fan un 15 % més de mal, a sobre de la primera millora."
+
+msgid "UPG_EXTRA_HEART_NAME"
+msgstr "Cor de seda"
+
+msgid "UPG_EXTRA_HEART_DESC"
+msgstr "Un cor més a l'ou, la crisàlide i la papallona."
+
+msgid "UPG_EXTRA_HEART_2_NAME"
+msgstr "Cor de seda II"
+
+msgid "UPG_EXTRA_HEART_2_DESC"
+msgstr "Un altre cor més, a sobre de la primera millora."
+
+msgid "UPG_FAST_DIG_NAME"
+msgstr "Mandíbules de ferro"
+
+msgid "UPG_FAST_DIG_DESC"
+msgstr "La crisàlide excava un terç més de pressa."
+
+msgid "UPG_LONG_FLIGHT_NAME"
+msgstr "Ales llargues"
+
+msgid "UPG_LONG_FLIGHT_DESC"
+msgstr "La papallona planeja baixant a mitja velocitat."
+
+msgid "UPG_WHERE_COMBAT"
+msgstr "Funciona: nivells de combat"
+
+msgid "UPG_WHERE_NEST"
+msgstr "Funciona: nivells del bolsó"
+
+msgid "UPG_WHERE_PLATFORM"
+msgstr "Funciona: nivells de l'ou, la crisàlide i la papallona"
+
+msgid "UPG_NEEDS"
+msgstr "Cal tenir abans: %s"
+
+msgid "TOUCH_AIM_BUTTON"
+msgstr "Apunta"
+
+msgid "TOUCH_MOVE_BUTTON"
+msgstr "◀ Moure"
+
+msgid "TOUCH_PHASE_MOVE"
+msgstr "Mou-te"
+
+msgid "TOUCH_PHASE_AIM_HOLD"
+msgstr "Apunta i mantén FOC"
+
+msgid "TOUCH_PHASE_AIM_TAP"
+msgstr "Apunta i toca FOC"
+
+msgid "TOUCH_PHASE_TARGET"
+msgstr "Toca el mapa per marcar l'objectiu"
+
+msgid "HUD_OBJECTIVE_REACH"
+msgstr "Arriba a la branca"
+
+msgid "HUD_OBJECTIVE_RESCUE"
+msgstr "Salva la germana"
+
+msgid "HUD_OBJECTIVE_COLLECT"
+msgstr "Pinyons: %d/%d"
+
+msgid "HUD_OBJECTIVE_AMMO"
+msgstr "Munició: %d"
+
+msgid "HUD_OBJECTIVE_HIDE"
+msgstr "Amaga't · Rondes: %d"
+
+msgid "HUD_OBJECTIVE_HIDE_1"
+msgstr "Amaga't · Última ronda"
+
+msgid "HUD_OBJECTIVE_ANTHILL"
+msgstr "Formiguer: %d%% · Onades: %d"
+
+msgid "HUD_OBJECTIVE_TURNS_LEFT"
+msgstr "· Torns: %d"
+
+msgid "GOAL_BRANCH_SIGN"
+msgstr "Branca"
+
+msgid "FT_BRANCH_REACHED"
+msgstr "Has arribat a la branca!"
+
+msgid "FT_SISTER_FREED"
+msgstr "%s s'ha alliberat!"
+
+msgid "FT_SISTER_SAFE"
+msgstr "La colla torna a ser sencera!"
+
+msgid "FT_ANTHILL_HIT"
+msgstr "Formiguer -%d"
+
+msgid "FT_ANTHILL_DOWN"
+msgstr "El formiguer s'ensorra!"
+
+msgid "FT_NUT_COLLECTED"
+msgstr "Pinyó %d/%d"
+
+msgid "FT_NUTS_DONE"
+msgstr "Magatzem ple!"
+
+msgid "FT_NUTS_LOST"
+msgstr "S'han perdut massa pinyons"
+
+msgid "FT_OUT_OF_AMMO"
+msgstr "No queden trets!"
+
+msgid "FT_TIME_UP"
+msgstr "Se us ha acabat el temps!"
+
+msgid "STORY_REASON_REACHED"
+msgstr "Una cuca ha arribat a la branca. Quin cim!"
+
+msgid "STORY_REASON_RESCUED"
+msgstr "La germana ja és amb vosaltres. La colla torna a ser sencera!"
+
+msgid "STORY_REASON_ANTHILL_DESTROYED"
+msgstr "Heu rebentat el formiguer: no en sortiran més formigues!"
+
+msgid "STORY_REASON_COLLECTED"
+msgstr "Heu recollit prou pinyons per a l'hivern."
+
+msgid "STORY_REASON_TIME_UP"
+msgstr "S'ha acabat el temps abans d'arribar-hi. Torna-ho a provar!"
+
+msgid "STORY_REASON_OUT_OF_AMMO"
+msgstr "Ja no teniu trets i la formiga encara hi és. Torna-ho a provar!"
+
+msgid "STORY_REASON_NUTS_LOST"
+msgstr "S'han perdut massa pinyons per arribar a la quantitat. Torna-ho a provar!"
+
+msgid "STORY_RULE_REACH"
+msgstr "Branca: guanyes quan una sola cuca hi arriba. Tens %d rondes; el fil de seda amorteix les caigudes i fa de pont."
+
+msgid "STORY_RULE_RESCUE"
+msgstr "Rescat: quan una cuca toqui el capoll de la germana, s'afegirà a la colla i guanyaràs. Tens %d rondes."
+
+msgid "STORY_RULE_COLLECT"
+msgstr "Pinyons: n'hi ha %d pel mapa i en necessites %d, en %d rondes. Els enemics no els poden recollir."
+
+msgid "STORY_RULE_ONE_SHOT"
+msgstr "Un sol tret: l'enemic està protegit pel terreny i no es mou. Si us quedeu sense trets i encara és viu, perds."
+
+msgid "STORY_RULE_ANTHILL"
+msgstr "Formiguer: té %d punts de vida. Les explosions el ferixen i, si arriba a 0, guanyes de seguida."
+
+msgid "STORY_RULE_BARRELS_ANTHILL"
+msgstr "Barrils: n'hi ha %d vora el formiguer. Una explosió propera els fa petar i ferir-lo."
+
+msgid "STORY_RULE_BARRELS"
+msgstr "Barrils: n'hi ha %d vora els enemics. Si en peta un, encadena els veïns."
+
+msgid "STORY_RULE_MINES"
+msgstr "Mines: n'hi ha %d pel camí. Peten quan algú s'hi acosta, també els enemics."
+
+msgid "STORY_RULE_WIND"
+msgstr "Vent fort: el vent és un %d %% més fort del normal i desvia els trets."
+
+msgid "STORY_RULE_TIDE"
+msgstr "Marea: l'aigua puja cada ronda a partir de la ronda %d."
+
+msgid "STORY_RULE_SUPPLY"
+msgstr "Subministraments: del cel cauen caixes amb armes i vida."
+
+msgid "STORY_RULE_HIDE"
+msgstr "Amagatalls: acaba el torn sobre una mata d'agulles i t'amagaràs. Una formiga que s'hi aturi a prop et descobreix."
+
+msgid "STAGECARD_KICKER"
+msgstr "Com es juga"
+
+msgid "STAGECARD_LABEL_GOAL"
+msgstr "L'objectiu"
+
+msgid "STAGECARD_LABEL_CONTROLS"
+msgstr "Controls"
+
+msgid "STAGECARD_LABEL_KEYS"
+msgstr "Teclat"
+
+msgid "STAGECARD_LABEL_TIPS"
+msgstr "Consells"
+
+msgid "STAGECARD_BTN_OK"
+msgstr "Entesos!"
+
+msgid "STAGECARD_HELP_TOOLTIP"
+msgstr "Com es juga aquesta etapa"
+
+msgid "STAGECARD_CAP_MOVE"
+msgstr "Camina"
+
+msgid "STAGECARD_CAP_RUN"
+msgstr "Corre"
+
+msgid "STAGECARD_CAP_JUMP"
+msgstr "Salta"
+
+msgid "STAGECARD_CAP_JUMP_FWD"
+msgstr "Salta endavant"
+
+msgid "STAGECARD_CAP_FLIP"
+msgstr "Salt enrere"
+
+msgid "STAGECARD_CAP_AIM"
+msgstr "Passa a apuntar"
+
+msgid "STAGECARD_CAP_FIRE"
+msgstr "Mantén i solta"
+
+msgid "STAGECARD_CAP_PASS"
+msgstr "Acaba el torn"
+
+msgid "STAGECARD_CAP_SWITCH"
+msgstr "Canvia de cuca"
+
+msgid "STAGECARD_CAP_REPAIR"
+msgstr "Adoba el bolsó"
+
+msgid "STAGECARD_CAP_MARCH"
+msgstr "Marxa"
+
+msgid "STAGECARD_CAP_DIG"
+msgstr "Mantén per cavar"
+
+msgid "STAGECARD_CAP_HOP"
+msgstr "Un saltet"
+
+msgid "STAGECARD_CAP_STEER"
+msgstr "Dirigeix"
+
+msgid "STAGECARD_CAP_FLAP"
+msgstr "Batec; mantén per planar"
+
+msgid "STAGECARD_EGG_KIND"
+msgstr "Plataformes en temps real"
+
+msgid "STAGECARD_EGG_GOAL"
+msgstr "Arriba al racó de sol abans que les formigues t'atrapin."
+
+msgid "STAGECARD_EGG_TIP1"
+msgstr "Amaga't dins d'una mata d'agulles: si et quedes quieta, les formigues no et veuen."
+
+msgid "STAGECARD_EGG_TIP2"
+msgstr "Recull gotes de saba pel camí: et fan créixer una mica."
+
+msgid "STAGECARD_EGG_TIP3"
+msgstr "Salta damunt d'una formiga i la deixaràs noquejada!"
+
+msgid "STAGECARD_EGG_KEYS"
+msgstr "Fletxes o A/D: córrer · Espai: saltar (mantén-lo per saltar més amunt)"
+
+msgid "STAGECARD_LARVA_EARLY_KIND"
+msgstr "Combat per torns"
+
+msgid "STAGECARD_LARVA_EARLY_GOAL"
+msgstr "Cada nivell té el seu repte: fer fora formigues, arribar a una branca, rescatar una germana..."
+
+msgid "STAGECARD_LARVA_EARLY_TIP1"
+msgstr "Al teu torn, mou-te (Salt o Mortal per passar obstacles) i després prem Apunta."
+
+msgid "STAGECARD_LARVA_EARLY_TIP2"
+msgstr "Tria una arma, arrossega per apuntar i mantén FOC per carregar la força. Deixa anar per disparar!"
+
+msgid "STAGECARD_LARVA_EARLY_TIP3"
+msgstr "El vent corba els trets. Passa acaba el torn, i Cuc ⇄ canvia de cuca."
+
+msgid "STAGECARD_LARVA_EARLY_KEYS"
+msgstr "Fletxes: caminar i apuntar · Intro: salt · Retrocés: mortal · Espai (mantén): foc · Tab: canvia de cuca · N: passa"
+
+msgid "STAGECARD_LARVA_KIND"
+msgstr "Combat per torns, més dur"
+
+msgid "STAGECARD_LARVA_GOAL"
+msgstr "Fes fora els enemics, recull pinyons, encerta un sol tret o fes petar barrils... Al final t'espera la Mallerenga."
+
+msgid "STAGECARD_LARVA_TIP1"
+msgstr "Els mateixos controls de sempre, però amb pèls més urticants i armes noves."
+
+msgid "STAGECARD_LARVA_TIP2"
+msgstr "Els ocells ataquen des del cel: s'aturen a l'aire abans de llançar-se. Aprofita-ho!"
+
+msgid "STAGECARD_LARVA_TIP3"
+msgstr "Sou una colla: canvia de cuca i tria la que té el millor tret."
+
+msgid "STAGECARD_LARVA_KEYS"
+msgstr "Fletxes: caminar i apuntar · Intro: salt · Retrocés: mortal · Espai (mantén): foc · Tab: canvia de cuca · N: passa"
+
+msgid "STAGECARD_NEST_KIND"
+msgstr "Defensa del bolsó per torns"
+
+msgid "STAGECARD_NEST_GOAL"
+msgstr "Protegeix el bolsó de seda: si es queda sense vida, has perdut. Al final, fes fora el Capatàs."
+
+msgid "STAGECARD_NEST_TIP1"
+msgstr "Posa't al costat del bolsó i prem Repara: gasta l'acció i li dona vida. Dins del bolsó els cops piquen la meitat."
+
+msgid "STAGECARD_NEST_TIP2"
+msgstr "Fa fred! Fora del bolsó perds vida, tret que tinguis la millora Seda càlida."
+
+msgid "STAGECARD_NEST_TIP3"
+msgstr "La perxa dels forestals fereix una franja: una banda taronja avisa on caurà, un torn abans."
+
+msgid "STAGECARD_NEST_KEYS"
+msgstr "Fletxes: caminar i apuntar · Intro: salt · Espai (mantén): foc · T: repara · Tab: canvia de cuca · N: passa"
+
+msgid "STAGECARD_PROCESSION_KIND"
+msgstr "Marxa per torns, en fila"
+
+msgid "STAGECARD_PROCESSION_GOAL"
+msgstr "Porta la cap de fila fins a la terra tova per enterrar-vos: allà guanyes."
+
+msgid "STAGECARD_PROCESSION_TIP1"
+msgstr "Només controles la cap de fila: les altres segueixen el seu fil de seda."
+
+msgid "STAGECARD_PROCESSION_TIP2"
+msgstr "Cada torn pots caminar fins on diu la barra de dalt. Si una seguidora queda massa lluny, es perd: torna-hi a prop!"
+
+msgid "STAGECARD_PROCESSION_TIP3"
+msgstr "Vigila el senglar, els núvols de fong i el calosoma."
+
+msgid "STAGECARD_PROCESSION_KEYS"
+msgstr "Fletxes: caminar · Intro: salt · Espai (mantén): foc · C: fil de seda · N: passa"
+
+msgid "STAGECARD_PUPA_KIND"
+msgstr "Plataformes sota terra: cavar"
+
+msgid "STAGECARD_PUPA_GOAL"
+msgstr "Cava el teu camí fins a la cambra segura."
+
+msgid "STAGECARD_PUPA_TIP1"
+msgstr "Mantén una fletxa contra la terra: els túnels que fas són el teu camí."
+
+msgid "STAGECARD_PUPA_TIP2"
+msgstr "Les pedres cauen quan caves la terra que tenen sota: no hi passis per sota!"
+
+msgid "STAGECARD_PUPA_TIP3"
+msgstr "Cavar fa soroll i la puput t'escolta: quieta no et sent. Si puja l'aigua, no t'aturis!"
+
+msgid "STAGECARD_PUPA_KEYS"
+msgstr "Fletxes o WASD: cavar · Espai: un saltet"
+
+msgid "STAGECARD_MOTH_KIND"
+msgstr "Plataformes: vol de nit"
+
+msgid "STAGECARD_MOTH_GOAL"
+msgstr "Vola fins al final del camí, esquivant fanals, paranys i enganyapastors."
+
+msgid "STAGECARD_MOTH_TIP1"
+msgstr "Cada toc de BATEC és un cop d'ales. Si el mantens premut, planeges i caus més a poc a poc."
+
+msgid "STAGECARD_MOTH_TIP2"
+msgstr "Els fanals t'atreuen: bat les ales en sentit contrari. Un parany et fa tornar a l'última bandera."
+
+msgid "STAGECARD_MOTH_TIP3"
+msgstr "Amaga't a les ombres: a dins no et veuen."
+
+msgid "STAGECARD_MOTH_KEYS"
+msgstr "Fletxes: dirigir-te · Espai: batec (mantén-lo per planar)"
+

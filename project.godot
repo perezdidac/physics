@@ -22,6 +22,7 @@ GameState="*res://core/game_state.gd"
 Options="*res://core/options.gd"
 Sound="*res://core/sound.gd"
 ScreenRouter="*res://core/screen_router.gd"
+StoryProgress="*res://core/story_progress.gd"
 
 [display]
 

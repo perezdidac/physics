@@ -41,7 +41,7 @@ func _run() -> void:
 	await _frames(20)
 	_check(screen.t_now > 0.0, "frame loop advances the animation clock (t_now=%.3f)" % screen.t_now)
 	_check(float(sim.get("t_now")) > 0.0, "sim.step runs from the screen loop")
-	_check(screen.view.atmo.clouds.size() >= 24 and screen.view.atmo.palette.size() == 5, "atmosphere generated (clouds, 5-colour palette)")
+	_check(screen.view.atmo.clouds.size() >= 9 and screen.view.atmo.palette.size() == 5, "atmosphere generated (clouds, 5-colour palette)")
 	_check(screen.view.terrain_view.uploads == 0, "terrain textures built at start")
 
 	# signals -> view

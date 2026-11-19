@@ -9,6 +9,8 @@ var ammo: int = -1
 var is_active: bool = false
 var has_cursor: bool = false
 var compact: bool = false
+## Story: the weapon was unlocked by the last level won ("NEW!" badge).
+var is_new: bool = false
 var _hover: bool = false
 
 
@@ -18,13 +20,14 @@ func _init() -> void:
 
 
 ## Sets what the slot shows (`ammo` -1 = infinite).
-func setup(weapon_idx: int, ammo_left: int, selected: bool, cursor: bool, compact_layout: bool) -> void:
-	var changed: bool = index != weapon_idx or ammo != ammo_left or is_active != selected or has_cursor != cursor or compact != compact_layout
+func setup(weapon_idx: int, ammo_left: int, selected: bool, cursor: bool, compact_layout: bool, fresh: bool = false) -> void:
+	var changed: bool = is_new != fresh or index != weapon_idx or ammo != ammo_left or is_active != selected or has_cursor != cursor or compact != compact_layout
 	index = weapon_idx
 	ammo = ammo_left
 	is_active = selected
 	has_cursor = cursor
 	compact = compact_layout
+	is_new = fresh
 	custom_minimum_size = Vector2(48, 44) if compact else Vector2(62, 54)
 	mouse_default_cursor_shape = Control.CURSOR_ARROW if is_depleted() else Control.CURSOR_POINTING_HAND
 	if changed:
@@ -91,3 +94,12 @@ func _draw() -> void:
 		draw_texture_rect(icon, Rect2((size.x - iw) * 0.5, size.y * 0.5 - ih * 0.5 - 2.0, iw, ih), false, Color(1, 1, 1, alpha))
 	var label: String = tr(HudWeapons.name_key(index)).to_upper()
 	draw_string(body, Vector2(0, size.y - 4.0), label, HORIZONTAL_ALIGNMENT_CENTER, size.x - 2.0, 9 if not compact else 8, Color(Palette.IVORY, alpha))
+	if is_new:
+		var bw: float = 30.0
+		var badge := Rect2((size.x - bw) * 0.5, -5.0, bw, 11.0)
+		var bsb := StyleBoxFlat.new()
+		bsb.bg_color = Palette.TEAM_GOLD
+		bsb.set_corner_radius_all(6)
+		bsb.anti_aliasing = true
+		draw_style_box(bsb, badge)
+		draw_string(mono, Vector2(badge.position.x, badge.position.y + 8.5), tr("HUD_NEW"), HORIZONTAL_ALIGNMENT_CENTER, bw, 8, Palette.INK_ON_BRASS)

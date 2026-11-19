@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="BossDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/boss_def.gd" id="1_boss"]
+[ext_resource type="Resource" path="res://data/units/forestry_worker.tres" id="2_worker"]
+
+[resource]
+script = ExtResource("1_boss")
+id = "BRIGADE_BOSS"
+name_key = "BOSS_BRIGADE_NAME"
+title_key = "BOSS_BRIGADE_TITLE"
+max_hp = 300
+radius = 20.0
+art = "foreman"
+art_scale = 1.9
+flies = false
+speed = 150.0
+phase_speed_mult = Array[float]([1.4])
+spawn_frac = 0.72
+turn_time = 14.0
+phases = Array[float]([0.5])
+attacks = Array[Dictionary]([{
+"id": "SUMMON_WORKERS",
+"kind": "SUMMON",
+"phase": 1,
+"priority": 2,
+"once": true,
+"label": "BOSS_INTENT_SUMMON_WORKERS",
+"unit": ExtResource("2_worker"),
+"count": 2
+}, {
+"id": "CATCH_BREATH",
+"kind": "REST",
+"phase": -1,
+"priority": 1,
+"after": 2,
+"label": "BOSS_INTENT_CATCH_BREATH",
+"rest_state": "WINDED",
+"rest_text": "FT_BOSS_WINDED",
+"rest_time": 0.0,
+"rest_hits": 0
+}, {
+"id": "POLE_SWEEP",
+"kind": "LINE",
+"phase": -1,
+"weight": 3.0,
+"label": "BOSS_INTENT_POLE_SWEEP",
+"width": 150.0,
+"standoff": 130.0,
+"damage": 24,
+"nest_damage": 45,
+"knockback": 260.0,
+"dmg_label": "DMG_POLE"
+}, {
+"id": "CARTRIDGE",
+"kind": "AREA",
+"phase": -1,
+"weight": 2.0,
+"cooldown": 1,
+"label": "BOSS_INTENT_CARTRIDGE",
+"at": "NEST",
+"radius": 80.0,
+"damage": 40,
+"knockback": 240.0,
+"stand": 420.0
+}, {
+"id": "SUMMON_WORKERS_2",
+"kind": "SUMMON",
+"phase": 2,
+"priority": 2,
+"once": true,
+"label": "BOSS_INTENT_SUMMON_WORKERS",
+"unit": ExtResource("2_worker"),
+"count": 2
+}])
+vulnerable_states = Array[String](["WINDED"])
+armored_mult = 0.5
+water_damage = -1

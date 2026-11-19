@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="1_unit"]
+
+[resource]
+script = ExtResource("1_unit")
+id = "EGG"
+name_key = "UNIT_EGG"
+max_hp = 60
+radius = 10.0
+speed_mult = 0.35
+can_jump = false
+can_hide = true
+ai = "MELEE_CRITTER"

@@ -6,8 +6,30 @@ extends RefCounted
 
 ## Runs one AI frame (JS updateAI); does nothing unless it is an AI turn in TURN_PLAY.
 static func update(sim: CombatSim, dt: float) -> void:
+	if sim.critter_group.size() >= 2 and sim.turn_phase == CombatSim.Phase.TURN_PLAY:
+		AiCritter.refresh_leader(sim)  # the leader of a critter phase may have fallen: the next unit takes over
 	var af: SimFighter = sim.active_fighter
 	if not sim.is_current_turn_ai() or sim.turn_phase != CombatSim.Phase.TURN_PLAY or af == null or not af.alive or af.drowning:
+		return
+	if SimGoals.holds_still(sim, af):
+		sim.end_turn()
+		return
+	if sim.nest != null and SimBolso.ai_repair(sim):
+		return
+	if SimConvoy.active(sim) and af.team == 0:
+		AiConvoy.update(sim, dt)
+		return
+	if af.unit != null and af.unit.ai == "CHARGER":
+		AiCharger.update(sim, dt)
+		return
+	if af.unit != null and af.unit.ai == "MELEE_CRITTER":
+		AiCritter.update(sim, dt)
+		return
+	if af.unit != null and af.unit.ai == "FLYER":
+		AiFlyer.update(sim, dt)
+		return
+	if af.unit != null and af.unit.ai == "BOSS":
+		SimBoss.update(sim, dt)
 		return
 
 	if sim.ai_plan.is_empty():
@@ -29,7 +51,7 @@ static func update(sim: CombatSim, dt: float) -> void:
 		if target == null or not target.alive or target.drowning:
 			target = null
 			for f in sim.fighters:
-				if f.team != sim.active_team and f.alive and not f.drowning:
+				if f.team != sim.active_team and f.alive and not f.drowning and not f.hidden:
 					target = f
 					break
 		if target == null:
@@ -93,9 +115,12 @@ static func update(sim: CombatSim, dt: float) -> void:
 
 
 static func _make_plan(sim: CombatSim, af: SimFighter) -> void:
+	if SimStatus.ai_wants_clean(sim, af):
+		SimCombat.spin_silk_web(sim)
+		return
 	var enemies: Array[SimFighter] = []
 	for f in sim.fighters:
-		if f.team != sim.active_team and f.alive and not f.drowning:
+		if f.team != sim.active_team and f.alive and not f.drowning and not f.hidden:
 			enemies.append(f)
 	if enemies.is_empty():
 		sim.turn_phase = CombatSim.Phase.ACTION_WAIT
@@ -126,6 +151,12 @@ static func _make_plan(sim: CombatSim, af: SimFighter) -> void:
 		chosen_id = "BAZOOKA"
 
 	var idx: int = maxi(0, sim.weapon_index(chosen_id))
+	if sim.level != null and sim.ammo_f(sim.active_team, sim.weapons[idx].id) <= 0.0:
+		# a story arsenal is small: use the first weapon it has left (shots before melee), or pass
+		idx = _story_weapon(sim)
+		if idx < 0:
+			sim.end_turn()
+			return
 	sim.selected_weapon_idx = idx
 	sim.hud()
 	var walk_dir: int = 0 if dist_nearest < 45.0 else (1 if sim.rand() < 0.5 else -1)
@@ -142,6 +173,18 @@ static func _make_plan(sim: CombatSim, af: SimFighter) -> void:
 		"total_time": 0.0,
 		"executed": false,
 	}
+
+
+## Index of a weapon of the team's story arsenal that still has ammo: a CHARGE weapon first, else any melee one; -1 when none.
+static func _story_weapon(sim: CombatSim) -> int:
+	var melee: int = -1
+	for i in sim.team_arsenal(sim.active_team):
+		if sim.ammo_f(sim.active_team, sim.weapons[i].id) > 0.0:
+			if sim.weapons[i].type == "CHARGE":
+				return i
+			if sim.weapons[i].type == "MELEE" and melee < 0:
+				melee = i
+	return melee
 
 
 ## JS simulateArc: ballistic estimator (intentionally not identical to the real projectile).

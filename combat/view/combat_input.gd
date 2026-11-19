@@ -1,5 +1,13 @@
 ## Human input controller of the battle (keyboard, mouse, touch gestures, on-screen button hooks). Translates what the
 ## player does into CombatSim command methods and camera moves (port of the handlers in main.js:496-1000, 1187-1614).
+##
+## Touch scheme (one finger, tracked in `_touches`; touches on on-screen buttons never reach this node). Walking is done
+## by the arrow buttons of the HUD (`set_key`), never by gestures. What a finger on the map does depends on the phase
+## (`touch_aim`, set by BottomHud):
+## - MOVE: a drag pans the camera, a quick release is a tap (switch ally, double tap = jump, triple tap = backflip).
+## - AIM: a drag anywhere rotates the aim angle (relative, it flips the facing over the top); a tap sets the airstrike target.
+##   Releasing does not fire (the FIRE button does). With the airstrike selected a drag pans instead.
+## - PAN: two or more fingers (pan and pinch zoom); it cancels any aim drag and never moves the caterpillar.
 class_name CombatInput
 extends Node
 
@@ -7,10 +15,15 @@ extends Node
 signal restart_requested
 signal ripple_requested(world_or_screen: Vector2, label: String, color: Color, is_world: bool)
 signal sound_requested(sfx_name: String)
+## Aim-drag feedback: the caterpillar's screen position, the finger, and the aim angle in degrees (up is positive).
+signal aim_drag_changed(active: bool, from: Vector2, to: Vector2, degrees: float)
 
 const DOUBLE_PRESS_MS: int = 360
-const LONG_PRESS_MS: int = 250
 const SWIPE_PX: float = 9.0
+## A finger drag of this fraction of the viewport height turns the aim by one radian.
+const AIM_DRAG_FRACTION: float = 0.22
+## Length of the aim line drawn while dragging, in pixels.
+const AIM_LINE_PX: float = 130.0
 
 var sim: Object = null
 var cam: CameraRig = null
@@ -18,6 +31,8 @@ var cam: CameraRig = null
 var drawer_open: bool = false
 ## Set by the screen: true while a rotate prompt or any modal blocks the game input.
 var blocked: bool = false
+## Touch AIM phase (true) or MOVE phase (false), mirrored from the HUD.
+var touch_aim: bool = false
 
 var _keys: Dictionary = {"left": false, "right": false, "up": false, "down": false}
 var _pan_keys: Dictionary = {"left": false, "right": false, "up": false, "down": false}
@@ -34,11 +49,15 @@ var _mouse_moved: float = 0.0
 var _touches: Dictionary = {}
 var _gesture: String = "NONE"
 var _gesture_start: Vector2 = Vector2.ZERO
-var _press_ms: int = 0
+var _gesture_moved: float = 0.0
 var _tap_count: int = 0
 var _tap_ms: int = 0
 var _pinch_last: float = 0.0
 var _block_mouse_until: int = 0
+
+
+func _ready() -> void:
+	add_to_group("combat_input")
 
 
 # ---------------------------------------------------------------- helpers
@@ -132,10 +151,6 @@ func tick(raw_dt: float) -> void:
 	if glide != _last_glide:
 		_last_glide = glide
 		_call("set_glide", [glide])
-	if _gesture == "PENDING" and _now() - _press_ms >= LONG_PRESS_MS:
-		_gesture = "SHOOT"
-		if _can_act():
-			_call("begin_charge_or_fire")
 
 
 ## True while a movement/aim key that returns the pan offset to the fighter is held.
@@ -349,34 +364,49 @@ func _on_touch(e: InputEventScreenTouch) -> void:
 	if e.pressed:
 		_touches[e.index] = e.position
 		if _touches.size() == 1:
-			_gesture = "PENDING"
-			_gesture_start = e.position
-			_press_ms = _now()
+			_begin_single(e.position)
 		else:
 			_enter_pan()
-	else:
+	elif _touches.has(e.index):
 		_touches.erase(e.index)
 		if _touches.is_empty():
 			_touch_end(e.position)
 
 
+## First finger down: is an aim drag (AIM phase) or a plain (tap or pan) touch.
+func _begin_single(pos: Vector2) -> void:
+	_gesture = "PENDING"
+	_gesture_start = pos
+	_gesture_moved = 0.0
+	if touch_aim and _can_act() and _phase() == ViewCtx.PH_TURN_PLAY and not _is_airstrike():
+		_gesture = "AIM"
+
+
+func _active_screen_pos(vs: Vector2) -> Vector2:
+	var a: Variant = _active()
+	if a == null:
+		return Vector2(-1000.0, -1000.0)
+	return cam.world_to_screen(Vector2(ViewUtil.gf(a, "x"), ViewUtil.gf(a, "y") - 6.0), vs)
+
+
+## Two or more fingers: camera gesture. Cancels the aim drag.
 func _enter_pan() -> void:
-	if _gesture == "SHOOT" or _is_charging():
-		_call("release_charge")
+	_end_aim()
 	_gesture = "PAN"
-	_keys["left"] = false
-	_keys["right"] = false
 	var pts: Array = _touches.values()
 	if pts.size() >= 2:
 		_pinch_last = (pts[0] as Vector2).distance_to(pts[1])
 
 
-func _is_charging() -> bool:
-	return ViewUtil.gb(sim, "is_charging")
+func _end_aim() -> void:
+	if _gesture == "AIM":
+		aim_drag_changed.emit(false, Vector2.ZERO, Vector2.ZERO, 0.0)
 
 
 func _on_drag(e: InputEventScreenDrag) -> void:
 	_block_mouse_until = _now() + 280
+	if not _touches.has(e.index):
+		return
 	_touches[e.index] = e.position
 	if _touches.size() >= 2:
 		if _gesture != "PAN":
@@ -388,56 +418,52 @@ func _on_drag(e: InputEventScreenDrag) -> void:
 		_pinch_last = d
 		_pan_by_screen(e.relative * 0.5)
 		return
-	var human: bool = _can_act()
-	var total: Vector2 = e.position - _gesture_start
-	if _gesture == "PENDING" and total.length() > SWIPE_PX:
-		_cancel_charge()
-		_gesture = "SWIPE_AIM" if absf(total.y) > absf(total.x) * 1.08 else "SWIPE_WALK"
+	_gesture_moved = maxf(_gesture_moved, e.position.distance_to(_gesture_start))
 	match _gesture:
-		"SWIPE_AIM":
-			if human:
-				cam.pan_x = lerpf(cam.pan_x, 0.0, 0.2)
-				cam.pan_y = lerpf(cam.pan_y, 0.0, 0.2)
-				_nudge_pitch(e.relative.y * 0.0085)
-			else:
-				_pan_by_screen(e.relative)
-		"SWIPE_WALK":
-			if human:
-				if _is_airstrike() and absf(e.relative.x) > 0.5:
-					var vs: Vector2 = get_viewport().get_visible_rect().size
-					var s: float = float(cam.get_transform(vs)["scale"])
-					var mw: Variant = ViewUtil.g(sim, "mouse_world", Vector2.ZERO)
-					_call("set_target", [Vector2(mw.x + e.relative.x / s, mw.y)])
-				elif total.length() > 6.0:
-					_keys["left"] = total.x < 0.0
-					_keys["right"] = total.x > 0.0
-			else:
-				_pan_by_screen(e.relative)
-		"SHOOT":
-			if absf(e.relative.y) > 0.4:
-				_nudge_pitch(e.relative.y * 0.0065)
+		"AIM":
+			_rotate_aim(e.relative)
+		"PENDING":
+			if _gesture_moved > SWIPE_PX:
+				_gesture = "PAN1"
+				_pan_by_screen(e.position - _gesture_start)
+		"PAN1":
+			_pan_by_screen(e.relative)
 
 
-## Touch swipe aiming changes the pitch by a delta (clamped by the sim).
+## Aim drag: the finger turns the aim direction like a dial (relative, anywhere on the screen). Dragging across the
+## aim line rotates it; over the top it flips the facing, so the whole half circle is reachable.
+func _rotate_aim(rel: Vector2) -> void:
+	var vs: Vector2 = get_viewport().get_visible_rect().size
+	var pitch: float = ViewUtil.gf(sim, "aim_pitch")
+	var a: Variant = _active()
+	var face: int = -1 if (a != null and ViewUtil.gi(a, "facing", 1) < 0) else 1
+	var dir := Vector2(face * cos(pitch), sin(pitch))
+	var turn: float = (dir.x * rel.y - dir.y * rel.x) / (vs.y * AIM_DRAG_FRACTION)
+	var th: float = dir.angle() + turn
+	var new_face: int = 1 if cos(th) >= 0.0 else -1
+	if new_face != face:
+		_call("set_facing", [new_face])
+	_nudge_pitch(atan2(sin(th), absf(cos(th))) - pitch)
+	var from: Vector2 = _active_screen_pos(vs)
+	var now_pitch: float = ViewUtil.gf(sim, "aim_pitch")
+	var line := Vector2(new_face * cos(now_pitch), sin(now_pitch)) * AIM_LINE_PX
+	aim_drag_changed.emit(true, from, from + line, rad_to_deg(-now_pitch))
+
+
+## Touch aiming changes the pitch by a delta (clamped by the sim).
 func _nudge_pitch(delta: float) -> void:
 	_call("nudge_aim_pitch", [delta])
 
 
-func _cancel_charge() -> void:
-	if _is_charging():
-		_call("release_charge")
-
-
 func _touch_end(pos: Vector2) -> void:
 	var mode: String = _gesture
+	_end_aim()
 	_gesture = "NONE"
-	_keys["left"] = false
-	_keys["right"] = false
-	if mode == "SHOOT":
-		_call("release_charge")
-		return
-	if mode != "PENDING":
-		return
+	if mode == "PENDING":
+		_tap(pos)
+
+
+func _tap(pos: Vector2) -> void:
 	var now: int = _now()
 	_tap_count = _tap_count + 1 if now - _tap_ms <= DOUBLE_PRESS_MS else 1
 	_tap_ms = now
@@ -457,6 +483,8 @@ func _touch_end(pos: Vector2) -> void:
 						ripple_requested.emit(pos, ViewUtil.gs(f, "name").to_upper(), ViewColors.WARM_YELLOW, false)
 						_tap_count = 0
 					return
+	elif touch_aim:
+		_tap_count = 0
 	elif _tap_count == 2:
 		do_forward_jump()
 		ripple_requested.emit(pos, ViewUtil.tr_text("TOUCH_JUMP"), ViewColors.WARM_YELLOW, false)

@@ -1,0 +1,83 @@
+[gd_resource type="Resource" script_class="BossDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/boss_def.gd" id="1_boss"]
+[ext_resource type="Resource" path="res://data/bosses/small_fly.tres" id="2_small_fly"]
+
+[resource]
+script = ExtResource("1_boss")
+id = "TACHINID_FLY"
+name_key = "BOSS_TACHINID_NAME"
+title_key = "BOSS_TACHINID_TITLE"
+max_hp = 180
+radius = 16.0
+art = "tachinid_fly"
+art_scale = 1.4
+flies = true
+hover_height = 170.0
+speed = 300.0
+spawn_frac = 0.72
+turn_time = 14.0
+phases = Array[float]([0.5])
+attacks = Array[Dictionary]([{
+"id": "LAY_EGGS",
+"kind": "MELEE_TARGET",
+"phase": 1,
+"weight": 3.0,
+"label": "BOSS_INTENT_LAY_EGGS",
+"damage": 8,
+"knockback": 90.0,
+"dmg_label": "DMG_LAY_EGGS",
+"status": "PARASITE",
+"turns": 3,
+"targets": 1,
+"dodge": 90.0,
+"rest_state": "RESTING",
+"rest_time": 0.0
+}, {
+"id": "BUZZ",
+"kind": "GUST",
+"phase": -1,
+"weight": 1.0,
+"cooldown": 1,
+"label": "BOSS_INTENT_BUZZ",
+"radius": 200.0,
+"damage": 4,
+"knockback": 180.0,
+"height": 90.0,
+"dmg_label": "DMG_BUZZ"
+}, {
+"id": "SUMMON",
+"kind": "SUMMON",
+"phase": 2,
+"priority": 1,
+"once": true,
+"label": "BOSS_INTENT_SUMMON",
+"unit": ExtResource("2_small_fly"),
+"count": 2
+}, {
+"id": "LAY_EGGS",
+"kind": "MELEE_TARGET",
+"phase": 2,
+"weight": 3.0,
+"label": "BOSS_INTENT_LAY_EGGS",
+"damage": 8,
+"knockback": 90.0,
+"dmg_label": "DMG_LAY_EGGS",
+"status": "PARASITE",
+"turns": 3,
+"targets": 2,
+"dodge": 90.0,
+"rest_state": "RESTING",
+"rest_time": 12.0
+}])
+vulnerable_states = Array[String](["RESTING"])
+armored_mult = 0.25
+water_damage = 20
+statuses = {
+"PARASITE": {
+"damage": 6,
+"label": "DMG_PARASITE",
+"silk_cleans": true,
+"text": "FT_PARASITE"
+}
+}

@@ -32,6 +32,9 @@ static func resolve(sim: Object) -> Dictionary:
 				break
 	out["id"] = ViewUtil.gs(map, "id", str(base["id"]))
 	out["bg"] = ViewUtil.gs(map, "background_key", str(base["bg"]))
+	var level_bg: String = ViewUtil.gs(ViewUtil.g(sim, "level"), "background_key", "")
+	if ArtCatalog.BACKGROUNDS.has(level_bg):
+		out["bg"] = level_bg
 	out["weather"] = ViewUtil.gs(map, "weather", str(base["weather"]))
 	var sky_src: Variant = ViewUtil.g(map, "sky", base["sky"])
 	var sky: Array[Color] = []

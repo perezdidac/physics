@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="1_unit"]
+
+[resource]
+script = ExtResource("1_unit")
+id = "FORESTRY_WORKER"
+name_key = "UNIT_FORESTRY_WORKER"
+max_hp = 45
+radius = 12.0
+speed_mult = 0.9
+can_jump = false
+can_hide = false
+ai = "MELEE_CRITTER"
+flies = false
+art_scale = 1.3
+melee_weapon = "PERXADA"

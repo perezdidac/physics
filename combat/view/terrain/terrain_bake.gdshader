@@ -1,7 +1,8 @@
 // Bake pass of the terrain colours. Rendered into the front / back colour textures of TerrainBaker (a ColorRect per pass):
 //   mode 0  front colour of every pixel (rock / soil / turf, six texture styles)      world.js generateDestructibleTerrain
 //   mode 1  back rock wall (only under the natural surface)
-//   mode 2  stamped structure (tree, tower, terrace, ...) over the pixels that were solid at match start
+//   mode 2  stamped structure (tree, tower, terrace, ...) fallback pixel colours over the pixels that were solid at match start
+//   mode 4  structure mask of the stamps drawn as sprites (TerrainOverlay): R solid pixel of the stamp, G enclosed void
 //   mode 3  crater scorch, blended over what is already baked                          world.js:1088-1099
 // All formulas are the ones the per-frame terrain shader used before the bake. GL Compatibility / WebGL2 safe.
 shader_type canvas_item;
@@ -21,6 +22,9 @@ uniform int tex_style = 0;
 uniform vec4 stamp = vec4(0.0);
 uniform vec3 stamp_box = vec3(0.0, 0.0, 0.0);
 uniform ivec2 stamp_kind = ivec2(0);
+// Structure pass: enclosed void kind (TerrainStamps.hollow_id: 1 tower chamber, 2 barraca door, 3 log tube) and the log's tilt / half length.
+uniform int stamp_hollow = 0;
+uniform vec2 stamp_extra = vec2(0.0);
 // Scorch pass: crater centre and radius.
 uniform vec3 crater = vec3(0.0);
 
@@ -50,6 +54,21 @@ float ridged2(float x, float y) {
 
 float surf(int x) {
 	return texelFetch(surf_tex, ivec2(clamp(x, 0, 3199), 0), 0).r;
+}
+
+// Running-bond masonry: returns a brightness factor (mortar joints, per-brick tone). Replaces the JS two-tone checkerboard,
+// which read as a failed texture. Integer hash only (no sin/fract), so it is identical on every GPU.
+float masonry(int ix, int iy, int bw, int bh, float contrast) {
+	int row = iy / bh;
+	int off = (row & 1) * (bw / 2);
+	int bx = (ix + off) % bw;
+	int by = iy % bh;
+	if (bx == 0 || by == 0) {
+		return 0.78;
+	}
+	int col = (ix + off) / bw;
+	float tone = float(((row * 13 + col * 7 + (row ^ col) * 3) & 7)) / 7.0 - 0.5;
+	return 1.0 + tone * contrast;
 }
 
 // Rock texture of the pixel: returns rockVal, outputs texMod and n1.
@@ -99,34 +118,29 @@ vec3 front_color(int ix, int iy) {
 	float tex_mod;
 	float n1;
 	float rock_val = rock_tex(x, y, tex_mod, n1);
-	float sy = floor(surf(ix));
+	// Band boundaries use the unrounded surface height and soft transitions (about 1 px wide), so the turf / soil / rock bands are
+	// anti-aliased instead of following the 1 px stair steps of the pixel grid.
+	float sy = surf(ix);
 	float slope = (surf(ix + 3) - surf(ix - 3)) / 6.0;
-	float depth = y - sy;
-	float tuft = sin(x * 0.22 + n1 * 6.0) * 2.2 + cos(x * 0.09) * 1.6;
-	float grass = max(5.0, floor(14.0 - abs(slope) * 2.8 + tuft));
-	vec3 c;
-	if (depth < 0.0) {
-		// Solid above the natural surface without a stamp colour: plain dry stone.
-		float n = (noise2d(x * 0.12, y * 0.12) - 0.5) * 24.0;
-		float brick = mod(floor(x / 14.0) + floor(y / 8.0), 2.0) < 0.5 ? 1.06 : 0.92;
-		c = (vec3(148.0, 134.0, 116.0) + n) * brick;
-	} else if (depth <= grass) {
-		float light = clamp(0.88 - slope * 0.18 + (n1 - 0.5) * 0.18, 0.54, 1.24);
-		c = clamp(turf_col * light, 24.0, 255.0);
-		if (depth <= 2.0) {
-			float rim = clamp(1.32 - slope * 0.16 - depth * 0.09, 1.02, 1.48);
-			c = clamp(c * rim + vec3(22.0, 24.0, 12.0), 0.0, 255.0);
-		} else if (depth >= grass - 1.0) {
-			c *= vec3(0.76, 0.78, 0.76);
-		}
-	} else if (depth <= grass + 16.0) {
-		float ao = depth <= grass + 4.0 ? 0.74 : 0.88;
-		c = soil_col * ((0.78 + rock_val * 0.36) * ao);
-	} else {
-		float fade_d = clamp(1.0 - (depth - 20.0) * 0.0009, 0.72, 1.0);
-		float shade = clamp(0.92 - slope * 0.14, 0.62, 1.14) * fade_d;
-		c = vec3(rock_col.r + rock_val * 48.0 + tex_mod, rock_col.g + rock_val * 45.0 + tex_mod, rock_col.b + rock_val * 49.0 + tex_mod * 1.1) * shade;
+	// Air next to the surface (the smoothed terrain contour reaches into it) borrows the depth of the highest neighbouring column, so a flat
+	// top keeps its turf rim and a cliff face keeps its soil / rock colour.
+	if (y + 0.5 < sy) {
+		sy = min(sy, min(min(surf(ix - 1), surf(ix + 1)), min(surf(ix - 2), surf(ix + 2))));
 	}
+	float depth = max(y + 0.5 - sy, 0.0);
+	float tuft = sin(x * 0.22 + n1 * 6.0) * 2.2 + cos(x * 0.09) * 1.6;
+	float grass = max(5.0, 14.0 - abs(slope) * 2.8 + tuft);
+	float light = clamp(0.88 - slope * 0.18 + (n1 - 0.5) * 0.18, 0.54, 1.24);
+	vec3 c_turf = clamp(turf_col * light, 24.0, 255.0);
+	float rim = clamp(1.32 - slope * 0.16 - depth * 0.09, 1.02, 1.48);
+	c_turf = mix(c_turf, clamp(c_turf * rim + vec3(22.0, 24.0, 12.0), 0.0, 255.0), 1.0 - smoothstep(1.5, 2.5, depth));
+	c_turf = mix(c_turf, c_turf * vec3(0.76, 0.78, 0.76), smoothstep(grass - 1.6, grass - 0.4, depth));
+	float ao = mix(0.74, 0.88, smoothstep(grass + 3.3, grass + 4.7, depth));
+	vec3 c_soil = soil_col * ((0.78 + rock_val * 0.36) * ao);
+	float fade_d = clamp(1.0 - (depth - 20.0) * 0.0009, 0.72, 1.0);
+	float shade = clamp(0.92 - slope * 0.14, 0.62, 1.14) * fade_d;
+	vec3 c_rock = vec3(rock_col.r + rock_val * 48.0 + tex_mod, rock_col.g + rock_val * 45.0 + tex_mod, rock_col.b + rock_val * 49.0 + tex_mod * 1.1) * shade;
+	vec3 c = mix(mix(c_turf, c_soil, smoothstep(grass - 0.7, grass + 0.7, depth)), c_rock, smoothstep(grass + 15.3, grass + 16.7, depth));
 	return clamp(c, 0.0, 255.0) / 255.0;
 }
 
@@ -163,8 +177,7 @@ vec3 stamp_color(int kid, int tree_style, int ix, int iy, int run_depth) {
 			float sun = run_depth <= 2 ? 1.28 : 0.96;
 			c = turf_col * sun + (run_depth <= 1 ? vec3(18.0, 20.0, 10.0) : vec3(0.0));
 		} else {
-			float mortar = ((int(floor(x / 13.0)) + int(floor(y / 6.0))) % 2) == 0 ? 1.06 : 0.90;
-			c = (rock_col + vec3(24.0, 20.0, 16.0) + vec3(n * 24.0)) * mortar;
+			c = (rock_col + vec3(24.0, 20.0, 16.0) + vec3(n * 24.0)) * masonry(ix, iy, 13, 6, 0.16);
 		}
 	} else if (kid == 2) {
 		c = vec3(92.0, 58.0, 36.0) * (0.78 + n * 0.35);
@@ -181,13 +194,27 @@ vec3 stamp_color(int kid, int tree_style, int ix, int iy, int run_depth) {
 	} else if (kid == 6) {
 		c = vec3(102.0, 114.0, 124.0);
 	} else if (kid == 7) {
-		float bk = ((int(floor(x / 18.0)) + int(floor(y / 9.0))) % 2) == 0 ? 1.08 : 0.94;
-		c = vec3(162.0, 126.0, 92.0) * bk + vec3(n * 26.0);
+		c = vec3(162.0, 126.0, 92.0) * masonry(ix, iy, 18, 9, 0.16) + vec3(n * 26.0);
 	} else {
-		float bk2 = ((int(floor(x / 14.0)) + int(floor(y / 8.0))) % 2) == 0 ? 1.07 : 0.93;
-		c = (vec3(148.0, 132.0, 114.0) + vec3(n * 24.0)) * bk2;
+		c = (vec3(148.0, 132.0, 114.0) + vec3(n * 24.0)) * masonry(ix, iy, 14, 8, 0.16);
 	}
 	return clamp(c, 0.0, 255.0) / 255.0;
+}
+
+// Enclosed void of the stamp at pixel (ix, iy) (mirrors the sim's clear loops in terrain_sim.gd).
+bool hollow_at(int ix, int iy) {
+	int cx = int(stamp.x);
+	int sy = int(stamp.y);
+	if (stamp_hollow == 1) {
+		return abs(ix - cx) <= 18 && iy >= sy - 52 && iy <= sy - 16;
+	} else if (stamp_hollow == 2) {
+		return abs(ix - cx) <= 12 && iy >= sy - 22 && iy <= sy - 2;
+	} else if (stamp_hollow == 3) {
+		int dx = ix - cx;
+		int yc = int(floor(stamp.y - 14.0 + float(dx) * stamp_extra.x));
+		return abs(dx) <= int(stamp_extra.y) && abs(iy - yc) <= 8;
+	}
+	return false;
 }
 
 vec4 scorch_color(vec2 p) {
@@ -238,7 +265,17 @@ void fragment() {
 			}
 			run_depth = i;
 		}
-		COLOR = vec4(stamp_color(stamp_kind.x, stamp_kind.y, ip.x, ip.y, run_depth), 1.0);
+		vec3 sc = stamp_color(stamp_kind.x, stamp_kind.y, ip.x, ip.y, run_depth);
+		COLOR = vec4(sc, 1.0);
+	} else if (mode == 4) {
+		int ymax = min(int(stamp_box.y), int(surf(ip.x)) + int(stamp_box.z));
+		if (ip.y < ymax && solid_at(ip.x, ip.y)) {
+			COLOR = vec4(1.0, 0.0, 0.0, 1.0);
+		} else if (hollow_at(ip.x, ip.y) && !solid_at(ip.x, ip.y)) {
+			COLOR = vec4(0.0, 1.0, 0.0, 1.0);
+		} else {
+			discard;
+		}
 	} else {
 		COLOR = scorch_color(vec2(ip) + vec2(0.5));
 	}

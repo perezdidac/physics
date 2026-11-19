@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/upgrade_def.gd" id="1_up"]
+
+[resource]
+script = ExtResource("1_up")
+id = "FAST_DIG"
+name_key = "UPG_FAST_DIG_NAME"
+desc_key = "UPG_FAST_DIG_DESC"
+cost = 45
+effect = "FAST_DIG"
+amount = 30.0
+scope = "PLATFORM"
+requires = ""

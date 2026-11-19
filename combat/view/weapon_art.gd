@@ -7,11 +7,7 @@ static var _rng := RandomNumberGenerator.new()
 
 
 static func _poly(ci: CanvasItem, pts: Array, fill: Color, stroke: Color, w: float) -> void:
-	var pv := PackedVector2Array(pts)
-	ViewUtil.fill_poly(ci, pv, fill)
-	if w > 0.0:
-		pv.append(pv[0])
-		ci.draw_polyline(pv, stroke, w, true)
+	ArtKit.poly(ci, PackedVector2Array(pts), fill, stroke, w)
 
 
 static func _lines(ci: CanvasItem, segs: Array, col: Color, w: float) -> void:
@@ -97,7 +93,12 @@ static func draw_held(ci: CanvasItem, root: Transform2D, f: Variant, ctx: ViewCt
 
 ## Projectile in flight (trail first, then the body).
 static func draw_projectile(ci: CanvasItem, p: Variant, ctx: ViewCtx) -> void:
-	var t: float = ctx.t_now
+	draw_trail(ci, p)
+	draw_projectile_body(ci, p, ctx)
+
+
+## The fading trail behind a projectile.
+static func draw_trail(ci: CanvasItem, p: Variant) -> void:
 	var ptype: String = ViewUtil.gs(p, "type")
 	var trail: PackedVector2Array = ViewUtil.g(p, "trail", PackedVector2Array())
 	if trail.size() > 2:
@@ -117,6 +118,12 @@ static func draw_projectile(ci: CanvasItem, p: Variant, ctx: ViewCtx) -> void:
 				col = Color(ViewColors.TRAIL_DEFAULT, frac * 0.34)
 			var wd: float = maxf(1.0, frac * (7.5 if holy else (6.0 if baz else 4.2)))
 			ci.draw_line(trail[i - 1], trail[i], col, wd, true)
+
+
+## The vector body of a projectile (the fallback of the sprites in art/weapons).
+static func draw_projectile_body(ci: CanvasItem, p: Variant, ctx: ViewCtx) -> void:
+	var t: float = ctx.t_now
+	var ptype: String = ViewUtil.gs(p, "type")
 	var px: float = ViewUtil.gf(p, "x")
 	var py: float = ViewUtil.gf(p, "y")
 	var at: Vector2 = Vector2(px, py)

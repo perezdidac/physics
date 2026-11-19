@@ -2,12 +2,14 @@
 class_name WindTrack
 extends Control
 
-## Wind in -100..100 (the sim's integer `wind`).
+## Wind in -max_wind..max_wind (the sim's integer `wind`; story levels scale it up to 1.8x).
 var wind: float = 0.0:
 	set(value):
 		if wind != value:
 			wind = value
 			queue_redraw()
+## Wind at which the bar is full (100 in classic matches).
+var max_wind: float = 100.0
 var gust_flash: bool = false:
 	set(value):
 		if gust_flash != value:
@@ -37,7 +39,7 @@ func _draw() -> void:
 	track.set_corner_radius_all(3)
 	draw_style_box(track, Rect2(Vector2.ZERO, size))
 	var half: float = size.x * 0.5
-	var w: float = clampf(absf(_shown) * 0.5, 0.0, 50.0) / 100.0 * size.x
+	var w: float = clampf(absf(_shown) / maxf(1.0, max_wind) * 50.0, 0.0, 50.0) / 100.0 * size.x
 	if w >= 0.5:
 		var col: Color
 		if _shown >= 0.0:

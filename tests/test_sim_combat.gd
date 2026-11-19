@@ -243,9 +243,12 @@ func _barrel_chain() -> void:
 	var hp_before: int = sim.fighters[1].hp
 	sim.fighters[1].x = 1540.0
 	sim.fighters[1].y = 388.0
+	for i in 3:
+		sim.step(1.0 / 60.0)
+	_check(sim.fighters[1].hp == hp_before, "the barrel chain waits 0.07 s of sim time")
 	for i in 6:
 		sim.step(1.0 / 60.0)
-	_check(sim.fighters[1].hp == hp_before, "barrel delay does not run on scaled sim time")
+	_check(sim.fighters[1].hp < hp_before, "the delayed barrel blast runs from step() with sim time (no advance_real)")
 	for i in 6:
 		sim.advance_real(1.0 / 60.0)
 	_check(sim.fighters[1].hp < hp_before, "barrel explodes 0.07 s later through the delayed queue")

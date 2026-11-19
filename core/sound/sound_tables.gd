@@ -2,6 +2,8 @@
 ## Everything that decides which baked file exists for a JS `SND.*` call lives here.
 extends RefCounted
 
+const MusicTable := preload("res://core/sound/music_table.gd")
+
 const SFX_DIR := "res://assets/audio/sfx/"
 const VOICE_DIR := "res://assets/audio/voices/"
 const MUSIC_DIR := "res://assets/audio/music/"
@@ -34,7 +36,8 @@ const VOICE_OF: Dictionary = {
 	"hard_slam": "ow",
 }
 
-const MUSIC_TRACKS: Array[String] = ["sardana_de_ferro"]
+## Every baked music loop (see music_table.gd).
+const MUSIC_TRACKS: Array[String] = MusicTable.ALL_TRACKS
 const WIND_FILE := "wind_loop"
 
 ## Every name accepted by Sound.play(): the snake_case of each JS SND.* method.

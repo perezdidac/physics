@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 16" width="41" height="16">
+<defs>
+<linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cdbb9c"/><stop offset="1" stop-color="#a08c74"/></linearGradient>
+</defs>
+<rect x="0" y="0" width="41" height="16" fill="url(#gs)"/>
+<rect x="0" y="1.5" width="20.5" height="6.5" fill="#b7a68e" stroke="#3d3022" stroke-width="0.7" stroke-linejoin="round"/>
+<path d="M0.6 2.4 H19.7" fill="none" stroke="#fff4dc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.28" />
+<path d="M0.8 7.5 H19.9" fill="none" stroke="#1a1108" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.22" />
+<path d="M14.54 4.88 l1.76 0.48" fill="none" stroke="#3a2c1f" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" />
+<rect x="20.5" y="1.5" width="20.5" height="6.5" fill="#baa990" stroke="#3d3022" stroke-width="0.7" stroke-linejoin="round"/>
+<path d="M21.1 2.4 H40.2" fill="none" stroke="#fff4dc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.28" />
+<path d="M21.3 7.5 H40.4" fill="none" stroke="#1a1108" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.22" />
+<rect x="0" y="8" width="10.25" height="6.5" fill="#bead94" stroke="#3d3022" stroke-width="0.7" stroke-linejoin="round"/>
+<path d="M0.6 8.9 H9.45" fill="none" stroke="#fff4dc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.28" />
+<path d="M0.8 14 H9.65" fill="none" stroke="#1a1108" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.22" />
+<path d="M10.88 9.67 l2.59 0.6" fill="none" stroke="#3a2c1f" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" />
+<rect x="10.25" y="8" width="20.5" height="6.5" fill="#c8b79b" stroke="#3d3022" stroke-width="0.7" stroke-linejoin="round"/>
+<path d="M10.85 8.9 H29.95" fill="none" stroke="#fff4dc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.28" />
+<path d="M11.05 14 H30.15" fill="none" stroke="#1a1108" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.22" />
+<rect x="30.75" y="8" width="10.25" height="6.5" fill="#b9a890" stroke="#3d3022" stroke-width="0.7" stroke-linejoin="round"/>
+<path d="M31.35 8.9 H40.2" fill="none" stroke="#fff4dc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.28" />
+<path d="M31.55 14 H40.4" fill="none" stroke="#1a1108" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.22" />
+<path d="M38.39 12.08 l2.63 -0.08" fill="none" stroke="#3a2c1f" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" />
+<path d="M0 1.2 H41" fill="none" stroke="#2a1d12" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M0 14.8 H41" fill="none" stroke="#2a1d12" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M0 2.6 H41" fill="none" stroke="#fff4dc" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.45" />
+<path d="M0 13.4 H41" fill="none" stroke="#1a1108" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.3" />
+</svg>

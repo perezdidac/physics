@@ -22,7 +22,8 @@ func _ready() -> void:
 	var ml: MapList = load("res://data/maps/map_list.tres")
 	_check(ml.maps.size() == 8, "8 maps in the list")
 	var wl: WeaponList = load("res://data/weapons/weapon_list.tres")
-	_check(wl.weapons.size() == 16 and wl.weapons[15].id == "GANXO" and wl.weapons[9].default_ammo == 1, "16 weapons in JS order")
+	var classic: Array = wl.weapons.filter(func(w: WeaponDef) -> bool: return not w.story_only)
+	_check(classic.size() == 16 and wl.weapons[15].id == "GANXO" and wl.weapons[9].default_ammo == 1, "16 weapons in JS order")
 	var total_ms: int = 0
 	var runs: int = 0
 	for map_idx in 8:

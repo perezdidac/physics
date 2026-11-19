@@ -67,7 +67,7 @@ func _ready() -> void:
 
 
 func _on_resized() -> void:
-	var vp: Vector2 = get_viewport_rect().size
+	var vp: Vector2 = TouchMetrics.logical_size(get_viewport_rect().size)
 	if (vp.x < NARROW_WIDTH) != _narrow or UiUtil.is_compact(vp) != _compact:
 		read_customization()
 		_build()
@@ -167,6 +167,7 @@ func back_to_menu() -> void:
 ## Starts the match with the current choices.
 func deploy() -> void:
 	read_customization()
+	GameState.story_level = null
 	GameState.has_custom_names = true
 	GameState.has_started_match = true
 	_go("combat")
@@ -339,7 +340,8 @@ func _build() -> void:
 	_squad_columns.clear()
 	_theatre_images.clear()
 	_face_buttons.clear()
-	var vp: Vector2 = get_viewport_rect().size
+	var real_vp: Vector2 = get_viewport_rect().size
+	var vp: Vector2 = TouchMetrics.logical_size(real_vp) # the layout is built for this size, then scaled up
 	_narrow = vp.x < NARROW_WIDTH
 	_compact = UiUtil.is_compact(vp)
 
@@ -348,16 +350,15 @@ func _build() -> void:
 	_backdrop.use_lobby_shade()
 	_backdrop.set_map(GameState.map_idx)
 
+	var whole: bool = _compact or _narrow or TouchMetrics.ui_scale(real_vp) > 1.0
+	var side: float = 6.0 if whole else maxf(6.0, (real_vp.x - minf(1120.0, real_vp.x * 0.96)) * 0.5)
+	var vert: float = 6.0 if whole else real_vp.y * 0.03
+	var holder: Control = TouchMetrics.scaled_root(self, real_vp, Rect2(side, vert, real_vp.x - 2.0 * side, real_vp.y - 2.0 * vert))
 	var frame := ChamferPanel.new()
 	frame.cuts = Vector4(0, 18, 0, 18)
-	frame.padding = Vector4(16, 12, 16, 12) if (_compact or _narrow) else Vector4(28, 24, 28, 24)
+	frame.padding = Vector4(14, 8, 14, 8) if (_compact or _narrow) else Vector4(28, 24, 28, 24)
 	frame.set_anchors_preset(Control.PRESET_FULL_RECT)
-	var side: float = maxf(6.0, (vp.x - minf(1120.0, vp.x * 0.96)) * 0.5)
-	frame.offset_left = side
-	frame.offset_right = -side
-	frame.offset_top = vp.y * 0.03
-	frame.offset_bottom = -vp.y * 0.03
-	add_child(frame)
+	holder.add_child(frame)
 
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
@@ -396,6 +397,7 @@ func _build() -> void:
 
 	add_child(load("res://ui/menus/RotateOverlay.tscn").instantiate())
 	_render_squad_rows()
+	TouchMetrics.fit_taps(frame, real_vp, vp.y)
 	_refresh_cards()
 	# Cursor starts on the first mode card (index 1), as the original.
 	focus_idx = 1

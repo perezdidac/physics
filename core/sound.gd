@@ -5,8 +5,9 @@
 extends Node
 
 const T := preload("res://core/sound/sound_tables.gd")
+const Music := preload("res://core/sound/music_table.gd")
 const POOL_SIZE: int = 16
-const DEFAULT_TRACK := "sardana_de_ferro"
+const DEFAULT_TRACK := Music.CLASSIC
 ## Minimum real-time gap between two plays of a rate-limited sound (seconds, as in audio.js).
 const RATE_LIMIT: Dictionary = {"crawl_step": 0.12, "skid": 0.055, "jet_thrust": 0.05}
 
@@ -16,6 +17,7 @@ var _next_player: int = 0
 var _music_player: AudioStreamPlayer
 var _wind_player: AudioStreamPlayer
 var _music_track: String = ""
+var _screen_sig: String = ""
 var _unlocked: bool = false
 var _last_play_ms: Dictionary = {}
 var _last_hurt_ms: int = -1000
@@ -31,8 +33,6 @@ func _ready() -> void:
 		_load_stream(key, T.SFX_DIR + key + ".wav")
 	for key in T.voice_keys():
 		_load_stream("voice/" + key, T.VOICE_DIR + key + ".wav")
-	for track in T.MUSIC_TRACKS:
-		_load_stream("music/" + track, T.MUSIC_DIR + track + ".wav")
 	for i in POOL_SIZE:
 		var p := AudioStreamPlayer.new()
 		p.bus = _bus("SFX")
@@ -49,6 +49,19 @@ func _ready() -> void:
 	_apply_sfx_mute()
 
 
+## The music follows the screen: story menus play the menu track, a story level its stage (or boss) track,
+## the classic match keeps its own (music_table.gd). Checked every frame, switched only on a change.
+func _process(_delta: float) -> void:
+	var scene: Node = get_tree().current_scene
+	if scene == null or not _unlocked:
+		return
+	var sig: String = scene.scene_file_path + "|" + _screen_track()
+	if sig == _screen_sig:
+		return
+	_screen_sig = sig
+	start_music(_screen_track())
+
+
 ## True when `sound_name` is a valid first argument of play().
 func has_sound(sound_name: String) -> bool:
 	return sound_name in T.PLAY_NAMES
@@ -62,7 +75,7 @@ func unlock() -> void:
 	if _wind_player.stream != null and not _wind_player.playing:
 		_wind_player.play()
 	if _music_track == "":
-		start_music(DEFAULT_TRACK)
+		start_music(_screen_track())
 
 
 ## Plays one of the JS SND.* sounds. `params` (all optional): boom {scale}, charge {power},
@@ -137,8 +150,10 @@ func set_sfx(on: bool) -> void:
 	_apply_sfx_mute()
 
 
-## Starts a looping music track from the beginning (paused if music is off).
+## Starts a looping music track (loaded on first use) from the beginning (paused if music is off).
 func start_music(track: String = DEFAULT_TRACK) -> void:
+	if not _streams.has("music/" + track):
+		_load_stream("music/" + track, T.MUSIC_DIR + track + ".wav")
 	var stream: AudioStreamWAV = _streams.get("music/" + track)
 	if stream == null:
 		push_warning("Sound.start_music: unknown track '%s'" % track)
@@ -181,6 +196,11 @@ func update_ambient(wind_val: float, is_playing: bool) -> void:
 		var fx := AudioServer.get_bus_effect(bus, 0) as AudioEffectBandPassFilter
 		if fx != null:
 			fx.cutoff_hz = _wind_freq
+
+
+func _screen_track() -> String:
+	var scene: Node = get_tree().current_scene
+	return Music.track_for_screen(scene.scene_file_path if scene != null else "", GameState.story_level)
 
 
 func _load_stream(key: String, path: String) -> void:

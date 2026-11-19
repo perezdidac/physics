@@ -5,9 +5,19 @@ extends Node
 
 const TERRAIN_W: float = 3200.0
 
+## Registry ids this view draws through (checked by the registry test); flora and creatures are dispatched by type / kind.
+const ART_KINDS: Array[String] = [
+	"flora:", "shadows", "tuft", "anthill", "convoy_goal", "story_goal", "updraft", "silk_nest", "silk_web", "pine_nut", "larvae", "rovello",
+	"caganer", "escudella", "tombstone", "mine", "crate", "barrel", "grapple", "tethers", "nest_back", "convoy_thread", "convoy_reach",
+	"nest_frozen", "nest_front", "spores", "weapon:plane", "weapon:projectile", "boar_warning",
+]
+
 var ctx := ViewCtx.new()
+var actx := ArtContext.new()
 var atmo := ViewAtmosphere.new()
 var fx := FxPools.new()
+var boss_fx := BossFx.new()
+var nest_fx := NestFx.new()
 var sky := SkyPainter.new()
 var terrain_view: TerrainView = null
 var facts: Dictionary = {}
@@ -42,6 +52,7 @@ func _ready() -> void:
 	terrain_view = TerrainView.new()
 	_world.add_child(terrain_view)
 	_add_layer(_world, _draw_actors)
+	_add_layer(_world, _draw_boss)
 	_add_layer(_world, _draw_fireballs, true)
 	_add_layer(_world, _draw_fx_main)
 	_add_layer(_world, _draw_flash, true)
@@ -79,6 +90,8 @@ func setup(sim_obj: Object) -> void:
 	sky.bg_tex = ArtCatalog.background(str(facts["bg"]))
 	terrain_view.setup(ViewUtil.g(sim, "terrain"))
 	fx.clear()
+	boss_fx.clear()
+	nest_fx.clear()
 
 
 ## Positions the layers for the current camera and redraws everything.
@@ -96,6 +109,7 @@ func render(cam: CameraRig, view_size: Vector2, shake: float) -> void:
 	terrain_view.set_camera(float(_tr["cx"]), float(_tr["cy"]))
 	ctx.view_size = view_size
 	ctx.scale_px = s
+	ctx.cam_pos = Vector2(float(_tr["cx"]), float(_tr["cy"]))
 	sky.view = view_size
 	sky.scale_px = s
 	sky.cx = float(_tr["cx"])
@@ -135,46 +149,65 @@ func _draw_water_back(ci: CanvasItem) -> void:
 
 
 func _draw_actors(ci: CanvasItem) -> void:
-	var t: float = ctx.t_now
-	ItemArt.draw_flora(ci, ViewUtil.g(sim, "surface_flora", []), ctx)
-	ItemArt.draw_shadows(ci, sim, ctx)
-	for u in ViewUtil.g(sim, "updrafts", []):
-		ItemArt.draw_updraft(ci, u, t)
-	for n in ViewUtil.g(sim, "silk_nests", []):
-		ItemArt.draw_nest(ci, n, t)
-	for w in ViewUtil.g(sim, "silk_webs", []):
-		ItemArt.draw_web(ci, w, t)
-	for pn in ViewUtil.g(sim, "pine_nuts", []):
-		ItemArt.draw_pine_nut(ci, pn, t)
-	for sw in ViewUtil.g(sim, "larvae_swarms", []):
-		ItemArt.draw_larvae(ci, sw, t)
-	for rv in ViewUtil.g(sim, "rovellons", []):
-		ItemArt.draw_rovello(ci, rv)
-	for cg in ViewUtil.g(sim, "caganers", []):
-		ItemArt.draw_caganer(ci, cg, t)
-	for ol in ViewUtil.g(sim, "escudelles", []):
-		ItemArt.draw_escudella(ci, ol, t)
-	for tb in ViewUtil.g(sim, "tombstones", []):
-		ItemArt.draw_tombstone(ci, tb)
-	for m in ViewUtil.g(sim, "mines", []):
-		ItemArt.draw_mine(ci, m, t)
-	for c in ViewUtil.g(sim, "crates", []):
-		ItemArt.draw_crate(ci, c, t)
-	for b in ViewUtil.g(sim, "barrels", []):
-		ItemArt.draw_barrel(ci, b)
+	actx.refresh(ctx)
+	for fl in ViewUtil.g(sim, "surface_flora", []):
+		ArtRegistry.draw("flora:" + ViewUtil.gs(fl, "type"), ci, fl, actx)
+	ArtRegistry.draw("shadows", ci, sim, actx)
+	for spot in ctx.hiding_spots:
+		ArtRegistry.draw("tuft", ci, spot + Vector2(0.0, ctx.spot_ground_dy), actx)
+	if ctx.has_anthill:
+		ArtRegistry.draw("anthill", ci, null, actx)
+	ArtRegistry.draw("convoy_goal", ci, null, actx)
+	ArtRegistry.draw("story_goal", ci, null, actx)
+	_draw_all(ci, "updraft", "updrafts")
+	_draw_all(ci, "silk_nest", "silk_nests")
+	_draw_all(ci, "silk_web", "silk_webs")
+	_draw_all(ci, "pine_nut", "pine_nuts")
+	_draw_all(ci, "larvae", "larvae_swarms")
+	_draw_all(ci, "rovello", "rovellons")
+	_draw_all(ci, "caganer", "caganers")
+	_draw_all(ci, "escudella", "escudelles")
+	_draw_all(ci, "tombstone", "tombstones")
+	_draw_all(ci, "mine", "mines")
+	_draw_all(ci, "crate", "crates")
+	_draw_all(ci, "barrel", "barrels")
 	for f in ctx.fighters:
-		ItemArt.draw_grapple(ci, f)
-	ItemArt.draw_tethers(ci, ctx.fighters)
+		ArtRegistry.draw("grapple", ci, f, actx)
+	ArtRegistry.draw("tethers", ci, ctx.fighters, actx)
+	ArtRegistry.draw("nest_back", ci, nest_fx, actx)
+	ArtRegistry.draw("convoy_thread", ci, null, actx)
+	ArtRegistry.draw("convoy_reach", ci, null, actx)
 	for f in ctx.fighters:
 		if ViewUtil.gb(f, "alive"):
 			CaterpillarArt.draw_fighter(ci, f, ctx)
+			if ctx.cold_active and ViewUtil.gi(f, "team") == 0 and ViewUtil.gs(f, "kind", "CATERPILLAR") == "CATERPILLAR" and not ctx.in_nest(f):
+				ArtRegistry.draw("nest_frozen", ci, f, actx)
+	ArtRegistry.draw("nest_front", ci, null, actx)
+	ArtRegistry.draw("spores", ci, null, actx)
 	var act: Variant = ctx.active
-	if ctx.playing and ctx.phase == ViewCtx.PH_TURN_PLAY and act != null and ViewUtil.gb(act, "alive") and not ViewUtil.gb(act, "drowning") and ctx.human_turn:
+	if ctx.playing and ctx.phase == ViewCtx.PH_TURN_PLAY and act != null and ViewUtil.gb(act, "alive") and not ViewUtil.gb(act, "drowning") and ctx.human_turn and not ctx.no_weapons:
 		AimHud.draw(ci, act, ctx)
 	for pl in ViewUtil.g(sim, "airstrike_planes", []):
-		WeaponArt.draw_plane(ci, pl)
+		ArtRegistry.draw("weapon:plane", ci, pl, actx)
 	for p in ctx.projectiles:
-		WeaponArt.draw_projectile(ci, p, ctx)
+		ArtRegistry.draw("weapon:projectile", ci, p, actx)
+
+
+## Draws every entry of the sim list `field` with the registered art of `kind`.
+func _draw_all(ci: CanvasItem, kind: String, field: String) -> void:
+	var art: ThingArt = ArtRegistry.get_instance().resolve(kind)
+	if art == null:
+		return
+	for e in ViewUtil.g(sim, field, []):
+		art.draw(ci, e, actx)
+
+
+func _draw_boss(ci: CanvasItem) -> void:
+	nest_fx.draw_world(ci, ctx)
+	BossOverlay.draw(ci, ctx)
+	for intent in ctx.boar_intents:
+		ArtRegistry.draw("boar_warning", ci, intent, actx)
+	boss_fx.draw(ci)
 
 
 func _draw_fireballs(ci: CanvasItem) -> void:
@@ -205,3 +238,4 @@ func _draw_top(ci: CanvasItem) -> void:
 func _draw_overlay(ci: CanvasItem) -> void:
 	sky.draw_weather(ci)
 	sky.draw_overlay(ci, fx, _cam)
+	nest_fx.draw_overlay(ci, ctx)

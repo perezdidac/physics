@@ -37,7 +37,11 @@ func _test_camera() -> void:
 	var back: Vector2 = cam.world_to_screen(Vector2(1700, 450), view)
 	_check(cam.screen_to_world(back, view).distance_to(Vector2(1700, 450)) < 0.01, "world->screen->world round trip")
 	cam.zoom_user(10.0)
-	_check(cam.user_zoom == 2.25, "user zoom clamps at 2.25")
+	_check(cam.user_zoom == 2.5, "user zoom clamps at 2.5")
+	cam.zoom_user(0.0, 0.5)
+	_check(absf(cam.user_zoom - 1.25) < 0.0001, "pinch multiplies the zoom")
+	_check(absf(CameraRig.STORY_USER_ZOOM / CameraRig.DEFAULT_USER_ZOOM - 1.6) < 0.01, "story starts about 1.6x closer than classic")
+	_check(PlatformCamera.zoom_for(Vector2(1600, 720), true) > PlatformCamera.zoom_for(Vector2(1600, 720)), "phone platformer zoom is closer")
 	cam.zoom_user(-10.0)
 	_check(cam.user_zoom == 0.50, "user zoom clamps at 0.50")
 	cam.target_x = 2000.0

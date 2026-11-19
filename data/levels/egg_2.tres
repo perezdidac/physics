@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/platform_layout.gd" id="2_layout"]
+[ext_resource type="Resource" path="res://data/units/egg.tres" id="3_egg"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="4_ant"]
+
+[sub_resource type="Resource" id="Resource_layout"]
+script = ExtResource("2_layout")
+size = Vector2(3000, 720)
+solids = Array[Rect2]([Rect2(0, 600, 600, 120), Rect2(690, 600, 700, 120), Rect2(1500, 600, 1500, 120), Rect2(1900, 540, 200, 60)])
+platforms = Array[Rect2]([Rect2(760, 515, 150, 12), Rect2(960, 435, 200, 12), Rect2(1180, 520, 160, 12), Rect2(1410, 530, 70, 12), Rect2(1960, 460, 140, 12)])
+slopes = Array[PackedVector2Array]([PackedVector2Array(1780, 600, 1900, 540), PackedVector2Array(2100, 540, 2220, 600)])
+start = Vector2(100, 586)
+goal = Rect2(2860, 470, 130, 130)
+checkpoints = Array[Vector2]([Vector2(1560, 600)])
+nutrients = Array[Vector2]([Vector2(250, 566), Vector2(480, 566), Vector2(645, 500), Vector2(835, 485), Vector2(1010, 405), Vector2(1260, 490), Vector2(1445, 500), Vector2(1620, 566), Vector2(2030, 430), Vector2(2420, 566), Vector2(2800, 566)])
+tufts = Array[Rect2]([Rect2(400, 540, 90, 60), Rect2(1620, 540, 90, 60), Rect2(2250, 540, 90, 60), Rect2(2600, 540, 90, 60)])
+ants = Array[Rect2]([Rect2(300, 600, 220, 45), Rect2(800, 600, 300, 50), Rect2(990, 435, 140, 35), Rect2(1560, 600, 220, 55), Rect2(1920, 540, 160, 45), Rect2(2300, 600, 250, 60)])
+background_key = "pinar_montseny"
+
+[resource]
+script = ExtResource("1_level")
+id = "egg_2"
+stage = "EGG"
+order = 2
+playable = true
+mode = "PLATFORM"
+layout = SubResource("Resource_layout")
+title_key = "LVL_EGG_2_TITLE"
+intro_key = "LVL_EGG_2_INTRO"
+goal_key = "LVL_EGG_2_GOAL"
+tip_key = "LVL_EGG_2_TIP"
+map_idx = 0
+seed = 1236
+hiding_spots = 3
+turn_time = 25.0
+ai_difficulty = "ROOKIE"
+player_unit = ExtResource("3_egg")
+player_names = Array[String](["Perleta", "Pinyoleta", "Mota"])
+enemy_unit = ExtResource("4_ant")
+enemy_count = 4
+player_arsenal = {"EMPENTA": -1}
+enemy_arsenal = {"MOSSEGADA": -1}
+win_rule = "SURVIVE_ROUNDS"
+survive_rounds = 5
+star_survivors = Array[int]([2, 3])
+unlocks = Array[String]([])

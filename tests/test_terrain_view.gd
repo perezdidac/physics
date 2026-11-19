@@ -23,6 +23,7 @@ func _ready() -> void:
 	_solid_fill(ter)
 	_sim_exposes_changes(ter)
 	_stamp_classes()
+	_overlay_sprites(ter)
 	await _view(ter)
 	print("RESULT: ALL GOOD" if failures == 0 else "RESULT: %d FAILURES" % failures)
 	get_tree().quit()
@@ -69,6 +70,74 @@ func _stamp_classes() -> void:
 	_check(TerrainStamps.kind_id({"kind": "VIADUCT"}) == TerrainStamps.K_VIADUCT and TerrainStamps.kind_id({"kind": "ROCK_ARCH"}) == TerrainStamps.K_ARCH, "stamp class: viaduct / arch")
 	var box: Rect2i = TerrainStamps.box({"kind": "MONOLITHS", "x": 100, "y": 200})
 	_check(box == Rect2i(43, 131, 115, 82), "stamp box: monoliths")
+	_check(ResourceLoader.exists(TerrainStamps.TEX_DIR + "girder.svg"), "girder sprite exists")
+	_check(TerrainStamps.hollow_id({"kind": "WATCHTOWER"}) == 1 and TerrainStamps.hollow_id({"kind": "BARRACA"}) == 2 and TerrainStamps.hollow_id({"kind": "HOLLOW_LOG"}) == 3 and TerrainStamps.hollow_id({"kind": "TREE"}) == 0, "hollow ids: tower, barraca, log")
+	_check(TerrainStamps.tree_tex({"style": "UMBRELLA_PINE"}) == "pine" and TerrainStamps.tree_tex({"style": "CYPRESS"}) == "broadleaf", "tree sprite follows the sim crown shape")
+
+
+## Every stamp kind has overlay pieces whose textures exist, and the long structures follow the sim mask.
+func _overlay_sprites(ter: TerrainSim) -> void:
+	var samples: Array = [
+		{"kind": "TREE", "style": "UMBRELLA_PINE", "x": 500, "y": 400, "scale": 1.0}, {"kind": "TREE", "style": "DOUGLAS_FIR", "x": 500, "y": 400, "scale": 1.2},
+		{"kind": "TREE", "style": "PALM_DELTA", "x": 500, "y": 400, "scale": 1.0}, {"kind": "TREE", "style": "CYPRESS", "x": 500, "y": 400, "scale": 0.9},
+		{"kind": "WATCHTOWER", "x": 500, "y": 400}, {"kind": "BARRACA", "x": 500, "y": 400}, {"kind": "TERRACE", "x": 500, "y": 300, "half_w": 90, "w": 181},
+		{"kind": "HOLLOW_LOG", "x": 500, "y": 400, "tilt": 0.05, "half_len": 78}, {"kind": "ROCK_ARCH", "x": 500, "y": 400}, {"kind": "MONOLITHS", "x": 500, "y": 400},
+		{"kind": "VIADUCT", "x1": 400.4, "x2": 700.0, "deck_y": 300.0}, {"kind": "TRUSS", "x1": 400.0, "x2": 700.0, "deck_y": 300.0},
+		{"kind": "TRUSS", "x1": 400.0, "x2": 700.0, "deck_y": 300.0, "is_orange": true}, {"kind": "ANTHILL", "x": 500, "y": 400}]
+	var missing: Array = []
+	for smp in samples:
+		_check(TerrainStamps.has_overlay(smp), "%s %s has an overlay" % [smp["kind"], smp.get("style", "")])
+		var pieces: Array = TerrainStamps.overlay_pieces(smp)
+		if pieces.is_empty():
+			missing.append(smp["kind"])
+		for pc in pieces:
+			var tex: String = str(pc["tex"])
+			if tex != "" and not ResourceLoader.exists(tex):
+				missing.append(tex)
+			var n: int = (pc["pos"] as PackedVector2Array).size()
+			if n != (pc["uv"] as PackedVector2Array).size() or (pc["idx"] as PackedInt32Array).is_empty() or (pc["idx"] as PackedInt32Array).size() % 3 != 0:
+				missing.append("bad mesh " + str(smp["kind"]))
+			for i in pc["idx"]:
+				if int(i) >= n:
+					missing.append("index out of range " + str(smp["kind"]))
+					break
+	_check(missing.is_empty(), "every stamp kind has overlay pieces with existing textures %s" % str(missing))
+	_check(not TerrainStamps.has_overlay({"kind": "SOMETHING_ELSE"}), "unknown stamp kinds keep their baked colours")
+	var gp: Dictionary = TerrainStamps.girder_piece({"x": 800.0, "y": 300.0, "angle": 0.4, "length": 78.0, "thickness": 16.0})
+	_check(ResourceLoader.exists(str(gp["tex"])) and (gp["pos"] as PackedVector2Array).size() > 20, "girder sprite piece builds")
+	# terrace slab top / bottom edges follow the sim mask within 3 px
+	var checked: int = 0
+	var good: int = 0
+	for st in ter.stamps:
+		if str(st.get("kind", "")) != "TERRACE":
+			continue
+		var pos: PackedVector2Array = TerrainStamps.overlay_pieces(st)[0]["pos"]
+		for i in range(0, pos.size() - 5, 15):
+			var top: float = pos[i].y + 4.0
+			var bot: float = pos[i + 2].y
+			var x: int = int(pos[i].x)
+			if x < 0 or x >= TerrainSim.W:
+				continue
+			var y0: int = int(st["y"]) - 8
+			var ys: int = -1
+			var ye: int = -1
+			for y in range(y0, y0 + 50):
+				if ter.mask[y * TerrainSim.W + x] != 0:
+					if ys < 0:
+						ys = y
+					ye = y + 1
+				elif ys >= 0:
+					break
+			if ys >= 0:
+				good += 1 if maxf(absf(top - ys), absf(bot - ye)) <= 3.0 else 0
+				checked += 1
+	_check(checked > 5 and good >= int(checked * 0.8), "terrace sprite edges match the sim mask within 3 px (%d of %d samples; the rest overlap trees)" % [good, checked])
+
+
+func _empty_mask() -> PackedByteArray:
+	var m := PackedByteArray()
+	m.resize(TerrainSim.W * TerrainSim.H)
+	return m
 
 
 func _view(ter: TerrainSim) -> void:

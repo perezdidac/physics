@@ -67,7 +67,8 @@ static func spin_silk_web(sim: CombatSim) -> void:
 		return
 	if not sim.playing or (sim.turn_phase != CombatSim.Phase.TURN_PLAY and sim.turn_phase != CombatSim.Phase.RETREAT):
 		return
-	sim.silk_web_used_this_turn = true
+	sim.silk_webs_spun += 1
+	sim.silk_web_used_this_turn = sim.silk_webs_spun >= sim.silk_webs_per_turn
 	var dir_x: float = cos(sim.aim_angle)
 	var dir_y: float = sin(sim.aim_angle)
 	var cx: float = af.x + dir_x * 46.0
@@ -85,12 +86,13 @@ static func spin_silk_web(sim: CombatSim) -> void:
 	sim.play("jump")
 	spawn_hairs(sim, cx, cy, 12)
 	sim.ftext(cx, cy - 16.0, "FT_WEB_SPUN", Palette.FT_CREAM, 1.65)
+	SimStatus.on_silk_web(sim, af)
 	sim.hud()
 
 
 ## JS checkMetamorphosis: wings at hp <= 35 or 75 damage dealt.
 static func check_metamorphosis(sim: CombatSim, f: SimFighter) -> void:
-	if f == null or not f.alive or f.drowning or f.metamorphosed:
+	if f == null or not f.alive or f.drowning or f.metamorphosed or f.unit != null:
 		return
 	if (f.hp > 0 and f.hp <= 35) or f.dmg_dealt >= 75:
 		f.metamorphosed = true
@@ -107,8 +109,10 @@ static func check_metamorphosis(sim: CombatSim, f: SimFighter) -> void:
 
 ## JS damageFighter. `label_key` is a translation key of a damage label ("" for none).
 static func damage_fighter(sim: CombatSim, f: SimFighter, dmg: int, label_key: String = "") -> void:
-	if not f.alive:
+	if not f.alive or f.is_hazard():
 		return
+	dmg = SimBoss.scale_damage(sim, f, dmg)
+	dmg = SimBolso.shelter_scale(sim, f, dmg)
 	var actual: int = mini(f.hp, dmg)
 	f.hp = maxi(0, f.hp - dmg)
 	if sim.playing:
@@ -138,6 +142,7 @@ static func damage_fighter(sim: CombatSim, f: SimFighter, dmg: int, label_key: S
 		sim.tombstones.append(tb)
 	else:
 		check_metamorphosis(sim, f)
+	SimBoss.on_damaged(sim, f)
 	sim.hud()
 
 
@@ -188,6 +193,8 @@ static func trigger_explosion(sim: CombatSim, ex: float, ey: float, radius: floa
 		water_plunge(sim, ex, terrain.water_y, SimMath.clamp_js(radius / 55.0, 0.5, 1.35))
 
 	var hit_radius: float = radius * (2.1 if is_urticating else 1.68)
+	SimBolso.on_explosion(sim, ex, ey, hit_radius, max_dmg)
+	SimGoals.on_explosion(sim, ex, ey, hit_radius, max_dmg)
 
 	i = sim.silk_nests.size() - 1
 	while i >= 0:
@@ -237,7 +244,7 @@ static func trigger_explosion(sim: CombatSim, ex: float, ey: float, radius: floa
 		i -= 1
 
 	for f in sim.fighters:
-		if not f.alive or f.drowning:
+		if not f.alive or f.drowning or f.is_hazard():
 			continue
 		var dx: float = f.x - ex
 		var dy: float = (f.y - 4.0) - ey
@@ -393,9 +400,11 @@ static func fire_weapon(sim: CombatSim, wpn: WeaponDef, angle: float, power: flo
 	var linked_count: int = mini(2, af.linked_allies.size())
 	var castell_boost: float = 0.30 if af.castell_tower else 0.0
 	var pilota_boost: float = 0.25 if af.pilota_buff else 0.0
-	var dmg_boost: float = 1.0 + linked_count * 0.25 + castell_boost + pilota_boost + (0.15 if af.metamorphosed else 0.0)
+	var dmg_boost: float = (1.0 + linked_count * 0.25 + castell_boost + pilota_boost + (0.15 if af.metamorphosed else 0.0)) * sim.damage_mult[af.team]
 	var radius_boost: float = 1.0 + linked_count * 0.12 + (0.15 if af.castell_tower else 0.0) + (0.10 if af.pilota_buff else 0.0)
 	var eff_dmg: int = int(SimMath.round_js(wpn.max_dmg * dmg_boost))
+	if af.unit != null and af.unit.melee_damage > 0 and wpn.type == "MELEE":
+		eff_dmg = af.unit.melee_damage
 	var eff_blast_r: int = int(SimMath.round_js(wpn.blast_r * radius_boost))
 	var eff_knockback: int = int(SimMath.round_js(wpn.knockback * (1.0 + pilota_boost)))
 
@@ -444,7 +453,7 @@ static func fire_weapon(sim: CombatSim, wpn: WeaponDef, angle: float, power: flo
 			sim.turn_phase = CombatSim.Phase.ACTION_WAIT
 		"SHOTGUN":
 			_fire_shotgun(sim, af, wpn, muzzle_x, muzzle_y, dir_x, dir_y, eff_blast_r, eff_dmg)
-		"FUET", "BAT":
+		"FUET", "BAT", "EMPENTA", "MOSSEGADA", "PICOTADA", "PICOTADA_FORTA", "PERXADA":
 			_fire_melee(sim, af, wpn, muzzle_x, muzzle_y, dir_x, dir_y, eff_dmg, eff_knockback)
 		"DYNAMITE":
 			sim.play("tick")
@@ -570,11 +579,11 @@ static func _fire_melee(sim: CombatSim, af: SimFighter, wpn: WeaponDef, muzzle_x
 			sim.ftext(p.x, p.y - 26.0, "FT_BAT_DEFLECT", Palette.FT_GOLD_BRIGHT, 1.5)
 
 	for f in sim.fighters:
-		if f != af and f.alive and not f.drowning:
+		if f != af and f.alive and not f.drowning and not f.is_hazard() and (af.unit == null or f.team != af.team):
 			var dist: float = Vector2(f.x - af.x, f.y - af.y).length()
 			if dist <= reach:
 				hit_anyone = true
-				damage_fighter(sim, f, eff_dmg, "DMG_FUET" if is_fuet else "DMG_BAT")
+				damage_fighter(sim, f, eff_dmg, "DMG_" + wpn.id)
 				f.vx = dir_x * eff_knockback
 				f.vy = minf(-185.0 if is_fuet else -210.0, dir_y * eff_knockback - (95.0 if is_fuet else 120.0))
 				f.grounded = false

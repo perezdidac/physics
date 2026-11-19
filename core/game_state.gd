@@ -40,6 +40,10 @@ var custom_faces: Array = [[null, null, null, null, null, null], [null, null, nu
 var has_custom_names: bool = false
 ## True once a match was started from the menus (shows "back to current match" in the lobby).
 var has_started_match: bool = false
+## Story level about to be played (null outside the story mode: every classic entry point resets it).
+var story_level: LevelDef = null
+## `game_over` stats of the last story match, read by the results screen.
+var story_result: Dictionary = {}
 var _rng := RandomNumberGenerator.new()
 
 
@@ -62,6 +66,7 @@ func randomize_names() -> void:
 ## Prepares a quick match (menu items 0 and 1): random hats and map, random names.
 func prepare_quick_match(mode: String) -> void:
 	game_mode = mode
+	story_level = null
 	has_custom_names = false
 	team_hats[0] = HAT_OPTIONS[_rng.randi_range(0, HAT_OPTIONS.size() - 1)]
 	team_hats[1] = HAT_OPTIONS[_rng.randi_range(0, HAT_OPTIONS.size() - 1)]
@@ -71,7 +76,7 @@ func prepare_quick_match(mode: String) -> void:
 
 ## Builds the MatchConfig for the current choices. Returns a MatchConfig when combat/sim/match_config.gd exists, else a Dictionary with the same fields.
 func make_match_config() -> Variant:
-	if not has_custom_names:
+	if story_level == null and not has_custom_names:
 		randomize_names()
 	var names: Array = []
 	for t in 2:
@@ -79,6 +84,10 @@ func make_match_config() -> Variant:
 		for i in worms_per_team:
 			row.append(team_names[t][i])
 		names.append(row)
+	if story_level != null:
+		names = [story_level.player_names.duplicate(), []]
+		for i in story_level.enemy_roster().size():
+			names[1].append(NAME_POOL_1[i % NAME_POOL_1.size()])
 	var values: Dictionary = {
 		"map_idx": map_idx,
 		"game_mode": game_mode,
@@ -88,7 +97,16 @@ func make_match_config() -> Variant:
 		"team_hats": team_hats.duplicate(),
 		"custom_faces": custom_faces,
 		"seed": 0,
+		"level": story_level,
 	}
+	if story_level != null:
+		values["map_idx"] = story_level.map_idx
+		values["seed"] = story_level.seed
+		values["ai_difficulty"] = story_level.ai_difficulty
+		values["game_mode"] = "1P_CPU"
+		values["worms_per_team"] = story_level.player_names.size()
+		values["upgrades"] = StoryProgress.owned_upgrades() if story_level.mode == "COMBAT" else []
+		values["extra_arsenal"] = unlocked_arsenal() if story_level.use_unlocked and story_level.mode == "COMBAT" else {}
 	if ResourceLoader.exists(MATCH_CONFIG_PATH):
 		var script: GDScript = load(MATCH_CONFIG_PATH)
 		var cfg: Variant = script.new()
@@ -97,6 +115,18 @@ func make_match_config() -> Variant:
 				cfg.set(key, values[key])
 		return cfg
 	return values
+
+
+## Weapons unlocked by the story levels won so far as weapon id -> ammo (the weapon's own ammo, -1 = unlimited): added to the player's arsenal.
+func unlocked_arsenal() -> Dictionary:
+	var ammo_of: Dictionary = {}
+	var list: WeaponList = load("res://data/weapons/weapon_list.tres")
+	for w in list.weapons:
+		ammo_of[w.id] = w.default_ammo
+	var out: Dictionary = {}
+	for id in StoryProgress.unlocked_weapons():
+		out[id] = int(ammo_of.get(id, -1))
+	return out
 
 
 func _shuffle(arr: Array[String]) -> void:

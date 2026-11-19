@@ -1,5 +1,6 @@
 ## Offline renderer of the original WebAudio synthesis (reference/js/audio.js) to .wav files.
 ## Run: godot --headless --path . res://tools/BakeAudio.tscn   (takes a few minutes)
+## Only the story music: godot --headless --path . res://tools/BakeAudio.tscn -- --music-only
 ## Writes assets/audio/{sfx,voices,music}/*.wav (mono, 16 bit, 44.1 kHz) and default_bus_layout.tres.
 ## Loops (music, wind_loop) are looped by their .wav.import (edit/loop_mode=2), not by the wav file.
 ## The DSP mirrors WebAudio: oscillators (band-limited), exponential/linear gain ramps, RBJ biquads
@@ -8,6 +9,8 @@
 extends Node
 
 const T := preload("res://core/sound/sound_tables.gd")
+const MusicBaker := preload("res://tools/bake_music.gd")
+const MusicData := preload("res://tools/bake_music_data.gd")
 
 const SR: int = 44100
 const SET_AT: int = 0
@@ -67,11 +70,15 @@ func _ready() -> void:
 	_rng.seed = 20260511
 	_noise = _make_noise(1.5)
 	var t0: int = Time.get_ticks_msec()
-	_bake_sfx()
-	_bake_voices()
-	_bake_wind()
-	_bake_music()
-	_write_bus_layout()
+	if "--music-only" in OS.get_cmdline_user_args():
+		_bake_story_music()
+	else:
+		_bake_sfx()
+		_bake_voices()
+		_bake_wind()
+		_bake_music()
+		_bake_story_music()
+		_write_bus_layout()
 	for line in _report:
 		print(line)
 	print("BAKE DONE in %.1f s" % ((Time.get_ticks_msec() - t0) / 1000.0))
@@ -615,6 +622,14 @@ func _bake_wind() -> void:
 			v = gen[loop_n + i] * sqrt(w) + gen[i] * sqrt(1.0 - w)
 		_buf[i] = v
 	_emit(T.SFX_DIR + T.WIND_FILE + ".wav", true)
+
+
+## Story-mode music (tools/bake_music.gd renders the scores of tools/bake_music_data.gd).
+func _bake_story_music() -> void:
+	var baker: RefCounted = MusicBaker.new()
+	var tracks: Dictionary = MusicData.all_tracks()
+	for key: String in tracks:
+		_report.append(baker.bake(tracks[key], T.MUSIC_DIR + key + ".wav"))
 
 
 func _bake_music() -> void:

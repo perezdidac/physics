@@ -107,6 +107,10 @@ func _draw() -> void:
 			font_size = 11
 		Kind.FIRE:
 			font_size = 14
+	# Big touch buttons (TouchMetrics) get a bigger label, kept inside the button width.
+	font_size = int(round(font_size * clampf(size.y / 44.0, 1.0, 2.2)))
+	while font_size > 9 and font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > size.x * 0.88:
+		font_size -= 1
 	var col: Color = Palette.IVORY
 	if kind == Kind.FIRE:
 		var top: Color = Palette.FIRE_TOP

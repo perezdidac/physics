@@ -8,6 +8,12 @@ const PH_TURN_PLAY: int = 0
 const PH_RETREAT: int = 1
 const PH_ACTION_WAIT: int = 2
 const PH_TURN_DELAY: int = 3
+## 0.50 shows about the whole 3200 px map on a phone; 2.50 is the closest pinch / wheel zoom.
+const MIN_USER_ZOOM: float = 0.50
+const MAX_USER_ZOOM: float = 2.50
+const DEFAULT_USER_ZOOM: float = 1.22
+## Story levels start 1.6x closer than classic so small critters stay readable on a phone.
+const STORY_USER_ZOOM: float = 1.95
 
 var x: float = 1600.0
 var y: float = 400.0
@@ -19,8 +25,8 @@ var zoom: float = 1.0
 var target_zoom: float = 1.0
 var mouse_off: Vector2 = Vector2.ZERO
 var smooth_mouse: Vector2 = Vector2.ZERO
-## Player zoom multiplier (0.50..2.25).
-var user_zoom: float = 1.22
+## Player zoom multiplier (MIN_USER_ZOOM..MAX_USER_ZOOM). Classic starts at DEFAULT_USER_ZOOM, story levels at STORY_USER_ZOOM.
+var user_zoom: float = DEFAULT_USER_ZOOM
 ## Impact camera (set by the sim `camera_focus` signal, cleared at turn start).
 var impact_active: bool = false
 var impact_pos: Vector2 = Vector2(1600, 400)
@@ -29,6 +35,19 @@ var impact_tracked: Variant = null
 var playing: bool = true
 ## Debug / capture: when true the camera stays where it is.
 var locked: bool = false
+## Story arenas: the visible world span never leaves [bound_x0 - ARENA_MARGIN, bound_x1 + ARENA_MARGIN] (it is centred when narrower than the screen).
+## INF / -INF = no limit (classic matches, menu).
+var bound_x0: float = -INF
+var bound_x1: float = INF
+
+
+## Critter phase framing: the span (px) that fits at the normal zoom, and the lowest zoom the framing may use.
+const GROUP_FRAME_WIDTH: float = 760.0
+const GROUP_MIN_ZOOM: float = 0.6
+
+
+## World px of the water/void shown beyond the edge of a story arena.
+const ARENA_MARGIN: float = 60.0
 
 
 ## CSS-like base scale for the viewport size (renderer.js:8-20).
@@ -47,7 +66,18 @@ func get_transform(view: Vector2) -> Dictionary:
 	var is_portrait: bool = view.x < view.y and view.x <= 820.0
 	var s: float = base_scale(view) * zoom * user_zoom
 	var portrait_off: float = 42.0 if (is_portrait and playing) else 0.0
-	return {"scale": s, "cx": x + smooth_mouse.x, "cy": y + smooth_mouse.y + portrait_off}
+	return {"scale": s, "cx": _limit_x(x + smooth_mouse.x, view.x * 0.5 / s), "cy": y + smooth_mouse.y + portrait_off}
+
+
+## Keeps the visible span (centre cx, half width `half` world px) inside the arena bounds plus a margin.
+func _limit_x(cx: float, half: float) -> float:
+	if bound_x0 == -INF:
+		return cx
+	var lo: float = bound_x0 - ARENA_MARGIN + half
+	var hi: float = bound_x1 + ARENA_MARGIN - half
+	if lo > hi:
+		return (bound_x0 + bound_x1) * 0.5
+	return clampf(cx, lo, hi)
 
 
 ## Screen (logical px) -> world.
@@ -81,9 +111,9 @@ func reset_pan() -> void:
 	pan_y = 0.0
 
 
-## Multiplies / adds to the user zoom with the JS clamp.
+## Multiplies / adds to the user zoom (pinch, wheel, keys), clamped to MIN..MAX_USER_ZOOM.
 func zoom_user(add: float = 0.0, mul: float = 1.0) -> void:
-	user_zoom = clampf(user_zoom * mul + add, 0.50, 2.25)
+	user_zoom = clampf(user_zoom * mul + add, MIN_USER_ZOOM, MAX_USER_ZOOM)
 
 
 ## Called by CombatScreen on `camera_focus`.
@@ -111,6 +141,7 @@ func update_targets(sim: Object, t_now: float, slow_mo: bool, moving_keys: bool,
 		target_zoom = 0.96
 		return
 	var water_y: float = _water_y(sim)
+	_read_arena(sim)
 	var fighters: Array = ViewUtil.g(sim, "fighters", [])
 	var projectiles: Array = ViewUtil.g(sim, "projectiles", [])
 	var planes: Array = ViewUtil.g(sim, "airstrike_planes", [])
@@ -162,6 +193,23 @@ func update_targets(sim: Object, t_now: float, slow_mo: bool, moving_keys: bool,
 		target_x = clampf(ViewUtil.gf(active, "x") + pan_x, 200.0, TERRAIN_W - 200.0)
 		target_y = clampf(ViewUtil.gf(active, "y") - 35.0 + pan_y, 150.0, 580.0)
 		target_zoom = 1.20 if slow_mo else 1.08
+		_frame_critter_phase(sim)
+
+
+## A critter phase (several ants moving together): the camera frames the units that still act, zooming out when they are spread apart.
+func _frame_critter_phase(sim: Object) -> void:
+	var acting: Array = ViewUtil.g(sim, "critter_acting", [])
+	if acting.size() < 2:
+		return
+	var lo := Vector2(INF, INF)
+	var hi := Vector2(-INF, -INF)
+	for m in acting:
+		var p: Vector2 = ViewUtil.pos(m)
+		lo = Vector2(minf(lo.x, p.x), minf(lo.y, p.y))
+		hi = Vector2(maxf(hi.x, p.x), maxf(hi.y, p.y))
+	target_x = clampf((lo.x + hi.x) * 0.5 + pan_x, 200.0, TERRAIN_W - 200.0)
+	target_y = clampf((lo.y + hi.y) * 0.5 - 35.0 + pan_y, 150.0, 580.0)
+	target_zoom = clampf(target_zoom * GROUP_FRAME_WIDTH / maxf(GROUP_FRAME_WIDTH, hi.x - lo.x + 240.0), GROUP_MIN_ZOOM, target_zoom)
 
 
 func _follow_moving_fighters(fighters: Array, water_y: float) -> void:
@@ -193,6 +241,19 @@ func step(raw_dt: float) -> void:
 	y = lerpf(y, target_y, k)
 	zoom = lerpf(zoom, target_zoom, k)
 	smooth_mouse = smooth_mouse.lerp(mouse_off, k)
+
+
+## Takes the playable span from the sim terrain (only a clipped story arena limits the camera).
+func _read_arena(sim: Object) -> void:
+	var terrain: Variant = ViewUtil.g(sim, "terrain")
+	var x0: float = ViewUtil.gf(terrain, "arena_x0", 0.0)
+	var x1: float = ViewUtil.gf(terrain, "arena_x1", TERRAIN_W)
+	if x0 > 0.0 or x1 < TERRAIN_W:
+		bound_x0 = x0
+		bound_x1 = x1
+	else:
+		bound_x0 = -INF
+		bound_x1 = INF
 
 
 static func _water_y(sim: Object) -> float:

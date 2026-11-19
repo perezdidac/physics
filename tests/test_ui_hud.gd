@@ -132,19 +132,14 @@ func _test_bottom() -> void:
 	sim.ai_turn = false
 	bottom.fire_button.pressed_down.emit()
 	bottom.fire_button.released.emit()
-	bottom.left_button.pressed_down.emit()
-	bottom.left_button.released.emit()
-	bottom.up_button.pressed_down.emit()
 	bottom.jump_button.pressed_down.emit()
 	bottom.flip_button.pressed_down.emit()
 	_check("begin_charge_or_fire" in sim.calls and "release_charge" in sim.calls, "fire button presses and releases the charge")
-	_check("set_move:-1" in sim.calls and "set_move:0" in sim.calls, "left arrow sets and clears movement")
-	_check("set_aim_input:-1" in sim.calls and "jump_forward" in sim.calls and "jump_backward" in sim.calls, "aim, jump and flip buttons call the sim")
-	var zooms: Array[float] = []
-	bottom.zoom_requested.connect(func(d: float) -> void: zooms.append(d))
-	bottom.right_cluster.get_child(2).tapped.emit()
-	bottom.right_cluster.get_child(3).tapped.emit()
-	_check(zooms.size() == 2 and is_equal_approx(zooms[0], -0.16) and is_equal_approx(zooms[1], 0.16), "zoom buttons request +-0.16")
+	_check("jump_forward" in sim.calls and "jump_backward" in sim.calls, "jump and flip buttons call the sim")
+	var centered: Array[bool] = []
+	bottom.center_requested.connect(func() -> void: centered.append(true))
+	bottom.touch_pad.center_button.tapped.emit()
+	_check(centered.size() == 1, "the centre button requests a camera re-centre")
 	sim.is_charging = true
 	sim.charge_power = 0.5
 	await get_tree().process_frame

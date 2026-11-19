@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeList" format=3]
+
+[ext_resource type="Script" path="res://data/types/upgrade_list.gd" id="1_list"]
+[ext_resource type="Resource" path="res://data/upgrades/tough_skin.tres" id="u0"]
+[ext_resource type="Resource" path="res://data/upgrades/tough_skin_2.tres" id="u1"]
+[ext_resource type="Resource" path="res://data/upgrades/sharp_hairs.tres" id="u2"]
+[ext_resource type="Resource" path="res://data/upgrades/sharp_hairs_2.tres" id="u3"]
+[ext_resource type="Resource" path="res://data/upgrades/full_pouch.tres" id="u4"]
+[ext_resource type="Resource" path="res://data/upgrades/double_web.tres" id="u5"]
+[ext_resource type="Resource" path="res://data/upgrades/thick_walls.tres" id="u6"]
+[ext_resource type="Resource" path="res://data/upgrades/warm_silk.tres" id="u7"]
+[ext_resource type="Resource" path="res://data/upgrades/extra_heart.tres" id="u8"]
+[ext_resource type="Resource" path="res://data/upgrades/extra_heart_2.tres" id="u9"]
+[ext_resource type="Resource" path="res://data/upgrades/fast_dig.tres" id="u10"]
+[ext_resource type="Resource" path="res://data/upgrades/long_flight.tres" id="u11"]
+
+[resource]
+script = ExtResource("1_list")
+upgrades = Array[Resource]([ExtResource("u0"), ExtResource("u1"), ExtResource("u2"), ExtResource("u3"), ExtResource("u4"), ExtResource("u5"), ExtResource("u6"), ExtResource("u7"), ExtResource("u8"), ExtResource("u9"), ExtResource("u10"), ExtResource("u11")])

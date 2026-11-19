@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/platform_layout.gd" id="2_layout"]
+[ext_resource type="Resource" path="res://data/units/egg.tres" id="3_egg"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="4_ant"]
+
+[sub_resource type="Resource" id="Resource_layout"]
+script = ExtResource("2_layout")
+size = Vector2(2000, 720)
+solids = Array[Rect2]([Rect2(0, 600, 700, 120), Rect2(790, 600, 1210, 120), Rect2(1620, 560, 100, 40)])
+platforms = Array[Rect2]([Rect2(870, 520, 170, 12)])
+slopes = Array[PackedVector2Array]([PackedVector2Array(1500, 600, 1620, 560), PackedVector2Array(1720, 560, 1840, 600)])
+start = Vector2(100, 586)
+goal = Rect2(1870, 470, 120, 130)
+checkpoints = Array[Vector2]([])
+nutrients = Array[Vector2]([Vector2(230, 566), Vector2(560, 566), Vector2(745, 520), Vector2(955, 490), Vector2(1170, 566), Vector2(1350, 566), Vector2(1560, 545), Vector2(1670, 526)])
+tufts = Array[Rect2]([Rect2(300, 540, 90, 60), Rect2(1120, 540, 90, 60), Rect2(1360, 540, 100, 60)])
+ants = Array[Rect2]([Rect2(450, 600, 200, 40), Rect2(1250, 600, 200, 50)])
+background_key = "pinar_montseny"
+
+[resource]
+script = ExtResource("1_level")
+id = "egg_1"
+stage = "EGG"
+order = 1
+playable = true
+mode = "PLATFORM"
+layout = SubResource("Resource_layout")
+title_key = "LVL_EGG_1_TITLE"
+intro_key = "LVL_EGG_1_INTRO"
+goal_key = "LVL_EGG_1_GOAL"
+tip_key = "LVL_EGG_1_TIP"
+map_idx = 6
+seed = 1369
+hiding_spots = 4
+turn_time = 25.0
+ai_difficulty = "ROOKIE"
+player_unit = ExtResource("3_egg")
+player_names = Array[String](["Perleta", "Pinyoleta", "Mota"])
+enemy_unit = ExtResource("4_ant")
+enemy_count = 2
+player_arsenal = {}
+enemy_arsenal = {"MOSSEGADA": -1}
+win_rule = "SURVIVE_ROUNDS"
+survive_rounds = 4
+star_survivors = Array[int]([2, 3])
+unlocks = Array[String]([])

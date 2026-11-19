@@ -37,11 +37,7 @@ static var _cache: Dictionary = {}
 
 ## "#rrggbb" (cached) shortcut used by the procedural art code.
 static func h(hex: String) -> Color:
-	if _cache.has(hex):
-		return _cache[hex]
-	var c := Color(hex)
-	_cache[hex] = c
-	return c
+	return ArtKit.hex(hex)
 
 
 ## Colour of a team (0 / 1).

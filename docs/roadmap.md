@@ -16,7 +16,8 @@ Goal: the original JS game (`reference/`) running in Godot, same behaviour and l
 - Save system (progress, stars, upgrades).
 - Level data format (`data/levels/*.tres`).
 
-## Phase 3 — Story mode ○
+## Phase 3 — Story mode ◐
+Plan: `docs/story_mode.md`. All 7 stages, 30 levels and 7 bosses built (2026-11-19). Next: playtesting and balance, Gemini backgrounds, sounds.
 - Campaign map across Catalonia, by season.
 - Larval moults L1–L5 as level-ups, upgrade tree in the winter nest ("El Bolsó").
 - ~30 levels with rising difficulty; enemies based on real predators.

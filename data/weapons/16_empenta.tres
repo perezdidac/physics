@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_story"]
+
+[resource]
+script = ExtResource("1_story")
+id = "EMPENTA"
+key = "e"
+name_key = "WPN_EMPENTA"
+default_ammo = -1
+type = "MELEE"
+max_dmg = 8.0
+knockback = 520.0
+reach = 34.0
+story_only = true

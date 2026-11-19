@@ -4,6 +4,8 @@ class_name AimHud
 extends RefCounted
 
 const GRAVITY: float = 440.0
+## Length (world px) of the dashed aim direction line.
+const DIRECTION_LEN: float = 120.0
 
 
 ## Draws the HUD for fighter `f`. Texts go through tr() keys.
@@ -11,6 +13,8 @@ static func draw(ci: CanvasItem, f: Variant, ctx: ViewCtx) -> void:
 	var t: float = ctx.t_now
 	var mw: Vector2 = ctx.mouse_world
 	if ctx.weapon_id == "AIRSTRIKE":
+		if not ctx.aim_shown:
+			return
 		var rr: float = 16.0 + sin(t * 8.0) * 3.0
 		ci.draw_arc(mw, rr, 0.0, TAU, 28, ViewColors.AIM_CROSS, 2.2, true)
 		ci.draw_line(mw + Vector2(-24, 0), mw + Vector2(24, 0), ViewColors.AIM_CROSS, 2.2, true)
@@ -30,6 +34,8 @@ static func draw(ci: CanvasItem, f: Variant, ctx: ViewCtx) -> void:
 		ViewUtil.dashed_circle(ci, origin, 31.0 + (1.0 - sa) * 18.0, 6.0, 4.0, sc, 2.4)
 		if not ctx.has_acted and sa > 0.25:
 			ViewUtil.text(ci, ViewUtil.tr_text("AIM_SWITCH_HINT"), origin + Vector2(0, 34), 9, Color(1.0, 0.9608, 0.8627, sa * 0.85))
+	if not ctx.aim_shown:
+		return # touch MOVE phase: no aiming guides at all
 
 	var elev: int = int(floor(-ctx.aim_pitch * 180.0 / PI + 0.5))
 	var deg_text: String = "%s%d°" % ["+" if elev >= 0 else "", elev]
@@ -38,7 +44,10 @@ static func draw(ci: CanvasItem, f: Variant, ctx: ViewCtx) -> void:
 	ViewUtil.text(ci, deg_text, Vector2(bpos.x, bpos.y + 1.5), 9, ViewColors.WARM_YELLOW if ctx.is_charging else Color(1.0, 0.9569, 0.8392, 0.92))
 
 	if ctx.weapon_type == "CHARGE":
-		_draw_charge(ci, f, ctx, origin, dir)
+		if ctx.is_charging:
+			_draw_charge(ci, f, ctx, origin, dir)
+		else:
+			_draw_direction(ci, origin, dir)
 	elif ctx.weapon_id == "PONT_PEDRA":
 		var g: Vector2 = origin + dir * 52.0
 		ci.draw_set_transform_matrix(Transform2D(ctx.aim_angle, Vector2.ONE, 0.0, g))
@@ -51,9 +60,20 @@ static func draw(ci: CanvasItem, f: Variant, ctx: ViewCtx) -> void:
 	elif ctx.weapon_id == "GANXO":
 		_draw_ganxo(ci, f, ctx, origin, dir)
 	else:
-		var c: Vector2 = origin + dir * 44.0
-		ViewUtil.dashed(ci, PackedVector2Array([origin + dir * 18.0, c]), 3.0, 4.0, Color(0.9608, 0.8431, 0.5882, 0.45), 1.6)
-		ci.draw_arc(c, 6.5, 0.0, TAU, 16, ViewColors.AIM_LABEL, 2.0, true)
+		_draw_direction(ci, origin, dir)
+
+
+## Aim direction: a dashed line from the fighter with a small arrow head (no crosshair).
+static func _draw_direction(ci: CanvasItem, origin: Vector2, dir: Vector2) -> void:
+	var start: Vector2 = origin + dir * 16.0
+	var tip: Vector2 = origin + dir * DIRECTION_LEN
+	var shadow := Color(0.0431, 0.0549, 0.0863, 0.45)
+	ViewUtil.dashed(ci, PackedVector2Array([start + Vector2(1, 1), tip + Vector2(1, 1)]), 7.0, 5.0, shadow, 3.2)
+	ViewUtil.dashed(ci, PackedVector2Array([start, tip]), 7.0, 5.0, Color(1.0, 0.9216, 0.7059, 0.9), 2.2)
+	var side := Vector2(-dir.y, dir.x)
+	var head := PackedVector2Array([tip + dir * 8.0, tip - dir * 3.0 + side * 5.5, tip - dir * 3.0 - side * 5.5])
+	ci.draw_colored_polygon(head, Color(1.0, 0.9216, 0.7059, 0.95))
+	ci.draw_polyline(PackedVector2Array([head[0], head[1], head[2], head[0]]), shadow, 1.2, true)
 
 
 static func _draw_charge(ci: CanvasItem, f: Variant, ctx: ViewCtx, origin: Vector2, dir: Vector2) -> void:

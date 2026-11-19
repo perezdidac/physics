@@ -44,17 +44,17 @@ func _make_clouds() -> void:
 	var styles: Array[String] = ["CUMULUS", "LENTICULAR", "CIRRUS_STREAKS", "BILLOWING_ANVIL"]
 	cloud_style = styles[rng.randi() % styles.size()]
 	clouds.clear()
-	var total: int = 28 if cloud_style == "CIRRUS_STREAKS" else 24
+	var total: int = 12 if cloud_style == "CIRRUS_STREAKS" else 9
 	for idx in total:
-		var tier: int = 0 if idx < 8 else (1 if idx < 17 else 2)
+		var tier: int = 0 if idx % 3 == 0 else (1 if idx % 3 == 1 else 2)
 		var z: float = 0.09 if tier == 0 else (0.20 if tier == 1 else 0.36)
 		var sc: float
 		if tier == 0:
-			sc = 0.65 + rng.randf() * 0.35
+			sc = 0.40 + rng.randf() * 0.25
 		elif tier == 1:
-			sc = 0.95 + rng.randf() * 0.55
+			sc = 0.50 + rng.randf() * 0.30
 		else:
-			sc = 1.15 + rng.randf() * 0.55
+			sc = 0.55 + rng.randf() * 0.30
 		var lobe_count: int = 4 if cloud_style == "LENTICULAR" else 5 + rng.randi() % 4
 		var lobes: Array[Dictionary] = []
 		for l in lobe_count:
@@ -77,11 +77,11 @@ func _make_clouds() -> void:
 			lobes.append(lb)
 		var cy: float
 		if tier == 0:
-			cy = 45.0 + rng.randf() * 90.0
+			cy = 30.0 + rng.randf() * 50.0
 		elif tier == 1:
-			cy = 85.0 + rng.randf() * 135.0
+			cy = 55.0 + rng.randf() * 70.0
 		else:
-			cy = 165.0 + rng.randf() * 130.0
+			cy = 80.0 + rng.randf() * 70.0
 		clouds.append({
 			"x": float(idx) / float(total) * 3800.0 - 300.0 + (rng.randf() - 0.5) * 120.0, "y": cy, "z": z, "tier": tier,
 			"base_drift": (rng.randf() - 0.5) * 8.0, "bob_phase": rng.randf() * TAU, "lobes": lobes,

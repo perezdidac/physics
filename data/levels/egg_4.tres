@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/platform_layout.gd" id="2_layout"]
+[ext_resource type="Resource" path="res://data/units/egg.tres" id="3_egg"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="4_ant"]
+
+[sub_resource type="Resource" id="Resource_layout"]
+script = ExtResource("2_layout")
+size = Vector2(3200, 720)
+solids = Array[Rect2]([Rect2(0, 600, 700, 120), Rect2(790, 600, 820, 120), Rect2(1700, 600, 910, 120), Rect2(2690, 600, 510, 120)])
+platforms = Array[Rect2]([Rect2(400, 510, 110, 12),Rect2(715, 520, 60, 12), Rect2(540, 430, 100, 12), Rect2(900, 500, 100, 12), Rect2(1100, 420, 90, 12), Rect2(1300, 500, 100, 12), Rect2(1630, 520, 60, 12), Rect2(1800, 510, 100, 12), Rect2(1975, 455, 130, 12), Rect2(2170, 520, 90, 12), Rect2(2310, 455, 100, 12)])
+slopes = Array[PackedVector2Array]([])
+start = Vector2(100, 586)
+goal = Rect2(3050, 470, 130, 130)
+checkpoints = Array[Vector2]([Vector2(1560, 600), Vector2(2740, 600)])
+nutrients = Array[Vector2]([Vector2(455, 478), Vector2(590, 398), Vector2(745, 488), Vector2(950, 468), Vector2(1145, 388), Vector2(1350, 468), Vector2(1660, 488), Vector2(1850, 478), Vector2(2040, 423), Vector2(2360, 423)])
+tufts = Array[Rect2]([Rect2(200, 540, 90, 60), Rect2(660, 540, 90, 60), Rect2(1510, 540, 90, 60), Rect2(1720, 540, 90, 60), Rect2(2560, 540, 90, 60), Rect2(2900, 540, 90, 60)])
+ants = Array[Rect2]([Rect2(260, 600, 300, 45), Rect2(1180, 600, 220, 50), Rect2(1760, 600, 140, 45), Rect2(2230, 600, 300, 55), Rect2(2780, 600, 230, 50)])
+background_key = "pinar_montserrat_tempesta"
+storm = true
+wind_zones = Array[Rect2]([Rect2(800, 250, 740, 350), Rect2(2060, 250, 480, 350)])
+wind_force = Array[float]([650, -550])
+wind_period = Array[float]([4, 5])
+rain_rate = 0.8
+puddles = Array[Rect2]([Rect2(960, 592, 150, 8), Rect2(1230, 592, 120, 8), Rect2(2060, 592, 160, 8), Rect2(2830, 592, 140, 8)])
+
+[resource]
+script = ExtResource("1_level")
+id = "egg_4"
+stage = "EGG"
+order = 4
+playable = true
+mode = "PLATFORM"
+layout = SubResource("Resource_layout")
+title_key = "LVL_EGG_4_TITLE"
+intro_key = "LVL_EGG_4_INTRO"
+goal_key = "LVL_EGG_4_GOAL"
+tip_key = "LVL_EGG_4_TIP"
+map_idx = 2
+seed = 1304
+hiding_spots = 3
+turn_time = 25.0
+ai_difficulty = "ROOKIE"
+player_unit = ExtResource("3_egg")
+player_names = Array[String](["Perleta", "Pinyoleta", "Mota"])
+enemy_unit = ExtResource("4_ant")
+enemy_count = 5
+player_arsenal = {"EMPENTA": -1}
+enemy_arsenal = {"MOSSEGADA": -1}
+win_rule = "SURVIVE_ROUNDS"
+survive_rounds = 6
+star_survivors = Array[int]([2, 3])
+unlocks = Array[String]([])

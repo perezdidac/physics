@@ -1,7 +1,7 @@
 ## Draws the destructible terrain. The sim owns only the solidity mask (+ `stamps`, `surface_y`); TerrainBaker keeps the mask
 ## and the baked front / back colour layers on the GPU, and terrain.gdshader just composes them every frame.
 ## Terrain changes are queued by `on_terrain_changed` and applied once per frame (`flush`): only the touched mask bytes are
-## uploaded, craters leave a permanent scorch and girders get their stone colour in the baked layer.
+## uploaded, craters leave a permanent scorch and girders become structure-mask pixels with a TerrainOverlay sprite.
 class_name TerrainView
 extends Node2D
 
@@ -16,6 +16,7 @@ const _BAKE_FRAMES: int = 2
 
 var _mat: ShaderMaterial = null
 var _baker: TerrainBaker = null
+var _overlay: TerrainOverlay = null
 var _terrain: Object = null
 var _rects: Array[Rect2i] = []
 var _events: Array[Dictionary] = []
@@ -30,6 +31,8 @@ func _init() -> void:
 	_mat = ShaderMaterial.new()
 	_mat.shader = load("res://combat/view/terrain.gdshader") as Shader
 	material = _mat
+	_overlay = TerrainOverlay.new()
+	add_child(_overlay)
 
 
 func _process(_delta: float) -> void:
@@ -69,10 +72,14 @@ func setup(terrain: Object) -> void:
 	}
 	_baker = TerrainBaker.new()
 	add_child(_baker)
-	_baker.bake(mask, common, ViewUtil.g(terrain, "stamps", []), _has_real_surface(terrain))
+	var stamps: Array = ViewUtil.g(terrain, "stamps", [])
+	var real: bool = _has_real_surface(terrain)
+	_baker.bake(mask, common, stamps, real)
+	_overlay.setup(stamps if real else [], _baker)
 	_mat.set_shader_parameter("mask_tex", _baker.mask_vp.get_texture())
 	_mat.set_shader_parameter("front_tex", _baker.front_vp.get_texture())
 	_mat.set_shader_parameter("back_tex", _baker.back_vp.get_texture())
+	_mat.set_shader_parameter("struct_tex", _baker.struct_vp.get_texture())
 	_hidden_frames = _BAKE_FRAMES
 	visible = false
 	queue_redraw()
@@ -95,7 +102,7 @@ func on_terrain_changed(rect: Rect2i) -> void:
 	elif kind == "build":
 		var b: Dictionary = ViewUtil.g(_terrain, "last_build", {})
 		if b.has("added"):
-			_events.append({"kind": "build", "rect": b["rect"], "added": b["added"]})
+			_events.append({"kind": "build", "rect": b["rect"], "added": b["added"], "beam": b})
 
 
 ## Applies the queued terrain changes now: mask rectangles first, then scorch / girder colours in order.
@@ -119,7 +126,8 @@ func flush() -> void:
 			_baker.carve(ev["x"], ev["y"], ev["r"])
 			scorch_count += 1
 		else:
-			_baker.paint_girder(ev["rect"], ev["added"], mask)
+			_baker.paint_girder(ev["rect"], ev["added"])
+			_overlay.add_girder(ev.get("beam", {}))
 	_rects.clear()
 	_events.clear()
 	uploads += 1
