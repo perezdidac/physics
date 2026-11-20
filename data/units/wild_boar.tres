@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="1_unit"]
+
+[resource]
+script = ExtResource("1_unit")
+id = "WILD_BOAR"
+name_key = "UNIT_WILD_BOAR"
+max_hp = 999
+radius = 20.0
+speed_mult = 1.0
+can_jump = false
+can_hide = false
+ai = "CHARGER"
+art_scale = 2.0
+killable = false

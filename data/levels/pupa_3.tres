@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/platform_layout.gd" id="2_layout"]
+[ext_resource type="Resource" path="res://data/units/egg.tres" id="3_egg"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="4_ant"]
+
+[sub_resource type="Resource" id="Resource_layout"]
+script = ExtResource("2_layout")
+size = Vector2(1400, 1200)
+solids = Array[Rect2]([Rect2(0, 1168, 1400, 32), Rect2(0, 0, 32, 1200), Rect2(1368, 0, 32, 1200), Rect2(0, 0, 1400, 32), Rect2(300, 700, 500, 60), Rect2(600, 400, 600, 60)])
+platforms = Array[Rect2]([])
+slopes = Array[PackedVector2Array]([])
+start = Vector2(100, 1104)
+goal = Rect2(1200, 120, 140, 72)
+checkpoints = Array[Vector2]([])
+nutrients = Array[Vector2]([Vector2(150, 900), Vector2(500, 850), Vector2(900, 700), Vector2(900, 520), Vector2(450, 360), Vector2(450, 200), Vector2(900, 200)])
+tufts = Array[Rect2]([])
+ants = Array[Rect2]([])
+background_key = "sota_terra_pedraforca"
+mode = "DIG"
+soil = Array[Rect2]([Rect2(32, 32, 1336, 1136)])
+gaps = Array[Rect2]([Rect2(48, 1052, 320, 64), Rect2(128, 878, 44, 44), Rect2(478, 828, 44, 44), Rect2(878, 678, 44, 44), Rect2(878, 498, 44, 44), Rect2(428, 338, 44, 44), Rect2(428, 178, 44, 44), Rect2(878, 178, 44, 44), Rect2(1180, 64, 180, 128)])
+flood_rate = 16
+flood_delay = 3
+
+[resource]
+script = ExtResource("1_level")
+id = "pupa_3"
+stage = "PUPA"
+order = 32
+playable = true
+mode = "PLATFORM"
+layout = SubResource("Resource_layout")
+title_key = "LVL_PUPA_3_TITLE"
+intro_key = "LVL_PUPA_3_INTRO"
+goal_key = "LVL_PUPA_3_GOAL"
+tip_key = "LVL_PUPA_3_TIP"
+map_idx = 0
+seed = 3003
+hiding_spots = 0
+turn_time = 25.0
+ai_difficulty = "ROOKIE"
+player_unit = ExtResource("3_egg")
+player_names = Array[String](["Perleta"])
+enemy_unit = ExtResource("4_ant")
+enemy_count = 0
+player_arsenal = {}
+enemy_arsenal = {}
+win_rule = "SURVIVE_ROUNDS"
+survive_rounds = 1
+star_survivors = Array[int]([2, 3])
+unlocks = Array[String]([])

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_story"]
+
+[resource]
+script = ExtResource("1_story")
+id = "MOSSEGADA"
+key = "b"
+name_key = "WPN_MOSSEGADA"
+default_ammo = -1
+type = "MELEE"
+max_dmg = 10.0
+knockback = 150.0
+reach = 36.0
+story_only = true

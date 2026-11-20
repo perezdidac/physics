@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="2_unit"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="u_ant"]
+[ext_resource type="Resource" path="res://data/units/larva_l4.tres" id="u_larva_l4"]
+
+[resource]
+script = ExtResource("1_level")
+id = "cuca_4"
+stage = "LARVA"
+order = 15
+playable = true
+mode = "COMBAT"
+title_key = "LVL_CUCA_4_TITLE"
+intro_key = "LVL_CUCA_4_INTRO"
+goal_key = "LVL_CUCA_4_GOAL"
+tip_key = "LVL_CUCA_4_TIP"
+map_idx = 6
+background_key = "poblet_tardor"
+seed = 5514
+arena_width = 1400.0
+hiding_spots = 0
+turn_time = 30.0
+ai_difficulty = "ROOKIE"
+wind_scale = 1.8
+abilities = Array[String](["SILK_WEB"])
+player_unit = ExtResource("u_larva_l4")
+player_names = Array[String](["Pelussa", "Flocs", "Fileta", "Brins"])
+enemy_unit = ExtResource("u_ant")
+enemy_count = 1
+enemy_units = Array[ExtResource("2_unit")]([ExtResource("u_ant")])
+enemy_counts = Array[int]([1])
+enemy_still = true
+player_arsenal = {"BAZOOKA": 3, "GRENADE": 1}
+enemy_arsenal = {"MOSSEGADA": -1}
+use_unlocked = false
+win_rule = "ONE_SHOT"
+survive_rounds = 0
+star_survivors = Array[int]([3, 4])
+unlocks = Array[String](["GANXO"])

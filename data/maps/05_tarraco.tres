@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MapDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/map_def.gd" id="1_deh8b"]
+
+[resource]
+script = ExtResource("1_deh8b")
+id = "TARRACO"
+name_key = "MAP_TARRACO_NAME"
+subtitle_key = "MAP_TARRACO_SUBTITLE"
+badge_key = "MAP_TARRACO_BADGE"
+background_key = "tarraco"
+weather = "GULLS_BREEZE"
+sky = PackedColorArray(0.08627451, 0.16470589, 0.2901961, 1, 0.18039216, 0.33333334, 0.4862745, 1, 0.43137255, 0.47058824, 0.5372549, 1, 0.8509804, 0.5411765, 0.32941177, 1, 0.9882353, 0.8784314, 0.63529414, 1)
+water_top = Color(0.08627451, 0.5411765, 0.7372549, 0.84)
+water_deep = Color(0.03137255, 0.14117648, 0.26666668, 0.98)
+turf_col = Color(0.3764706, 0.47058824, 0.1882353, 1)
+soil_col = Color(0.5803922, 0.29803923, 0.1882353, 1)
+rock_col = Color(0.7137255, 0.57254905, 0.38431373, 1)
+tree_style = "CYPRESS"
+preferred_texture = "ASHLAR_BLOCKS"

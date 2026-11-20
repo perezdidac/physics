@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/upgrade_def.gd" id="1_up"]
+
+[resource]
+script = ExtResource("1_up")
+id = "WARM_SILK"
+name_key = "UPG_WARM_SILK_NAME"
+desc_key = "UPG_WARM_SILK_DESC"
+cost = 40
+effect = "WARM_SILK"
+amount = 0.0
+scope = "NEST"
+requires = ""

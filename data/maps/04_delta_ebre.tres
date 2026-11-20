@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MapDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/map_def.gd" id="1_a21t6"]
+
+[resource]
+script = ExtResource("1_a21t6")
+id = "DELTA_EBRE"
+name_key = "MAP_DELTA_EBRE_NAME"
+subtitle_key = "MAP_DELTA_EBRE_SUBTITLE"
+badge_key = "MAP_DELTA_EBRE_BADGE"
+background_key = "delta"
+weather = "POLLEN"
+slide_friction = 0.96
+sky = PackedColorArray(0.1764706, 0.105882354, 0.21960784, 1, 0.4509804, 0.21960784, 0.34117648, 1, 0.76862746, 0.3647059, 0.3372549, 1, 0.9490196, 0.62352943, 0.3764706, 1, 1, 0.92156863, 0.7019608, 1)
+water_top = Color(0.14901961, 0.6509804, 0.6039216, 0.82)
+water_deep = Color(0.039215688, 0.20392157, 0.21960784, 0.98)
+turf_col = Color(0.4392157, 0.5568628, 0.21176471, 1)
+soil_col = Color(0.65882355, 0.47843137, 0.2901961, 1)
+rock_col = Color(0.72156864, 0.59607846, 0.42352942, 1)
+tree_style = "PALM_DELTA"
+preferred_texture = "TERRACOTTA_DUNES"

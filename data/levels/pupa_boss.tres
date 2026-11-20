@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/platform_layout.gd" id="2_layout"]
+[ext_resource type="Resource" path="res://data/units/egg.tres" id="3_egg"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="4_ant"]
+
+[sub_resource type="Resource" id="Resource_layout"]
+script = ExtResource("2_layout")
+size = Vector2(1400, 900)
+solids = Array[Rect2]([Rect2(0, 868, 1400, 32), Rect2(0, 0, 32, 900), Rect2(1368, 0, 32, 900)])
+platforms = Array[Rect2]([])
+slopes = Array[PackedVector2Array]([])
+start = Vector2(100, 392)
+goal = Rect2(0, 0, 0, 0)
+checkpoints = Array[Vector2]([])
+nutrients = Array[Vector2]([Vector2(300, 300), Vector2(700, 360), Vector2(1100, 300), Vector2(1000, 440)])
+tufts = Array[Rect2]([])
+ants = Array[Rect2]([])
+background_key = "sota_terra_pedraforca"
+boss = "HOOPOE"
+boss_time = 75
+arena = Rect2(0, 0, 1400, 900)
+mode = "DIG"
+soil = Array[Rect2]([Rect2(32, 160, 1336, 708)])
+gaps = Array[Rect2]([Rect2(60, 340, 300, 64), Rect2(278, 278, 44, 44), Rect2(678, 338, 44, 44), Rect2(1078, 278, 44, 44), Rect2(978, 418, 44, 44)])
+surface_y = 160
+
+[resource]
+script = ExtResource("1_level")
+id = "pupa_boss"
+stage = "PUPA"
+order = 33
+playable = true
+mode = "PLATFORM"
+layout = SubResource("Resource_layout")
+title_key = "LVL_PUPA_BOSS_TITLE"
+intro_key = "LVL_PUPA_BOSS_INTRO"
+goal_key = "LVL_PUPA_BOSS_GOAL"
+tip_key = "LVL_PUPA_BOSS_TIP"
+map_idx = 0
+seed = 3004
+hiding_spots = 0
+turn_time = 25.0
+ai_difficulty = "ROOKIE"
+player_unit = ExtResource("3_egg")
+player_names = Array[String](["Perleta"])
+enemy_unit = ExtResource("4_ant")
+enemy_count = 0
+player_arsenal = {}
+enemy_arsenal = {}
+win_rule = "SURVIVE_ROUNDS"
+survive_rounds = 1
+star_survivors = Array[int]([2, 3])
+unlocks = Array[String]([])

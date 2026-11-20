@@ -1,0 +1,16 @@
+# Godot editor cache and imports (regenerated when the project opens)
+.godot/
+/android/
+
+# Builds
+build/
+*.apk
+*.aab
+
+# Created by tools/lint.sh while it runs
+override.cfg
+
+# Local editor/agent config
+.vscode/
+.claude/*
+!.claude/skills/

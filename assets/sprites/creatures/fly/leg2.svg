@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="256" height="256">
+<defs>
+<radialGradient id="abd" cx="0.35" cy="0.25" r="0.9"><stop offset="0" stop-color="#4a5058"/><stop offset="0.5" stop-color="#23262d"/><stop offset="1" stop-color="#0f1013"/></radialGradient><radialGradient id="tho" cx="0.35" cy="0.25" r="0.9"><stop offset="0" stop-color="#9aa1ab"/><stop offset="0.55" stop-color="#6d737c"/><stop offset="1" stop-color="#3a3f48"/></radialGradient><radialGradient id="hd" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#6a707a"/><stop offset="1" stop-color="#2a2d33"/></radialGradient><radialGradient id="eye" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="#ff7a70"/><stop offset="0.45" stop-color="#d8252b"/><stop offset="1" stop-color="#6a0f14"/></radialGradient><radialGradient id="wg" cx="0.3" cy="0.4" r="0.9"><stop offset="0" stop-color="#ffffff" stop-opacity="0.75"/><stop offset="1" stop-color="#cfe0ff" stop-opacity="0.4"/></radialGradient>
+</defs>
+<path d="M81.1 72.0 L85.9 82.7 L85.3 93.3" fill="none" stroke="#0c0d10" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

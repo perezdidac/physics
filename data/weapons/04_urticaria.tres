@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_1a2pr"]
+
+[resource]
+script = ExtResource("1_1a2pr")
+id = "URTICARIA"
+key = "5"
+name_key = "WPN_URTICARIA"
+default_ammo = 3
+type = "CHARGE"
+wind_factor = 0.35
+blast_r = 34.0
+max_dmg = 28.0
+knockback = 310.0

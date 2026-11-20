@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/platform_layout.gd" id="2_layout"]
+[ext_resource type="Resource" path="res://data/units/egg.tres" id="3_egg"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="4_ant"]
+
+[sub_resource type="Resource" id="Resource_layout"]
+script = ExtResource("2_layout")
+size = Vector2(1800, 900)
+solids = Array[Rect2]([Rect2(0, 868, 1800, 32), Rect2(0, 0, 32, 900), Rect2(1768, 0, 32, 900), Rect2(0, 0, 1800, 32), Rect2(300, 700, 200, 60), Rect2(1250, 320, 120, 40)])
+platforms = Array[Rect2]([])
+slopes = Array[PackedVector2Array]([])
+start = Vector2(100, 116)
+goal = Rect2(1560, 780, 160, 88)
+checkpoints = Array[Vector2]([])
+nutrients = Array[Vector2]([Vector2(300, 400), Vector2(700, 660), Vector2(700, 520), Vector2(1100, 200), Vector2(1200, 500), Vector2(1400, 800)])
+tufts = Array[Rect2]([])
+ants = Array[Rect2]([Rect2(1040, 760, 220, 30)])
+background_key = "sota_terra_pedraforca"
+mode = "DIG"
+soil = Array[Rect2]([Rect2(32, 32, 1736, 836)])
+roots = Array[Rect2]([Rect2(500, 32, 24, 560), Rect2(900, 300, 24, 568), Rect2(1300, 560, 24, 308)])
+gaps = Array[Rect2]([Rect2(48, 64, 300, 64), Rect2(278, 378, 44, 44), Rect2(678, 638, 44, 44), Rect2(1078, 178, 44, 44), Rect2(1178, 478, 44, 44), Rect2(1378, 778, 44, 44), Rect2(680, 400, 40, 56), Rect2(1480, 720, 260, 148), Rect2(1000, 700, 300, 60)])
+stones = Array[Vector2]([Vector2(700, 442)])
+
+[resource]
+script = ExtResource("1_level")
+id = "pupa_2"
+stage = "PUPA"
+order = 31
+playable = true
+mode = "PLATFORM"
+layout = SubResource("Resource_layout")
+title_key = "LVL_PUPA_2_TITLE"
+intro_key = "LVL_PUPA_2_INTRO"
+goal_key = "LVL_PUPA_2_GOAL"
+tip_key = "LVL_PUPA_2_TIP"
+map_idx = 0
+seed = 3002
+hiding_spots = 0
+turn_time = 25.0
+ai_difficulty = "ROOKIE"
+player_unit = ExtResource("3_egg")
+player_names = Array[String](["Perleta"])
+enemy_unit = ExtResource("4_ant")
+enemy_count = 0
+player_arsenal = {}
+enemy_arsenal = {}
+win_rule = "SURVIVE_ROUNDS"
+survive_rounds = 1
+star_survivors = Array[int]([2, 3])
+unlocks = Array[String]([])

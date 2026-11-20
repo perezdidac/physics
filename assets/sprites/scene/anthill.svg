@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="256" height="256">
+<defs>
+<radialGradient id="shadow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000" stop-opacity="0.45"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<radialGradient id="soil" cx="0.4" cy="0.3" r="0.9"><stop offset="0" stop-color="#d2a06a"/><stop offset="1" stop-color="#8a5a32"/></radialGradient>
+</defs>
+
+<ellipse cx="64" cy="70" rx="58" ry="22" fill="#000" opacity="0.18"/>
+<ellipse cx="64" cy="66" rx="54" ry="20" fill="url(#soil)" stroke="#4a2c18" stroke-width="3"/>
+<path d="M18 66 q10 -10 24 -12 M92 54 q14 4 20 12" stroke="#e0b07a" stroke-width="3" opacity="0.6" fill="none" stroke-linecap="round"/>
+<ellipse cx="64" cy="70" rx="38" ry="14.5" fill="#1d0f08" stroke="#2a160c" stroke-width="2"/>
+<ellipse cx="66" cy="74" rx="25" ry="8.5" fill="#0a0503"/>
+<g fill="#a06a3a" stroke="#4a2c18" stroke-width="1.5"><ellipse cx="22" cy="72" rx="6" ry="3.5"/><ellipse cx="104" cy="70" rx="7" ry="3.5"/><ellipse cx="34" cy="82" rx="5" ry="3"/><ellipse cx="94" cy="82" rx="5" ry="3"/></g>
+<g fill="#4a2c18"><circle cx="46" cy="54" r="2"/><circle cx="84" cy="52" r="2.4"/><circle cx="12" cy="64" r="1.8"/></g>
+
+</svg>

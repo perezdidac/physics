@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/upgrade_def.gd" id="1_up"]
+
+[resource]
+script = ExtResource("1_up")
+id = "TOUGH_SKIN_2"
+name_key = "UPG_TOUGH_SKIN_2_NAME"
+desc_key = "UPG_TOUGH_SKIN_2_DESC"
+cost = 60
+effect = "MAX_HP_PCT"
+amount = 15.0
+scope = "COMBAT"
+requires = "TOUGH_SKIN"

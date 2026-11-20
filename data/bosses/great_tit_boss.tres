@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="BossDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/boss_def.gd" id="1_boss"]
+[ext_resource type="Resource" path="res://data/units/blue_tit.tres" id="2_blue_tit"]
+
+[resource]
+script = ExtResource("1_boss")
+id = "GREAT_TIT_BOSS"
+name_key = "BOSS_GREAT_TIT_NAME"
+title_key = "BOSS_GREAT_TIT_TITLE"
+max_hp = 260
+radius = 22.0
+art = "great_tit"
+art_scale = 2.0
+flies = true
+hover_height = 190.0
+speed = 330.0
+spawn_frac = 0.75
+turn_time = 16.0
+phases = Array[float]([0.5])
+attacks = Array[Dictionary]([{
+"id": "PERCH",
+"kind": "MOVE",
+"to": "PERCH",
+"phase": -1,
+"weight": 2.5,
+"cooldown": 1,
+"label": "BOSS_INTENT_PERCH",
+"rest_state": "PERCHED",
+"rest_time": 0.0,
+"rest_hits": 2
+}, {
+"id": "PECK_DIVE",
+"kind": "MELEE_TARGET",
+"phase": 1,
+"weight": 3.0,
+"label": "BOSS_INTENT_PECK_DIVE",
+"damage": 18,
+"knockback": 160.0,
+"dmg_label": "DMG_PECK_DIVE",
+"targets": 1,
+"dodge": 90.0
+}, {
+"id": "WING_FLAP",
+"kind": "GUST",
+"phase": -1,
+"weight": 1.0,
+"cooldown": 1,
+"label": "BOSS_INTENT_WING_FLAP",
+"radius": 220.0,
+"damage": 4,
+"knockback": 200.0,
+"height": 90.0,
+"dmg_label": "DMG_WING_FLAP"
+}, {
+"id": "SUMMON",
+"kind": "SUMMON",
+"phase": 2,
+"priority": 1,
+"once": true,
+"label": "BOSS_INTENT_SUMMON_TITS",
+"unit": ExtResource("2_blue_tit"),
+"count": 2
+}, {
+"id": "PECK_DIVE",
+"kind": "MELEE_TARGET",
+"phase": 2,
+"weight": 3.0,
+"label": "BOSS_INTENT_PECK_DIVE",
+"damage": 18,
+"knockback": 160.0,
+"dmg_label": "DMG_PECK_DIVE",
+"targets": 2,
+"dodge": 90.0
+}])
+vulnerable_states = Array[String](["PERCHED"])
+armored_mult = 0.25
+water_damage = 20

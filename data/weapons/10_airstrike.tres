@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_fyfel"]
+
+[resource]
+script = ExtResource("1_fyfel")
+id = "AIRSTRIKE"
+key = "-"
+name_key = "WPN_AIRSTRIKE"
+default_ammo = 2
+type = "TARGET_MAP"
+wind_factor = 0.4
+blast_r = 42.0
+max_dmg = 40.0
+knockback = 420.0

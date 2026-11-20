@@ -1,0 +1,45 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="CUCS"
+config/description="Tactical war of the pine processionary caterpillar across Catalonia."
+config/version="0.1.0-port"
+run/main_scene="res://ui/menus/Boot.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[autoload]
+
+GameState="*res://core/game_state.gd"
+Options="*res://core/options.gd"
+Sound="*res://core/sound.gd"
+ScreenRouter="*res://core/screen_router.gd"
+StoryProgress="*res://core/story_progress.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=4
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://i18n/en.po", "res://i18n/ca.po")
+locale/fallback="en"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=1
+textures/vram_compression/import_etc2_astc=true

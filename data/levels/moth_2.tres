@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/platform_layout.gd" id="2_layout"]
+[ext_resource type="Resource" path="res://data/units/egg.tres" id="3_egg"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="4_ant"]
+
+[sub_resource type="Resource" id="Resource_layout"]
+script = ExtResource("2_layout")
+size = Vector2(3200, 720)
+solids = Array[Rect2]([Rect2(0, 640, 3200, 80), Rect2(700, 420, 44, 220), Rect2(1500, 360, 44, 280), Rect2(2400, 400, 44, 240)])
+platforms = Array[Rect2]([])
+slopes = Array[PackedVector2Array]([])
+start = Vector2(100, 628)
+goal = Rect2(3040, 120, 120, 160)
+checkpoints = Array[Vector2]([Vector2(1600, 640), Vector2(2500, 640)])
+nutrients = Array[Vector2]([Vector2(400, 300), Vector2(900, 200), Vector2(1250, 440), Vector2(1800, 200), Vector2(2150, 300), Vector2(2700, 250), Vector2(2900, 180)])
+tufts = Array[Rect2]([])
+ants = Array[Rect2]([])
+background_key = "montserrat_nit"
+mode = "FLY"
+traps = Array[Rect2]([Rect2(1000, 560, 60, 80), Rect2(1750, 540, 60, 100), Rect2(2550, 560, 60, 80), Rect2(2050, 120, 60, 40)])
+lights = Array[Vector3]([Vector3(700, 420, 110), Vector3(1100, 130, 100), Vector3(1650, 520, 120), Vector3(2150, 100, 100), Vector3(2800, 420, 120)])
+
+[resource]
+script = ExtResource("1_level")
+id = "moth_2"
+stage = "MOTH"
+order = 35
+playable = true
+mode = "PLATFORM"
+layout = SubResource("Resource_layout")
+title_key = "LVL_MOTH_2_TITLE"
+intro_key = "LVL_MOTH_2_INTRO"
+goal_key = "LVL_MOTH_2_GOAL"
+tip_key = "LVL_MOTH_2_TIP"
+map_idx = 0
+seed = 3102
+hiding_spots = 0
+turn_time = 25.0
+ai_difficulty = "ROOKIE"
+player_unit = ExtResource("3_egg")
+player_names = Array[String](["Perleta"])
+enemy_unit = ExtResource("4_ant")
+enemy_count = 0
+player_arsenal = {}
+enemy_arsenal = {}
+win_rule = "SURVIVE_ROUNDS"
+survive_rounds = 1
+star_survivors = Array[int]([2, 3])
+unlocks = Array[String]([])

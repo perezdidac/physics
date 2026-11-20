@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="BossDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/boss_def.gd" id="1_boss"]
+
+[resource]
+script = ExtResource("1_boss")
+id = "CUCKOO_BOSS"
+name_key = "BOSS_CUCKOO_NAME"
+title_key = "BOSS_CUCKOO_TITLE"
+max_hp = 240
+radius = 20.0
+art = "cuckoo"
+art_scale = 1.8
+flies = true
+hover_height = 180.0
+speed = 320.0
+phase_speed_mult = Array[float]([1.25])
+spawn_frac = 0.7
+turn_time = 16.0
+phases = Array[float]([0.5])
+attacks = Array[Dictionary]([{
+"id": "SWOOP",
+"kind": "MELEE_TARGET",
+"phase": 1,
+"weight": 3.0,
+"label": "BOSS_INTENT_SWOOP",
+"damage": 30,
+"knockback": 150.0,
+"dmg_label": "DMG_SWOOP",
+"targets": 1,
+"dodge": 90.0,
+"followers_only": true
+}, {
+"id": "SWOOP",
+"kind": "MELEE_TARGET",
+"phase": 2,
+"weight": 3.0,
+"label": "BOSS_INTENT_SWOOP",
+"damage": 30,
+"knockback": 150.0,
+"dmg_label": "DMG_SWOOP",
+"targets": 2,
+"dodge": 90.0,
+"followers_only": true
+}, {
+"id": "GUST",
+"kind": "GUST",
+"phase": -1,
+"weight": 1.0,
+"cooldown": 1,
+"label": "BOSS_INTENT_CUCKOO_GUST",
+"radius": 200.0,
+"damage": 3,
+"knockback": 190.0,
+"height": 90.0,
+"dmg_label": "DMG_WING_FLAP"
+}, {
+"id": "SATED",
+"kind": "MOVE",
+"to": "PERCH",
+"phase": -1,
+"priority": 1,
+"after": 2,
+"label": "BOSS_INTENT_CUCKOO_PERCH",
+"rest_state": "SATED",
+"rest_text": "FT_BOSS_SATED",
+"rest_time": 0.0,
+"rest_hits": 0
+}])
+vulnerable_states = Array[String](["SATED"])
+armored_mult = 0.25
+water_damage = 20

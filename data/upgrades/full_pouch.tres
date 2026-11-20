@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/upgrade_def.gd" id="1_up"]
+
+[resource]
+script = ExtResource("1_up")
+id = "FULL_POUCH"
+name_key = "UPG_FULL_POUCH_NAME"
+desc_key = "UPG_FULL_POUCH_DESC"
+cost = 40
+effect = "START_AMMO"
+amount = 1.0
+scope = "COMBAT"
+requires = ""

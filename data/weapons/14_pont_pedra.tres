@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_h16ww"]
+
+[resource]
+script = ExtResource("1_h16ww")
+id = "PONT_PEDRA"
+key = "o"
+name_key = "WPN_PONT_PEDRA"
+default_ammo = 3
+type = "TOOL_AIM"

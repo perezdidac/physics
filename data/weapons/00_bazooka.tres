@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_lv4jn"]
+
+[resource]
+script = ExtResource("1_lv4jn")
+id = "BAZOOKA"
+key = "1"
+name_key = "WPN_BAZOOKA"
+type = "CHARGE"
+wind_factor = 1.0
+blast_r = 50.0
+max_dmg = 50.0
+knockback = 470.0

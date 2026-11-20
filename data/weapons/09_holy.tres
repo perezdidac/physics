@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_ehxy8"]
+
+[resource]
+script = ExtResource("1_ehxy8")
+id = "HOLY"
+key = "0"
+name_key = "WPN_HOLY"
+default_ammo = 1
+type = "CHARGE"
+fuse = 3.5
+blast_r = 94.0
+max_dmg = 90.0
+knockback = 720.0

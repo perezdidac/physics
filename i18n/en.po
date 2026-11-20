@@ -1,0 +1,2595 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CUCS\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "FT_TURN_SWITCH"
+msgstr "TURN OF %s! [TAB]"
+
+msgid "FT_GUST_RIGHT"
+msgstr "TRAMUNTANA GUST! »"
+
+msgid "FT_GUST_LEFT"
+msgstr "« GARBÍ WIND!"
+
+msgid "FT_TIDE"
+msgstr "SUDDEN DEATH — THE TIDE RISES!"
+
+msgid "FT_NEST_BURST"
+msgstr "SILK NEST BURST! +PINE NUTS AND LARVAE!"
+
+msgid "FT_WEB_SPUN"
+msgstr "ELASTIC SILK WOVEN!"
+
+msgid "FT_METAMORPHOSIS"
+msgstr "%s: WINGED METAMORPHOSIS! (HOLD W TO GLIDE)"
+
+msgid "FT_ROVELLO_ROASTED"
+msgstr "GRILLED MUSHROOM!"
+
+msgid "FT_WINE_SPLASH"
+msgstr "PRIORAT WINE SOAKING!"
+
+msgid "FT_ESCUDELLA_EXPLODE"
+msgstr "EXPLOSIVE ESCUDELLA! RAIN OF PASTA SHELLS!"
+
+msgid "FT_DAMAGE"
+msgstr "-%s"
+
+msgid "FT_DAMAGE_LABEL"
+msgstr "%s -%s"
+
+msgid "FT_FALLEN"
+msgstr "%s HAS FALLEN!"
+
+msgid "FT_CASTELL"
+msgstr "CASTELL DE CUCS! +30% TOP-CLIMBER STRENGTH!"
+
+msgid "FT_PROCESSION_FURY"
+msgstr "PROCESSION FURY! +%s%% DAMAGE"
+
+msgid "FT_CARQUINYOLIS"
+msgstr "TOOTH-BREAKING CARQUINYOLIS!"
+
+msgid "FT_BAT_DEFLECT"
+msgstr "MASTER'S REBOUND!"
+
+msgid "FT_FUET_SLICE"
+msgstr "FUET SLICE!"
+
+msgid "FT_TIO"
+msgstr "CAGA TIÓ, CAGA TORRÓ!"
+
+msgid "FT_JETPACK"
+msgstr "PINE WINGS (W/A/D)!"
+
+msgid "FT_SPOON"
+msgstr "BOXWOOD SPOONFUL! MAKING WAY!"
+
+msgid "FT_DRILL"
+msgstr "MINER'S DRILL! Brrrrr!"
+
+msgid "FT_GIRDER"
+msgstr "DRY-STONE WALL BUILT!"
+
+msgid "FT_GRAPPLE"
+msgstr "SHEPHERD'S CROOK! UP WE GO!"
+
+msgid "FT_GRAPPLE_SHORT"
+msgstr "CROOK TOO SHORT!"
+
+msgid "FT_MEDKIT"
+msgstr "+35 HP PINE RESIN!"
+
+msgid "FT_CRATE_WEAPON"
+msgstr "+1 %s!"
+
+msgid "FT_MINE_ARMED"
+msgstr "CLICK! MINE ARMED!"
+
+msgid "FT_HOLY_CHOIR"
+msgstr "♪ VIROLAI! HALLELUJAH! ♪"
+
+msgid "FT_DYNAMITE_BOOM"
+msgstr "CAGA TIÓ!"
+
+msgid "FT_PARACHUTE_CUT"
+msgstr "PARACHUTE BROKEN!"
+
+msgid "FT_WEB_RICOCHET"
+msgstr "SILK RICOCHET!"
+
+msgid "FT_CAGANER"
+msgstr "CAGANER'S BLESSING! +30 HP AND +1 PORRÓ!"
+
+msgid "FT_ESCUDELLA_BUFF"
+msgstr "+25 HP MEATBALL POWER! (+25% DAMAGE)"
+
+msgid "FT_PINE_NUT"
+msgstr "+20 HP GOLDEN PINE NUT!"
+
+msgid "FT_WEB_BOING"
+msgstr "SILK BOING!"
+
+msgid "FT_ROVELLO_BOING"
+msgstr "MUSHROOM BOING! +8 HP"
+
+msgid "FT_CARAMBOLA"
+msgstr "CAROM!"
+
+msgid "FT_DROWN"
+msgstr "%s: Glub glub... SPLASH!"
+
+msgid "DMG_URTICARIA"
+msgstr "URTICARIA!"
+
+msgid "DMG_SILK_SHIELD"
+msgstr "SILK SHIELD"
+
+msgid "DMG_ITCH"
+msgstr "STINGING ITCH!"
+
+msgid "DMG_CRATE"
+msgstr "CRATE ON THE HEAD!"
+
+msgid "DMG_CARQUINYOLI_BITE"
+msgstr "CRUNCH! TOOTH-BREAKER!"
+
+msgid "DMG_FUET"
+msgstr "VIC FUET WHIP!"
+
+msgid "DMG_BAT"
+msgstr "GOOD SICKLE BLOW!"
+
+msgid "DMG_HOOK"
+msgstr "SHEPHERD'S YANK!"
+
+msgid "DMG_SPOON"
+msgstr "SPOONFUL!"
+
+msgid "DMG_DRILL"
+msgstr "DRILL!"
+
+msgid "DMG_LARVAE"
+msgstr "LARVAE!"
+
+msgid "DMG_SLAM"
+msgstr "THUD!"
+
+msgid "DMG_CARAMBOLA"
+msgstr "CAROM!"
+
+msgid "BUBBLE_CAGANER"
+msgstr "The Lucky Caganer!"
+
+msgid "BUBBLE_ESCUDELLA"
+msgstr "What a tasty Escudella!"
+
+msgid "BUBBLE_CASTELL"
+msgstr "Castell de Cucs! Aleta!"
+
+msgid "TAUNT_TURN_1"
+msgstr "To the pine!"
+
+msgid "TAUNT_TURN_2"
+msgstr "In procession!"
+
+msgid "TAUNT_TURN_3"
+msgstr "Ready the blunderbuss!"
+
+msgid "TAUNT_TURN_4"
+msgstr "Taste the Vic fuet!"
+
+msgid "TAUNT_TURN_5"
+msgstr "Tooth-breaking carquinyoli!"
+
+msgid "TAUNT_TURN_6"
+msgstr "A good sickle blow!"
+
+msgid "TAUNT_HIT_1"
+msgstr "Ouch, my hairs!"
+
+msgid "TAUNT_HIT_2"
+msgstr "How itchy!"
+
+msgid "TAUNT_HIT_3"
+msgstr "Blast it!"
+
+msgid "TAUNT_HIT_4"
+msgstr "My cocoon!"
+
+msgid "TAUNT_URTICARIA_1"
+msgstr "Stinging dust!"
+
+msgid "TAUNT_URTICARIA_2"
+msgstr "Scratch, scratch!"
+
+msgid "TAUNT_URTICARIA_3"
+msgstr "Total allergy!"
+
+msgid "TAUNT_PROCESSION_1"
+msgstr "United column!"
+
+msgid "TAUNT_PROCESSION_2"
+msgstr "Processionary fury!"
+
+msgid "TAUNT_PROCESSION_3"
+msgstr "Silk and iron!"
+
+msgid "TAUNT_METAMORPH_1"
+msgstr "METAMORPHOSIS!"
+
+msgid "TAUNT_METAMORPH_2"
+msgstr "Wings of Thaumetopoea!"
+
+msgid "TAUNT_METAMORPH_3"
+msgstr "Now I can glide!"
+
+msgid "WPN_BAZOOKA"
+msgstr "Blunderbuss"
+
+msgid "WPN_CARQUINYOLI"
+msgstr "Carquinyolis"
+
+msgid "WPN_GRENADE"
+msgstr "Pine cone"
+
+msgid "WPN_CLUSTER"
+msgstr "Calçotada"
+
+msgid "WPN_URTICARIA"
+msgstr "Urticating"
+
+msgid "WPN_SHOTGUN"
+msgstr "Flintlock"
+
+msgid "WPN_FUET"
+msgstr "The Fuet"
+
+msgid "WPN_BAT"
+msgstr "The Sickle"
+
+msgid "WPN_DYNAMITE"
+msgstr "The Tió"
+
+msgid "WPN_HOLY"
+msgstr "Holy Porró"
+
+msgid "WPN_AIRSTRIKE"
+msgstr "Correfoc"
+
+msgid "WPN_JETPACK"
+msgstr "Pine Wings"
+
+msgid "WPN_CULLERA"
+msgstr "Boxwood Spoon"
+
+msgid "WPN_BARRINA"
+msgstr "Quarry Drill"
+
+msgid "WPN_PONT_PEDRA"
+msgstr "Dry Stone"
+
+msgid "WPN_GANXO"
+msgstr "Shepherd's Crook"
+
+msgid "MAP_MONTSERRAT_NAME"
+msgstr "Montserrat Massif"
+
+msgid "MAP_MONTSERRAT_SUBTITLE"
+msgstr "Santa Maria Monastery, Needles and Cable Car (Bages)"
+
+msgid "MAP_MONTSERRAT_BADGE"
+msgstr "MIST AND PINES"
+
+msgid "MAP_CADAQUES_NAME"
+msgstr "Cadaqués and Cap de Creus"
+
+msgid "MAP_CADAQUES_SUBTITLE"
+msgstr "Santa Maria Church, Llaguts and Terraces (Alt Empordà)"
+
+msgid "MAP_CADAQUES_BADGE"
+msgstr "LIVELY TRAMUNTANA"
+
+msgid "MAP_TAULL_NAME"
+msgstr "Taüll and the Vall de Boí"
+
+msgid "MAP_TAULL_SUBTITLE"
+msgstr "Sant Climent de Taüll and Aigüestortes (Alta Ribagorça)"
+
+msgid "MAP_TAULL_BADGE"
+msgstr "PYRENEAN SNOW"
+
+msgid "MAP_CASTELLFOLLIT_NAME"
+msgstr "Castellfollit de la Roca"
+
+msgid "MAP_CASTELLFOLLIT_SUBTITLE"
+msgstr "Basalt Cliff and Fageda d'en Jordà beech forest (La Garrotxa)"
+
+msgid "MAP_CASTELLFOLLIT_BADGE"
+msgstr "BEECH LEAVES"
+
+msgid "MAP_DELTA_EBRE_NAME"
+msgstr "Ebro Delta and Buda"
+
+msgid "MAP_DELTA_EBRE_SUBTITLE"
+msgstr "Rice Fields, Barracas, Fangar Lighthouse and Flamingos (Montsià)"
+
+msgid "MAP_DELTA_EBRE_BADGE"
+msgstr "FLAMINGOS AND DUNES"
+
+msgid "MAP_TARRACO_NAME"
+msgstr "Imperial Tarraco"
+
+msgid "MAP_TARRACO_SUBTITLE"
+msgstr "Roman Amphitheatre, Devil's Bridge and Mare Nostrum (Tarragonès)"
+
+msgid "MAP_TARRACO_BADGE"
+msgstr "ROMAN STONE"
+
+msgid "MAP_PEDRAFORCA_NAME"
+msgstr "Pedraforca Massif"
+
+msgid "MAP_PEDRAFORCA_SUBTITLE"
+msgstr "The Enforcadura, Scree and Serra del Cadí (Berguedà)"
+
+msgid "MAP_PEDRAFORCA_BADGE"
+msgstr "MAGIC PEAK"
+
+msgid "MAP_MONTBLANC_NAME"
+msgstr "Walls of Montblanc"
+
+msgid "MAP_MONTBLANC_SUBTITLE"
+msgstr "Medieval Towers, Legend of Saint George and Prades (Conca)"
+
+msgid "MAP_MONTBLANC_BADGE"
+msgstr "DRAGON AND ROSES"
+
+msgid "ARCH_FEIXES_TERRACED"
+msgstr "Dry-Stone Terraces"
+
+msgid "ARCH_AGULLES_SPIRES"
+msgstr "Spires and Cliffs"
+
+msgid "ARCH_MULTI_DECK_GROTTO"
+msgstr "Two-Level Cave"
+
+msgid "ARCH_FLOATING_BALCONIES"
+msgstr "Hanging Balconies"
+
+msgid "ARCH_TWIN_MASSIFS"
+msgstr "Twin Massifs"
+
+msgid "ARCH_STEPPED_CANYONS"
+msgstr "Stepped Gorge"
+
+msgid "ARCH_CITADEL_CALDERA"
+msgstr "High Citadel"
+
+msgid "ARCH_ARCHIPELAGO"
+msgstr "Stepped Islands"
+
+msgid "SPLASH_KICKER"
+msgstr "Thaumetopoea pityocampa · Tactical War in the Pine Forests of Catalonia"
+
+msgid "SPLASH_TITLE"
+msgstr "CUCS"
+
+msgid "SPLASH_SUBTITLE"
+msgstr "THE IRON PROCESSION"
+
+msgid "MENU_QUICK_TITLE"
+msgstr "Quick Match vs the CPU"
+
+msgid "MENU_QUICK_SUB"
+msgstr "Jump straight into battle against the AI"
+
+msgid "MENU_2P_TITLE"
+msgstr "2 Players, Local"
+
+msgid "MENU_2P_SUB"
+msgstr "Take turns on the same phone or computer"
+
+msgid "MENU_CUSTOM_TITLE"
+msgstr "Custom Match"
+
+msgid "MENU_CUSTOM_SUB"
+msgstr "Places of Catalonia, difficulty, hats, names and friends' faces"
+
+msgid "MENU_HINT"
+msgstr "[b]Tap[/b] or [b]↑/↓ + ENTER[/b] to select  ·  100% playable with keyboard or a phone in landscape"
+
+msgid "ROTATE_KICKER"
+msgstr "LANDSCAPE FORMAT RECOMMENDED"
+
+msgid "ROTATE_TITLE"
+msgstr "TURN YOUR PHONE SIDEWAYS"
+
+msgid "ROTATE_BODY"
+msgstr "To see the whole battlefield and use the touch controls of [b]CUCS[/b] comfortably, turn your phone to landscape."
+
+msgid "ROTATE_BTN_FULLSCREEN"
+msgstr "Landscape Fullscreen"
+
+msgid "ROTATE_BTN_CONTINUE"
+msgstr "Continue anyway"
+
+msgid "LOBBY_TITLE"
+msgstr "CUCS — Customize the Match and the Squads"
+
+msgid "LOBBY_SUBTITLE"
+msgstr "Choose the combat mode, the place in Catalonia, the traditional hat, the names and the photos."
+
+msgid "LOBBY_KB_HINT"
+msgstr "Keyboard: ↑↓←→ / Tab to move · Enter/Space to change · Ctrl+Enter to deploy"
+
+msgid "LOBBY_BTN_BACK"
+msgstr "← Main Menu [Esc]"
+
+msgid "LOBBY_SEC_MODE"
+msgstr "1. Combat Mode"
+
+msgid "LOBBY_SEC_DIFF"
+msgstr "2. CPU Tactical Intelligence"
+
+msgid "LOBBY_SEC_COUNT"
+msgstr "3. Caterpillars per Squad (1 to 6)"
+
+msgid "LOBBY_SEC_MAP"
+msgstr "4. Choose one of the 8 Places of Catalonia"
+
+msgid "LOBBY_SEC_SQUADS"
+msgstr "5. Customize the Caterpillar Squads and Friends' Faces"
+
+msgid "LOBBY_MODE_1P_TITLE"
+msgstr "1P vs CPU"
+
+msgid "LOBBY_MODE_1P_SUB"
+msgstr "Solo Campaign vs AI"
+
+msgid "LOBBY_MODE_2P_TITLE"
+msgstr "2P Local"
+
+msgid "LOBBY_MODE_2P_SUB"
+msgstr "Two Players, Same PC"
+
+msgid "LOBBY_MODE_CPU_TITLE"
+msgstr "CPU vs CPU"
+
+msgid "LOBBY_MODE_CPU_SUB"
+msgstr "AI Exhibition Battle"
+
+msgid "LOBBY_DIFF_ROOKIE_TITLE"
+msgstr "Rookie"
+
+msgid "LOBBY_DIFF_ROOKIE_SUB"
+msgstr "Forgiving Aim"
+
+msgid "LOBBY_DIFF_VETERAN_TITLE"
+msgstr "Veteran"
+
+msgid "LOBBY_DIFF_VETERAN_SUB"
+msgstr "Balanced Tactics"
+
+msgid "LOBBY_DIFF_NIGHTMARE_TITLE"
+msgstr "Nightmare"
+
+msgid "LOBBY_DIFF_NIGHTMARE_SUB"
+msgstr "Deadly Wind Calculation"
+
+msgid "LOBBY_COUNT_1_TITLE"
+msgstr "1 Caterpillar"
+
+msgid "LOBBY_COUNT_1_SUB"
+msgstr "1 vs 1 Duel"
+
+msgid "LOBBY_COUNT_2_TITLE"
+msgstr "2 Caterpillars"
+
+msgid "LOBBY_COUNT_2_SUB"
+msgstr "Tactical Pair"
+
+msgid "LOBBY_COUNT_3_TITLE"
+msgstr "3 Caterpillars"
+
+msgid "LOBBY_COUNT_3_SUB"
+msgstr "Light Squad"
+
+msgid "LOBBY_COUNT_4_TITLE"
+msgstr "4 Caterpillars"
+
+msgid "LOBBY_COUNT_4_SUB"
+msgstr "Classic (4 vs 4)"
+
+msgid "LOBBY_COUNT_5_TITLE"
+msgstr "5 Caterpillars"
+
+msgid "LOBBY_COUNT_5_SUB"
+msgstr "Large Column"
+
+msgid "LOBBY_COUNT_6_TITLE"
+msgstr "6 Caterpillars"
+
+msgid "LOBBY_COUNT_6_SUB"
+msgstr "Total War (6 vs 6)"
+
+msgid "LOBBY_SQUAD_1"
+msgstr "I. Pine Brigade (Gold)"
+
+msgid "LOBBY_SQUAD_2"
+msgstr "II. Tramuntana Column (Crimson)"
+
+msgid "HAT_VARIED"
+msgstr "Hat: Varied (Every Caterpillar Different!)"
+
+msgid "HAT_CATALAN"
+msgstr "Hat: Catalan Barretina"
+
+msgid "HAT_CASTELLER"
+msgstr "Hat: Casteller Helmet (Senyera)"
+
+msgid "HAT_BANDOLER"
+msgstr "Hat: Bandit Hat (Serrallonga)"
+
+msgid "HAT_PAGES"
+msgstr "Hat: Farmer's Straw Hat"
+
+msgid "HAT_BRISTLES"
+msgstr "Hat: Urticating Hair Plume"
+
+msgid "LOBBY_FACE_ADD"
+msgstr "+ Face"
+
+msgid "LOBBY_FACE_READY"
+msgstr "✓ Face Ready"
+
+msgid "LOBBY_FACE_TOOLTIP"
+msgstr "Upload a friend's face photo for this caterpillar"
+
+msgid "LOBBY_BTN_RANDOM"
+msgstr "Random Catalan Names"
+
+msgid "LOBBY_BTN_BACK_TO_GAME"
+msgstr "Back to the Current Match"
+
+msgid "LOBBY_BTN_DEPLOY"
+msgstr "DEPLOY TO THE BATTLEFIELD"
+
+msgid "MAP_MONTSERRAT_SUB"
+msgstr "Santa Maria Monastery, Needles and Cable Car (Bages)"
+
+msgid "MAP_CADAQUES_SUB"
+msgstr "Santa Maria Church, Fishing Boats and Terraces (Alt Empordà)"
+
+msgid "MAP_TAULL_SUB"
+msgstr "Sant Climent de Taüll and Aigüestortes (Alta Ribagorça)"
+
+msgid "MAP_CASTELLFOLLIT_SUB"
+msgstr "Basalt Cliff and Fageda d'en Jordà Beech Forest (La Garrotxa)"
+
+msgid "MAP_DELTA_EBRE_SUB"
+msgstr "Rice Fields, Barracas, Fangar Lighthouse and Flamingos (Montsià)"
+
+msgid "MAP_TARRACO_SUB"
+msgstr "Roman Amphitheatre, Devil's Bridge and Mare Nostrum (Tarragonès)"
+
+msgid "MAP_PEDRAFORCA_SUB"
+msgstr "The Enforcadura, Scree and Serra del Cadí (Berguedà)"
+
+msgid "MAP_MONTBLANC_SUB"
+msgstr "Medieval Towers, Legend of Saint George and Prades (Conca de Barberà)"
+
+msgid "HUD_SQUAD_1"
+msgstr "I. Pine Brigade"
+
+msgid "HUD_SQUAD_2"
+msgstr "II. Tramuntana"
+
+msgid "HUD_HP_TOTAL"
+msgstr "%d HP"
+
+msgid "HUD_TURN_OF"
+msgstr "%s's turn"
+
+msgid "HUD_ROUND_SUB"
+msgstr "Round %d · %s"
+
+msgid "HUD_WIND"
+msgstr "WIND"
+
+msgid "HUD_MUSIC_ON"
+msgstr "Music: On"
+
+msgid "HUD_MUSIC_OFF"
+msgstr "Music: Off"
+
+msgid "HUD_MUSIC_TOOLTIP"
+msgstr "Turns the Catalan MIDI music on or off"
+
+msgid "HUD_EXIT"
+msgstr "Exit"
+
+msgid "HUD_EXIT_TOOLTIP"
+msgstr "Leaves the current match and returns to the main menu"
+
+msgid "HUD_PIP_OWN"
+msgstr "Tap before moving to play with this caterpillar"
+
+msgid "HUD_PIP_OTHER"
+msgstr "Tap to look where this caterpillar is"
+
+msgid "HUD_END_WIN_0"
+msgstr "Victory for the Pine Brigade!"
+
+msgid "HUD_END_WIN_1"
+msgstr "Victory for the Tramuntana!"
+
+msgid "HUD_END_DRAW"
+msgstr "Mutual Destruction — Draw!"
+
+msgid "HUD_FUSE"
+msgstr "FUSE [Q/E]:"
+
+msgid "HUD_ARSENAL_OPEN"
+msgstr "▲ Arsenal [B]"
+
+msgid "HUD_ARSENAL_CLOSE"
+msgstr "▼ Close [B]"
+
+msgid "HUD_WEAPON_PREV_TOOLTIP"
+msgstr "Previous weapon [Z or [ ]"
+
+msgid "HUD_WEAPON_NEXT_TOOLTIP"
+msgstr "Next weapon [X or ] ]"
+
+msgid "HUD_WEAPON_TOGGLE_TOOLTIP"
+msgstr "Tap or press [B] to open the 16 Catalan weapons (Z/X to switch quickly)"
+
+msgid "HUD_SWITCH_WORM"
+msgstr "Caterpillar ⇄"
+
+msgid "HUD_SWITCH_WORM_TOOLTIP"
+msgstr "Change which caterpillar you control before moving [Tab]"
+
+msgid "HUD_MOVE_LEFT"
+msgstr "Move left"
+
+msgid "HUD_MOVE_RIGHT"
+msgstr "Move right"
+
+msgid "HUD_AIM_UP"
+msgstr "Aim up"
+
+msgid "HUD_AIM_DOWN"
+msgstr "Aim down"
+
+msgid "HUD_JUMP"
+msgstr "Jump"
+
+msgid "HUD_JUMP_TOOLTIP"
+msgstr "Jump forward [Enter]"
+
+msgid "HUD_FLIP"
+msgstr "Flip"
+
+msgid "HUD_FLIP_TOOLTIP"
+msgstr "Backflip [Backspace]"
+
+msgid "HUD_ZOOM_OUT_TOOLTIP"
+msgstr "Zoom the camera out [PageDown]"
+
+msgid "HUD_ZOOM_IN_TOOLTIP"
+msgstr "Zoom the camera in [PageUp]"
+
+msgid "HUD_CENTER"
+msgstr "Center"
+
+msgid "HUD_CENTER_TOOLTIP"
+msgstr "Center the camera [V]"
+
+msgid "FIRE_HOLD"
+msgstr "HOLD: FIRE!"
+
+msgid "FIRE_AIRSTRIKE"
+msgstr "CORREFOC!"
+
+msgid "FIRE_CULLERA"
+msgstr "SPOON SMACK!"
+
+msgid "FIRE_BARRINA"
+msgstr "DRILL!"
+
+msgid "FIRE_PONT_PEDRA"
+msgstr "DRY STONE!"
+
+msgid "FIRE_GANXO"
+msgstr "HOOK!"
+
+msgid "FIRE_MELEE"
+msgstr "ATTACK!"
+
+msgid "FIRE_DROP"
+msgstr "DROP TIÓ!"
+
+msgid "FIRE_JET"
+msgstr "WINGS!"
+
+msgid "FIRE_DEFAULT"
+msgstr "FIRE!"
+
+msgid "WEAPON_BAZOOKA"
+msgstr "Blunderbuss"
+
+msgid "WEAPON_CARQUINYOLI"
+msgstr "Carquinyolis"
+
+msgid "WEAPON_GRENADE"
+msgstr "Pine Cone"
+
+msgid "WEAPON_CLUSTER"
+msgstr "Calçotada"
+
+msgid "WEAPON_URTICARIA"
+msgstr "Urticating"
+
+msgid "WEAPON_SHOTGUN"
+msgstr "Flintlock"
+
+msgid "WEAPON_FUET"
+msgstr "The Fuet"
+
+msgid "WEAPON_BAT"
+msgstr "The Sickle"
+
+msgid "WEAPON_DYNAMITE"
+msgstr "The Tió"
+
+msgid "WEAPON_HOLY"
+msgstr "Holy Porró"
+
+msgid "WEAPON_AIRSTRIKE"
+msgstr "Correfoc"
+
+msgid "WEAPON_JETPACK"
+msgstr "Pine Wings"
+
+msgid "WEAPON_CULLERA"
+msgstr "Boxwood Spoon"
+
+msgid "WEAPON_BARRINA"
+msgstr "Drill"
+
+msgid "WEAPON_PONT_PEDRA"
+msgstr "Dry Stone"
+
+msgid "WEAPON_GANXO"
+msgstr "Shepherd's Hook"
+
+msgid "VICTORY_KICKER"
+msgstr "DISTRICT BATTLE COMPLETE"
+
+msgid "VICTORY_TITLE_0"
+msgstr "VICTORY FOR THE PINE BRIGADE!"
+
+msgid "VICTORY_TITLE_1"
+msgstr "VICTORY FOR THE TRAMUNTANA COLUMN!"
+
+msgid "VICTORY_TITLE_DRAW"
+msgstr "MUTUAL DESTRUCTION — DRAW!"
+
+msgid "VICTORY_SUB_0"
+msgstr "The Golden Procession conquers %s!"
+
+msgid "VICTORY_SUB_1"
+msgstr "The Crimson Procession conquers %s!"
+
+msgid "VICTORY_SUB_DRAW"
+msgstr "All the caterpillars have fallen in combat!"
+
+msgid "VICTORY_STAT_MAP"
+msgstr "Place:"
+
+msgid "VICTORY_STAT_ROUNDS"
+msgstr "Total Rounds:"
+
+msgid "VICTORY_STAT_DMG_0"
+msgstr "Pine Brigade Damage:"
+
+msgid "VICTORY_STAT_DMG_1"
+msgstr "Tramuntana Damage:"
+
+msgid "VICTORY_STAT_MVP"
+msgstr "Processionary Caterpillar MVP:"
+
+msgid "VICTORY_MVP_VALUE"
+msgstr "%s (%d damage points)"
+
+msgid "VICTORY_BTN_LOBBY"
+msgstr "Change Place / Squad"
+
+msgid "VICTORY_BTN_REMATCH"
+msgstr "Play Again [Enter]"
+
+msgid "AIM_AIRSTRIKE_TARGET"
+msgstr "CORREFOC TARGET"
+
+msgid "AIM_AIRSTRIKE_HINT"
+msgstr "UP/DOWN OR TAP: MOVE TARGET · SPACE/FIRE: ATTACK"
+
+msgid "AIM_SWITCH_HINT"
+msgstr "TAB / TAP CATERPILLAR: SWITCH"
+
+msgid "TRACKER_METERS"
+msgstr "▲ %dm"
+
+msgid "TOUCH_TARGET"
+msgstr "CORREFOC TARGET"
+
+msgid "TOUCH_JUMP"
+msgstr "JUMP!"
+
+msgid "TOUCH_BACKFLIP"
+msgstr "BACKFLIP!"
+
+msgid "FT_HIDDEN"
+msgstr "%s hides among the needles"
+
+msgid "FT_SNIFFED"
+msgstr "An ant sniffs out %s"
+
+msgid "FT_HATCHED"
+msgstr "The shells crack open!"
+
+msgid "DMG_EMPENTA"
+msgstr "Shove!"
+
+msgid "DMG_MOSSEGADA"
+msgstr "Chomp!"
+
+msgid "WPN_EMPENTA"
+msgstr "The Shove"
+
+msgid "WPN_MOSSEGADA"
+msgstr "The Bite"
+
+msgid "FT_WAVE"
+msgstr "Wave %s! Ants pour out of the anthill"
+
+msgid "DMG_PICOTADA"
+msgstr "Peck!"
+
+msgid "WPN_PICOTADA"
+msgstr "The Peck"
+
+msgid "UNIT_LARVA_L1"
+msgstr "L1 larva"
+
+msgid "UNIT_LARVA_L2"
+msgstr "L2 larva"
+
+msgid "UNIT_BLUE_TIT"
+msgstr "Blue tit"
+
+msgid "MENU_STORY_TITLE"
+msgstr "Story: Perleta's Life"
+
+msgid "MENU_STORY_SUB"
+msgstr "Live the processionary's life cycle, from egg to moth"
+
+msgid "STORY_TITLE"
+msgstr "Perleta's Life"
+
+msgid "STORY_SUB"
+msgstr "One processionary, seven stages and plenty of dangers. Go, little one!"
+
+msgid "STORY_SEC_STAGES"
+msgstr "The stages of the journey"
+
+msgid "STORY_STATE_OPEN"
+msgstr "Open"
+
+msgid "STORY_STATE_SOON"
+msgstr "Coming soon"
+
+msgid "STORY_STATE_LOCKED"
+msgstr "Locked"
+
+msgid "STORY_LEVEL_N"
+msgstr "Level %d"
+
+msgid "STORY_MAP_HINT"
+msgstr "←/→ + ENTER to pick a level  ·  ESC to go back"
+
+msgid "STORY_BTN_BACK"
+msgstr "Back"
+
+msgid "STORY_BTN_PLAY"
+msgstr "Play"
+
+msgid "STORY_BTN_CONTINUE"
+msgstr "Continue"
+
+msgid "STORY_BTN_RETRY"
+msgstr "Try again"
+
+msgid "STORY_LABEL_REAL"
+msgstr "In real life"
+
+msgid "STORY_LABEL_GOAL"
+msgstr "What to do"
+
+msgid "STORY_LABEL_TIP"
+msgstr "The tip"
+
+msgid "STORY_LABEL_ENEMIES"
+msgstr "Enemies"
+
+msgid "STORY_LABEL_WEAPONS"
+msgstr "Weapons"
+
+msgid "STORY_NO_WEAPONS"
+msgstr "None: hide!"
+
+msgid "STORY_NONE"
+msgstr "Nobody"
+
+msgid "STORY_WEAPON_EMPENTA"
+msgstr "Shove"
+
+msgid "STORY_WEAPON_MOSSEGADA"
+msgstr "Bite"
+
+msgid "STORY_RESULT_WON"
+msgstr "You made it!"
+
+msgid "STORY_RESULT_LOST"
+msgstr "Oh no!"
+
+msgid "STORY_RESULT_SURVIVORS"
+msgstr "Survivors: %d of %d"
+
+msgid "STORY_RESULT_UNLOCKED"
+msgstr "Weapon unlocked"
+
+msgid "STORY_REASON_SURVIVED"
+msgstr "You held on until the eggs hatched."
+
+msgid "STORY_REASON_ELIMINATED_ENEMY"
+msgstr "No enemies left. The way is clear!"
+
+msgid "STORY_REASON_LOST"
+msgstr "None of yours made it. Try again!"
+
+msgid "STORY_STAGE_EGG"
+msgstr "Egg"
+
+msgid "STORY_STAGE_LARVA_EARLY"
+msgstr "Larvae L1-L2"
+
+msgid "STORY_STAGE_LARVA"
+msgstr "Larvae L3-L5"
+
+msgid "STORY_STAGE_NEST"
+msgstr "Winter nest"
+
+msgid "STORY_STAGE_PROCESSION"
+msgstr "Procession"
+
+msgid "STORY_STAGE_PUPA"
+msgstr "Pupa"
+
+msgid "STORY_STAGE_MOTH"
+msgstr "Moth"
+
+msgid "STORY_STAGE_EGG_NICK"
+msgstr "Ouet"
+
+msgid "STORY_STAGE_LARVA_EARLY_NICK"
+msgstr "Pelussa"
+
+msgid "STORY_STAGE_LARVA_NICK"
+msgstr "Cuca"
+
+msgid "STORY_STAGE_NEST_NICK"
+msgstr "El Bolsó"
+
+msgid "STORY_STAGE_PROCESSION_NICK"
+msgstr "La Processó"
+
+msgid "STORY_STAGE_PUPA_NICK"
+msgstr "La Crisàlide"
+
+msgid "STORY_STAGE_MOTH_NICK"
+msgstr "La Papallona"
+
+msgid "STORY_STAGE_EGG_BLURB"
+msgstr "High summer, on a pine needle. Run, jump and hide among the tufts until you reach the sunny spot where you hatch."
+
+msgid "STORY_STAGE_LARVA_EARLY_BLURB"
+msgstr "Late summer. Tiny jumps, the first silk threads and the first stinging hairs."
+
+msgid "STORY_STAGE_LARVA_BLURB"
+msgstr "Autumn. Every moult makes you grow and your arsenal opens up step by step."
+
+msgid "STORY_STAGE_NEST_BLURB"
+msgstr "Winter. Defend the silk nest, which is also your home."
+
+msgid "STORY_STAGE_PROCESSION_BLURB"
+msgstr "Spring. Cross the forest in procession, behind the leader."
+
+msgid "STORY_STAGE_PUPA_BLURB"
+msgstr "Underground, inside a cocoon. Dig and don't get found."
+
+msgid "STORY_STAGE_MOTH_BLURB"
+msgstr "Summer again. At last, you fly! And the cycle starts over."
+
+msgid "STORY_STAGE_EGG_FACT"
+msgstr "In July the mother lays 70 to 300 eggs around two pine needles and covers them with her scales. About a month later the caterpillars hatch."
+
+msgid "STORY_HERO_EGG"
+msgstr "Perleta, mum's little pearl"
+
+msgid "UNIT_EGG"
+msgstr "Egg"
+
+msgid "UNIT_ANT"
+msgstr "Ant"
+
+msgid "LVL_EGG_1_TITLE"
+msgstr "July eggs"
+
+msgid "LVL_EGG_1_INTRO"
+msgstr "You are Perleta, a tiny egg eager to see the world. At the end of the path there is a warm, sunny spot. Only a couple of ants are on patrol: take care!"
+
+msgid "LVL_EGG_1_GOAL"
+msgstr "Reach the sunny spot and pick up sap drops along the way."
+
+msgid "LVL_EGG_1_TIP"
+msgstr "Jump with Space or the JUMP button, and hold it to jump higher. Stand still inside a pine-needle tuft and the ants won't see you."
+
+msgid "LVL_EGG_2_TITLE"
+msgstr "The ant patrol"
+
+msgid "LVL_EGG_2_INTRO"
+msgstr "Now a whole patrol of ants is sniffing for eggs everywhere, noses up high. Some walk along the pine needles, so you will have to jump higher."
+
+msgid "LVL_EGG_2_GOAL"
+msgstr "Reach the sunny spot and keep your hearts. Every sap drop makes you grow a little!"
+
+msgid "LVL_EGG_2_TIP"
+msgstr "If an ant chases you, run to a needle tuft and wait for it to go by. Or jump on top of it from above and knock it out! Pits cost a heart!"
+
+msgid "LVL_EGG_3_TITLE"
+msgstr "Before the shell cracks"
+
+msgid "LVL_EGG_3_INTRO"
+msgstr "Very soon the shell will crack! But the path is narrow, full of tricky jumps, and the ants guard the best sap drops."
+
+msgid "LVL_EGG_3_GOAL"
+msgstr "Reach the sunny spot and try to collect every sap drop."
+
+msgid "LVL_EGG_3_TIP"
+msgstr "There are two flags on the way: if you fall into a pit, you go back to the last one you touched. Time your jumps well!"
+
+msgid "LVL_EGG_4_TITLE"
+msgstr "Summer storm"
+
+msgid "LVL_EGG_4_INTRO"
+msgstr "A real July thunderstorm has blown in! The wind comes in gusts, it rains in buckets and the ground is full of puddles. A big drop will roll you over, but it won't hurt you. Hold on tight, little one!"
+
+msgid "LVL_EGG_4_GOAL"
+msgstr "Reach the sunny spot through the gusts and the raindrops, and collect as many sap drops as you can."
+
+msgid "LVL_EGG_4_TIP"
+msgstr "The wind can't reach you inside a needle tuft. If you see a shadow on the ground, a big drop is about to land there. Puddles slow you down: jump over them!"
+
+msgid "LVL_EGG_BOSS_TITLE"
+msgstr "The wasp"
+
+msgid "LVL_EGG_BOSS_INTRO"
+msgstr "A tiny wasp, Ooencyrtus, wanders over the processionary egg masses. The mother lays her own eggs inside the caterpillar eggs, and her grubs eat them up! Luckily you are almost ready to hatch. Hold out until your shell cracks."
+
+msgid "LVL_EGG_BOSS_GOAL"
+msgstr "Survive until the countdown ends and Perleta hatches. Keep your hearts!"
+
+msgid "LVL_EGG_BOSS_TIP"
+msgstr "The wasp warns you before it strikes: look for the red mark and step aside. If you hide still inside a needle tuft, it loses your trail!"
+
+msgid "LVL_LARVA_1_TITLE"
+msgstr "Silk sisters"
+
+msgid "LVL_LARVA_1_INTRO"
+msgstr "At the end of summer the larvae hatch all together and stay close, like a gang of sisters. You are small, pale and very hairy: your first hairs are still a joke, but you already spin silk. Two curious ants are coming your way along the valley."
+
+msgid "LVL_LARVA_1_GOAL"
+msgstr "Drive off the two ants."
+
+msgid "LVL_LARVA_1_TIP"
+msgstr "Aim with the mouse, hold the fire button to charge the power and release to throw. The wind has a say too!"
+
+msgid "LVL_LARVA_2_TITLE"
+msgstr "The silk thread"
+
+msgid "LVL_LARVA_2_INTRO"
+msgstr "Up there, at the tip of a branch, grow the tenderest needles of the pine, and to reach them you have to cross gaps and climb slopes. Luckily you can spin silk by now! Two ants follow you and nip at your heels."
+
+msgid "LVL_LARVA_2_GOAL"
+msgstr "Get one caterpillar to the branch within %d rounds."
+
+msgid "LVL_LARVA_2_TIP"
+msgstr "One caterpillar on the branch is enough to win: no need to fight, just run! The wind throws your shots off, so better spin a silk thread to soften a fall or cross a gap."
+
+msgid "LVL_LARVA_3_TITLE"
+msgstr "The anthill"
+
+msgid "LVL_LARVA_3_INTRO"
+msgstr "Under the pines there is an anthill, and ants pour out of it in waves. If you blow its dome apart, the waves stop! Around it stand a few Priorat wine barrels with no patience at all: they blow up at the slightest bump."
+
+msgid "LVL_LARVA_3_GOAL"
+msgstr "Destroy the anthill ({hp} HP) or hold out for %d rounds. Two new ants come out every round."
+
+msgid "LVL_LARVA_3_TIP"
+msgstr "Shoot the dome of the anthill: the bar at the top shows its health. The barrels hurt far more than a shot, and step away from the mouth when a wave comes out."
+
+msgid "LVL_LARVA_4_TITLE"
+msgstr "The trapped sister"
+
+msgid "LVL_LARVA_4_INTRO"
+msgstr "You have moulted for the first time: now you are second-stage larvae, bigger and stronger. But a sister got wrapped up in a silk cocoon far away, and she is calling you! Two ants and a blue tit want to spoil the rescue, and the water is rising."
+
+msgid "LVL_LARVA_4_GOAL"
+msgstr "Reach your sister in the cocoon within %d rounds: she joins the gang."
+
+msgid "LVL_LARVA_4_TIP"
+msgstr "The tide rises slowly: do not linger on low ground. The blue tit stops in mid-air and shows a \"!\" before it dives: step aside."
+
+msgid "LVL_LARVA_5_TITLE"
+msgstr "Hide and seek!"
+
+msgid "LVL_LARVA_5_INTRO"
+msgstr "The ants hunt you by smell, and they can dig through the walls to catch you. Only a tuft of pine needles can save you: hide in it and they will not see you until they get really close. Watch out for the mines: they play no favourites!"
+
+msgid "LVL_LARVA_5_GOAL"
+msgstr "Survive %d rounds: hide in the needle tufts."
+
+msgid "LVL_LARVA_5_TIP"
+msgstr "End your turn on a tuft and you hide: the game is up if an ant stops nearby. A mine can blow up the ants too."
+
+msgid "STORY_HERO_LARVA"
+msgstr "Cuca and her gang"
+
+msgid "STORY_STAGE_LARVA_FACT"
+msgstr "In autumn the caterpillars have moulted twice and are in their third instar (L3). Their urticating hairs now really sting: they use them to defend themselves, and every moult gives them more. They also start spinning the big white winter nest on the tip of a pine."
+
+msgid "LVL_LARVA_BOSS_TITLE"
+msgstr "The tachinid fly"
+
+msgid "LVL_LARVA_BOSS_INTRO"
+msgstr "A big hairy fly circles over the pinewood looking for somewhere to lay her eggs... and she has picked you! If she lays one on you, the larvae will nibble you from inside. Luckily, your silk cleans them off."
+
+msgid "LVL_LARVA_BOSS_GOAL"
+msgstr "Defeat the tachinid fly."
+
+msgid "LVL_LARVA_BOSS_TIP"
+msgstr "When she announces the egg-laying, move away or hide. If she got eggs on you, spin a silk thread to clean up. After her dive she lands for a turn: that's the moment to hit her hard!"
+
+msgid "LVL_CUCA_1_TITLE"
+msgstr "L3: the gang grows"
+
+msgid "LVL_CUCA_1_INTRO"
+msgstr "You have moulted again: now you are third-stage larvae, bigger and with your first truly stinging hairs. The gang has grown too: there are four of you! Two blue tits have already spotted you from above, and the wind is so strong it nearly knocks the pines over."
+
+msgid "LVL_CUCA_1_GOAL"
+msgstr "Drive off the two blue tits."
+
+msgid "LVL_CUCA_1_TIP"
+msgstr "Very strong wind: your shots drift a lot. Look at the indicator at the top and correct your angle. Switch caterpillar with Tab or by tapping one, and find the one with the best shot."
+
+msgid "LVL_CUCA_2_TITLE"
+msgstr "Poblet pine cones"
+
+msgid "LVL_CUCA_2_INTRO"
+msgstr "In the forest of the Poblet monastery pine cones and pine nuts fall everywhere, and supply crates drop from the sky. You must store up for the winter! Two ants and a blue tit want their share too."
+
+msgid "LVL_CUCA_2_GOAL"
+msgstr "Gather {need} of the {total} pine nuts on the map within %d rounds."
+
+msgid "LVL_CUCA_2_TIP"
+msgstr "The pine nuts glow with a golden ring and only you can pick them up. Do not leave them for the end, and grab the crates that fall: they carry weapons and health."
+
+msgid "LVL_CUCA_3_TITLE"
+msgstr "L4: new skin"
+
+msgid "LVL_CUCA_3_INTRO"
+msgstr "Another moult, and now you are fourth-stage larvae: new skin, more hairs and more strength. Three ants have settled next to some Priorat wine barrels and wait for you looking like they never broke a plate."
+
+msgid "LVL_CUCA_3_GOAL"
+msgstr "Drive off the three ants: use the barrels!"
+
+msgid "LVL_CUCA_3_TIP"
+msgstr "One shot at a barrel sets off its neighbours: chain a whole row! You have the bazooka and the grenade now; explosions dig holes in the ground, so watch your step."
+
+msgid "LVL_CUCA_4_TITLE"
+msgstr "The one good shot"
+
+msgid "LVL_CUCA_4_INTRO"
+msgstr "An ant has dug in behind a cliff and will not move. You only have a few bazooka rounds and one grenade left, and there is no more. With the sun low, the wind is not making it easy."
+
+msgid "LVL_CUCA_4_GOAL"
+msgstr "Take out the hidden ant with the {shots} shots you have: there are no more."
+
+msgid "LVL_CUCA_4_TIP"
+msgstr "The bazooka flies in an arc: raise the angle to clear the cliff. Walk to a better spot before you shoot, and allow for the wind."
+
+msgid "LVL_CUCA_5_TITLE"
+msgstr "L5: the big moult"
+
+msgid "LVL_CUCA_5_INTRO"
+msgstr "The last moult! Now you are fifth-stage larvae, the biggest and hairiest caterpillars of the whole cycle. Two great tits and a blue one are watching you, and the path is dotted with mines that are no friends of yours."
+
+msgid "LVL_CUCA_5_GOAL"
+msgstr "Defeat the two great tits and the blue one."
+
+msgid "LVL_CUCA_5_TIP"
+msgstr "Mines go off when someone comes near: stay away from them and make the enemies walk into them. Use the grapple to change places, and every caterpillar counts: do not lose any!"
+
+msgid "LVL_CUCA_6_TITLE"
+msgstr "Autumn in town"
+
+msgid "LVL_CUCA_6_INTRO"
+msgstr "At the end of autumn the caterpillars come close to the houses, because the pines in the gardens are tasty too. A great tit is watching you and the anthill never stops: the first rains make the water rise. Hold out until the cold arrives."
+
+msgid "LVL_CUCA_6_GOAL"
+msgstr "Hold out for %d rounds. Two new ants come out of the anthill every round."
+
+msgid "LVL_CUCA_6_TIP"
+msgstr "The water rises from the second round: look for high ground. The birds attack from the air and the ants on the ground: do not let them surround you. The cluster bomb works well against a crowd."
+
+msgid "LVL_CUCA_BOSS_TITLE"
+msgstr "The great tit"
+
+msgid "LVL_CUCA_BOSS_INTRO"
+msgstr "The great tit is the great caterpillar hunter: in winter it even pecks open the silk nests. This one is a giant! It climbs to the top of a tree, dives to peck whoever it picks and, if you hit it, flies away."
+
+msgid "LVL_CUCA_BOSS_GOAL"
+msgstr "Defeat the great tit."
+
+msgid "LVL_CUCA_BOSS_TIP"
+msgstr "It is only vulnerable when it stops at the top of a tree: then, hit hard! Before every attack it shows where it will land: leave the circle or hide."
+
+msgid "LVL_NEST_1_TITLE"
+msgstr "Weaving the nest"
+
+msgid "LVL_NEST_1_INTRO"
+msgstr "In winter the processionaries live in a white silk nest, woven on the sunny side of a pine, where the sun keeps them company. At night they come out to eat needles and, when it is cold, they go back inside. But the tits know there is a tasty morsel in there!"
+
+msgid "LVL_NEST_1_GOAL"
+msgstr "Hold out for %d turns with the nest still standing."
+
+msgid "LVL_NEST_1_TIP"
+msgstr "Stand next to the nest and press Repair (T key): you weave new silk and the nest regains HP. Inside the nest, blows hurt half as much."
+
+msgid "LVL_NEST_2_TITLE"
+msgstr "Frost night"
+
+msgid "LVL_NEST_2_INTRO"
+msgstr "January nights can drop below zero, and a caterpillar out in the open freezes quickly. That is why they build a silk nest: inside it is several degrees warmer than outside, and the midday sun warms it even more."
+
+msgid "LVL_NEST_2_GOAL"
+msgstr "Hold out for %d turns. It is cold outside the nest: you lose HP every turn."
+
+msgid "LVL_NEST_2_TIP"
+msgstr "The cold bites at the start of your turn if you are outside the nest: shoot from the edge and end every turn inside. The bluish caterpillars are the ones feeling the cold."
+
+msgid "LVL_NEST_3_TITLE"
+msgstr "Winter tits"
+
+msgid "LVL_NEST_3_INTRO"
+msgstr "In winter tits find food hard to come by, and the processionary is one of the few caterpillars around. Some have learned to peck nests open to get at them. Today a whole flock is coming!"
+
+msgid "LVL_NEST_3_GOAL"
+msgstr "Hold out for %d turns while the tits peck at the nest."
+
+msgid "LVL_NEST_3_TIP"
+msgstr "Each bird goes for the nest or for the nearest caterpillar. Choose your spot well and repair the nest between turns."
+
+msgid "LVL_NEST_4_TITLE"
+msgstr "The pole"
+
+msgid "LVL_NEST_4_INTRO"
+msgstr "Foresters take nests down from the pines because the stinging caterpillars hurt people and the forest. They do it with a long pole, cutting off the whole branch. The nest does not quite understand: it only wanted a quiet life in the sun."
+
+msgid "LVL_NEST_4_GOAL"
+msgstr "Hold out for %d turns. Every now and then the pole comes down on a marked band."
+
+msgid "LVL_NEST_4_TIP"
+msgstr "The orange band warns you a turn ahead: step out of it in time! If the nest is under it, repair it afterwards."
+
+msgid "LVL_NEST_BOSS_TITLE"
+msgstr "The forestry brigade"
+
+msgid "LVL_NEST_BOSS_INTRO"
+msgstr "At the end of winter the forestry brigade arrives: the Foreman, with his white helmet and moustache, and his crew, with poles and cartridges to take nests down. They are only doing their job, bless them, but you have to defend your home until spring comes."
+
+msgid "LVL_NEST_BOSS_GOAL"
+msgstr "Send the Foreman away without letting the nest collapse."
+
+msgid "LVL_NEST_BOSS_TIP"
+msgstr "The Foreman warns of the pole strike with a band: step out of it! After two attacks he runs out of breath and sits down: then, hit hard!"
+
+msgid "LVL_PUPA_1_TITLE"
+msgstr "Underground"
+
+msgid "LVL_PUPA_1_INTRO"
+msgstr "In spring the caterpillars come down the pine in procession and bury themselves a few centimetres deep, somewhere sunny. There they spin a cocoon and turn into a pupa. So do you: dig, dig, all the way to a safe chamber!"
+
+msgid "LVL_PUPA_1_GOAL"
+msgstr "Dig down to the safe chamber."
+
+msgid "LVL_PUPA_1_TIP"
+msgstr "Hold a direction against the soil to dig. Pick up the sap drops on the way and do not forget about the ants."
+
+msgid "LVL_PUPA_2_TITLE"
+msgstr "The roots"
+
+msgid "LVL_PUPA_2_INTRO"
+msgstr "Under the pine everything is a tangle of roots that cannot be dug through. The pupa has to go round them, and watch out: if you dig under a stone, it may fall on you!"
+
+msgid "LVL_PUPA_2_GOAL"
+msgstr "Find your way between the roots to the safe chamber."
+
+msgid "LVL_PUPA_2_TIP"
+msgstr "Stones fall when you dig the soil under them: do not walk under them!"
+
+msgid "LVL_PUPA_3_TITLE"
+msgstr "Flood"
+
+msgid "LVL_PUPA_3_INTRO"
+msgstr "In spring it can rain hard, and the water seeps through the soil and fills the galleries. A pupa cannot breathe underwater, so it has to climb before the water swallows its path."
+
+msgid "LVL_PUPA_3_GOAL"
+msgstr "Dig up and sideways before the water catches you."
+
+msgid "LVL_PUPA_3_TIP"
+msgstr "If you spend more than two seconds underwater, you lose a heart. Do not stay still!"
+
+msgid "LVL_PUPA_BOSS_TITLE"
+msgstr "The hoopoe"
+
+msgid "LVL_PUPA_BOSS_INTRO"
+msgstr "The hoopoe has a long, curved beak for probing the ground, and it is very fond of processionary pupae. It finds them by listening for the noises they make. Luckily, whoever stays still makes no noise!"
+
+msgid "LVL_PUPA_BOSS_GOAL"
+msgstr "Hold out underground until the pupa turns into a moth."
+
+msgid "LVL_PUPA_BOSS_TIP"
+msgstr "Digging and moving make noise, and the hoopoe comes to strike. If you stay still it will not hear you; and if you see the shadow of the beak, get out of the way!"
+
+msgid "LVL_MOTH_1_TITLE"
+msgstr "First flight"
+
+msgid "LVL_MOTH_1_INTRO"
+msgstr "After months underground, in summer the pupa opens and a grey night moth comes out. Its wings are new and tremble a little. Adult moths do not eat: they live only a day or two and have to do everything in a hurry!"
+
+msgid "LVL_MOTH_1_GOAL"
+msgstr "Fly to the end of the way, between the pines."
+
+msgid "LVL_MOTH_1_TIP"
+msgstr "Each tap of jump is a wing flap. Hold it down and you glide, falling more slowly."
+
+msgid "LVL_MOTH_2_TITLE"
+msgstr "Village lights"
+
+msgid "LVL_MOTH_2_INTRO"
+msgstr "Moths fly at night and street lamps confuse them. Foresters also set pheromone traps, which smell like a female and catch the males. It looks like a party, but it is dangerous!"
+
+msgid "LVL_MOTH_2_GOAL"
+msgstr "Cross the village without touching the lamps or the traps."
+
+msgid "LVL_MOTH_2_TIP"
+msgstr "The lamps pull you in: flap the other way. A trap sends you back to the last flag."
+
+msgid "LVL_MOTH_3_TITLE"
+msgstr "The nightjar"
+
+msgid "LVL_MOTH_3_INTRO"
+msgstr "The nightjar is a nocturnal bird with a very wide mouth that catches moths in the air. If it sees you nearby, it chases you through the pines."
+
+msgid "LVL_MOTH_3_GOAL"
+msgstr "Leave the pine wood before the nightjar catches you."
+
+msgid "LVL_MOTH_3_TIP"
+msgstr "Hide in the shadows: it cannot see you inside one. Use the trees to dodge it."
+
+msgid "LVL_MOTH_BOSS_TITLE"
+msgstr "The bat"
+
+msgid "LVL_MOTH_BOSS_INTRO"
+msgstr "Bats hunt moths at night with echolocation: they call out very high and listen for the echo. This is the last great danger. When the night is over, you will lay your eggs among the pine needles, and it all starts again!"
+
+msgid "LVL_MOTH_BOSS_GOAL"
+msgstr "Hold out through the night among the shadows until you can lay your eggs."
+
+msgid "LVL_MOTH_BOSS_TIP"
+msgstr "When the bat's wave passes over you outside a shadow, it marks you and swoops. Hide in the shadows before it arrives!"
+
+msgid "STORY_HERO_PROCESSION"
+msgstr "The leader and her procession"
+
+msgid "STORY_STAGE_PROCESSION_FACT"
+msgstr "In late winter and spring the caterpillars leave the nest and come down the pine in single file, one behind the other and head to tail, following the silk thread spun by the first one. They look for soft soil, where they bury themselves to make a cocoon."
+
+msgid "LVL_PROC_1_TITLE"
+msgstr "Single file"
+
+msgid "LVL_PROC_1_INTRO"
+msgstr "Winter is over and the nest has become too small. The processionary caterpillars leave it at night, come down the pine in single file and follow the silk thread the first one spins. Nobody can get lost: whoever lags behind will not find the way!"
+
+msgid "LVL_PROC_1_GOAL"
+msgstr "Lead the procession to the soft soil without leaving anyone behind."
+
+msgid "LVL_PROC_1_TIP"
+msgstr "Only you lead the file: the others follow you by themselves. Each turn you can walk a stretch (see the March bar) and, when it runs out, you cannot go further. If a friend ends up far from the line, walk back to fetch her."
+
+msgid "LVL_PROC_2_TITLE"
+msgstr "The wild boar"
+
+msgid "LVL_PROC_2_INTRO"
+msgstr "A wild boar roams the forest rooting for roots and grubs, and it does not look where it puts its hooves. If it crosses your path, no file can stand it: it sends everyone flying. You cannot chase it off, only dodge it."
+
+msgid "LVL_PROC_2_GOAL"
+msgstr "Cross the boar's path and reach the soft soil."
+
+msgid "LVL_PROC_2_TIP"
+msgstr "One turn before, an orange band and an arrow warn you where the boar will come from. When the band is clear, cross it quickly, or wait until the boar has gone by, because it stops for nobody."
+
+msgid "LVL_PROC_3_TITLE"
+msgstr "The Calosoma beetle"
+
+msgid "LVL_PROC_3_INTRO"
+msgstr "Calosoma sycophanta is a green and gold beetle, fast and long-legged, that hunts processionary caterpillars. Foresters like it a lot because it eats everything, but you see it coming with different eyes."
+
+msgid "LVL_PROC_3_GOAL"
+msgstr "Reach the soft soil or chase off the Calosoma."
+
+msgid "LVL_PROC_3_TIP"
+msgstr "The Calosoma is very fast and bites the followers for 20 at a time. Face it with your urticaria before it reaches the file: it pays off more than running."
+
+msgid "LVL_PROC_4_TITLE"
+msgstr "Spring rain"
+
+msgid "LVL_PROC_4_INTRO"
+msgstr "Spring rain makes a fungus grow, Beauveria, which forms clouds of greenish dust among the pines. The spores settle on the caterpillars and kill them from inside: it is one of the processionary's natural enemies. And on top of that there are ants and a blue tit!"
+
+msgid "LVL_PROC_4_GOAL"
+msgstr "Reach the soft soil without staying inside the fungus clouds."
+
+msgid "LVL_PROC_4_TIP"
+msgstr "The clouds hurt whoever is inside them at the start of their turn, and they drift every round. Go around them or cross them fast, and count the turns!"
+
+msgid "LVL_PROC_5_TITLE"
+msgstr "Soft soil"
+
+msgid "LVL_PROC_5_INTRO"
+msgstr "It is close now: the soft soil where you will bury yourselves and spin your cocoon. But the way is long and the forest is full of dangers: boars, fungus, beetles and birds. Courage, this is the last stretch!"
+
+msgid "LVL_PROC_5_GOAL"
+msgstr "Bring as many friends as you can to the soft soil."
+
+msgid "LVL_PROC_5_TIP"
+msgstr "There is a bit of everything: watch the boar's bands, go around the fungus clouds and protect the file from the Calosoma and the birds. The friends who arrive with you count for the stars."
+
+msgid "LVL_PROC_BOSS_TITLE"
+msgstr "The cuckoo"
+
+msgid "LVL_PROC_BOSS_INTRO"
+msgstr "At the end of the road the cuckoo is waiting, one of the few birds that dare to eat hairy caterpillars. It arrives in spring, just when you leave the nest, with its barred belly and long tail, and it only has eyes for your file."
+
+msgid "LVL_PROC_BOSS_GOAL"
+msgstr "Reach the soft soil or chase off the cuckoo, and do not let the leader fall."
+
+msgid "LVL_PROC_BOSS_TIP"
+msgstr "The cuckoo marks with a circle who it wants to eat: move the file so the target is outside it. When it has stuffed itself it sits there sated for a turn and is vulnerable: hit hard!"
+
+msgid "HUD_OBJECTIVE_HATCH"
+msgstr "Hatching in %d turns"
+
+msgid "HUD_OBJECTIVE_HATCH_1"
+msgstr "Hatching in 1 turn"
+
+msgid "HUD_PASS"
+msgstr "Pass"
+
+msgid "HUD_PASS_TOOLTIP"
+msgstr "End your turn without doing anything (N)"
+
+msgid "HUD_NO_WEAPONS"
+msgstr "No weapons yet: crawl and hide!"
+
+msgid "HUD_SQUAD_EGG"
+msgstr "The Eggs"
+
+msgid "HUD_SQUAD_ANT"
+msgstr "The Ants"
+
+msgid "HUD_OBJECTIVE_ENEMIES"
+msgstr "Enemies: %d"
+
+msgid "HUD_OBJECTIVE_WAVES"
+msgstr "Waves: %d"
+
+msgid "HUD_WAVE_BANNER"
+msgstr "Wave %d"
+
+msgid "HUD_NEW"
+msgstr "NEW!"
+
+msgid "HUD_SQUAD_LARVA_L1"
+msgstr "The Sisters"
+
+msgid "HUD_SQUAD_LARVA_L2"
+msgstr "The Sisters"
+
+msgid "HUD_SQUAD_BLUE_TIT"
+msgstr "The Blue Tits"
+
+msgid "HUD_SQUAD_MIXED"
+msgstr "The Enemies"
+
+msgid "STORY_LABEL_ABILITIES"
+msgstr "Abilities"
+
+msgid "STORY_ABILITY_SILK_WEB"
+msgstr "Silk thread (C key)"
+
+msgid "STORY_WEAPON_PICOTADA"
+msgstr "Peck"
+
+msgid "STORY_HERO_LARVA_EARLY"
+msgstr "Perleta and her sisters"
+
+msgid "STORY_STAGE_LARVA_EARLY_FACT"
+msgstr "At the end of summer the processionary larvae hatch together and spin a first silk nest. At night they go out in line to eat pine needles, shedding their skin as they grow. They only get truly stinging hairs from the third instar (L3)."
+
+msgid "STORY_ENEMIES_WAVE"
+msgstr "%s × %d every wave"
+
+msgid "FT_PLAT_NUTRIENT"
+msgstr "Sap!"
+
+msgid "FT_PLAT_CHECKPOINT"
+msgstr "Checkpoint"
+
+msgid "FT_PLAT_HURT"
+msgstr "Ouch!"
+
+msgid "PLAT_PAUSE_TITLE"
+msgstr "Paused"
+
+msgid "PLAT_RESUME"
+msgstr "Resume"
+
+msgid "PLAT_EXIT"
+msgstr "Back to the map"
+
+msgid "PLAT_JUMP"
+msgstr "JUMP"
+
+msgid "PLAT_HELP_KEYS"
+msgstr "Arrows or A/D to move · Space to jump"
+
+msgid "PLAT_HELP_TOUCH"
+msgstr "Arrows to move · JUMP to jump"
+
+msgid "PLAT_BANNER_WON"
+msgstr "What lovely sunshine!"
+
+msgid "PLAT_BANNER_LOST"
+msgstr "Try again, Perleta!"
+
+msgid "PLAT_NO_WEAPONS"
+msgstr "None: jump and hide!"
+
+msgid "PLAT_RESULT_NUTRIENTS"
+msgstr "Sap drops: %d of %d"
+
+msgid "PLAT_RESULT_HEARTS"
+msgstr "Hearts left: %d"
+
+msgid "PLAT_REASON_REACHED_GOAL"
+msgstr "You reached the sunny spot. How cosy and warm!"
+
+msgid "PLAT_REASON_LOST"
+msgstr "The ants were quicker. Try again!"
+
+msgid "PLAT_BOSS_BAR"
+msgstr "Hatching in %d s"
+
+msgid "PLAT_BOSS_INTRO"
+msgstr "The wasp!"
+
+msgid "PLAT_BANNER_HATCHED"
+msgstr "Perleta has cracked her shell!"
+
+msgid "PLAT_REASON_HATCHED"
+msgstr "You held out to the end and your shell cracked. Welcome to the world, little caterpillar!"
+
+msgid "PLAT_ENEMY_WASP"
+msgstr "Parasitoid wasp"
+
+msgid "TOUCH_HINT"
+msgstr "Slide on the left to walk · drag from the caterpillar to aim"
+
+msgid "BOSS_TACHINID_NAME"
+msgstr "Tachinid Fly"
+
+msgid "BOSS_TACHINID_TITLE"
+msgstr "The pinewood parasite"
+
+msgid "UNIT_SMALL_FLY"
+msgstr "Little fly"
+
+msgid "BOSS_NAMES_AND"
+msgstr "%s and %s"
+
+msgid "BOSS_INTENT_LAY_EGGS"
+msgstr "The Fly wants to lay eggs on %s!"
+
+msgid "BOSS_INTENT_BUZZ"
+msgstr "The Fly is buzzing: get away!"
+
+msgid "BOSS_INTENT_SUMMON"
+msgstr "The Fly is calling her cousins!"
+
+msgid "FT_ARMORED"
+msgstr "ARMORED"
+
+msgid "FT_DODGED"
+msgstr "Dodged!"
+
+msgid "FT_PARASITE"
+msgstr "Eggs on %s's back!"
+
+msgid "FT_CLEANED"
+msgstr "%s cleans up with silk!"
+
+msgid "FT_BOSS_LANDS"
+msgstr "It landed: hit it now!"
+
+msgid "FT_BOSS_TAKEOFF"
+msgstr "Back in the air!"
+
+msgid "FT_BOSS_PHASE"
+msgstr "Now it's really angry!"
+
+msgid "FT_BOSS_SUMMON"
+msgstr "Reinforcements!"
+
+msgid "FT_BOSS_SPLASH"
+msgstr "Splash! Soggy wings!"
+
+msgid "FT_BOSS_DEFEATED"
+msgstr "K.O.!"
+
+msgid "DMG_LAY_EGGS"
+msgstr "Egg-laying!"
+
+msgid "DMG_PARASITE"
+msgstr "Larvae!"
+
+msgid "DMG_BUZZ"
+msgstr "Buzz!"
+
+msgid "DMG_SPLASH"
+msgstr "Dunked!"
+
+msgid "DMG_BOSS"
+msgstr "Whack!"
+
+msgid "STORY_REASON_BOSS_DEFEATED"
+msgstr "You chased off the stage's big enemy!"
+
+msgid "BOSS_VULNERABLE"
+msgstr "VULNERABLE!"
+
+msgid "BOSS_BANNER_KICKER"
+msgstr "Stage boss"
+
+msgid "BOSS_PHASE_BANNER"
+msgstr "Phase %d"
+
+msgid "BOSS_DEFEATED_BANNER"
+msgstr "Out cold!"
+
+msgid "STORY_LABEL_BOSS"
+msgstr "Stage boss"
+
+msgid "STORY_LABEL_BOSS_ATTACKS"
+msgstr "How it attacks"
+
+msgid "BOSS_TACHINID_FACT"
+msgstr "Phryxe caudata is a parasitoid fly: the female lays her eggs on processionary caterpillars and, when they hatch, her larvae eat the caterpillar from inside."
+
+msgid "BOSS_TACHINID_ATTACKS"
+msgstr "It warns before every attack: a red circle marks who will get the eggs, and her buzz pushes everyone nearby. After her dive she lands for a turn."
+
+msgid "BOSS_GREAT_TIT_FACT"
+msgstr "The great tit (Parus major) is one of the few birds that dare to eat processionary caterpillars: in winter it pecks open the silk nests to eat the larvae."
+
+msgid "BOSS_GREAT_TIT_ATTACKS"
+msgstr "It warns before every attack: it dives to peck whoever it marks with a red circle, and its wing flap pushes everyone nearby. It is only vulnerable when it stops at the top of a tree."
+
+msgid "HUD_SQUAD_LARVA_L3"
+msgstr "The Gang"
+
+msgid "HUD_SQUAD_LARVA_L4"
+msgstr "The Gang"
+
+msgid "HUD_SQUAD_LARVA_L5"
+msgstr "The Gang"
+
+msgid "HUD_SQUAD_GREAT_TIT"
+msgstr "The Great Tits"
+
+msgid "STORY_WEAPON_PICOTADA_FORTA"
+msgstr "Hard peck"
+
+msgid "UNIT_LARVA_L3"
+msgstr "L3 larva"
+
+msgid "UNIT_LARVA_L4"
+msgstr "L4 larva"
+
+msgid "UNIT_LARVA_L5"
+msgstr "L5 larva"
+
+msgid "UNIT_GREAT_TIT"
+msgstr "Great tit"
+
+msgid "WPN_PICOTADA_FORTA"
+msgstr "The Hard Peck"
+
+msgid "DMG_PICOTADA_FORTA"
+msgstr "Hard peck!"
+
+msgid "BOSS_GREAT_TIT_NAME"
+msgstr "The Great Tit"
+
+msgid "BOSS_GREAT_TIT_TITLE"
+msgstr "The great pine hunter"
+
+msgid "BOSS_INTENT_PERCH"
+msgstr "The Great Tit is looking for a high branch!"
+
+msgid "BOSS_INTENT_PECK_DIVE"
+msgstr "The Great Tit is diving to peck %s!"
+
+msgid "BOSS_INTENT_WING_FLAP"
+msgstr "The Great Tit is flapping her wings: get away!"
+
+msgid "BOSS_INTENT_SUMMON_TITS"
+msgstr "The Great Tit is calling her flock!"
+
+msgid "DMG_PECK_DIVE"
+msgstr "Dive peck!"
+
+msgid "DMG_WING_FLAP"
+msgstr "Wing blow!"
+
+msgid "UNIT_FORESTRY_WORKER"
+msgstr "Forestry worker"
+
+msgid "WPN_PERXADA"
+msgstr "The Pole Whack"
+
+msgid "DMG_PERXADA"
+msgstr "Pole whack!"
+
+msgid "DMG_POLE"
+msgstr "The pole!"
+
+msgid "FT_COLD"
+msgstr "Cold"
+
+msgid "FT_SHELTERED"
+msgstr "Sheltered"
+
+msgid "FT_NEST_DAMAGE"
+msgstr "Nest -%s"
+
+msgid "FT_NEST_REPAIRED"
+msgstr "Nest +%s"
+
+msgid "FT_NEST_DESTROYED"
+msgstr "The nest has fallen!"
+
+msgid "FT_NEST_SAVED"
+msgstr "The nest survived the winter!"
+
+msgid "FT_POLE_WARN"
+msgstr "Look out, the pole is coming down!"
+
+msgid "FT_BOSS_WINDED"
+msgstr "Out of breath: hit him now!"
+
+msgid "BOSS_BRIGADE_NAME"
+msgstr "The Foreman"
+
+msgid "BOSS_BRIGADE_TITLE"
+msgstr "The Forestry Brigade"
+
+msgid "BOSS_INTENT_SUMMON_WORKERS"
+msgstr "The Foreman calls his crew!"
+
+msgid "BOSS_INTENT_CATCH_BREATH"
+msgstr "The Foreman is running out of breath"
+
+msgid "BOSS_INTENT_POLE_SWEEP"
+msgstr "The Foreman swings the pole: get out of the way!"
+
+msgid "BOSS_INTENT_CARTRIDGE"
+msgstr "The Foreman aims a cartridge at the nest!"
+
+msgid "UPG_TOUGH_SKIN_NAME"
+msgstr "Thick skin"
+
+msgid "UPG_TOUGH_SKIN_DESC"
+msgstr "The squad has 15 % more maximum HP."
+
+msgid "UPG_SHARP_HAIRS_NAME"
+msgstr "Sharp hairs"
+
+msgid "UPG_SHARP_HAIRS_DESC"
+msgstr "Weapons do 15 % more damage."
+
+msgid "UPG_THICK_WALLS_NAME"
+msgstr "Thick walls"
+
+msgid "UPG_THICK_WALLS_DESC"
+msgstr "The nest has 100 more HP."
+
+msgid "UPG_WARM_SILK_NAME"
+msgstr "Warm silk"
+
+msgid "UPG_WARM_SILK_DESC"
+msgstr "The cold no longer hurts outside the nest."
+
+msgid "UPG_DOUBLE_WEB_NAME"
+msgstr "Double web"
+
+msgid "UPG_DOUBLE_WEB_DESC"
+msgstr "You can spin two silk webs per turn."
+
+msgid "UPG_FULL_POUCH_NAME"
+msgstr "Full pouch"
+
+msgid "UPG_FULL_POUCH_DESC"
+msgstr "One extra ammo for limited weapons."
+
+msgid "HUD_OBJECTIVE_DEFEND"
+msgstr "Hold out %d turns · Nest %d/%d"
+
+msgid "HUD_OBJECTIVE_DEFEND_1"
+msgstr "Hold out 1 turn · Nest %d/%d"
+
+msgid "HUD_OBJECTIVE_NEST"
+msgstr "Nest %d/%d"
+
+msgid "HUD_REPAIR"
+msgstr "Repair"
+
+msgid "HUD_REPAIR_TOOLTIP"
+msgstr "Weave new silk into the nest (T key)"
+
+msgid "HUD_SQUAD_FORESTRY_WORKER"
+msgstr "Foresters"
+
+msgid "STORY_BTN_NEST"
+msgstr "El Bolsó · silk %d"
+
+msgid "STORY_BTN_HUB"
+msgstr "Spend the silk"
+
+msgid "STORY_RESULT_SILK"
+msgstr "Silk earned: +%d"
+
+msgid "STORY_LABEL_RULES"
+msgstr "Special rules"
+
+msgid "STORY_RULE_DEFEND"
+msgstr "Defend the nest: hold out for %d turns without it running out of HP (%d points)."
+
+msgid "STORY_RULE_NEST_BOSS"
+msgstr "The nest counts too: if it runs out of HP (%d points), you lose."
+
+msgid "STORY_RULE_REPAIR"
+msgstr "Repair: next to the nest, the Repair button (T key) uses your action and gives it 40 HP. Blows hurt half as much inside the nest."
+
+msgid "STORY_RULE_COLD"
+msgstr "Cold: at the start of your turn, if you are outside the nest you lose HP. The Warm silk upgrade stops it."
+
+msgid "STORY_RULE_POLE"
+msgstr "Pole: an orange band shows where the pole will come down one turn later. It hurts anyone in it, and the nest too."
+
+msgid "STORY_MODE_DIG"
+msgstr "Dig: hold a direction against the soil. The tunnels you make are your path."
+
+msgid "STORY_MODE_FLY"
+msgstr "Flight: each tap of jump is a wing flap; hold it to glide."
+
+msgid "STORY_ENEMY_HOOPOE"
+msgstr "The hoopoe"
+
+msgid "STORY_ENEMY_BAT"
+msgstr "The bat"
+
+msgid "STORY_ENEMY_STONES"
+msgstr "Falling stones × %d"
+
+msgid "STORY_ENEMY_WATER"
+msgstr "Rising water"
+
+msgid "STORY_ENEMY_LAMPS"
+msgstr "Street lamps × %d"
+
+msgid "STORY_ENEMY_TRAPS"
+msgstr "Pheromone traps × %d"
+
+msgid "STORY_ENEMY_NIGHTJARS"
+msgstr "Nightjars × %d"
+
+msgid "STORY_REASON_NEST_SURVIVED"
+msgstr "You made it through the winter and the nest is still standing."
+
+msgid "STORY_REASON_NEST_DESTROYED"
+msgstr "The nest was torn to pieces. Try again!"
+
+msgid "STORY_REASON_METAMORPHOSIS"
+msgstr "You held out underground and the pupa turned into a moth. How wonderful!"
+
+msgid "STORY_REASON_EGGS_LAID"
+msgstr "You laid your eggs among the pine needles. The cycle starts again!"
+
+msgid "STORY_REASON_DIG_REACHED_GOAL"
+msgstr "You reached the safe chamber. Time to rest!"
+
+msgid "STORY_REASON_FLY_REACHED_GOAL"
+msgstr "You crossed the whole night without a scare."
+
+msgid "STORY_STAGE_NEST_FACT"
+msgstr "Processionaries spend the winter in a white silk nest woven on the sunny side of the pine. At night they come out to eat needles, and if it is too cold they stay inside. Tits peck them open and foresters take them down with a pole."
+
+msgid "STORY_STAGE_PUPA_FACT"
+msgstr "In spring the caterpillars come down the pine in procession, bury themselves a few centimetres deep and spin a cocoon. They spend months there as pupae, and some can even stay for a few years before coming out."
+
+msgid "STORY_STAGE_MOTH_FACT"
+msgstr "In summer, at night, the moths come out of the ground. They are grey, they do not eat and they live only a day or two. The females lay their eggs around two pine needles and cover them with scales from their bodies."
+
+msgid "STORY_HERO_NEST"
+msgstr "Cuca and her gang, snug together"
+
+msgid "STORY_HERO_PUPA"
+msgstr "Perleta, now a pupa"
+
+msgid "STORY_HERO_MOTH"
+msgstr "Perleta, a moth at last"
+
+msgid "BOSS_BRIGADE_FACT"
+msgstr "In winter foresters take nests down from the pines by cutting the branch with a long pole, because the stinging caterpillars hurt people. They mean no harm: they are just doing their job."
+
+msgid "BOSS_BRIGADE_ATTACKS"
+msgstr "He calls his crew, swings the pole over a marked band and fires cartridges at the nest. After every two attacks he runs out of breath and sits down: that is the time to hit him."
+
+msgid "NEST_HUB_TITLE"
+msgstr "El Bolsó"
+
+msgid "NEST_HUB_SUB"
+msgstr "Spend your silk on upgrades for the gang and the nest."
+
+msgid "NEST_HUB_SILK"
+msgstr "Silk: %d"
+
+msgid "NEST_HUB_COST"
+msgstr "%d silk"
+
+msgid "NEST_HUB_BUY"
+msgstr "Weave"
+
+msgid "NEST_HUB_NEED"
+msgstr "Need silk"
+
+msgid "NEST_HUB_OWNED"
+msgstr "Woven"
+
+msgid "NEST_HUB_HINT"
+msgstr "Every star won for the first time gives 6 silk. Each upgrade says which levels it works in."
+
+msgid "FT_PLAT2_DROWN"
+msgstr "Drowning!"
+
+msgid "PLAT_FLAP"
+msgstr "FLAP"
+
+msgid "PLAT_PAD_DIG"
+msgstr "Hold to dig"
+
+msgid "PLAT_HELP_DIG_KEYS"
+msgstr "Arrows or WASD to dig · Space for a little hop"
+
+msgid "PLAT_HELP_DIG_TOUCH"
+msgstr "Hold an arrow to dig · JUMP for a little hop"
+
+msgid "PLAT_HELP_FLY_KEYS"
+msgstr "Space to flap, hold it to glide · Arrows to steer"
+
+msgid "PLAT_HELP_FLY_TOUCH"
+msgstr "FLAP to beat your wings, hold it to glide · Arrows to steer"
+
+msgid "PLAT_BOSS_BAR_PUPA"
+msgstr "Metamorphosis in %d s"
+
+msgid "PLAT_BOSS_BAR_MOTH"
+msgstr "Egg-laying in %d s"
+
+msgid "PLAT_BOSS_INTRO_HOOPOE"
+msgstr "The hoopoe!"
+
+msgid "PLAT_BOSS_INTRO_BAT"
+msgstr "The bat!"
+
+msgid "PLAT_BOSS_HINT_HOOPOE"
+msgstr "Stay still and quiet: the hoopoe is listening"
+
+msgid "PLAT_BOSS_HINT_BAT"
+msgstr "Hide in the shadows when the bat calls"
+
+msgid "PLAT_BANNER_CHAMBER"
+msgstr "Safe at last! Sleep tight, Perleta."
+
+msgid "PLAT_BANNER_LANDED"
+msgstr "A lovely spot to rest your wings!"
+
+msgid "PLAT_BANNER_METAMORPHOSIS"
+msgstr "Metamorphosis done! Perleta has wings!"
+
+msgid "PLAT_BANNER_EGGS_LAID"
+msgstr "Eggs laid! They are safe and sound."
+
+msgid "PLAT_BANNER_CYCLE"
+msgstr "And the cycle begins again…"
+
+msgid "PLAT_REASON_METAMORPHOSIS"
+msgstr "You kept quiet and the chrysalis opened: now you have wings!"
+
+msgid "PLAT_REASON_EGGS_LAID"
+msgstr "You found shelter, laid your eggs, and the cycle begins again."
+
+msgid "PLAT_ENEMY_HOOPOE"
+msgstr "Hoopoe"
+
+msgid "PLAT_ENEMY_BAT"
+msgstr "Bat"
+
+msgid "UNIT_WILD_BOAR"
+msgstr "Wild boar"
+
+msgid "UNIT_CALOSOMA"
+msgstr "Calosoma beetle"
+
+msgid "FT_LINE_LOST"
+msgstr "%s has lost the line!"
+
+msgid "FT_LINE_REJOINED"
+msgstr "%s is back in line"
+
+msgid "FT_GOAL_REACHED"
+msgstr "Soft soil! The procession buries itself!"
+
+msgid "FT_BOAR_WARN"
+msgstr "Look out, a wild boar is coming!"
+
+msgid "DMG_BOAR"
+msgstr "Wild boar!"
+
+msgid "DMG_SPORES"
+msgstr "Spores!"
+
+msgid "DMG_SWOOP"
+msgstr "Swoop!"
+
+msgid "BOSS_CUCKOO_NAME"
+msgstr "The Cuckoo"
+
+msgid "BOSS_CUCKOO_TITLE"
+msgstr "The Cuckoo"
+
+msgid "BOSS_INTENT_SWOOP"
+msgstr "The Cuckoo swoops down on %s!"
+
+msgid "BOSS_INTENT_CUCKOO_GUST"
+msgstr "The Cuckoo beats its wings: get away!"
+
+msgid "BOSS_INTENT_CUCKOO_PERCH"
+msgstr "The Cuckoo looks for a branch to digest"
+
+msgid "FT_BOSS_SATED"
+msgstr "Stuffed! Hit it now!"
+
+msgid "HUD_OBJECTIVE_CONVOY"
+msgstr "Reach the soft soil · Followers %d/%d"
+
+msgid "HUD_MARCH"
+msgstr "March %d px"
+
+msgid "HUD_SQUAD_CONVOY"
+msgstr "The Procession"
+
+msgid "HUD_SQUAD_WILD_BOAR"
+msgstr "The Wild Boar"
+
+msgid "HUD_SQUAD_CALOSOMA"
+msgstr "The Calosoma"
+
+msgid "PROC_GOAL_SIGN"
+msgstr "Soft soil"
+
+msgid "PROC_BOAR_WARN"
+msgstr "The boar charges!"
+
+msgid "PROC_BOAR_WARN_N"
+msgstr "The boar charges in %d turns!"
+
+msgid "STORY_RULE_CONVOY"
+msgstr "Procession: you only control the leader; the others follow her by themselves. You win when the leader reaches the soft soil and lose if she falls."
+
+msgid "STORY_RULE_MARCH"
+msgstr "March: each turn you can walk up to %d px (the bar at the top)."
+
+msgid "STORY_RULE_LOST"
+msgstr "If a blow sends a follower more than 120 px from the line she gets lost (the \"?\"): walk back near her so she rejoins. Lost ones do not count for the stars."
+
+msgid "STORY_RULE_BOAR"
+msgstr "Wild boar: an orange band and an arrow warn you one turn before where it will charge. It cannot be chased off."
+
+msgid "STORY_RULE_SPORES"
+msgstr "Fungus: the green clouds hurt whoever is inside at the start of their turn and drift every round."
+
+msgid "STORY_RULE_MINI_BOSS"
+msgstr "You also win if you chase off the big enemy of this level."
+
+msgid "STORY_RESULT_FOLLOWERS"
+msgstr "Followers saved: %d of %d"
+
+msgid "STORY_REASON_PROCESSION_GOAL_REACHED"
+msgstr "The procession reached the soft soil. Time to bury yourselves!"
+
+msgid "STORY_REASON_PROCESSION_LOST"
+msgstr "The leader fell and the procession was lost. Try again!"
+
+msgid "STORY_REASON_PROCESSION_ELIMINATED_ENEMY"
+msgstr "You chased off the enemy and the way is clear."
+
+msgid "STORY_REASON_PROCESSION_BOSS_DEFEATED"
+msgstr "You chased off the cuckoo! The procession can go on in peace."
+
+msgid "STORY_REASON_GOAL_REACHED"
+msgstr "The procession reached the soft soil. Time to bury yourselves!"
+
+msgid "BOSS_CUCKOO_FACT"
+msgstr "The cuckoo (Cuculus canorus) is one of the few birds that eat hairy caterpillars like the processionaries: it arrives in spring and swallows them whole, hairs and all."
+
+msgid "BOSS_CUCKOO_ATTACKS"
+msgstr "It warns before every attack: a red circle marks the follower it will swoop on (two in the second phase) and its wing flap pushes the file. When it has stuffed itself it sits sated for a turn: only then is it vulnerable."
+
+msgid "FT_PLAT_STOMP"
+msgstr "Knocked out!"
+
+msgid "HUD_BTN_SIZE_SMALL"
+msgstr "Buttons: small"
+
+msgid "HUD_BTN_SIZE_NORMAL"
+msgstr "Buttons: normal"
+
+msgid "HUD_BTN_SIZE_LARGE"
+msgstr "Buttons: large"
+
+msgid "HUD_BTN_SIZE_TOOLTIP"
+msgstr "Changes the size of the touch buttons"
+
+msgid "UPG_TOUGH_SKIN_2_NAME"
+msgstr "Thick skin II"
+
+msgid "UPG_TOUGH_SKIN_2_DESC"
+msgstr "The squad has another 15 % more maximum HP on top of tier I."
+
+msgid "UPG_SHARP_HAIRS_2_NAME"
+msgstr "Sharp hairs II"
+
+msgid "UPG_SHARP_HAIRS_2_DESC"
+msgstr "Weapons do another 15 % more damage on top of tier I."
+
+msgid "UPG_EXTRA_HEART_NAME"
+msgstr "Silk heart"
+
+msgid "UPG_EXTRA_HEART_DESC"
+msgstr "One extra heart for the egg, the pupa and the moth."
+
+msgid "UPG_EXTRA_HEART_2_NAME"
+msgstr "Silk heart II"
+
+msgid "UPG_EXTRA_HEART_2_DESC"
+msgstr "Yet another heart on top of tier I."
+
+msgid "UPG_FAST_DIG_NAME"
+msgstr "Iron jaws"
+
+msgid "UPG_FAST_DIG_DESC"
+msgstr "The pupa digs a third faster."
+
+msgid "UPG_LONG_FLIGHT_NAME"
+msgstr "Long wings"
+
+msgid "UPG_LONG_FLIGHT_DESC"
+msgstr "The moth sinks at half the speed while gliding."
+
+msgid "UPG_WHERE_COMBAT"
+msgstr "Works in: combat levels"
+
+msgid "UPG_WHERE_NEST"
+msgstr "Works in: nest levels"
+
+msgid "UPG_WHERE_PLATFORM"
+msgstr "Works in: egg, pupa and moth levels"
+
+msgid "UPG_NEEDS"
+msgstr "Needs first: %s"
+
+msgid "TOUCH_AIM_BUTTON"
+msgstr "Aim"
+
+msgid "TOUCH_MOVE_BUTTON"
+msgstr "◀ Move"
+
+msgid "TOUCH_PHASE_MOVE"
+msgstr "Move"
+
+msgid "TOUCH_PHASE_AIM_HOLD"
+msgstr "Aim and hold FIRE"
+
+msgid "TOUCH_PHASE_AIM_TAP"
+msgstr "Aim and tap FIRE"
+
+msgid "TOUCH_PHASE_TARGET"
+msgstr "Tap the map to set the target"
+
+msgid "HUD_OBJECTIVE_REACH"
+msgstr "Reach the branch"
+
+msgid "HUD_OBJECTIVE_RESCUE"
+msgstr "Rescue your sister"
+
+msgid "HUD_OBJECTIVE_COLLECT"
+msgstr "Pine nuts: %d/%d"
+
+msgid "HUD_OBJECTIVE_AMMO"
+msgstr "Ammo: %d"
+
+msgid "HUD_OBJECTIVE_HIDE"
+msgstr "Hide · Rounds: %d"
+
+msgid "HUD_OBJECTIVE_HIDE_1"
+msgstr "Hide · Last round"
+
+msgid "HUD_OBJECTIVE_ANTHILL"
+msgstr "Anthill: %d%% · Waves: %d"
+
+msgid "HUD_OBJECTIVE_TURNS_LEFT"
+msgstr "· Rounds: %d"
+
+msgid "GOAL_BRANCH_SIGN"
+msgstr "Branch"
+
+msgid "FT_BRANCH_REACHED"
+msgstr "You reached the branch!"
+
+msgid "FT_SISTER_FREED"
+msgstr "%s is free!"
+
+msgid "FT_SISTER_SAFE"
+msgstr "The gang is whole again!"
+
+msgid "FT_ANTHILL_HIT"
+msgstr "Anthill -%d"
+
+msgid "FT_ANTHILL_DOWN"
+msgstr "The anthill collapses!"
+
+msgid "FT_NUT_COLLECTED"
+msgstr "Pine nut %d/%d"
+
+msgid "FT_NUTS_DONE"
+msgstr "Storeroom full!"
+
+msgid "FT_NUTS_LOST"
+msgstr "Too many pine nuts are lost"
+
+msgid "FT_OUT_OF_AMMO"
+msgstr "No shots left!"
+
+msgid "FT_TIME_UP"
+msgstr "You ran out of time!"
+
+msgid "STORY_REASON_REACHED"
+msgstr "A caterpillar reached the branch. What a view!"
+
+msgid "STORY_REASON_RESCUED"
+msgstr "Your sister is with you. The gang is whole again!"
+
+msgid "STORY_REASON_ANTHILL_DESTROYED"
+msgstr "You blew up the anthill: no more ants will come out!"
+
+msgid "STORY_REASON_COLLECTED"
+msgstr "You gathered enough pine nuts for the winter."
+
+msgid "STORY_REASON_TIME_UP"
+msgstr "Time ran out before you made it. Try again!"
+
+msgid "STORY_REASON_OUT_OF_AMMO"
+msgstr "You have no shots left and the ant is still there. Try again!"
+
+msgid "STORY_REASON_NUTS_LOST"
+msgstr "Too many pine nuts were lost to reach the amount. Try again!"
+
+msgid "STORY_RULE_REACH"
+msgstr "Branch: you win when a single caterpillar gets there. You have %d rounds; silk softens falls and bridges gaps."
+
+msgid "STORY_RULE_RESCUE"
+msgstr "Rescue: when a caterpillar touches your sister's cocoon she joins the gang and you win. You have %d rounds."
+
+msgid "STORY_RULE_COLLECT"
+msgstr "Pine nuts: there are %d on the map and you need %d, within %d rounds. Enemies cannot pick them up."
+
+msgid "STORY_RULE_ONE_SHOT"
+msgstr "One good shot: the enemy is sheltered by the terrain and does not move. If you run out of shots while it is alive, you lose."
+
+msgid "STORY_RULE_ANTHILL"
+msgstr "Anthill: it has %d HP. Explosions hurt it, and at 0 you win at once."
+
+msgid "STORY_RULE_BARRELS_ANTHILL"
+msgstr "Barrels: there are %d next to the anthill. A nearby blast sets them off and hurts it."
+
+msgid "STORY_RULE_BARRELS"
+msgstr "Barrels: there are %d next to the enemies. When one blows up it sets off its neighbours."
+
+msgid "STORY_RULE_MINES"
+msgstr "Mines: there are %d on the way. They go off when anyone comes close, enemies included."
+
+msgid "STORY_RULE_WIND"
+msgstr "Strong wind: the wind is %d %% stronger than usual and throws your shots off."
+
+msgid "STORY_RULE_TIDE"
+msgstr "Tide: the water rises every round from round %d on."
+
+msgid "STORY_RULE_SUPPLY"
+msgstr "Supplies: crates with weapons and health drop from the sky."
+
+msgid "STORY_RULE_HIDE"
+msgstr "Hiding: end your turn on a needle tuft and you hide. An ant that stops close by finds you."
+
+msgid "STAGECARD_KICKER"
+msgstr "How to play"
+
+msgid "STAGECARD_LABEL_GOAL"
+msgstr "The goal"
+
+msgid "STAGECARD_LABEL_CONTROLS"
+msgstr "Controls"
+
+msgid "STAGECARD_LABEL_KEYS"
+msgstr "Keyboard"
+
+msgid "STAGECARD_LABEL_TIPS"
+msgstr "Tips"
+
+msgid "STAGECARD_BTN_OK"
+msgstr "Got it!"
+
+msgid "STAGECARD_HELP_TOOLTIP"
+msgstr "How this stage is played"
+
+msgid "STAGECARD_CAP_MOVE"
+msgstr "Walk"
+
+msgid "STAGECARD_CAP_RUN"
+msgstr "Run"
+
+msgid "STAGECARD_CAP_JUMP"
+msgstr "Jump"
+
+msgid "STAGECARD_CAP_JUMP_FWD"
+msgstr "Jump ahead"
+
+msgid "STAGECARD_CAP_FLIP"
+msgstr "Backflip"
+
+msgid "STAGECARD_CAP_AIM"
+msgstr "Switch to aiming"
+
+msgid "STAGECARD_CAP_FIRE"
+msgstr "Hold, then release"
+
+msgid "STAGECARD_CAP_PASS"
+msgstr "End your turn"
+
+msgid "STAGECARD_CAP_SWITCH"
+msgstr "Next caterpillar"
+
+msgid "STAGECARD_CAP_REPAIR"
+msgstr "Mend the nest"
+
+msgid "STAGECARD_CAP_MARCH"
+msgstr "March"
+
+msgid "STAGECARD_CAP_DIG"
+msgstr "Hold to dig"
+
+msgid "STAGECARD_CAP_HOP"
+msgstr "A little hop"
+
+msgid "STAGECARD_CAP_STEER"
+msgstr "Steer"
+
+msgid "STAGECARD_CAP_FLAP"
+msgstr "Flap; hold to glide"
+
+msgid "STAGECARD_EGG_KIND"
+msgstr "Real-time platformer"
+
+msgid "STAGECARD_EGG_GOAL"
+msgstr "Reach the sunny spot before the ants catch you."
+
+msgid "STAGECARD_EGG_TIP1"
+msgstr "Hide in a needle tuft: stay still and the ants cannot see you."
+
+msgid "STAGECARD_EGG_TIP2"
+msgstr "Pick up sap drops on the way: they make you grow a little."
+
+msgid "STAGECARD_EGG_TIP3"
+msgstr "Jump on an ant and you knock it out!"
+
+msgid "STAGECARD_EGG_KEYS"
+msgstr "Arrows or A/D: run · Space: jump (hold it to jump higher)"
+
+msgid "STAGECARD_LARVA_EARLY_KIND"
+msgstr "Turn-based battle"
+
+msgid "STAGECARD_LARVA_EARLY_GOAL"
+msgstr "Every level has its own challenge: drive off ants, reach a branch, rescue a sister..."
+
+msgid "STAGECARD_LARVA_EARLY_TIP1"
+msgstr "On your turn, move (Jump or Backflip to cross obstacles), then tap Aim."
+
+msgid "STAGECARD_LARVA_EARLY_TIP2"
+msgstr "Pick a weapon, drag to aim and hold FIRE to charge the power. Let go to shoot!"
+
+msgid "STAGECARD_LARVA_EARLY_TIP3"
+msgstr "The wind bends your shots. Pass ends your turn, and Caterpillar ⇄ switches caterpillar."
+
+msgid "STAGECARD_LARVA_EARLY_KEYS"
+msgstr "Arrows: walk and aim · Enter: jump · Backspace: backflip · Space (hold): fire · Tab: next caterpillar · N: pass"
+
+msgid "STAGECARD_LARVA_KIND"
+msgstr "Turn-based battle, tougher"
+
+msgid "STAGECARD_LARVA_GOAL"
+msgstr "Drive off the enemies, gather pine nuts, land one good shot or blow up barrels... The Great Tit waits at the end."
+
+msgid "STAGECARD_LARVA_TIP1"
+msgstr "The same controls as before, but with stingier hairs and new weapons."
+
+msgid "STAGECARD_LARVA_TIP2"
+msgstr "Birds attack from the sky: they hover for a moment before swooping. Use it!"
+
+msgid "STAGECARD_LARVA_TIP3"
+msgstr "You are a gang: switch caterpillar and pick the one with the best shot."
+
+msgid "STAGECARD_LARVA_KEYS"
+msgstr "Arrows: walk and aim · Enter: jump · Backspace: backflip · Space (hold): fire · Tab: next caterpillar · N: pass"
+
+msgid "STAGECARD_NEST_KIND"
+msgstr "Turn-based nest defence"
+
+msgid "STAGECARD_NEST_GOAL"
+msgstr "Keep the silk nest standing: if its HP runs out, you lose. At the end, send the Foreman away."
+
+msgid "STAGECARD_NEST_TIP1"
+msgstr "Stand next to the nest and tap Repair: it uses your action and gives it HP. Inside, blows hurt half as much."
+
+msgid "STAGECARD_NEST_TIP2"
+msgstr "It is cold! Outside the nest you lose HP, unless you own the Warm silk upgrade."
+
+msgid "STAGECARD_NEST_TIP3"
+msgstr "The foresters' pole hits a band: an orange stripe shows where it will land, one turn ahead."
+
+msgid "STAGECARD_NEST_KEYS"
+msgstr "Arrows: walk and aim · Enter: jump · Space (hold): fire · T: repair · Tab: next caterpillar · N: pass"
+
+msgid "STAGECARD_PROCESSION_KIND"
+msgstr "Turn-based march in a line"
+
+msgid "STAGECARD_PROCESSION_GOAL"
+msgstr "Lead the front caterpillar to the soft soil to bury yourselves: you win there."
+
+msgid "STAGECARD_PROCESSION_TIP1"
+msgstr "You only control the leader: the others follow her silk thread."
+
+msgid "STAGECARD_PROCESSION_TIP2"
+msgstr "Each turn you can walk as far as the bar on top shows. A follower left too far behind gets lost: walk back near her!"
+
+msgid "STAGECARD_PROCESSION_TIP3"
+msgstr "Watch out for the boar, the fungus clouds and the calosoma."
+
+msgid "STAGECARD_PROCESSION_KEYS"
+msgstr "Arrows: walk · Enter: jump · Space (hold): fire · C: silk thread · N: pass"
+
+msgid "STAGECARD_PUPA_KIND"
+msgstr "Underground platformer: digging"
+
+msgid "STAGECARD_PUPA_GOAL"
+msgstr "Dig your way to the safe chamber."
+
+msgid "STAGECARD_PUPA_TIP1"
+msgstr "Hold an arrow against the soil: the tunnels you dig are your path."
+
+msgid "STAGECARD_PUPA_TIP2"
+msgstr "Stones fall when you dig the soil under them: do not walk under them!"
+
+msgid "STAGECARD_PUPA_TIP3"
+msgstr "Digging is noisy and the hoopoe listens: stay still and it will not hear you. If water rises, keep moving!"
+
+msgid "STAGECARD_PUPA_KEYS"
+msgstr "Arrows or WASD: dig · Space: a little hop"
+
+msgid "STAGECARD_MOTH_KIND"
+msgstr "Night-flight platformer"
+
+msgid "STAGECARD_MOTH_GOAL"
+msgstr "Fly to the end of the way, dodging lamps, traps and nightjars."
+
+msgid "STAGECARD_MOTH_TIP1"
+msgstr "Each tap of FLAP is a wing beat. Hold it down to glide and fall more slowly."
+
+msgid "STAGECARD_MOTH_TIP2"
+msgstr "Lamps pull you in: flap the other way. A trap sends you back to the last flag."
+
+msgid "STAGECARD_MOTH_TIP3"
+msgstr "Hide in the shadows: nobody can see you inside."
+
+msgid "STAGECARD_MOTH_KEYS"
+msgstr "Arrows: steer · Space: flap (hold it to glide)"
+
+msgid "STORY_RESULT_SILK_GAIN"
+msgstr "+%d silk"
+
+msgid "STORY_RESULT_SILK_TOTAL"
+msgstr "You now have %d to spend in El Bolsó"
+
+msgid "STORY_RESULT_SILK_NONE"
+msgstr "You already have this level's stars: no new silk."
+
+msgid "STORY_RESULT_SILK_BEST"
+msgstr "Best: %d ★. Beat it to earn more silk."
+
+msgid "SILK_PART_WIN"
+msgstr "Victory +%d"
+
+msgid "SILK_PART_STARS"
+msgstr "New stars ×%d: +%d"
+
+msgid "SILK_PART_BOSS"
+msgstr "Stage boss +%d"
+

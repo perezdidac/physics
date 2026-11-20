@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="2_unit"]
+[ext_resource type="Resource" path="res://data/units/larva_l5.tres" id="u_l5"]
+[ext_resource type="Resource" path="res://data/units/calosoma.tres" id="u_calosoma"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="u_ant"]
+
+[resource]
+script = ExtResource("1_level")
+id = "proc_3"
+stage = "PROCESSION"
+order = 26
+playable = true
+mode = "COMBAT"
+title_key = "LVL_PROC_3_TITLE"
+intro_key = "LVL_PROC_3_INTRO"
+goal_key = "LVL_PROC_3_GOAL"
+tip_key = "LVL_PROC_3_TIP"
+map_idx = 6
+background_key = "garrotxa_volcans"
+seed = 7176
+arena_width = 2200.0
+hiding_spots = 0
+turn_time = 30.0
+ai_difficulty = "ROOKIE"
+wind_scale = 1.0
+abilities = Array[String](["SILK_WEB"])
+player_unit = ExtResource("u_l5")
+player_names = Array[String](["Pelussa", "Flocs", "Fileta", "Brins", "Borrissol"])
+enemy_unit = ExtResource("u_calosoma")
+enemy_count = 0
+enemy_units = Array[ExtResource("2_unit")]([ExtResource("u_calosoma"), ExtResource("u_ant")])
+enemy_counts = Array[int]([1, 2])
+player_arsenal = {"URTICARIA": -1}
+enemy_arsenal = {"MOSSEGADA": -1}
+use_unlocked = true
+win_rule = "CONVOY"
+survive_rounds = 0
+goal_x = 2550.0
+goal_radius = 80.0
+march_budget = 420.0
+spores = Array[Rect2]([])
+spore_drift = Array[float]([])
+boar_rounds = Array[int]([])
+mini_boss = "CALOSOMA"
+star_survivors = Array[int]([4, 5])
+unlocks = Array[String](["HOLY"])

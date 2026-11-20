@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MapDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/map_def.gd" id="1_v668y"]
+
+[resource]
+script = ExtResource("1_v668y")
+id = "CASTELLFOLLIT"
+name_key = "MAP_CASTELLFOLLIT_NAME"
+subtitle_key = "MAP_CASTELLFOLLIT_SUBTITLE"
+badge_key = "MAP_CASTELLFOLLIT_BADGE"
+background_key = "castellfollit"
+weather = "AUTUMN_LEAVES"
+slide_friction = 0.966
+sky = PackedColorArray(0.16862746, 0.11372549, 0.10980392, 1, 0.3882353, 0.23529412, 0.18039216, 1, 0.65882355, 0.40392157, 0.24313726, 1, 0.87058824, 0.627451, 0.3529412, 1, 0.96862745, 0.84705883, 0.6117647, 1)
+water_top = Color(0.17254902, 0.41568628, 0.4392157, 0.82)
+water_deep = Color(0.05490196, 0.13333334, 0.14901961, 0.98)
+turf_col = Color(0.4627451, 0.40784314, 0.18039216, 1)
+soil_col = Color(0.3372549, 0.20392157, 0.14901961, 1)
+rock_col = Color(0.2509804, 0.24313726, 0.26666668, 1)
+tree_style = "UMBRELLA_PINE"
+preferred_texture = "BASALT_COLUMNS"

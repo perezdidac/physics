@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="256" height="256">
+<defs>
+<radialGradient id="back" cx="0.35" cy="0.25" r="0.9"><stop offset="0" stop-color="#7f9c3e"/><stop offset="1" stop-color="#4c6a22"/></radialGradient><radialGradient id="belly" cx="0.4" cy="0.25" r="0.9"><stop offset="0" stop-color="#fbe97a"/><stop offset="0.6" stop-color="#f2cb2a"/><stop offset="1" stop-color="#c9961a"/></radialGradient><radialGradient id="wing" cx="0.3" cy="0.3" r="1.0"><stop offset="0" stop-color="#6f86ab"/><stop offset="1" stop-color="#475d80"/></radialGradient><radialGradient id="wingd" cx="0.3" cy="0.3" r="1.0"><stop offset="0" stop-color="#475d80"/><stop offset="1" stop-color="#2a3850"/></radialGradient><radialGradient id="head" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dcdacb"/></radialGradient>
+</defs>
+<ellipse cx="56.0" cy="62.93333333333333" rx="21.866666666666664" ry="10.133333333333333" fill="url(#wing)" stroke="#10131c" stroke-width="3.2" transform="rotate(7 56.0 62.93333333333333)"/><path d="M48.0 57.6 L61.3 60.8" stroke="#fff" stroke-width="3.6" stroke-linecap="round" opacity="0.85"/><path d="M38.0 66.93333333333334 Q56.0 73.93333333333334 74.0 66.93333333333334" stroke="#000" stroke-width="1.6" fill="none" opacity="0.2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="1_unit"]
+
+[resource]
+script = ExtResource("1_unit")
+id = "LARVA_L2"
+name_key = "UNIT_LARVA_L2"
+max_hp = 60
+radius = 10.5
+speed_mult = 0.9
+can_jump = true
+can_hide = false
+ai = "CATERPILLAR"
+art_scale = 0.88

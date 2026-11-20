@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="256" height="256">
+<defs></defs>
+<path d="M93.69,48 C92.77,44.26 93.23,30.34 93.69,25.54 C94.15,20.74 95.53,19.2 96.45,19.2 C97.37,19.2 98.75,20.74 99.21,25.54 C99.67,30.34 100.13,44.26 99.21,48 C98.29,51.74 94.61,51.74 93.69,48 Z" fill="#ec8d3b" stroke="#2a1a10" stroke-width="1.6" stroke-opacity="1" stroke-linejoin="round" stroke-linecap="round" /><polygon points="93.97,25.54 96.45,19.2 98.93,25.54" fill="#150f0f" stroke="#2a1a10" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" /><polyline points="95.35,46 95.35,27.84" fill="none" stroke="#ffd7a0" stroke-width="1.2" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

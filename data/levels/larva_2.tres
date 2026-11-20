@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="LevelDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/level_def.gd" id="1_level"]
+[ext_resource type="Resource" path="res://data/units/ant.tres" id="u_ant"]
+[ext_resource type="Resource" path="res://data/units/larva_l1.tres" id="u_l1"]
+
+[resource]
+script = ExtResource("1_level")
+id = "larva_2"
+stage = "LARVA_EARLY"
+order = 7
+playable = true
+mode = "COMBAT"
+title_key = "LVL_LARVA_2_TITLE"
+intro_key = "LVL_LARVA_2_INTRO"
+goal_key = "LVL_LARVA_2_GOAL"
+tip_key = "LVL_LARVA_2_TIP"
+map_idx = 3
+background_key = "collserola_barcelona"
+seed = 4223
+arena_width = 1000.0
+hiding_spots = 0
+turn_time = 30.0
+ai_difficulty = "ROOKIE"
+wind_scale = 1.6
+abilities = Array[String](["SILK_WEB"])
+player_unit = ExtResource("u_l1")
+player_names = Array[String](["Pelussa", "Flocs", "Fileta"])
+enemy_unit = ExtResource("u_ant")
+enemy_count = 2
+player_arsenal = {"URTICARIA": -1}
+enemy_arsenal = {"MOSSEGADA": -1}
+use_unlocked = true
+win_rule = "REACH"
+survive_rounds = 8
+goal_frac = 0.88
+goal_radius = 60.0
+star_survivors = Array[int]([2, 3])
+unlocks = Array[String](["FUET"])

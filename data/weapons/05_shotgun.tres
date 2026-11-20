@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_wkygs"]
+
+[resource]
+script = ExtResource("1_wkygs")
+id = "SHOTGUN"
+key = "6"
+name_key = "WPN_SHOTGUN"
+type = "INSTANT"
+blast_r = 28.0
+max_dmg = 38.0
+knockback = 440.0

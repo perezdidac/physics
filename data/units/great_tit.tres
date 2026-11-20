@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="1_unit"]
+
+[resource]
+script = ExtResource("1_unit")
+id = "GREAT_TIT"
+name_key = "UNIT_GREAT_TIT"
+max_hp = 60
+radius = 15.0
+speed_mult = 1.0
+can_jump = false
+can_hide = false
+ai = "FLYER"
+flies = true
+art_scale = 1.0
+melee_weapon = "PICOTADA_FORTA"

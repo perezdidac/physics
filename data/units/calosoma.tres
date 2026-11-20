@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UnitDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/unit_def.gd" id="1_unit"]
+
+[resource]
+script = ExtResource("1_unit")
+id = "CALOSOMA"
+name_key = "UNIT_CALOSOMA"
+max_hp = 120
+radius = 12.0
+speed_mult = 1.8
+can_jump = true
+can_hide = false
+ai = "MELEE_CRITTER"
+art_scale = 1.4
+melee_weapon = "MOSSEGADA"
+melee_damage = 20

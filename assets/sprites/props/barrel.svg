@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="256" height="256">
+<defs>
+<linearGradient id="body" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0" stop-color="#4a140f"/><stop offset="0.22" stop-color="#9c2f22"/><stop offset="0.42" stop-color="#d4543c"/><stop offset="0.6" stop-color="#a83426"/><stop offset="1" stop-color="#3a0f0b"/></linearGradient>
+<linearGradient id="band" x1="0" x2="1"><stop offset="0" stop-color="#1e2228"/><stop offset="0.4" stop-color="#6b7480"/><stop offset="0.55" stop-color="#9aa3ad"/><stop offset="1" stop-color="#1a1d22"/></linearGradient>
+<radialGradient id="top" cx="0.45" cy="0.4" r="0.6"><stop offset="0" stop-color="#c94a35"/><stop offset="1" stop-color="#5e1a12"/></radialGradient>
+<radialGradient id="shadow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000" stop-opacity="0.45"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+</defs>
+<ellipse cx="64" cy="118" rx="38" ry="7" fill="url(#shadow)"/>
+<path d="M30 22 Q28 64 30 108 Q64 122 98 108 Q100 64 98 22 Z" fill="url(#body)" stroke="#2a0d09" stroke-width="3" stroke-linejoin="round"/>
+<path d="M29 40 Q64 52 99 40 L99 48 Q64 60 29 48 Z" fill="url(#band)" stroke="#121417" stroke-width="1.5"/>
+<path d="M29 84 Q64 96 99 84 L99 92 Q64 104 29 92 Z" fill="url(#band)" stroke="#121417" stroke-width="1.5"/>
+<ellipse cx="64" cy="22" rx="34" ry="9" fill="url(#top)" stroke="#2a0d09" stroke-width="3"/>
+<ellipse cx="64" cy="22" rx="27" ry="6" fill="none" stroke="#3a100b" stroke-width="2" opacity="0.7"/>
+<circle cx="78" cy="21" r="4" fill="#2d3138" stroke="#8a929c" stroke-width="1.2"/>
+<path d="M64 56 L78 70 L64 84 L50 70 Z" fill="#f3c66f" stroke="#3b2208" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M64 62 L66 72 L62 72 Z M63 75 h2 v3 h-2 Z" fill="#3b2208"/>
+<path d="M46 28 Q44 64 46 104" stroke="#ffd0b8" stroke-width="4" stroke-linecap="round" opacity="0.35" fill="none"/>
+<path d="M40 60 q3 4 1 9 M86 30 q2 6 -1 10 M80 100 q4 -2 6 1" stroke="#2a0d09" stroke-width="1.4" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M36 104 q6 3 9 0 q4 4 8 1" stroke="#5a2a10" stroke-width="2.5" opacity="0.55" fill="none" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponDef" format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_def.gd" id="1_45xv6"]
+
+[resource]
+script = ExtResource("1_45xv6")
+id = "BAT"
+key = "8"
+name_key = "WPN_BAT"
+type = "MELEE"
+max_dmg = 34.0
+knockback = 690.0
+reach = 48.0
