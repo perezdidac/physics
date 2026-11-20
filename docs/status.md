@@ -14,7 +14,7 @@ How the game is built and where we are. **Update this file in every commit.**
   | Ou | egg_1–4 + wasp | real-time platformer | `platform/` |
   | Pelussa | larva_1–5 + tachinid fly | turn-based | `combat/` |
   | Cuca | cuca_1–6 + great tit | turn-based | `combat/` |
-  | El Bolsó | nest_1–4 + forestry brigade | turn-based, defend the nest, with the hub and upgrades bought with silk (12 upgrades, 6 silk per star, economy in `story_mode.md` section 9; platform upgrades EXTRA_HEART, FAST_DIG, LONG_FLIGHT work in the egg, pupa and moth levels) | `combat/` |
+  | El Bolsó | nest_1–4 + forestry brigade | turn-based, defend the nest, with the hub and upgrades bought with silk (12 upgrades; silk per won level = 5 + 5 per star, + 15 on a boss; economy in `story_mode.md` section 9; platform upgrades EXTRA_HEART, FAST_DIG, LONG_FLIGHT work in the egg, pupa and moth levels) | `combat/` |
   | La Processó | proc_1–5 + cuckoo | turn-based convoy | `combat/` |
   | La Crisàlide | pupa_1–3 + hoopoe | real-time digging | `platform/` |
   | La Papallona | moth_1–3 + bat | real-time night flight | `platform/` |
@@ -37,7 +37,7 @@ How the game is built and where we are. **Update this file in every commit.**
     - Closer story camera (`CameraRig.STORY_USER_ZOOM` 1.95), pinch/wheel zoom 0.5–2.5; closer platformer camera on touch devices.
     - Catalan-style music: 15 baked loops (`tools/bake_music*.gd`, `core/sound/music_table.gd`) chosen by screen, stage and boss.
     - Egg stomp: landing on an ant knocks it out (`docs/platform_contracts.md` §8).
-    - Silk economy: 12 upgrades, 600 silk, 6 silk per star; the hub opens from the first star.
+    - Silk economy: 12 upgrades, 600 silk; a won level pays 5 + 5 per star (+ 15 on a boss), only for its best result (shop affordable at level 27 with 3 stars, 34 with 2); the results screen shows a "+N silk" chip with a count-up (or "no new silk" on a replay); the hub opens from the first star. The hub list drags from anywhere (cards, buy buttons; a drag never buys), wheel and focus scroll it (`tests/test_silk_shop.gd`).
     - Terrace stone drawn as masonry instead of the JS checkerboard; lighter clouds.
   - **Open:**
     - Balance is untested by humans. The CPU loses most turn-based boss levels because it doesn't use the vulnerable windows, while the defend levels are easy for it.

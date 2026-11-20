@@ -2572,3 +2572,24 @@ msgstr "Hide in the shadows: nobody can see you inside."
 msgid "STAGECARD_MOTH_KEYS"
 msgstr "Arrows: steer · Space: flap (hold it to glide)"
 
+msgid "STORY_RESULT_SILK_GAIN"
+msgstr "+%d silk"
+
+msgid "STORY_RESULT_SILK_TOTAL"
+msgstr "You now have %d to spend in El Bolsó"
+
+msgid "STORY_RESULT_SILK_NONE"
+msgstr "You already have this level's stars: no new silk."
+
+msgid "STORY_RESULT_SILK_BEST"
+msgstr "Best: %d ★. Beat it to earn more silk."
+
+msgid "SILK_PART_WIN"
+msgstr "Victory +%d"
+
+msgid "SILK_PART_STARS"
+msgstr "New stars ×%d: +%d"
+
+msgid "SILK_PART_BOSS"
+msgstr "Stage boss +%d"
+

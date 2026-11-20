@@ -37,6 +37,7 @@ SOURCES = [
     "docs/i18n_keys_touchphases.md",
     "docs/i18n_keys_levels2.md",
     "docs/i18n_keys_stages.md",
+    "docs/i18n_keys_silk2.md",
 ]
 KEY_RE = re.compile(r"[A-Z][A-Z0-9_]+")
 PLACEHOLDER_RE = re.compile(r"%[-+ #0]*\d*(?:\.\d+)?[sdifxc]")

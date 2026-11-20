@@ -182,27 +182,27 @@ func _run_hub() -> void:
 	StoryProgress.reset_progress()
 	for id in ["egg_1", "egg_2", "egg_3"]:
 		StoryProgress.record_result({"level_id": id, "won": true, "stars": 3})
-	_check(StoryProgress.silk() == 54, "54 silk for nine stars")
+	_check(StoryProgress.silk() == 60, "60 silk for three 3-star levels (5 + 3 x 5 each)")
 	var hub: Control = (load("res://ui/story/NestHub.tscn") as PackedScene).instantiate()
 	hub.go_callable = func(target: String) -> void: routed.append(target)
 	add_child(hub)
 	await _frames(4)
 	_check(hub.cards.size() == StoryProgress.upgrades().size() and hub.cards.size() == 12, "hub shows a card for every upgrade (%d)" % hub.cards.size())
-	_check(hub.silk_label.text.contains("54") and not hub.silk_label.text.begins_with("NEST_"), "hub shows the silk counter (%s)" % hub.silk_label.text)
+	_check(hub.silk_label.text.contains("60") and not hub.silk_label.text.begins_with("NEST_"), "hub shows the silk counter (%s)" % hub.silk_label.text)
 	var cheap: UpgradeDef = null
 	var dear: UpgradeDef = null
 	for u in StoryProgress.upgrades():
-		if u.cost <= 54 and u.requires == "" and cheap == null:
+		if u.cost <= 60 and u.requires == "" and cheap == null:
 			cheap = u
-		if u.cost > 54 and u.requires == "" and dear == null:
+		if u.cost > 60 and u.requires == "" and dear == null:
 			dear = u
-	_check(cheap != null and hub.buy_buttons.has(cheap.id) and not (hub.buy_buttons[cheap.id] as ChamferButton).disabled, "an affordable upgrade has an enabled buy button")
+	_check(cheap != null and hub.buy_buttons.has(cheap.id) and not bool(hub.buy_buttons[cheap.id].get("disabled")), "an affordable upgrade has an enabled buy button")
 	if dear != null:
-		_check(hub.buy_buttons.has(dear.id) and (hub.buy_buttons[dear.id] as ChamferButton).disabled and not hub.buy(dear.id), "an unaffordable upgrade is disabled and cannot be bought")
+		_check(hub.buy_buttons.has(dear.id) and bool(hub.buy_buttons[dear.id].get("disabled")) and not hub.buy(dear.id), "an unaffordable upgrade is disabled and cannot be bought")
 	_check(hub.buy(cheap.id), "buying %s works" % cheap.id)
 	await _frames(4)
-	_check(StoryProgress.owns(cheap.id) and StoryProgress.silk() == 54 - cheap.cost and not hub.buy_buttons.has(cheap.id), "the upgrade is owned, the silk went down and its card shows 'owned'")
-	_check(hub.silk_label.text.contains(str(54 - cheap.cost)), "the counter follows the purchase")
+	_check(StoryProgress.owns(cheap.id) and StoryProgress.silk() == 60 - cheap.cost and not hub.buy_buttons.has(cheap.id), "the upgrade is owned, the silk went down and its card shows 'owned'")
+	_check(hub.silk_label.text.contains(str(60 - cheap.cost)), "the counter follows the purchase")
 	_check(not hub.buy(cheap.id), "an owned upgrade cannot be bought twice")
 	var texts: Array[String] = []
 	_collect_labels(hub, texts)
@@ -287,10 +287,11 @@ func _run_cards_and_results() -> void:
 	res.go_callable = func(target: String) -> void: routed.append(target)
 	add_child(res)
 	await _frames(3)
-	_check(res.silk_earned == 12 and res.hub_button != null, "results: 12 silk for two new stars and a button to the hub")
+	_check(res.silk_earned == 15 and res.hub_button != null, "results: 15 silk for a 2-star win (5 + 2 x 5) and a button to the hub")
+	await get_tree().create_timer(res.SILK_COUNT_DELAY + res.SILK_COUNT_TIME + 0.1).timeout
 	var texts: Array[String] = []
 	_collect_labels(res, texts)
-	_check("\n".join(texts).contains(UiUtil.fmt("STORY_RESULT_SILK", [12])), "results show the silk earned")
+	_check("\n".join(texts).contains(UiUtil.fmt("STORY_RESULT_SILK_GAIN", [15])), "results show the silk earned")
 	_check(res.reason_text("SURVIVED") == tr("STORY_REASON_NEST_SURVIVED") and res.reason_text("NEST_DESTROYED") == tr("STORY_REASON_NEST_DESTROYED"), "nest levels have their own end reasons")
 	res.open_hub()
 	_check(routed.back() == "nest_hub", "results open the hub")

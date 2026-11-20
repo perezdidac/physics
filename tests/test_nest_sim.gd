@@ -680,27 +680,72 @@ func _shot_damage(sim: CombatSim) -> float:
 
 ## The shop must be affordable but not trivial: 3 stars everywhere buys everything, about 2 stars does not, and the first prices fit the
 ## silk of the first stage (docs/story_mode.md, economy).
+## The silk economy against the real level list and shop (docs/story_mode.md section 9): a 3-star player affords the whole shop around
+## level 26-28, a 2-star player around 34-35 (two or three levels before the last), and a 1-star player has the essentials by the middle.
 func _economy() -> void:
+	var levels: Array[LevelDef] = StoryProgress.levels()
+	var bosses: Array[String] = []
+	for level in levels:
+		if StoryProgress.is_boss_level(level.id):
+			bosses.append(level.id)
+	_check(levels.size() == 37 and bosses.size() == 7, "37 levels, 7 of them bosses (%d, %d)" % [levels.size(), bosses.size()])
+	_check(StoryProgress.level_silk("egg_1", 0) == 0 and StoryProgress.level_silk("egg_1", 1) == 10 and StoryProgress.level_silk("egg_1", 3) == 20 and StoryProgress.level_silk("egg_boss", 2) == 30, "a level is worth win 5 + 5 per star, + 15 on a boss (0 when not won)")
 	var total: int = StoryProgress.shop_total()
-	var max_silk: int = StoryProgress.silk_max()
-	_check(max_silk == 37 * 3 * 6 and StoryProgress.levels().size() == 37, "37 levels x 3 stars x 6 silk = 666 silk in all (%d)" % max_silk)
-	_check(total >= 560 and total <= 640 and total <= max_silk, "the whole shop costs about 600 silk (%d) and fits in the maximum (%d)" % [total, max_silk])
-	var two_stars: int = 37 * 2 * StoryProgress.SILK_PER_STAR
-	_check(two_stars < total, "with 2 stars on average (%d silk) the player cannot buy everything (%d)" % [two_stars, total])
-	var cheapest: int = 9999
+	var curves: Dictionary = {}
+	var full_at: Dictionary = {}
+	for n in [1, 2, 3]:
+		curves[n] = StoryProgress.silk_curve(n)
+		full_at[n] = _first_level_reaching(curves[n], total)
+	print("INFO  economy: shop %d; whole shop affordable at level %d (3 stars), %d (2 stars); 1 star ends with %d" % [total, full_at[3], full_at[2], curves[1][-1]])
+	_check(StoryProgress.silk_max() == curves[3][-1] and total < StoryProgress.silk_max(), "the whole shop (%d) fits in the maximum silk (%d)" % [total, StoryProgress.silk_max()])
+	_check(full_at[3] >= 26 and full_at[3] <= 28, "3 stars everywhere: the whole shop is affordable at level 26-28 (%d)" % full_at[3])
+	_check(full_at[2] >= 34 and full_at[2] <= 35, "2 stars everywhere: the whole shop is affordable at level 34-35, before the final levels (%d)" % full_at[2])
+	_check(curves[1][-1] < total, "1 star everywhere: not the whole shop (%d < %d), the player chooses" % [curves[1][-1], total])
+	# the essentials for a 1-star player: a heart, the first combat upgrades and the nest ones before the nest stage
+	var nest_first: int = _first_of_stage(levels, "NEST")
+	var essentials: int = 0
+	for id in ["EXTRA_HEART", "TOUGH_SKIN", "SHARP_HAIRS", "FULL_POUCH", "THICK_WALLS", "WARM_SILK"]:
+		essentials += StoryProgress.upgrade(id).cost
+	_check(nest_first >= 18 and curves[1][nest_first - 2] >= essentials, "1 star: the essentials (%d) are paid by mid-campaign, before the nest stage (%d silk after level %d)" % [essentials, curves[1][nest_first - 2], nest_first - 1])
+	var tier_one: int = 0
 	for u in StoryProgress.upgrades():
-		if u.requires == "":
-			cheapest = mini(cheapest, u.cost)
-	var egg_levels: int = 0
-	for level in StoryProgress.levels():
-		if level.stage == "EGG":
-			egg_levels += 1
-	_check(egg_levels * StoryProgress.SILK_PER_STAR >= cheapest, "one star per egg level (%d silk) already pays the cheapest upgrade (%d)" % [egg_levels * StoryProgress.SILK_PER_STAR, cheapest])
-	var tier_one_ok: bool = true
-	for u in StoryProgress.upgrades():
-		if u.effect == "EXTRA_HEART" and u.requires == "":
-			tier_one_ok = tier_one_ok and u.cost * 2 <= egg_levels * 3 * StoryProgress.SILK_PER_STAR
-	_check(tier_one_ok, "the first heart is affordable with half the stars of the egg stage")
+		if u.requires.is_empty():
+			tier_one += u.cost
+	var pupa_first: int = _first_of_stage(levels, "PUPA")
+	_check(curves[1][pupa_first - 2] >= tier_one, "1 star: every tier I upgrade (%d) before the pupa stage (%d)" % [tier_one, curves[1][pupa_first - 2]])
+	# early upgrades when they first matter: the heart inside the egg stage, the first combat upgrade before Pelussa
+	var egg_boss: int = _first_of_stage(levels, "EGG") + 4
+	_check(levels[egg_boss - 1].id == "egg_boss" and curves[1][egg_boss - 2] >= StoryProgress.upgrade("EXTRA_HEART").cost, "1 star: the first heart is affordable before the egg boss")
+	var larva_first: int = _first_of_stage(levels, "LARVA_EARLY")
+	_check(curves[1][larva_first - 2] >= StoryProgress.upgrade("EXTRA_HEART").cost + StoryProgress.upgrade("TOUGH_SKIN").cost, "1 star: heart and thick skin before the first Pelussa level")
+	# 2 stars, buying in the order of docs/story_mode.md section 9: the nest upgrades before the nest stage, the tier II combat ones and the
+	# pupa's jaws before the pupa stage (the second heart and the moth wings come during the last two stages)
+	var order: Dictionary = {
+		"NEST": ["EXTRA_HEART", "TOUGH_SKIN", "SHARP_HAIRS", "FULL_POUCH", "DOUBLE_WEB", "THICK_WALLS", "WARM_SILK"],
+		"PUPA": ["TOUGH_SKIN_2", "SHARP_HAIRS_2", "FAST_DIG"],
+	}
+	var paid: int = 0
+	for stage: String in order:
+		for id: String in order[stage]:
+			paid += StoryProgress.upgrade(id).cost
+		var first: int = _first_of_stage(levels, stage)
+		_check(curves[2][first - 2] >= paid, "2 stars: the shop in buying order up to %s (%d) is paid before it starts (%d)" % [stage, paid, curves[2][first - 2]])
+
+
+## Level number (1-based) after which `curve` first reaches `amount` (0 = never).
+func _first_level_reaching(curve: Array[int], amount: int) -> int:
+	for i in curve.size():
+		if curve[i] >= amount:
+			return i + 1
+	return 0
+
+
+## Level number (1-based) of the first level of `stage`.
+func _first_of_stage(levels: Array[LevelDef], stage: String) -> int:
+	for i in levels.size():
+		if levels[i].stage == stage:
+			return i + 1
+	return 0
 
 
 func _silk_and_save() -> void:
@@ -709,20 +754,20 @@ func _silk_and_save() -> void:
 	StoryProgress.reset_progress()
 	_check(StoryProgress.silk() == 0 and StoryProgress.owned_upgrades().is_empty() and not StoryProgress.buy("TOUGH_SKIN"), "a new save: 0 silk, nothing owned, nothing can be bought")
 	var gained: int = StoryProgress.record_result({"level_id": "egg_1", "won": true, "stars": 1})
-	_check(StoryProgress.SILK_PER_STAR == 6 and gained == 6 and StoryProgress.silk() == 6, "the first star of a level earns 6 silk")
+	_check(gained == 10 and StoryProgress.silk() == 10, "winning a level with 1 star earns 10 silk (win 5 + 1 star 5)")
 	gained = StoryProgress.record_result({"level_id": "egg_1", "won": true, "stars": 1})
-	_check(gained == 0 and StoryProgress.silk() == 6, "the same star again earns nothing")
+	_check(gained == 0 and StoryProgress.silk() == 10, "the same star again earns nothing")
 	gained = StoryProgress.record_result({"level_id": "egg_1", "won": true, "stars": 3})
-	_check(gained == 12 and StoryProgress.silk() == 18, "going from 1 to 3 stars earns the 2 new ones (+12)")
+	_check(gained == 10 and StoryProgress.silk() == 20, "going from 1 to 3 stars earns the 2 new ones (+10), not the win again")
 	gained = StoryProgress.record_result({"level_id": "egg_2", "won": false, "stars": 2})
-	_check(gained == 0 and StoryProgress.silk() == 18, "a lost level earns nothing")
+	_check(gained == 0 and StoryProgress.silk() == 20, "a lost level earns nothing")
 	StoryProgress.record_result({"level_id": "egg_2", "won": true, "stars": 2})
 	StoryProgress.record_result({"level_id": "egg_3", "won": true, "stars": 3})
-	_check(StoryProgress.silk() == 48 and StoryProgress.silk_earned() == 48, "silk = 6 per best star (48)")
+	_check(StoryProgress.silk() == 55 and StoryProgress.silk_earned() == 55, "silk = the worth of every best result (20 + 15 + 20 = 55)")
 	var cost: int = StoryProgress.upgrade("TOUGH_SKIN").cost
 	_check(not StoryProgress.buy("NOPE"), "an unknown upgrade cannot be bought")
-	_check(StoryProgress.buy("TOUGH_SKIN") and StoryProgress.silk() == 48 - cost and StoryProgress.owned_upgrades() == ["TOUGH_SKIN"] and StoryProgress.owns("TOUGH_SKIN"), "buying takes its price (%d) and keeps the upgrade" % cost)
-	_check(not StoryProgress.buy("TOUGH_SKIN") and StoryProgress.silk() == 48 - cost, "it cannot be bought twice")
+	_check(StoryProgress.buy("TOUGH_SKIN") and StoryProgress.silk() == 55 - cost and StoryProgress.owned_upgrades() == ["TOUGH_SKIN"] and StoryProgress.owns("TOUGH_SKIN"), "buying takes its price (%d) and keeps the upgrade" % cost)
+	_check(not StoryProgress.buy("TOUGH_SKIN") and StoryProgress.silk() == 55 - cost, "it cannot be bought twice")
 	var dear: String = "SHARP_HAIRS_2"
 	_check(StoryProgress.upgrade(dear).cost > StoryProgress.silk() and not StoryProgress.buy(dear) and not StoryProgress.owns(dear), "too expensive: refused, nothing taken")
 	# tier II needs tier I, even with the silk
@@ -748,8 +793,8 @@ func _silk_and_save() -> void:
 	old.set_value("stars", "larva_1", 3)
 	old.save(StoryProgress.save_path)
 	StoryProgress.load_progress()
-	_check(StoryProgress.stars("egg_1") == 2 and StoryProgress.stars("larva_1") == 3 and StoryProgress.owned_upgrades().is_empty() and StoryProgress.silk() == 30, "an old save (no hub section) loads: its stars give silk (30), no upgrades")
-	_check(StoryProgress.buy("TOUGH_SKIN") and StoryProgress.silk() == 30 - StoryProgress.upgrade("TOUGH_SKIN").cost, "and it can be spent")
+	_check(StoryProgress.stars("egg_1") == 2 and StoryProgress.stars("larva_1") == 3 and StoryProgress.owned_upgrades().is_empty() and StoryProgress.silk() == 35, "an old save (no hub section) loads: its stars give silk (15 + 20 = 35), no upgrades")
+	_check(StoryProgress.buy("TOUGH_SKIN") and StoryProgress.silk() == 35 - StoryProgress.upgrade("TOUGH_SKIN").cost, "and it can be spent")
 	# a save naming an upgrade that no longer exists
 	var odd := ConfigFile.new()
 	odd.set_value("stars", "egg_1", 1)

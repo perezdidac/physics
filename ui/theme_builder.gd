@@ -28,20 +28,13 @@ func _init() -> void:
 	_label_variation(theme, "SectionLabel", f_mono, 11, Palette.BRASS)
 	_label_variation(theme, "HintLabel", f_mono, 11, Palette.IVORY_HINT)
 
-	# Command button (.cmd-btn): pill
-	theme.add_type("CmdButton")
-	theme.set_type_variation("CmdButton", "Button")
-	theme.set_font("font", "CmdButton", f_body_bold)
-	theme.set_font_size("font_size", "CmdButton", 10)
-	theme.set_color("font_color", "CmdButton", Palette.IVORY)
-	theme.set_color("font_hover_color", "CmdButton", Palette.BRASS_BRIGHT)
-	theme.set_color("font_pressed_color", "CmdButton", Palette.BRASS_BRIGHT)
-	theme.set_color("font_focus_color", "CmdButton", Palette.BRASS_BRIGHT)
-	theme.set_stylebox("normal", "CmdButton", _flat(Palette.CMD_BG, Palette.BRASS_BORDER_SOFT, 999, 1, Vector2(11, 5)))
-	theme.set_stylebox("hover", "CmdButton", _flat(Palette.CMD_BG_HOVER, Palette.BRASS_BRIGHT, 999, 1, Vector2(11, 5)))
-	theme.set_stylebox("pressed", "CmdButton", _flat(Palette.CMD_BG_HOVER, Palette.BRASS_BRIGHT, 999, 1, Vector2(11, 5)))
-	theme.set_stylebox("focus", "CmdButton", _focus(999))
-	theme.set_stylebox("disabled", "CmdButton", _flat(Palette.CMD_BG, Palette.BRASS_BORDER_SOFT, 999, 1, Vector2(11, 5)))
+	# Secondary button family: same chamfered shape and Cinzel black lettering as the gold deploy button, dark fill, brass border.
+	var f_cmd: FontVariation = f_title_black.duplicate()
+	f_cmd.spacing_glyph = 1
+	_cmd_variation(theme, "CmdButton", f_cmd, 12, Vector2(16, 8))
+	_cmd_variation(theme, "CmdIconButton", f_cmd, 14, Vector2(8, 6))
+	_cmd_variation(theme, "NavButton", f_cmd, 14, Vector2(6, 4))
+	_cmd_variation(theme, "FuseButton", f_cmd, 12, Vector2(8, 3))
 
 	# Mobile gamepad button (.mc-btn)
 	theme.add_type("MobileButton")
@@ -59,17 +52,6 @@ func _init() -> void:
 	theme.set_stylebox("focus", "MobileButton", StyleBoxEmpty.new())
 
 	# Weapon pill navigation (.wp-nav-btn): round
-	theme.add_type("NavButton")
-	theme.set_type_variation("NavButton", "Button")
-	theme.set_font("font", "NavButton", f_body_bold)
-	theme.set_font_size("font_size", "NavButton", 13)
-	theme.set_color("font_color", "NavButton", Palette.IVORY)
-	theme.set_color("font_hover_color", "NavButton", Palette.BRASS_BRIGHT)
-	theme.set_color("font_pressed_color", "NavButton", Palette.BRASS_BRIGHT)
-	theme.set_stylebox("normal", "NavButton", _flat(Palette.GLASS_PILL, Palette.BRASS_BORDER_SOFT, 999, 1, Vector2(6, 4)))
-	theme.set_stylebox("hover", "NavButton", _flat(Palette.CMD_BG_HOVER, Palette.BRASS_BRIGHT, 999, 1, Vector2(6, 4)))
-	theme.set_stylebox("pressed", "NavButton", _flat(Palette.CMD_BG_HOVER, Palette.BRASS_BRIGHT, 999, 1, Vector2(6, 4)))
-	theme.set_stylebox("focus", "NavButton", StyleBoxEmpty.new())
 
 	# Weapon pill toggle (#weapon-toggle-btn)
 	theme.add_type("PillButton")
@@ -80,17 +62,6 @@ func _init() -> void:
 	theme.set_stylebox("focus", "PillButton", StyleBoxEmpty.new())
 
 	# Fuse picker button (.fuse-btn)
-	theme.add_type("FuseButton")
-	theme.set_type_variation("FuseButton", "Button")
-	theme.set_font("font", "FuseButton", f_mono_heavy)
-	theme.set_font_size("font_size", "FuseButton", 11)
-	theme.set_color("font_color", "FuseButton", Palette.IVORY)
-	theme.set_color("font_hover_color", "FuseButton", Palette.BRASS_BRIGHT)
-	theme.set_color("font_pressed_color", "FuseButton", Color("#0b0d12"))
-	theme.set_stylebox("normal", "FuseButton", _flat(Color(1, 1, 1, 0.06), Palette.IVORY_FAINT, 8, 1, Vector2(8, 3)))
-	theme.set_stylebox("hover", "FuseButton", _flat(Color(1, 1, 1, 0.12), Palette.BRASS, 8, 1, Vector2(8, 3)))
-	theme.set_stylebox("pressed", "FuseButton", _flat(Palette.BRASS, Palette.BRASS_BRIGHT, 8, 1, Vector2(8, 3)))
-	theme.set_stylebox("focus", "FuseButton", StyleBoxEmpty.new())
 
 	# Panels
 	theme.add_type("GlassPanel")
@@ -184,4 +155,41 @@ func _focus(radius: int) -> StyleBoxFlat:
 	sb.expand_margin_right = 2.0
 	sb.expand_margin_top = 2.0
 	sb.expand_margin_bottom = 2.0
+	return sb
+
+
+## Chamfered secondary button: dark gradient, brass border, ivory text; hover/pressed brighten, focus adds a ring.
+func _cmd_variation(theme: Theme, type_name: String, font: Font, size: int, margin: Vector2) -> void:
+	theme.add_type(type_name)
+	theme.set_type_variation(type_name, "Button")
+	theme.set_font("font", type_name, font)
+	theme.set_font_size("font_size", type_name, size)
+	theme.set_color("font_color", type_name, Palette.IVORY)
+	theme.set_color("font_hover_color", type_name, Palette.BRASS_BRIGHT)
+	theme.set_color("font_pressed_color", type_name, Palette.BRASS_BRIGHT)
+	theme.set_color("font_focus_color", type_name, Palette.BRASS_BRIGHT)
+	theme.set_color("font_hover_pressed_color", type_name, Palette.BRASS_BRIGHT)
+	theme.set_color("font_disabled_color", type_name, Color(Palette.IVORY, 0.45))
+	var base_top := Color(0.105, 0.125, 0.17, 0.96)
+	var base_bottom := Color(0.05, 0.062, 0.088, 0.98)
+	theme.set_stylebox("normal", type_name, _chamfer(base_top, base_bottom, Palette.BRASS, false, margin))
+	theme.set_stylebox("hover", type_name, _chamfer(base_top.lightened(0.16), base_bottom.lightened(0.12), Palette.BRASS_BRIGHT, false, margin))
+	theme.set_stylebox("pressed", type_name, _chamfer(Color(0.35, 0.25, 0.1, 0.98), Color(0.2, 0.14, 0.05, 0.98), Palette.BRASS_BRIGHT, false, margin))
+	theme.set_stylebox("hover_pressed", type_name, _chamfer(Color(0.35, 0.25, 0.1, 0.98), Color(0.2, 0.14, 0.05, 0.98), Palette.BRASS_BRIGHT, false, margin))
+	theme.set_stylebox("disabled", type_name, _chamfer(Color(base_top, 0.5), Color(base_bottom, 0.5), Color(Palette.BRASS, 0.4), false, margin))
+	theme.set_stylebox("focus", type_name, _chamfer(Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT, true, Vector2.ZERO))
+
+
+func _chamfer(top: Color, bottom: Color, border: Color, ring: bool, margin: Vector2) -> StyleBox:
+	var sb: StyleBox = preload("res://ui/widgets/chamfer_style_box.gd").new()
+	sb.top = top
+	sb.bottom = bottom
+	sb.border = border
+	sb.ring = ring
+	sb.border_width = 1.5
+	sb.cuts = Vector4(0, 8, 0, 8)
+	sb.content_margin_left = margin.x
+	sb.content_margin_right = margin.x
+	sb.content_margin_top = margin.y
+	sb.content_margin_bottom = margin.y
 	return sb

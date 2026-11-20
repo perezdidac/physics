@@ -2572,3 +2572,24 @@ msgstr "Amaga't a les ombres: a dins no et veuen."
 msgid "STAGECARD_MOTH_KEYS"
 msgstr "Fletxes: dirigir-te · Espai: batec (mantén-lo per planar)"
 
+msgid "STORY_RESULT_SILK_GAIN"
+msgstr "+%d de seda"
+
+msgid "STORY_RESULT_SILK_TOTAL"
+msgstr "Ara en tens %d per gastar al Bolsó"
+
+msgid "STORY_RESULT_SILK_NONE"
+msgstr "Ja tens les estrelles d'aquest nivell: cap seda nova."
+
+msgid "STORY_RESULT_SILK_BEST"
+msgstr "Rècord: %d ★. Supera'l per guanyar més seda."
+
+msgid "SILK_PART_WIN"
+msgstr "Victòria +%d"
+
+msgid "SILK_PART_STARS"
+msgstr "Estrelles noves ×%d: +%d"
+
+msgid "SILK_PART_BOSS"
+msgstr "Enemic de l'etapa +%d"
+

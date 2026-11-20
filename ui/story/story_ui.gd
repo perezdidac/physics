@@ -69,7 +69,7 @@ static func make_header(kicker: String, title: String, subtitle: String, right: 
 	return head
 
 
-## Round "command" button (theme CmdButton) with an upper-case label.
+## Secondary button (theme CmdButton): chamfered like the gold deploy button, dark fill, brass border, upper-case label.
 static func cmd_button(text: String) -> Button:
 	var b := Button.new()
 	b.theme_type_variation = "CmdButton"
@@ -77,10 +77,22 @@ static func cmd_button(text: String) -> Button:
 	return b
 
 
+## Small icon-only / one-glyph button ("?", close, pause): the same chamfered look as `cmd_button` in a square.
+static func icon_button(text: String, side: float = 0.0) -> Button:
+	var b := Button.new()
+	b.theme_type_variation = "CmdIconButton"
+	b.text = text
+	if side > 0.0:
+		b.custom_minimum_size = Vector2(side, side)
+	return b
+
+
 ## Gold call-to-action button with a dark label.
 static func deploy_button(text: String) -> ChamferButton:
 	var b: ChamferButton = ChamferButton.make_deploy()
-	b.add_child(UiUtil.spaced_label(text, "TitleBlackLabel", 13, Color("#0b0d12"), 1.4))
+	var l: Label = UiUtil.spaced_label(text, "TitleBlackLabel", 13, Color("#0b0d12"), 1.4)
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	b.add_child(l)
 	return b
 
 

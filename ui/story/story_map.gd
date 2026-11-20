@@ -219,7 +219,7 @@ func _build_stage_detail(small: bool) -> Control:
 	var text: Label = StoryUi.paragraph(line, 12 if small else 13, Palette.IVORY_HINT)
 	text.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	blurb.add_child(text)
-	help_button = StoryUi.cmd_button("?")
+	help_button = StoryUi.icon_button("?")
 	help_button.name = "StageHelpButton"
 	help_button.tooltip_text = tr("STAGECARD_HELP_TOOLTIP")
 	help_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER

@@ -180,10 +180,30 @@ URTICARIA → FUET → CARQUINYOLI → BAT → BAZOOKA → GRENADE → SHOTGUN �
 5. Backgrounds from Gemini as they arrive.
 
 
-## 9. Silk economy and the upgrade shop (2026-11-19, agent SILK)
-**Rule:** silk is earned only from stars (each best star counts once): `SILK_PER_STAR = 6`. 37 levels x 3 stars x 6 = **666 silk at most**. The shop has **12 upgrades costing 600 in all**: with 3 stars everywhere you buy everything (66 spare); with about 2 stars on average (444 silk) you must choose (about 3 in 4 of the shop). Silk is derived from the stars (earned minus the price of the owned upgrades), so an id that disappears from the shop is refunded by itself, and a tier II whose tier I is missing in a save is dropped.
+## 9. Silk economy and the upgrade shop (2026-11-19, agent SILK; rebalanced 2026-11-20, agent SILK2)
+**Rule:** every won level pays silk once, for its best result: **5 for the win + 5 per star, + 15 on a boss level** (`StoryProgress.SILK_WIN`,
+`SILK_PER_STAR`, `SILK_BOSS`; `level_silk(id, stars)`). A replay pays only the difference (new stars; the win and the boss bonus never twice).
+So a normal level is worth 10 / 15 / 20 silk with 1 / 2 / 3 stars and a boss 25 / 30 / 35. Silk is derived from the saved best stars (earned
+minus the price of the owned upgrades), so old saves get the new amounts by themselves, an id that disappears from the shop is refunded, and a
+tier II whose tier I is missing in a save is dropped. 37 levels (30 + 7 bosses): **475 / 660 / 845 silk** for a 1 / 2 / 3-star player; the shop
+costs **600**.
 
-**When silk can be spent:** the hub (El Bolsó) opens from the story map and from the results screen as soon as one star has been earned (`StoryProgress.silk_earned() > 0`), not only in the NEST stage, so the platform upgrades matter from the egg stage on and the combat ones are ready for Pelussa. After the 5 egg levels a player has 30 silk with 1 star each (60 with 2, 90 with 3), and the cheapest upgrades cost 30 (Thick skin, Silk heart, Thick walls).
+**Targets (owner, 2026-11-20):** a 3-star player can buy everything around level 26-28, an average 2-star player around level 34-35 (two or
+three levels before the last), a 1-star player gets the essentials by mid-campaign and has to choose. Result: everything at **level 27** with
+3 stars, **level 34** (moth_1) with 2 stars; with 1 star the essentials (heart, thick skin, sharp hairs, full pouch, thick walls, warm silk:
+210) are paid after level 18 (225), every tier I (360) before the pupa stage (365), and 475 in all (about four fifths of the shop).
+`tests/test_nest_sim.gd` (`_economy`) checks all this against the real level list and shop.
+
+**Where you see it:** every story level ends on the results screen (`ui/story/story_results.gd`), the platform levels of the egg, pupa and
+moth too (`PlatformScreen` stores the stats in `GameState.story_result` and routes to `story_results`), and that screen calls
+`StoryProgress.record_result`. A won level shows a gold chip "+N silk" that counts up (with a pickup sound), the silk now in the pouch and
+the breakdown (win, new stars, boss); a replay that beats nothing says "You already have this level's stars: no new silk" (and the best to
+beat when it is under 3 stars). The hub (El Bolsó) opens from the story map and the results screen as soon as some silk is earned
+(`StoryProgress.silk_earned() > 0`), so the platform upgrades matter from the egg stage on.
+
+**The hub's list:** it scrolls by dragging anywhere on it, also from a card or a buy button (a tap still buys; a drag never buys), with the
+mouse wheel and touchpad, and the keyboard focus scrolls its card into view; buying keeps the list where it was. Two card columns when the list
+is at least 640 units wide (phones in landscape), the silk counter sits in the header.
 
 ### Shop
 | Id | Tier | Cost | Effect | Works in |
@@ -205,16 +225,34 @@ URTICARIA → FUET → CARQUINYOLI → BAT → BAZOOKA → GRENADE → SHOTGUN �
 Platform levels read the owned ids through `PlatformScreen.upgrades` into `PlatformSim.setup(level, ids)` (`platform/sim/platform_upgrades.gd`). Boss stars ignore bonus hearts (stars = hearts left minus the bonus), so extra hearts help survive but do not hand out stars. Combat levels get the ids in `MatchConfig.upgrades` as before. Each hub card says where it works (`UpgradeDef.scope`: COMBAT, NEST or PLATFORM) and tier II cards say what they need.
 
 ### Economy table
-Silk is the total at the end of each stage (cumulative levels, so cumulative silk). The shop price column is what a player who bought in the order of the table above would have spent by then if they could afford it.
+Cumulative silk at the end of each stage for a player who wins every level with 1, 2 or 3 stars, and the level (1-37) at which each upgrade
+can be bought when buying in this order (the order in which they start to matter). "Cumulative" is the price of that upgrade and every one above.
 
-| Stage | Levels | Cumulative levels | Silk with 1 star / 2 stars / 3 stars | Shop prices of what is useful so far |
+| Stage | Levels | Last level # | Silk 1 star / 2 stars / 3 stars |
+|---|---|---|---|
+| Egg (ou) | 4 + boss | 5 | 65 / 90 / 115 |
+| Pelussa | 5 + boss | 11 | 140 / 195 / 250 |
+| Cuca | 6 + boss | 18 | 225 / 315 / 405 |
+| El Bolsó | 4 + boss | 23 | 290 / 405 / 520 |
+| La Processó | 5 + boss | 29 | 365 / 510 / 655 |
+| La Crisàlide | 3 + boss | 33 | 420 / 585 / 750 |
+| La Papallona | 3 + boss | 37 | 475 / 660 / 845 |
+
+| Buying order | Cost | Cumulative | Bought at level (1 / 2 / 3 stars) | First matters |
 |---|---|---|---|---|
-| Egg | 5 | 5 | 30 / 60 / 90 | EXTRA_HEART 30, EXTRA_HEART_2 90 |
-| Pelussa | 6 | 11 | 66 / 132 / 198 | + TOUGH_SKIN 30, SHARP_HAIRS 40, FULL_POUCH 40, DOUBLE_WEB 50 (cumulative 280) |
-| Cuca | 7 | 18 | 108 / 216 / 324 | + TOUGH_SKIN_2 60, SHARP_HAIRS_2 90 (cumulative 430) |
-| El Bolsó | 5 | 23 | 138 / 276 / 414 | + THICK_WALLS 30, WARM_SILK 40 (cumulative 500) |
-| La Processó | 6 | 29 | 174 / 348 / 522 | (combat upgrades keep paying off) |
-| La Crisàlide | 4 | 33 | 198 / 396 / 594 | + FAST_DIG 45 (cumulative 545) |
-| La Papallona | 4 | 37 | 222 / 444 / 666 | + LONG_FLIGHT 55 (cumulative 600) |
+| EXTRA_HEART | 30 | 30 | 3 / 2 / 2 | egg levels (1-5) |
+| TOUGH_SKIN | 30 | 60 | 5 / 4 / 3 | Pelussa (6) |
+| SHARP_HAIRS | 40 | 100 | 9 / 6 / 5 | Pelussa (6) |
+| FULL_POUCH | 40 | 140 | 11 / 9 / 7 | Pelussa (6) |
+| DOUBLE_WEB | 50 | 190 | 16 / 11 / 9 | Pelussa (6) |
+| THICK_WALLS | 30 | 220 | 18 / 13 / 11 | El Bolsó (19) |
+| WARM_SILK | 40 | 260 | 22 / 16 / 12 | El Bolsó (19) |
+| TOUGH_SKIN_2 | 60 | 320 | 26 / 19 / 15 | combat levels |
+| SHARP_HAIRS_2 | 90 | 410 | 33 / 24 / 19 | combat levels |
+| FAST_DIG | 45 | 455 | 37 / 27 / 21 | La Crisàlide (30) |
+| EXTRA_HEART_2 | 90 | 545 | - / 32 / 25 | La Crisàlide (30) |
+| LONG_FLIGHT | 55 | 600 | - / 34 / 27 | La Papallona (34) |
 
-Reading it: by the end of the egg stage even a 1-star player can buy a heart; by the end of Pelussa a 2-star player (132) has the first combat upgrades; the 3-star player never lacks silk, the 2-star player ends 156 short of the full shop. `tests/test_nest_sim.gd` (`_economy`) keeps these numbers honest (shop total versus maximum silk, 2-star shortfall, first prices versus the egg stage).
+Reading it: a 1-star player buys in the same order but should skip DOUBLE_WEB to have the nest upgrades for El Bolsó (210 by level 18);
+they never get the last three. A 2-star player has everything that matters for each stage before it starts, except the moth wings, which
+come with the first moth level. A 3-star player owns the whole shop at level 27 and ends with 245 silk to spare.

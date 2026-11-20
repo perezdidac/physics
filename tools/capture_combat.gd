@@ -17,6 +17,23 @@ var _skipped: bool = false
 
 
 func _ready() -> void:
+	# CUCS_DPI=440 CUCS_SIZE=2404x1080 simulate a phone (touch UI); CUCS_PLATFORM=egg_1 captures that platform level instead
+	# of a combat (CUCS_PAUSE=1 opens its pause menu).
+	if OS.get_environment("CUCS_DPI") != "":
+		TouchMetrics.force_dpi = float(OS.get_environment("CUCS_DPI"))
+		TouchMetrics.force = 1
+	if OS.get_environment("CUCS_SIZE") != "":
+		var wh: PackedStringArray = OS.get_environment("CUCS_SIZE").split("x")
+		get_window().size = Vector2i(int(wh[0]), int(wh[1]))
+	if OS.get_environment("CUCS_PLATFORM") != "":
+		var plat: PlatformScreen = load("res://platform/PlatformScreen.tscn").instantiate() as PlatformScreen
+		plat.auto_start = false
+		plat.go_callable = func(_n: String) -> void: pass
+		add_child(plat)
+		plat.start(load("res://data/levels/%s.tres" % OS.get_environment("CUCS_PLATFORM")) as LevelDef)
+		if OS.get_environment("CUCS_PAUSE") == "1":
+			plat.set_paused(true)
+		return
 	_map = int(OS.get_environment("CUCS_MAP")) if OS.get_environment("CUCS_MAP") != "" else 0
 	_screen = load("res://combat/CombatScreen.tscn").instantiate() as CombatScreen
 	_screen.auto_start = false
@@ -85,7 +102,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_elapsed += delta
-	if OS.get_environment("CUCS_FOLLOW") != "" and _screen.sim.active_fighter != null:
+	if _screen != null and OS.get_environment("CUCS_FOLLOW") != "" and _screen.sim.active_fighter != null:
 		var af: SimFighter = _screen.sim.active_fighter
 		_screen.cam.locked = true
 		_screen.cam.x = af.x
@@ -100,11 +117,11 @@ func _process(delta: float) -> void:
 			_screen.cam.x = (lo.x + hi.x) * 0.5
 			_screen.cam.y = (lo.y + hi.y) * 0.5
 		_screen.cam.zoom = float(OS.get_environment("CUCS_FOLLOW"))
-	if OS.get_environment("CUCS_FIRE") == "1" and not _fired and _elapsed > 0.5:
+	if _screen != null and OS.get_environment("CUCS_FIRE") == "1" and not _fired and _elapsed > 0.5:
 		_fired = true
 		_screen.sim.call("begin_charge_or_fire")
 		_screen.sim.call("release_charge")
-	if OS.get_environment("CUCS_SKIP") == "1" and not _skipped and _elapsed > 0.3:
+	if _screen != null and OS.get_environment("CUCS_SKIP") == "1" and not _skipped and _elapsed > 0.3:
 		_skipped = true
 		_screen.sim.end_turn()
 	var wait: float = float(OS.get_environment("CUCS_WAIT")) if OS.get_environment("CUCS_WAIT") != "" else 2.0

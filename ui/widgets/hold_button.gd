@@ -97,8 +97,9 @@ func _notification(what: int) -> void:
 
 func _draw() -> void:
 	var rect := Rect2(Vector2.ZERO, size)
-	var font_name: String = "TitleBlackLabel" if kind == Kind.FIRE else "BodyBoldLabel"
-	var font: Font = get_theme_font("font", font_name)
+	var font_name: String = "BodyBoldLabel" if kind == Kind.ARROW else "CmdButton"
+	var font: Font = UiUtil.get_theme().get_font("font", font_name)
+	var label: String = text if kind == Kind.ARROW or kind == Kind.FIRE else text.to_upper()
 	var font_size: int = 12
 	match kind:
 		Kind.ARROW:
@@ -109,7 +110,7 @@ func _draw() -> void:
 			font_size = 14
 	# Big touch buttons (TouchMetrics) get a bigger label, kept inside the button width.
 	font_size = int(round(font_size * clampf(size.y / 44.0, 1.0, 2.2)))
-	while font_size > 9 and font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > size.x * 0.88:
+	while font_size > 9 and font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > size.x * 0.88:
 		font_size -= 1
 	var col: Color = Palette.IVORY
 	if kind == Kind.FIRE:
@@ -122,6 +123,18 @@ func _draw() -> void:
 		if fill > 0.0:
 			draw_rect(Rect2(2, 2, (size.x - 4.0) * fill, size.y - 4.0), Color(1, 1, 1, 0.28))
 		col = Color.WHITE
+	elif kind != Kind.ARROW:
+		# Secondary family: chamfered, dark fill, brass border (same as CmdButton).
+		var cut: float = clampf(size.y * 0.16, 5.0, 9.0)
+		var ctop := Color(0.105, 0.125, 0.17, 0.96)
+		var cbottom := Color(0.05, 0.062, 0.088, 0.98)
+		var cborder: Color = Palette.BRASS
+		if is_down:
+			ctop = Color(0.35, 0.25, 0.1, 0.98)
+			cbottom = Color(0.2, 0.14, 0.05, 0.98)
+			cborder = Palette.BRASS_BRIGHT
+			col = Palette.BRASS_BRIGHT
+		ChamferShape.draw(self, rect, Vector4(0, cut, 0, cut), ctop, cbottom, cborder, 1.5)
 	else:
 		var sb := StyleBoxFlat.new()
 		sb.set_corner_radius_all(7 if kind == Kind.UTIL else 8)
@@ -136,4 +149,4 @@ func _draw() -> void:
 			sb.border_color = Color(212.0 / 255.0, 161.0 / 255.0, 83.0 / 255.0, 0.52)
 		draw_style_box(sb, rect)
 	var pos_y: float = (size.y + font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5
-	draw_string(font, Vector2(0, pos_y), text, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, col)
+	draw_string(font, Vector2(0, pos_y), label, HORIZONTAL_ALIGNMENT_CENTER, size.x, font_size, col)

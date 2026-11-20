@@ -10,8 +10,11 @@ const UPGRADES_KEY := "upgrades"
 const STAGES_SECTION := "stage_cards"
 const STAGES_KEY := "seen"
 const UPGRADE_LIST_PATH := "res://data/upgrades/upgrade_list.tres"
-## Silk earned for each star won for the first time.
-const SILK_PER_STAR := 6
+## Silk economy (docs/story_mode.md section 9): a won level is worth SILK_WIN + SILK_PER_STAR per best star, plus SILK_BOSS on a boss level.
+## Only the best result of each level counts, so silk is always derived from the saved stars (old saves get it too).
+const SILK_WIN := 5
+const SILK_PER_STAR := 5
+const SILK_BOSS := 15
 
 ## Where the progress is saved (tests point it elsewhere).
 var save_path: String = "user://story.cfg"
@@ -72,8 +75,8 @@ func unlocked_weapons() -> Array[String]:
 	return out
 
 
-## Stores the `game_over` stats of a story match (keeps the best stars) and saves. Returns the silk it earned: SILK_PER_STAR for every
-## star won for the first time (0 when the result is not a win or beats nothing).
+## Stores the `game_over` stats of a story match (keeps the best stars) and saves. Returns the silk it earned: what the new best is
+## worth minus what the old best was worth (`level_silk`); 0 when the result is not a win or beats nothing.
 func record_result(stats: Dictionary) -> int:
 	var level_id: String = str(stats.get("level_id", ""))
 	if level_id.is_empty() or not bool(stats.get("won", false)):
@@ -83,8 +86,21 @@ func record_result(stats: Dictionary) -> int:
 	if earned > before:
 		_stars[level_id] = earned
 		save_progress()
-		return (earned - before) * SILK_PER_STAR
+		return level_silk(level_id, earned) - level_silk(level_id, before)
 	return 0
+
+
+## True for the last level of a stage, the boss fight (ids end in "_boss").
+func is_boss_level(level_id: String) -> bool:
+	return level_id.ends_with("_boss")
+
+
+## Silk a level is worth with `best_stars` (0 = never won): SILK_WIN + SILK_PER_STAR per star, + SILK_BOSS on a boss level.
+func level_silk(level_id: String, best_stars: int) -> int:
+	var n: int = clampi(best_stars, 0, 3)
+	if n == 0:
+		return 0
+	return SILK_WIN + n * SILK_PER_STAR + (SILK_BOSS if is_boss_level(level_id) else 0)
 
 
 ## Every upgrade of the hub in shop order.
@@ -113,9 +129,12 @@ func owns(id: String) -> bool:
 	return _owned.has(id)
 
 
-## Silk earned in all: SILK_PER_STAR for every star of the best results (so an old save gets its silk too).
+## Silk earned in all: `level_silk` of every level's best result (so an old save gets its silk too).
 func silk_earned() -> int:
-	return total_stars() * SILK_PER_STAR
+	var sum: int = 0
+	for level in levels():
+		sum += level_silk(level.id, stars(level.id))
+	return sum
 
 
 ## Silk to spend: what was earned minus the price of the owned upgrades.
@@ -133,7 +152,17 @@ func can_unlock(u: UpgradeDef) -> bool:
 
 ## Silk a player gets with 3 stars in every level (the shop's total price must stay below it).
 func silk_max() -> int:
-	return levels().size() * 3 * SILK_PER_STAR
+	return silk_curve(3)[-1] if not levels().is_empty() else 0
+
+
+## Cumulative silk after each level (index i = after level i + 1) for a player who wins every level with `per_level` stars.
+func silk_curve(per_level: int) -> Array[int]:
+	var out: Array[int] = []
+	var sum: int = 0
+	for level in levels():
+		sum += level_silk(level.id, per_level)
+		out.append(sum)
+	return out
 
 
 ## Total price of the whole shop.
